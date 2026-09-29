@@ -352,15 +352,28 @@ onBeforeUnmount(() => clearTimeout(timer))
   .ads__line { stroke-dashoffset: 0; }
   .ads__area { opacity: .8; }
 }
+/* Mobile : navigateur compact, cartes côte à côte en dessous (sans chevauchement) */
 @media (max-width: 720px) {
-  .hs { height: 520px; }
-  .hs__browser { left: 0; height: 320px; }
-  .scr { padding: 20px; }
-  .hs__float--light { width: 230px; padding: 16px; bottom: 70px; }
-  .hs__float--dark { width: 200px; right: 0; padding: 16px; bottom: 56px; }
-  .hs__big { font-size: 26px; } .hs__big--40 { font-size: 30px; }
+  .hs { height: 468px; }
+  .hs__browser { left: 0; height: 262px; border-radius: 16px; }
+  .hs__bar { padding: 10px 12px; }
+  .scr { padding: 16px 18px; }
+  .web__nav { margin-bottom: 16px; } .web__cards { margin-top: 16px; } .web__cards span { height: 44px; }
+  .web__hero i { height: 14px; } .web__cta { width: 96px; height: 26px; }
+  .scr--app { gap: 8px; } .kb { padding: 8px; gap: 6px; } .kb__card { padding: 7px; } .kb__h { font-size: 10px; }
+  .scr--mobile { padding-top: 10px; } .phone { transform: scale(.72); transform-origin: top center; }
+  .serp__search { margin-bottom: 10px; padding: 8px 14px; font-size: 12px; } .serp__res { padding: 7px 10px; margin-bottom: 4px; }
+  .ads__kpis { margin-bottom: 8px; } .ads__kpis span { padding: 9px; } .ads__chart { height: 96px; }
+  .ig__head { margin-bottom: 10px; } .ig__grid { gap: 6px; } .ig__grid span { aspect-ratio: 2.3; }
+  .hs__float { padding: 14px; border-radius: 14px; bottom: 46px; }
+  .hs__float--light { left: 0; width: calc(52% - 5px); gap: 8px; }
+  .hs__float--dark { right: 0; width: calc(48% - 5px); }
+  .hs__label { font-size: 11px; }
+  .hs__big { font-size: 22px; } .hs__big--40 { font-size: 26px; letter-spacing: -.5px; }
+  .hs__kw { font-size: 12px; } .hs__sub { font-size: 12px; line-height: 1.35; }
+  .hs__bars { height: 30px; gap: 4px; }
+  .hs__chips { gap: 4px; } .hs__chips span { padding: 3px 7px; font-size: 10px; }
   .hs__nav { left: 0; }
   .hs__tab-name { display: none; }
-  .phone { transform: scale(.82); transform-origin: top center; }
 }
 </style>

@@ -1,0 +1,9 @@
+{
+  "target": null,
+  "robots_url": null,
+  "declared": [],
+  "found": [],
+  "checked": [],
+  "warnings": [],
+  "error": "Target must be a public HTTP or HTTPS URL"
+}

@@ -38,7 +38,7 @@
             </div>
             <p class="text-18 sec-head__p">{{ t.services.p }}</p>
           </div>
-          <div class="grid grid-3 svc-grid">
+          <div class="grid grid-3 svc-grid m-swipe">
             <NuxtLink v-for="sv in t.services.items" :key="sv.num" :to="sv.slug ? link.service(sv.slug) : link.contact()" class="svc" :class="`svc--${sv.theme}`">
               <div class="svc__top"><span class="svc__num">{{ sv.num }}</span><span class="svc__tag">{{ sv.tag }}</span></div>
               <h3 class="svc__title">{{ sv.title }}</h3>
@@ -57,7 +57,7 @@
           <h2 class="h2">{{ t.method.h2 }}</h2>
           <p class="text-18">{{ t.method.p }}</p>
         </div>
-        <ol class="grid grid-4 steps">
+        <ol class="grid grid-4 steps m-swipe">
           <li v-for="st in t.method.steps" :key="st.n" class="card step">
             <div class="step__top"><span class="step__n">{{ st.n }}</span><span class="step__time">{{ st.time }}</span></div>
             <h3 class="step__title">{{ st.title }}</h3>
@@ -78,7 +78,7 @@
               <button v-for="f in t.work.filters" :key="f.id" type="button" :aria-pressed="filter === f.id" :class="{ 'is-on': filter === f.id }" @click="filter = f.id">{{ f.label }}</button>
             </div>
           </div>
-          <div class="grid grid-3 work">
+          <div class="grid grid-3 work m-swipe">
             <NuxtLink v-for="pr in shown" :key="pr.slug" :to="link.project(pr.slug)" class="work__card">
               <div class="work__visual" :style="{ background: pr.bg }">
                 <img :src="thumb(pr.img)" :srcset="`${thumb(pr.img)} 800w, ${pr.img} 1600w`" sizes="(max-width: 720px) 100vw, (max-width: 1180px) 50vw, 420px" :alt="`${t.work.alt} ${pr.client} — ${pr.title}`" class="work__img" loading="lazy" decoding="async" width="800" height="450">
@@ -101,6 +101,7 @@
           <div class="eyebrow">{{ t.compare.eyebrow }}</div>
           <h2 class="h2 compare__h">{{ t.compare.h2 }}</h2>
         </div>
+        <p class="compare__hint" aria-hidden="true">{{ t.compare.hint }} →</p>
         <div class="compare-wrap">
           <table class="compare">
             <caption class="sr-only">{{ t.compare.caption }}</caption>
@@ -381,6 +382,7 @@ async function submit() {
 .compare tbody tr:last-child { border-bottom: none; }
 .compare__hi { background: var(--accent-soft); color: var(--ink) !important; font-weight: 600; }
 .compare__cell { display: flex; align-items: center; gap: 10px; }
+.compare__hint { display: none; }
 
 /* Reviews */
 .rating { display: flex; align-items: center; gap: 14px; padding: 14px 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--white); color: var(--ink); transition: border-color .15s, box-shadow .15s; }
@@ -460,6 +462,21 @@ async function submit() {
   .final__box { grid-template-columns: minmax(0, 1fr); padding: 56px 40px; }
   .hfoot__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .hfoot__brand { grid-column: span 4; padding-right: 0; }
+}
+/* Mobile */
+@media (max-width: 720px) {
+  /* Barre du haut sur une ligne : on garde les deux arguments principaux */
+  .topbar { flex-wrap: nowrap; gap: 10px; font-size: 12px; padding: 9px 12px; }
+  .topbar > span:nth-last-child(-n + 2) { display: none; }
+  /* Filtres : une rangée qui se fait glisser */
+  .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filters button { flex: none; white-space: nowrap; padding: 9px 14px; }
+  /* Tableau comparatif : colonne des critères figée, indication de défilement */
+  .compare__hint { display: block; margin: -8px 0 10px; font-size: 13px; font-weight: 600; color: var(--accent); text-align: right; }
+  .compare { min-width: 620px; font-size: 14px; }
+  .compare thead th, .compare thead td, .compare tbody th, .compare tbody td { padding: 14px 14px; }
+  .compare tbody th, .compare thead td { position: sticky; left: 0; z-index: 1; width: 132px; background: var(--white); box-shadow: 1px 0 0 var(--line-soft); }
 }
 @media (max-width: 720px) {
   .final__h { font-size: 40px; }

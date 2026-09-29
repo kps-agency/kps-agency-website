@@ -193,9 +193,11 @@ onBeforeUnmount(() => {
 .review__ini { flex: none; width: 44px; height: 44px; border-radius: 99px; background: var(--accent-tint); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--accent); }
 
 .rc__nav { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-.rc__dots { display: flex; gap: 8px; }
-.rc__dot { width: 8px; height: 8px; padding: 0; border: none; border-radius: 99px; background: var(--line-3); transition: width .25s, background .25s; }
-.rc__dot.is-on { width: 28px; background: var(--accent); }
+.rc__dots { display: flex; flex-wrap: wrap; }
+/* Zone tactile de 24 px, point visuel de 8 px */
+.rc__dot { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; padding: 0 4px; border: none; background: none; }
+.rc__dot::before { content: ''; width: 8px; height: 8px; border-radius: 99px; background: var(--line-3); transition: width .25s, background .25s; }
+.rc__dot.is-on::before { width: 28px; background: var(--accent); }
 .rc__arrows { display: flex; gap: 8px; }
 .rc__btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--line-3); border-radius: 99px; background: var(--white); color: var(--ink); transition: background .15s, color .15s, border-color .15s; }
 .rc__btn:hover { background: var(--ink); border-color: var(--ink); color: var(--white); }

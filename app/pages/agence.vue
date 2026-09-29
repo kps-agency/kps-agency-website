@@ -15,7 +15,7 @@
           <div class="eyebrow">{{ t.adnEyebrow }}</div>
           <h2 class="h2 h2--52">{{ t.adnH2 }}</h2>
         </div>
-        <div class="grid grid-3">
+        <div class="grid grid-3 m-swipe">
           <div v-for="a in t.adn" :key="a.n" class="adn">
             <span class="adn__n">{{ a.n }}</span>
             <h3 class="adn__t">{{ a.t }}</h3>
@@ -48,7 +48,7 @@
           <div class="eyebrow">{{ t.whyEyebrow }}</div>
           <h2 class="h2 h2--52">{{ t.whyH2 }}</h2>
         </div>
-        <div class="grid grid-4">
+        <div class="grid grid-4 m-swipe">
           <div v-for="w in t.why" :key="w.tag" class="why">
             <span class="why__tag">{{ w.tag }}</span>
             <h3 class="why__t">{{ w.t }}</h3>

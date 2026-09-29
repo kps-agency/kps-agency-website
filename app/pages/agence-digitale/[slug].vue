@@ -14,7 +14,7 @@
     <section class="bg-white section--96">
       <div class="container">
         <h2 class="h2 h2--52 svc-h">{{ page.svcTitle }}</h2>
-        <div class="grid grid-3">
+        <div class="grid grid-3 m-swipe">
           <NuxtLink v-for="s in services" :key="s.slug" :to="link.service(s.slug)" class="svc">
             <span class="svc__n">{{ s.num }}</span>
             <h3 class="svc__t">{{ s.crumb }}</h3>
@@ -35,7 +35,7 @@
     <section class="bg-dark section--96">
       <div class="container">
         <h2 class="h2 h2--52 refs-h">{{ page.refTitle }}</h2>
-        <div class="grid grid-3">
+        <div class="grid grid-3 m-swipe">
           <ProjectCard v-for="p in refs" :key="p.slug" :project="p" compact />
         </div>
       </div>

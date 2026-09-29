@@ -170,6 +170,11 @@ useHead({
   .block__body { grid-column: 1 / -1; }
 }
 @media (max-width: 720px) {
+  .kpis { padding-top: 32px; }
+  .kpis .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .kpi { padding: 16px 10px; gap: 4px; text-align: center; border-radius: 14px; }
+  .kpi__v { font-size: 26px; letter-spacing: -.6px; }
+  .kpi__l { font-size: 12px; }
   .head__h1 { font-size: 40px; letter-spacing: -1.2px; }
   .visual { border-radius: 18px; }
   .blocks { padding-top: 64px; gap: 40px; }

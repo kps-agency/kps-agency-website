@@ -89,6 +89,10 @@ const list = computed(() => filter.value === 'all' ? projects.value : projects.v
   .stats__item:nth-child(2) { border-right: none; }
 }
 @media (max-width: 720px) {
+  .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filters button { flex: none; white-space: nowrap; }
+  .work__bar { flex-wrap: nowrap; }
   .head { padding-top: 56px; }
   .head__h1 { font-size: 40px; letter-spacing: -1.2px; }
   .stats__v { font-size: 38px; }

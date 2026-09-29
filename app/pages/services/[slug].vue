@@ -25,7 +25,7 @@
           <h2 class="h2 h2--52 sec-head__h">{{ svc.offersTitle }}</h2>
           <p class="text-18 sec-head__p">{{ svc.offersSub }}</p>
         </div>
-        <div class="grid grid-2">
+        <div class="grid grid-2 m-swipe">
           <article v-for="of in svc.offers" :id="`offre-${of.n}`" :key="of.n" class="offer">
             <span class="offer__n">{{ of.n }}</span>
             <h3 class="offer__t">{{ of.t }}</h3>
@@ -57,7 +57,7 @@
           <div class="eyebrow">{{ t.method }}</div>
           <h2 class="h2 h2--52">{{ svc.methTitle }}</h2>
         </div>
-        <ol class="grid grid-4 msteps">
+        <ol class="grid grid-4 msteps m-swipe">
           <li v-for="st in svc.steps" :key="st.n" class="mstep">
             <span class="mstep__n">{{ st.n }}</span>
             <h3>{{ st.t }}</h3>
@@ -73,7 +73,7 @@
         <h2 class="h2 h2--52">{{ t.trusted }}</h2>
         <NuxtLink :to="link.work()" class="btn btn--ghost btn--sm">{{ t.allWork }}</NuxtLink>
       </div>
-      <div class="grid grid-3">
+      <div class="grid grid-3 m-swipe">
         <ProjectCard v-for="p in related" :key="p.slug" :project="p" compact bordered />
       </div>
     </section>

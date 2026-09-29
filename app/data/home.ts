@@ -50,7 +50,7 @@ const fr = {
   },
   compare: {
     eyebrow: 'Pourquoi KPS', h2: 'Le meilleur des deux mondes : la réactivité d’un freelance, la force d’une agence.',
-    caption: 'Comparatif KPS Agency, freelance, agence classique et recrutement interne', cols: ['Freelance', 'Agence classique', 'Recrutement interne'], yes: 'Oui', no: 'Non',
+    caption: 'Comparatif KPS Agency, freelance, agence classique et recrutement interne', cols: ['Freelance', 'Agence classique', 'Recrutement interne'], yes: 'Oui', no: 'Non', hint: 'Faites glisser le tableau pour comparer',
     rows: [
       { label: 'Tous les services digitaux au même endroit', cells: [['y', ''], ['n', ''], ['y', ''], ['n', 'Plusieurs profils']] as Cell[] },
       { label: 'Interlocuteur unique et dédié', cells: [['y', ''], ['y', ''], ['n', 'Commercial + équipe'], ['y', '']] as Cell[] },
@@ -145,7 +145,7 @@ const en: typeof fr = {
   },
   compare: {
     eyebrow: 'Why KPS', h2: 'The best of both worlds: the agility of a freelancer, the strength of an agency.',
-    caption: 'Comparison of KPS Agency, freelancers, traditional agencies and in-house hiring', cols: ['Freelancer', 'Traditional agency', 'In-house hire'], yes: 'Yes', no: 'No',
+    caption: 'Comparison of KPS Agency, freelancers, traditional agencies and in-house hiring', cols: ['Freelancer', 'Traditional agency', 'In-house hire'], yes: 'Yes', no: 'No', hint: 'Swipe the table to compare',
     rows: [
       { label: 'All digital services in one place', cells: [['y', ''], ['n', ''], ['y', ''], ['n', 'Several profiles']] },
       { label: 'Single, dedicated contact', cells: [['y', ''], ['y', ''], ['n', 'Sales rep + team'], ['y', '']] },

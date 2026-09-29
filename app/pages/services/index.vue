@@ -7,7 +7,7 @@
       <p class="lead head__p">{{ t.lead }}</p>
     </section>
     <section class="container list">
-      <div class="grid grid-3">
+      <div class="grid grid-3 m-swipe">
         <NuxtLink v-for="(sv, i) in services" :key="sv.slug" :to="link.service(sv.slug)" class="item" :class="{ 'item--dark': i === 0 }">
           <span class="item__num">{{ sv.num }}</span>
           <h2 class="item__t">{{ sv.crumb }}</h2>

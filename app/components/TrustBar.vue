@@ -92,9 +92,10 @@ onMounted(() => { reducedMotion.value = window.matchMedia('(prefers-reduced-moti
 .client:hover .client__name { color: var(--accent); }
 @keyframes trust-scroll { to { transform: translateX(-50%); } }
 /* Mouvement réduit : liste statique sur plusieurs lignes */
-.marquee.is-static { -webkit-mask-image: none; mask-image: none; }
-.marquee.is-static .marquee__track { width: 100%; animation: none; }
-.marquee.is-static .marquee__list { flex-wrap: wrap; justify-content: center; padding: 0; }
+.marquee.is-static { overflow-x: auto; scrollbar-width: none; -webkit-mask-image: none; mask-image: none; }
+.marquee.is-static::-webkit-scrollbar { display: none; }
+.marquee.is-static .marquee__track { animation: none; }
+.marquee.is-static .marquee__list { padding: 0; }
 
 /* Chiffres clés */
 .trust__stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; border: 1px solid var(--line); border-radius: 20px; background: var(--white); overflow: hidden; }
