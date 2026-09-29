@@ -26,7 +26,7 @@
       </nav>
       <div class="nav__ctas">
         <span class="nav__lang"><SwitchLocalePathLink :locale="switchTo.code" :hreflang="switchTo.code" :lang="switchTo.code" :aria-label="switchTo.long">{{ switchTo.short }}</SwitchLocalePathLink></span>
-        <NuxtLink :to="link.contact()" class="nav__call">{{ t.call }}</NuxtLink>
+        <NuxtLink :to="link.booking()" class="nav__call">{{ t.call }}</NuxtLink>
         <NuxtLink :to="link.contact()" class="nav__quote">{{ t.quote }}</NuxtLink>
       </div>
       <button type="button" class="nav__burger" :aria-expanded="open" :aria-label="t.menu" @click="open = !open">

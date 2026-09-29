@@ -194,7 +194,7 @@
             <ul class="final__list">
               <li v-for="x in t.final.list" :key="x"><IconCheck :size="18" color="#FFFFFF" />{{ x }}</li>
             </ul>
-            <NuxtLink :to="link.contact()" class="final__call">{{ t.final.call }} →</NuxtLink>
+            <NuxtLink :to="link.booking()" class="final__call">{{ t.final.call }} →</NuxtLink>
           </div>
           <form class="final__form" @submit.prevent="submit">
             <div class="final__row">

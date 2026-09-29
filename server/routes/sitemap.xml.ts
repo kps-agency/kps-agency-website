@@ -17,6 +17,7 @@ export default defineEventHandler((event) => {
     // Même règle que la page projet : indexée seulement si l'étude de cas a un vrai contenu
     ...PROJECTS.filter(p => !p.desc.startsWith('[')).map(p => [`/realisations/${p.slug}`, `/en/work/${p.slug}`, '0.6', 'yearly'] as [string, string, string, string]),
     ['/agence', '/en/about', '0.7', 'yearly'],
+    ['/rendez-vous', '/en/book-a-call', '0.8', 'monthly'],
     ['/contact', '/en/contact', '0.7', 'yearly']
   ]
 

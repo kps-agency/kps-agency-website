@@ -3,7 +3,20 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-09-01',
   devtools: { enabled: false },
   css: ['@fontsource-variable/bricolage-grotesque', '@fontsource-variable/geist', '~/assets/css/main.css'],
-  runtimeConfig: { public: { siteUrl: 'https://kps-agency.com', formEndpoint: '' } },
+  runtimeConfig: {
+    // Réservation d'appels (serveur uniquement) — voir .env.example
+    googleServiceAccountEmail: '',
+    googlePrivateKey: '',
+    googleCalendarId: '',
+    googleImpersonate: '',
+    bookingAllowedOrigins: '',
+    public: {
+      siteUrl: 'https://kps-agency.com',
+      formEndpoint: '',
+      // URL de l'API de réservation si elle est hébergée ailleurs que le site statique (ex. https://kps-agency.vercel.app)
+      bookingApi: ''
+    }
+  },
   modules: ['@nuxtjs/i18n'],
   i18n: {
     // Français à la racine (/), anglais sous /en, URL traduites (customRoutes)
@@ -25,7 +38,8 @@ export default defineNuxtConfig({
       'contact': { fr: '/contact', en: '/contact' },
       'agence-digitale/[slug]': { fr: '/agence-digitale/[slug]', en: '/digital-agency/[slug]' },
       'cgv': { fr: '/cgv', en: '/terms' },
-      'mentions-legales': { fr: '/mentions-legales', en: '/legal-notice' }
+      'mentions-legales': { fr: '/mentions-legales', en: '/legal-notice' },
+      'rendez-vous': { fr: '/rendez-vous', en: '/book-a-call' }
     },
     experimental: { strictSeo: true }
   },
