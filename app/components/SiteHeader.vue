@@ -22,7 +22,10 @@
           <NuxtLink v-else :to="item.to" class="nav__link" :class="{ 'is-active': isActive(item) }" @click="open = false">{{ item.label }}</NuxtLink>
         </template>
         <span class="nav__lang nav__lang--mobile" @click="open = false"><SwitchLocalePathLink :locale="switchTo.code" :hreflang="switchTo.code" :lang="switchTo.code">{{ switchTo.long }}</SwitchLocalePathLink></span>
-        <NuxtLink :to="link.contact()" class="btn btn--dark btn--sm nav__mobile-cta" @click="open = false">{{ t.quote }}</NuxtLink>
+        <div class="nav__mobile-ctas">
+          <NuxtLink :to="link.booking()" class="btn btn--ghost btn--sm" @click="open = false">{{ t.call }}</NuxtLink>
+          <NuxtLink :to="link.contact()" class="btn btn--dark btn--sm" @click="open = false">{{ t.quote }}</NuxtLink>
+        </div>
       </nav>
       <div class="nav__ctas">
         <span class="nav__lang"><SwitchLocalePathLink :locale="switchTo.code" :hreflang="switchTo.code" :lang="switchTo.code" :aria-label="switchTo.long">{{ switchTo.short }}</SwitchLocalePathLink></span>
@@ -111,8 +114,9 @@ const isActive = (item: NavItem) => !!item.match?.includes(getRouteBaseName(rout
 <style scoped>
 .nav { border-bottom: 1px solid var(--line); background: var(--bg); position: sticky; top: 0; z-index: 50; }
 .nav__inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 20px; }
-.nav__links { display: flex; align-items: center; gap: 36px; font-size: 15px; font-weight: 500; }
-.nav__link, .nav__dd { color: var(--ink); }
+/* Les liens se partagent l'espace restant ; les boutons d'action ne rétrécissent jamais */
+.nav__links { display: flex; align-items: center; justify-content: center; flex: 1 1 auto; min-width: 0; gap: 36px; font-size: 15px; font-weight: 500; }
+.nav__link, .nav__dd { color: var(--ink); white-space: nowrap; }
 .nav__link.is-active, .nav__dd.is-active { color: var(--accent); }
 .nav__dd { display: inline-flex; align-items: center; gap: 6px; }
 .nav__dd svg { transition: transform .2s; }
@@ -128,25 +132,37 @@ const isActive = (item: NavItem) => !!item.match?.includes(getRouteBaseName(rout
 .nav__sub-txt { display: flex; flex-direction: column; gap: 2px; }
 .nav__sub-t { font-size: 15px; font-weight: 600; color: var(--ink); }
 .nav__sub-d { font-size: 13px; font-weight: 400; color: var(--muted); }
-.nav__ctas { display: flex; gap: 12px; align-items: center; }
+.nav__ctas { display: flex; flex: none; gap: 12px; align-items: center; }
 /* SwitchLocalePathLink rend un fragment : le style passe par le conteneur + :deep(a) */
 .nav__lang { display: inline-flex; }
 .nav__lang :deep(a) { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 10px; border-radius: 999px; font-size: 14px; font-weight: 700; letter-spacing: .5px; color: var(--ink); }
 .nav__lang :deep(a:hover) { background: var(--surface-hover); color: var(--accent); }
 .nav__lang--mobile { display: none; }
-.nav__call { padding: 12px 18px; font-size: 15px; font-weight: 500; border: 1px solid var(--line-3); border-radius: 999px; }
-.nav__quote { padding: 12px 20px; font-size: 15px; font-weight: 600; background: var(--ink); color: var(--white); border-radius: 999px; }
+.nav__call, .nav__quote { display: inline-flex; align-items: center; white-space: nowrap; border-radius: 999px; font-size: 15px; transition: background .15s, border-color .15s, color .15s; }
+.nav__call { padding: 12px 18px; font-weight: 500; border: 1px solid var(--line-3); }
+.nav__call:hover { border-color: var(--ink); }
+.nav__quote { padding: 12px 20px; font-weight: 600; background: var(--ink); color: var(--white); }
 .nav__quote:hover { color: var(--white); background: var(--ink-hover); }
-.nav__burger, .nav__mobile-cta { display: none; }
-.nav__burger { background: none; border: none; width: 44px; height: 44px; align-items: center; justify-content: center; color: var(--ink); }
+.nav__burger, .nav__mobile-ctas { display: none; }
+.nav__burger { flex: none; background: none; border: none; width: 44px; height: 44px; align-items: center; justify-content: center; color: var(--ink); }
 
-@media (max-width: 1180px) {
-  .nav__links { gap: 22px; }
+/* Écrans moyens : on resserre les liens avant de toucher aux boutons */
+@media (max-width: 1400px) {
+  .nav__links { gap: 26px; }
 }
-@media (max-width: 1024px) {
-  .nav__ctas { display: none; }
+@media (max-width: 1300px) {
+  .nav__inner { gap: 16px; }
+  .nav__links { gap: 20px; font-size: 14.5px; }
+  .nav__ctas { gap: 8px; }
+  .nav__call, .nav__quote { font-size: 14px; padding: 10px 15px; }
+  .nav :deep(.logo__img) { height: 50px; }
+}
+/* Tablette : les liens passent dans le menu, les deux boutons restent dans la barre */
+@media (max-width: 1180px) {
   .nav__burger { display: inline-flex; }
-  .nav__links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; padding: 12px var(--gutter) 24px; background: var(--bg); border-bottom: 1px solid var(--line); max-height: calc(100vh - 90px); overflow-y: auto; }
+  .nav__ctas { margin-left: auto; }
+  .nav__ctas .nav__lang { display: none; }
+  .nav__links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 0; padding: 12px var(--gutter) 24px; background: var(--bg); border-bottom: 1px solid var(--line); max-height: calc(100vh - 90px); overflow-y: auto; font-size: 15px; }
   .nav__links.is-open { display: flex; }
   .nav__link, .nav__dd { padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
   .nav__dd { display: flex; }
@@ -158,6 +174,16 @@ const isActive = (item: NavItem) => !!item.match?.includes(getRouteBaseName(rout
   .nav__lang--mobile { display: flex; border-bottom: 1px solid var(--line); }
   .nav__lang--mobile :deep(a) { justify-content: flex-start; height: auto; min-width: 0; padding: 14px 0; border-radius: 0; font-size: 17px; font-weight: 500; letter-spacing: 0; }
   .nav__lang--mobile :deep(a:hover) { background: none; }
-  .nav__mobile-cta { display: inline-flex; justify-content: center; margin-top: 18px; border: none; color: var(--white); }
+}
+/* Mobile : un seul bouton dans la barre, les deux dans le menu */
+@media (max-width: 680px) {
+  .nav__ctas .nav__call { display: none; }
+  .nav__mobile-ctas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+  .nav__mobile-ctas .btn { justify-content: center; }
+  .nav :deep(.logo__img) { height: 42px; }
+}
+@media (max-width: 420px) {
+  .nav__ctas { display: none; }
+  .nav__mobile-ctas { grid-template-columns: minmax(0, 1fr); }
 }
 </style>

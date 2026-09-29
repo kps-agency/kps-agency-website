@@ -8,10 +8,8 @@ const fr = {
   hero: {
     badge: 'Agence digitale à Paris pour PME & TPE', title: 'Votre croissance digitale, gérée de A à Z.',
     lead: 'Site web, application sur mesure, référencement Google & IA, publicité en ligne : une seule équipe pour vous rendre visible, attirer des clients et les convertir.',
-    cta: 'Demander un devis gratuit', cta2: 'Voir nos réalisations', trust: ['Réponse sous 48 h', 'Interlocuteur dédié', 'Sans engagement'],
-    domain: 'votre-entreprise.fr', seoLabel: 'Référencement Google', seoKw: 'sur votre mot-clé', adsLabel: 'Campagne ADS · YASSIR', adsSub: 'de portée payante sur Meta'
+    cta: 'Demander un devis gratuit', cta2: 'Voir nos réalisations', trust: ['Réponse sous 48 h', 'Interlocuteur dédié', 'Sans engagement']
   },
-  logos: 'Ils nous ont fait confiance en France et à l’international',
   services: {
     eyebrow: 'Nos services', h2: 'Tout ce qu’il faut pour exister et vendre en ligne.', p: 'Choisissez un service ou combinez-les. Chaque projet est piloté par un chef de projet unique, du brief au lancement.',
     items: [
@@ -63,6 +61,16 @@ const fr = {
     ]
   },
   reviews: { eyebrow: 'Avis clients', h2: 'Ils en parlent mieux que nous.', stars: 'étoiles sur 5', count: 'avis Google', see: 'Voir la fiche' },
+  booking: {
+    eyebrow: 'Réserver un appel', h2: 'Parlons de votre projet, en 30 minutes.',
+    lead: 'Choisissez un créneau qui vous convient : nous faisons le point sur vos objectifs et vous repartez avec des premières recommandations concrètes.',
+    facts: [
+      { t: '30 minutes', d: ' pour comprendre votre activité et vos priorités' },
+      { t: 'Du lundi au samedi', d: ', de 10 h à 17 h (heure de Paris)' },
+      { t: 'Visio (kMeet) ou téléphone', d: ', selon votre préférence' },
+      { t: 'Gratuit et sans engagement', d: ', devis sous 48 h si besoin' }
+    ]
+  },
   faq: {
     h2: 'Vos questions, nos réponses.', p: 'Une autre question ? Écrivez-nous, on répond sous 24 h ouvrées.', cta: 'Poser une question',
     items: [
@@ -95,10 +103,8 @@ const en: typeof fr = {
   hero: {
     badge: 'Digital agency in Paris for SMEs', title: 'Your digital growth, handled end to end.',
     lead: 'Websites, custom software, Google & AI search optimisation, paid ads: one team to make you visible, attract customers and convert them.',
-    cta: 'Get a free quote', cta2: 'See our work', trust: ['Reply within 48 hours', 'Dedicated contact', 'No commitment'],
-    domain: 'your-company.com', seoLabel: 'Google rankings', seoKw: 'for your keyword', adsLabel: 'Ad campaign · YASSIR', adsSub: 'paid reach on Meta'
+    cta: 'Get a free quote', cta2: 'See our work', trust: ['Reply within 48 hours', 'Dedicated contact', 'No commitment']
   },
-  logos: 'Trusted by companies in France and internationally',
   services: {
     eyebrow: 'Our services', h2: 'Everything you need to exist and sell online.', p: 'Choose one service or combine them. Every project is run by a single project manager, from brief to launch.',
     items: [
@@ -150,6 +156,16 @@ const en: typeof fr = {
     ]
   },
   reviews: { eyebrow: 'Client reviews', h2: 'They say it better than we do.', stars: 'stars out of 5', count: 'Google reviews', see: 'See our profile' },
+  booking: {
+    eyebrow: 'Book a call', h2: 'Let’s talk about your project in 30 minutes.',
+    lead: 'Pick a time that suits you: we’ll review your goals together and you’ll leave with first concrete recommendations.',
+    facts: [
+      { t: '30 minutes', d: ' to understand your business and priorities' },
+      { t: 'Monday to Saturday', d: ', 10 am to 5 pm (Paris time)' },
+      { t: 'Video (kMeet) or phone', d: ', whichever you prefer' },
+      { t: 'Free, no commitment', d: ', quote within 48 hours if needed' }
+    ]
+  },
   faq: {
     h2: 'Your questions, answered.', p: 'Another question? Write to us — we reply within one business day.', cta: 'Ask a question',
     items: [

@@ -22,35 +22,11 @@
             <li v-for="x in t.hero.trust" :key="x"><IconCheck />{{ x }}</li>
           </ul>
         </div>
-        <div class="hero__visual" aria-hidden="true">
-          <div class="browser">
-            <div class="browser__bar"><span /><span /><span /><em>{{ t.hero.domain }}</em></div>
-            <div class="browser__body">
-              <i style="width: 70%; height: 22px; background: var(--ink)" /><i style="width: 50%; height: 22px; background: var(--ink)" />
-              <i style="width: 60%; height: 10px; background: var(--accent-tint-2); margin-top: 8px" /><i style="width: 45%; height: 10px; background: var(--accent-tint-2)" />
-              <i style="width: 140px; height: 36px; border-radius: 99px; background: var(--accent); margin-top: 10px" />
-            </div>
-          </div>
-          <div class="float float--seo">
-            <div class="float__label">{{ t.hero.seoLabel }}</div>
-            <div class="float__row"><span class="float__big">Top 3</span><span class="float__kw">{{ t.hero.seoKw }}</span></div>
-            <div class="float__bars"><i style="height: 20%; background: var(--accent-tint)" /><i style="height: 35%; background: var(--accent-tint)" /><i style="height: 45%; background: var(--accent-tint-2)" /><i style="height: 62%; background: var(--accent-light)" /><i style="height: 80%; background: var(--accent-mid)" /><i style="height: 100%; background: var(--accent)" /></div>
-          </div>
-          <div class="float float--ads">
-            <div class="float__label">{{ t.hero.adsLabel }}</div>
-            <div class="float__big float__big--40">5M</div>
-            <div class="float__sub">{{ t.hero.adsSub }}</div>
-          </div>
-        </div>
+        <HeroShowcase class="hero__visual" />
       </section>
 
       <!-- LOGOS -->
-      <section class="container logos">
-        <p class="logos__title">{{ t.logos }}</p>
-        <ul class="logos__list">
-          <li v-for="l in logos" :key="l">{{ l }}</li>
-        </ul>
-      </section>
+      <TrustBar />
 
       <!-- SERVICES -->
       <section id="services" class="bg-white section--96">
@@ -174,6 +150,22 @@
         </div>
       </section>
 
+      <!-- RESERVER UN APPEL -->
+      <section id="rendez-vous" class="container section book">
+        <div class="book__intro">
+          <div class="eyebrow">{{ t.booking.eyebrow }}</div>
+          <h2 class="h2">{{ t.booking.h2 }}</h2>
+          <p class="text-18">{{ t.booking.lead }}</p>
+          <ul class="book__facts">
+            <li v-for="(f, i) in t.booking.facts" :key="f.t">
+              <span class="book__fi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="BOOK_ICONS[i]" /></svg></span>
+              <span><strong>{{ f.t }}</strong>{{ f.d }}</span>
+            </li>
+          </ul>
+        </div>
+        <BookingCalendar />
+      </section>
+
       <!-- FAQ -->
       <section id="ressources" class="container section faq-sec">
         <div class="faq-sec__head">
@@ -194,7 +186,7 @@
             <ul class="final__list">
               <li v-for="x in t.final.list" :key="x"><IconCheck :size="18" color="#FFFFFF" />{{ x }}</li>
             </ul>
-            <NuxtLink :to="link.booking()" class="final__call">{{ t.final.call }} →</NuxtLink>
+            <NuxtLink to="#rendez-vous" class="final__call">{{ t.final.call }} →</NuxtLink>
           </div>
           <form class="final__form" @submit.prevent="submit">
             <div class="final__row">
@@ -248,7 +240,12 @@ definePageMeta({ layout: false })
 const { en, locale, link, footerCols, footerLocal } = useSite()
 const site = useRuntimeConfig().public.siteUrl as string
 const STAR = 'M12 2l3 7 7 .6-5.3 4.7 1.6 7.2L12 17.8 5.7 21.5l1.6-7.2L2 9.6 9 9z'
-const logos = ['KPMG', 'Cushman & Wakefield', 'YASSIR', 'PowerCell', 'Copenhagen Energy', 'Fibbl', 'ZAYN', 'Galeries LIVE']
+const BOOK_ICONS = [
+  'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2',
+  'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',
+  'M3 7h12v10H3zM15 10l6-3v10l-6-3',
+  'M9 12l2 2 4-4M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z'
+]
 const t = useLocaleText(HOME)
 
 usePageSeo({ title: () => t.value.seo.title, description: () => t.value.seo.desc })
@@ -311,30 +308,8 @@ async function submit() {
 .hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; }
 .hero__trust { list-style: none; padding: 8px 0 0; margin: 0; display: flex; flex-wrap: wrap; gap: 12px 28px; font-size: 14px; color: var(--muted); }
 .hero__trust li { display: flex; align-items: center; gap: 8px; }
-.hero__visual { position: relative; height: 560px; }
-.browser { position: absolute; top: 0; left: 40px; right: 0; height: 400px; background: var(--white); border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 30px 60px -30px rgba(23, 18, 61,.25); display: flex; flex-direction: column; overflow: hidden; }
-.browser__bar { display: flex; align-items: center; gap: 6px; padding: 14px 16px; border-bottom: 1px solid var(--line-soft); }
-.browser__bar > span { width: 10px; height: 10px; border-radius: 99px; background: var(--line); }
-.browser__bar em { margin-left: 16px; padding: 2px 12px; background: var(--surface-hover); border-radius: 6px; font-size: 12px; color: var(--muted-2); font-style: normal; }
-.browser__body { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 36px; background: var(--accent-soft); }
-.browser__body i { display: block; border-radius: 6px; }
-.float { position: absolute; padding: 22px; border-radius: 18px; display: flex; flex-direction: column; }
-.float--seo { left: 0; bottom: 20px; width: 290px; gap: 10px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 24px 48px -24px rgba(23, 18, 61,.3); }
-.float--ads { right: 24px; bottom: 0; width: 270px; gap: 6px; background: var(--ink); color: var(--white); }
-.float__label { font-size: 13px; color: var(--muted-2); font-weight: 500; }
-.float--ads .float__label { color: var(--dark-muted-2); }
-.float__row { display: flex; align-items: baseline; gap: 8px; }
-.float__big { font-family: var(--font-display); font-size: 34px; font-weight: 800; }
-.float__big--40 { font-size: 40px; letter-spacing: -1px; }
-.float__kw { font-size: 14px; color: var(--green); font-weight: 600; }
-.float__sub { font-size: 14px; color: var(--dark-muted); }
-.float__bars { display: flex; align-items: flex-end; gap: 6px; height: 48px; }
-.float__bars i { flex-grow: 1; border-radius: 4px; display: block; }
+.hero__visual { position: relative; }
 
-/* Logos */
-.logos { display: flex; flex-direction: column; align-items: center; gap: 24px; padding-top: 40px; padding-bottom: 64px; }
-.logos__title { font-size: 14px; color: var(--muted-2); font-weight: 500; letter-spacing: .3px; text-align: center; }
-.logos__list { list-style: none; margin: 0; padding: 0; width: 100%; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px 32px; font-family: var(--font-display); font-weight: 700; font-size: 24px; color: var(--muted-3); letter-spacing: -.3px; }
 
 /* Section heads */
 .sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; margin-bottom: 48px; }
@@ -377,18 +352,20 @@ async function submit() {
 .filters button { padding: 10px 18px; border: none; border-radius: 999px; font-size: 14px; font-weight: 600; background: transparent; color: var(--dark-muted); }
 .filters button.is-on { background: var(--white); color: var(--ink); }
 .work { margin-top: 40px; }
-.work__card { display: flex; flex-direction: column; background: var(--white); color: var(--ink); border-radius: 20px; overflow: hidden; transition: transform .2s ease; }
-.work__card:hover { color: var(--ink); transform: translateY(-3px); }
+/* Visuel en haut, bas de carte sur fond sombre, détaché de la section par une bordure */
+.work__card { display: flex; flex-direction: column; background: var(--dark-2); color: var(--white); border: 1px solid var(--dark-line); border-radius: 20px; overflow: hidden; transition: transform .2s ease, border-color .2s ease; }
+.work__card:hover { color: var(--white); transform: translateY(-3px); border-color: var(--dark-line-2); }
 .work__visual { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
 .work__img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .4s ease; }
 .work__card:hover .work__img { transform: scale(1.04); }
 .work__cat { position: absolute; left: 16px; top: 16px; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 999px; background: var(--white); color: var(--ink); box-shadow: 0 4px 12px -4px rgba(23, 18, 61,.3); }
-.work__body { display: flex; flex-direction: column; gap: 8px; padding: 22px 24px 24px; }
-.work__sector { font-size: 13px; color: var(--muted-2); font-weight: 500; }
+.work__body { display: flex; flex-direction: column; flex-grow: 1; gap: 8px; padding: 22px 24px 24px; }
+.work__sector { font-size: 13px; color: var(--dark-muted-2); font-weight: 500; }
 .work__title { font-size: 18px; font-weight: 600; line-height: 1.35; }
-.work__foot { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--line-soft); margin-top: 6px; }
-.work__metric { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--accent); }
+.work__foot { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--dark-line-2); margin-top: auto; }
+.work__metric { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--accent-light); }
 .work__more { font-size: 14px; font-weight: 600; }
+.work__card:hover .work__more { color: var(--accent-light); }
 .work__all { display: flex; justify-content: center; margin-top: 40px; }
 
 /* Compare */
@@ -412,6 +389,14 @@ async function submit() {
 .rating__t { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
 .rating__t u { text-underline-offset: 2px; }
 .review__stars { display: flex; gap: 4px; color: #C27803; }
+
+/* Booking */
+.book { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: start; }
+.book__intro { display: flex; flex-direction: column; gap: 20px; position: sticky; top: 110px; }
+.book__facts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.book__facts li { display: flex; align-items: center; gap: 14px; font-size: 16px; color: var(--muted); }
+.book__facts strong { color: var(--ink); font-weight: 600; }
+.book__fi { flex: none; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; background: var(--accent-soft); color: var(--accent); }
 
 /* FAQ */
 .faq-sec { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 64px; }
@@ -468,6 +453,8 @@ async function submit() {
   .hero { grid-template-columns: minmax(0, 1fr); padding-top: 64px; }
   .hero__visual { max-width: 640px; width: 100%; }
   .sec-head { flex-direction: column; align-items: flex-start; }
+  .book { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .book__intro { position: static; }
   .faq-sec { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .faq-sec__list { grid-column: auto; }
   .final__box { grid-template-columns: minmax(0, 1fr); padding: 56px 40px; }
@@ -475,11 +462,6 @@ async function submit() {
   .hfoot__brand { grid-column: span 4; padding-right: 0; }
 }
 @media (max-width: 720px) {
-  .hero__visual { height: 460px; }
-  .browser { left: 0; height: 320px; }
-  .float--seo { width: 240px; }
-  .float--ads { width: 210px; right: 0; }
-  .logos__list { justify-content: center; font-size: 19px; }
   .final__h { font-size: 40px; }
   .final__box { padding: 40px 22px; }
   .final__row { grid-template-columns: minmax(0, 1fr); }
