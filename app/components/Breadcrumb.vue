@@ -11,12 +11,20 @@
 <script setup lang="ts">
 const props = defineProps<{ items: { label: string; to?: string }[] }>()
 const site = useRuntimeConfig().public.siteUrl as string
+const route = useRoute()
+
+// Données structurées : chaque étape pointe vers une vraie URL (la dernière = page courante) ;
+// les étapes intermédiaires sans page sont ignorées pour rester conformes aux exigences Google.
+const crumbs = computed(() => props.items
+  .map((it, i) => ({ name: it.label, url: it.to ? site + it.to : i === props.items.length - 1 ? site + route.path : null }))
+  .filter(c => c.url))
+
 useHead({
   script: [{
     type: 'application/ld+json',
-    innerHTML: JSON.stringify({
+    innerHTML: () => JSON.stringify({
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
-      itemListElement: props.items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it.label, ...(it.to ? { item: site + it.to } : {}) }))
+      itemListElement: crumbs.value.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.url }))
     })
   }]
 })

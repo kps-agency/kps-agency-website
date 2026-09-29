@@ -37,10 +37,6 @@
         <h2 class="h2 h2--52 refs-h">{{ page.refTitle }}</h2>
         <div class="grid grid-3">
           <ProjectCard v-for="p in refs" :key="p.slug" :project="p" compact />
-          <div v-for="n in 3 - refs.length" :key="`ph${n}`" class="ph">
-            <div class="ph__visual">[Projet à ajouter]</div>
-            <div class="ph__body"><span>[Secteur]</span><strong>[Résultat]</strong></div>
-          </div>
         </div>
       </div>
     </section>
@@ -55,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { SERVICES, localBySlug, projectBySlug, type Project } from '~/data/content'
+import { SERVICES, localBySlug, projectBySlug, organizationSchema, type Project } from '~/data/content'
 
 const route = useRoute()
 const page = computed(() => localBySlug(String(route.params.slug)))
@@ -67,13 +63,25 @@ const short: Record<string, string> = {
   mobile: 'iOS et Android, de l’UX aux stores.', ads: 'Des campagnes pilotées par la donnée.', social: 'Visuel, vidéo et stratégie éditoriale.'
 }
 
-useSeoMeta({ title: () => page.value?.title ?? '', description: () => page.value?.description ?? '' })
+usePageSeo({ title: () => page.value?.title ?? '', description: () => page.value?.description ?? '' })
+
+const site = useRuntimeConfig().public.siteUrl as string
 useHead({
   script: [{
     type: 'application/ld+json',
-    innerHTML: JSON.stringify({
-      '@context': 'https://schema.org', '@type': 'ProfessionalService', name: 'KPS Agency', url: 'https://kps-agency.com', email: 'contact@kps-agency.com',
-      address: { '@type': 'PostalAddress', addressLocality: 'Paris', addressCountry: 'FR' }, areaServed: 'Paris'
+    innerHTML: () => JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        organizationSchema(site),
+        {
+          '@type': 'WebPage', '@id': `${site}${route.path}#webpage`, url: `${site}${route.path}`, name: page.value?.title, description: page.value?.description,
+          inLanguage: 'fr-FR', about: { '@id': `${site}/#organization` }, isPartOf: { '@id': `${site}/#website` }
+        },
+        {
+          '@type': 'FAQPage', '@id': `${site}${route.path}#faq`,
+          mainEntity: (page.value?.faq ?? []).map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+        }
+      ]
     })
   }]
 })
@@ -99,11 +107,6 @@ useHead({
 .benefit h3 { font-size: 24px; font-weight: 700; }
 .benefit p { font-size: 16px; line-height: 1.6; color: var(--muted); }
 .refs-h { margin-bottom: 40px; }
-.ph { display: flex; flex-direction: column; background: var(--white); border-radius: 20px; overflow: hidden; }
-.ph__visual { height: 200px; background: #F2E6D8; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--muted-2); }
-.ph__body { display: flex; flex-direction: column; gap: 8px; padding: 22px 24px; color: var(--ink); }
-.ph__body span { font-size: 13px; color: var(--muted-2); }
-.ph__body strong { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--accent); }
 @media (max-width: 1180px) {
   .hero__h1 { font-size: 60px; letter-spacing: -2px; }
   .split { grid-template-columns: minmax(0, 1fr); gap: 40px; }

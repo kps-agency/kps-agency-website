@@ -6,8 +6,8 @@
       <p class="contact__lead">Décrivez-nous votre besoin en quelques étapes : nous revenons vers vous avec une recommandation claire et un devis personnalisé.</p>
       <dl class="contact__info">
         <div><dt>E-mail</dt><dd><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></dd></div>
-        <div><dt>Téléphone</dt><dd>{{ CONTACT.phone }}</dd></div>
-        <div><dt>Adresse</dt><dd>{{ CONTACT.address }}, Paris</dd></div>
+        <div v-if="!CONTACT.phone.startsWith('[')"><dt>Téléphone</dt><dd>{{ CONTACT.phone }}</dd></div>
+        <div><dt>Adresse</dt><dd>{{ CONTACT.address }} Paris</dd></div>
       </dl>
     </div>
 
@@ -49,7 +49,7 @@
           <label class="field">Téléphone<input v-model="data.phone" type="tel" autocomplete="tel"></label>
         </div>
         <label class="field">Site web actuel (facultatif)<input v-model="data.website" type="url" placeholder="https://"></label>
-        <label class="consent"><input v-model="data.consent" type="checkbox">J’accepte que mes données soient utilisées pour traiter ma demande. [Lien politique de confidentialité]</label>
+        <label class="consent"><input v-model="data.consent" type="checkbox"><span>J’accepte que mes données soient utilisées pour traiter ma demande, conformément à la <NuxtLink to="/mentions-legales#article-7" target="_blank">politique de confidentialité</NuxtLink>.</span></label>
         <p v-if="error" class="wizard__error" role="alert">{{ error }}</p>
       </div>
 
@@ -57,7 +57,7 @@
       <div v-else class="wizard__panel wizard__done">
         <span class="done__icon"><IconCheck :size="30" /></span>
         <h2 class="wizard__h wizard__h--38">Merci, votre demande est envoyée.</h2>
-        <p class="done__p">Notre équipe étudie votre projet et revient vers vous [délai de réponse].</p>
+        <p class="done__p">Notre équipe étudie votre projet et revient vers vous sous 48 h ouvrées avec une recommandation et un devis personnalisé.</p>
         <NuxtLink to="/realisations" class="btn btn--ghost btn--sm">Découvrir nos réalisations</NuxtLink>
       </div>
 
@@ -70,8 +70,21 @@
 </template>
 
 <script setup lang="ts">
-import { CONTACT } from '~/data/content'
-useSeoMeta({ title: 'Contact et devis', description: 'Décrivez votre projet digital à KPS Agency : recommandation claire et devis personnalisé.' })
+import { CONTACT, organizationSchema } from '~/data/content'
+usePageSeo({ title: 'Contact & devis gratuit sous 48 h', description: 'Contactez KPS Agency, agence digitale à Paris 8e : décrivez votre projet de site web, d’application, de SEO ou de publicité. Devis gratuit sous 48 h.' })
+const site = useRuntimeConfig().public.siteUrl as string
+useHead({
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        organizationSchema(site),
+        { '@type': 'ContactPage', '@id': `${site}/contact#webpage`, url: `${site}/contact`, name: 'Contact & devis', inLanguage: 'fr-FR', about: { '@id': `${site}/#organization` } }
+      ]
+    })
+  }]
+})
 
 const route = useRoute()
 const config = useRuntimeConfig()
@@ -123,7 +136,7 @@ async function onNext() {
 .contact__info > div { display: flex; flex-direction: column; gap: 4px; padding: 20px 0; border-bottom: 1px solid var(--line-2); }
 .contact__info dt { font-size: 13px; color: var(--muted-2); }
 .contact__info dd { margin: 0; font-size: 19px; font-weight: 600; }
-.wizard { grid-column: 7 / span 6; align-self: start; display: flex; flex-direction: column; gap: 28px; padding: 44px; background: var(--white); border: 1px solid var(--line); border-radius: 28px; box-shadow: 0 30px 60px -40px rgba(14,23,38,.3); }
+.wizard { grid-column: 7 / span 6; align-self: start; display: flex; flex-direction: column; gap: 28px; padding: 44px; background: var(--white); border: 1px solid var(--line); border-radius: 28px; box-shadow: 0 30px 60px -40px rgba(23, 18, 61,.3); }
 .wizard__bars { display: flex; gap: 8px; }
 .wizard__bars i { flex-grow: 1; height: 6px; border-radius: 99px; background: var(--line); display: block; transition: background .2s; }
 .wizard__bars i.is-on { background: var(--accent); }

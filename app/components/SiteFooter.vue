@@ -5,7 +5,7 @@
         <div class="footer__brand">
           <SiteLogo light />
           <p class="footer__desc">Agence digitale basée à Paris : création de sites, applications sur mesure, référencement SEO &amp; GEO et marketing digital pour les entreprises qui veulent grandir.</p>
-          <address class="footer__contact">{{ CONTACT.address }} · Paris<br>{{ CONTACT.phone }}<br><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></address>
+          <address class="footer__contact">{{ CONTACT.address }} Paris<br><template v-if="!CONTACT.phone.startsWith('[')">{{ CONTACT.phone }}<br></template><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></address>
         </div>
         <div v-for="c in FOOTER_COLS" :key="c.title" class="footer__col">
           <div class="footer__title">{{ c.title }}</div>
@@ -18,7 +18,7 @@
       </div>
       <div class="footer__bottom">
         <span>© 2026 KPS Agency. Tous droits réservés.</span>
-        <div class="footer__legal"><NuxtLink to="/cgv">Conditions Générales</NuxtLink><NuxtLink to="/mentions-legales">Mentions légales</NuxtLink></div>
+        <div class="footer__legal"><NuxtLink to="/cgv">Conditions Générales</NuxtLink><NuxtLink to="/mentions-legales">Mentions légales</NuxtLink><NuxtLink to="/mentions-legales#article-7">Confidentialité</NuxtLink></div>
       </div>
     </div>
   </footer>
@@ -29,7 +29,7 @@ import { CONTACT, FOOTER_COLS, FOOTER_LOCAL } from '~/data/content'
 </script>
 
 <style scoped>
-.footer { background: var(--ink); color: #D6DAE3; }
+.footer { background: var(--ink); color: var(--dark-muted); }
 .footer__inner { min-height: 500px; display: flex; flex-direction: column; gap: 44px; padding-top: 72px; padding-bottom: 36px; }
 .footer__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 32px; }
 .footer__brand { grid-column: span 2; display: flex; flex-direction: column; gap: 16px; padding-right: 40px; }

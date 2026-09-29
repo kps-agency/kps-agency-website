@@ -4,8 +4,56 @@
 export const CONTACT = {
   email: 'contact@kps-agency.com',
   phone: '[Téléphone]',
-  address: '[Adresse]'
+  address: '59 rue de Ponthieu, 75008'
 }
+
+/* ---------------- Identité légale & données structurées ---------------- */
+export const COMPANY = {
+  name: 'KPS Agency',
+  legalName: 'KPS Agency SAS',
+  siret: '10290972800010',
+  street: '59 rue de Ponthieu',
+  postalCode: '75008',
+  city: 'Paris',
+  // Profils officiels (Google Business Profile, LinkedIn, Instagram…) : à compléter pour relier la marque (schema sameAs)
+  sameAs: [] as string[]
+}
+const hasPhone = !CONTACT.phone.startsWith('[')
+
+/** Entité ProfessionalService de référence, réutilisée par toutes les pages (même @id) */
+export const organizationSchema = (site: string) => ({
+  '@type': ['ProfessionalService', 'Organization'],
+  '@id': `${site}/#organization`,
+  name: COMPANY.name,
+  legalName: COMPANY.legalName,
+  url: `${site}/`,
+  logo: { '@type': 'ImageObject', url: `${site}/logo-kps.webp`, width: 311, height: 120 },
+  image: `${site}/og-image.jpg`,
+  description: 'Agence digitale à Paris : création de sites web, applications sur mesure, référencement SEO & GEO, publicité en ligne et social media pour les PME et TPE.',
+  email: CONTACT.email,
+  ...(hasPhone ? { telephone: CONTACT.phone } : {}),
+  identifier: { '@type': 'PropertyValue', propertyID: 'SIRET', value: COMPANY.siret },
+  address: { '@type': 'PostalAddress', streetAddress: COMPANY.street, postalCode: COMPANY.postalCode, addressLocality: COMPANY.city, addressRegion: 'Île-de-France', addressCountry: 'FR' },
+  areaServed: [{ '@type': 'City', name: 'Paris' }, { '@type': 'AdministrativeArea', name: 'Île-de-France' }, { '@type': 'Country', name: 'France' }],
+  priceRange: 'Sur devis',
+  knowsAbout: ['Création de site web', 'E-commerce', 'Application métier', 'Application mobile', 'Référencement SEO', 'GEO (Generative Engine Optimization)', 'Google Ads', 'Meta Ads', 'Social media'],
+  ...(COMPANY.sameAs.length ? { sameAs: COMPANY.sameAs } : {})
+})
+
+/* ---------------- Avis Google (copiés depuis la fiche Google, textes verbatim) ---------------- */
+export interface Review { name: string; date: string; text: string; rating: number; truncated?: boolean; translated?: boolean }
+export const GOOGLE_REVIEWS_URL = 'https://www.google.com/maps/search/?api=1&query=KPS+Agency+59+rue+de+Ponthieu+75008+Paris'
+export const REVIEWS: Review[] = [
+  { name: 'Amine', date: 'septembre 2026', rating: 5, text: 'Intervention rapide et extrêmement efficace sur mon site WordPress. En quelques jours, mon score de performance a grimpé à 81/100 et tout mon référencement local est enfin en place (fiche Google, pages villes, données structurées). Le prestataire est d’une grande honnêteté intellectuelle, fournit des rapports précis et respecte scrupuleusement les délais.' },
+  { name: 'Sofia Jacobs', date: 'avril 2026', rating: 5, text: 'Super content du rendu du site, process clair, suivi régulier et pas de mauvaises surprises. Le projet a été livré dans les délais et conforme à nos attentes. Je recommande' },
+  { name: 'ali Khan', date: 'août 2026', rating: 5, text: 'Équipe professionnelle ! Ils m’ont fait mon site pour mon restaurant au top ! Prix super accessible, je vous le conseille' },
+  { name: 'nelly varenne', date: 'avril 2026', rating: 5, text: 'En tant qu’architecte, j’accorde beaucoup d’importance a l’image, la communication et la façon dont une entreprise met en valeur son savoir faire. J’ai eu l’occasion de travailler avec KPS et j’ai particulièrement apprécié leur', truncated: true },
+  { name: 'Julien Chantemesse', date: 'avril 2026', rating: 5, text: 'Super agence. La team KPS agency est sérieuse et à l’écoute. Projet de site web rapide et efficace.' },
+  { name: 'Axel Schafers', date: 'avril 2026', rating: 5, text: 'Professionnel, efficace et créatif. Résultats rapides sur Instagram et Facebook. 100 % recommandé.', truncated: true, translated: true },
+  { name: 'NeedyMindSet', date: 'mai 2026', rating: 5, text: 'Très pro et réactif – Site web parfait, bon accompagnement. Je recommande.' },
+  { name: 'Malaine Kougbeadjo', date: 'avril 2026', rating: 5, text: 'super agence de marketing dynamique et réactive! Je recommande!' }
+]
+export const REVIEWS_AVG = REVIEWS.reduce((s, r) => s + r.rating, 0) / REVIEWS.length
 
 export type ProjectCat = 'Web' | 'Social' | 'ADS'
 export interface Project {
@@ -54,6 +102,8 @@ export const PROJECTS: Project[] = [
 
 export const CAT_LABEL: Record<ProjectCat, string> = { Web: 'Site web', ADS: 'ADS', Social: 'Social/Médias' }
 export const projectBySlug = (slug: string) => PROJECTS.find(x => x.slug === slug)
+/** Vignette 800 px générée à côté de chaque visuel (cartes, listes) */
+export const thumb = (img: string) => img.replace(/\.webp$/, '-800.webp')
 
 /* ---------------- Services ---------------- */
 export interface Offer { n: string; t: string; d: string; tags: string[] }
@@ -207,12 +257,24 @@ export const SERVICES: Service[] = [
   }
 ]
 
+/** Balises SEO des services : titre ciblé (≤ 60 car. avec la marque) et description 120–160 car. */
+export const SERVICE_SEO: Record<string, { title: string; h1: string; desc: string }> = {
+  'creation-site-web': { title: 'Création de site web à Paris : vitrine & e-commerce', h1: 'Création de site web à Paris', desc: 'Agence de création de site web à Paris : sites vitrines, e-commerce et landing pages rapides, optimisés pour Google et pensés pour convertir. Devis sous 48 h.' },
+  'application-metier': { title: 'Développement d’application métier sur mesure', h1: 'Application métier sur mesure', desc: 'Développement d’applications métier sur mesure à Paris : CRM, back-office, portail client et automatisations adaptés à vos processus. Devis gratuit sous 48 h.' },
+  'application-mobile': { title: 'Création d’application mobile iOS & Android', h1: 'Création d’application mobile iOS & Android', desc: 'Conception et développement d’applications mobiles iOS et Android, de la maquette UX à la publication sur les stores. Agence basée à Paris, devis sous 48 h.' },
+  'referencement-seo-geo': { title: 'Agence SEO & GEO à Paris : Google et IA', h1: 'Agence SEO & GEO à Paris', desc: 'Référencement naturel SEO et GEO à Paris : audit, SEO technique, contenus et visibilité dans ChatGPT, Gemini et Perplexity pour une demande qualifiée.' },
+  'marketing-digital-ads': { title: 'Agence Google Ads, Meta Ads & TikTok Ads', h1: 'Agence marketing digital & publicité en ligne', desc: 'Campagnes Google Ads, Meta Ads et TikTok Ads pilotées par la donnée : stratégie, création, diffusion et optimisation continue. Agence marketing digital à Paris.' },
+  'social-media': { title: 'Agence social media : contenus TikTok & Instagram', h1: 'Agence social media & création de contenus', desc: 'Stratégie social media, création visuelle et vidéos courtes pour TikTok et Instagram : des contenus qui renforcent votre image et créent l’engagement.' }
+}
+
 export const serviceBySlug = (slug: string) => SERVICES.find(x => x.slug === slug)
 export const serviceByKey = (key: string) => SERVICES.find(x => x.key === key)!
 
 export const SERVICE_FAQ: [string, string][] = [
-  ['Combien coûte ce service ?', 'Chaque projet est unique : son budget dépend du périmètre et de vos objectifs. Après un premier échange, nous vous remettons un devis détaillé et personnalisé.'],
-  ['Quels sont les délais ?', 'Ils dépendent de la nature et de l’envergure du projet. Un planning précis, jalonné d’étapes de validation, est établi dès le cadrage.'],
+  ['Combien coûte ce service ?', 'Chaque projet est unique : son budget dépend de la complexité, des technologies et des délais demandés. Après un premier échange, nous vous remettons un devis détaillé, valable 30 jours. Le paiement se fait en deux temps : 50 % à la commande, 50 % à la livraison.'],
+  ['Quels sont les délais ?', 'Ils dépendent de la nature et de l’envergure du projet, ainsi que de la transmission de vos contenus. Un planning indicatif, jalonné d’étapes de validation, est établi dès le cadrage.'],
+  ['Combien de révisions sont incluses ?', 'Deux cycles de révision sont inclus dans chaque prestation. Les demandes supplémentaires font l’objet d’un complément de devis.'],
+  ['Que se passe-t-il après la livraison ?', 'Pour un site, une application ou un agent IA, 12 mois de maintenance technique sont inclus. Un abonnement de suivi peut ensuite prendre le relais. Les créations vous appartiennent dès le paiement intégral.'],
   ['Peut-on combiner plusieurs expertises ?', 'Oui, et c’est souvent là que naît la performance : un site bien référencé, nourri par des campagnes et des contenus cohérents.']
 ]
 
@@ -238,15 +300,15 @@ export const LOCAL_PAGES: LocalPage[] = [
     ],
     refTitle: 'Quelques-unes de nos références', refs: ['yassir', 'kpmg', 'cushman-wakefield-veritas'],
     faq: [
-      ['Intervenez-vous dans toute l’Île-de-France ?', '[Réponse à valider : zone d’intervention.]'],
-      ['Peut-on vous rencontrer dans vos locaux ?', '[Réponse à valider : adresse et modalités de rendez-vous.]'],
+      ['Intervenez-vous dans toute l’Île-de-France ?', 'Oui. Nous accompagnons les entreprises de Paris et de toute l’Île-de-France, en rendez-vous ou en visio.'],
+      ['Peut-on vous rencontrer dans vos locaux ?', 'Oui, sur rendez-vous : nos bureaux se trouvent au 59 rue de Ponthieu, dans le 8e arrondissement de Paris. Écrivez-nous à contact@kps-agency.com pour convenir d’un créneau.'],
       ['Travaillez-vous aussi hors de Paris ?', 'Oui. Nous accompagnons des entreprises partout en France et à l’international, notamment en Suisse, en Suède, au Danemark et en Tunisie.']
     ],
     cta: 'Un projet digital à Paris ?'
   },
   {
     slug: 'energie', crumbParent: 'Secteurs', crumb: 'Énergie', eyebrow: 'Secteur de l’énergie',
-    title: 'Agence digitale pour le secteur de l’énergie', description: 'Sites corporate, référencement et campagnes pour les entreprises de l’énergie et des énergies renouvelables.',
+    title: 'Agence digitale pour le secteur de l’énergie', description: 'Agence digitale pour le secteur de l’énergie : sites corporate multilingues, référencement et campagnes pour les acteurs des énergies renouvelables.',
     h1: 'Le digital au service des acteurs de l’énergie.',
     sub: 'Sites corporate, référencement et campagnes : nous aidons les entreprises de l’énergie et des énergies renouvelables à valoriser leur expertise auprès de leurs clients, partenaires et investisseurs.',
     svcTitle: 'Nos expertises pour le secteur de l’énergie.', whyTitle: 'Un secteur exigeant, des enjeux spécifiques.',
@@ -259,8 +321,8 @@ export const LOCAL_PAGES: LocalPage[] = [
     refTitle: 'Nos références dans l’énergie', refs: ['powercell-group', 'copenhagen-energy'],
     faq: [
       ['Avez-vous déjà travaillé dans l’énergie ?', 'Oui, notamment pour PowerCell Group et Copenhagen Energy.'],
-      ['Pouvez-vous créer un site multilingue ?', '[Réponse à valider.]'],
-      ['Accompagnez-vous aussi la communication financière ?', '[Réponse à valider.]']
+      ['Pouvez-vous créer un site multilingue ?', 'Oui. Nous avons conçu des sites pour des acteurs de l’énergie présents à l’international, comme PowerCell Group en Suède et Copenhagen Energy au Danemark, pensés pour des audiences multi-pays.'],
+      ['Accompagnez-vous aussi la communication financière ?', 'Oui. Nous avons notamment mené une campagne de communication financière pour BR Finanzen, avec un design premium et un branding cohérent.']
     ],
     cta: 'Un projet dans l’énergie ?'
   }
@@ -269,12 +331,13 @@ export const localBySlug = (slug: string) => LOCAL_PAGES.find(x => x.slug === sl
 
 /* ---------------- Liens pied de page ---------------- */
 export const FOOTER_COLS = [
-  { title: 'Sites web', links: [['Site vitrine', '/services/creation-site-web'], ['Blog', '/services/creation-site-web'], ['Landing page', '/services/creation-site-web'], ['E-commerce', '/services/creation-site-web']] },
+  { title: 'Sites web', links: [['Site vitrine', '/services/creation-site-web#offre-01'], ['Blog', '/services/creation-site-web#offre-02'], ['Landing page', '/services/creation-site-web#offre-03'], ['E-commerce', '/services/creation-site-web#offre-04']] },
   { title: 'Apps & SEO', links: [['Application métier', '/services/application-metier'], ['Application mobile', '/services/application-mobile'], ['SEO & GEO', '/services/referencement-seo-geo']] },
   { title: 'Marketing', links: [['Marketing digital & ADS', '/services/marketing-digital-ads'], ['Social media & contenus', '/services/social-media']] },
   { title: 'L’agence', links: [['À propos', '/agence'], ['Réalisations', '/realisations'], ['Contact & devis', '/contact']] }
 ]
+// Chaque libellé mène à une page qui traite réellement du sujet (pas de fausses pages villes)
 export const FOOTER_LOCAL: [string, string][] = [
-  ['Paris', '/agence-digitale/paris'], ['[Ville]', '/agence-digitale/paris'], ['[Ville]', '/agence-digitale/paris'],
-  ['Énergie', '/agence-digitale/energie'], ['Immobilier', '/realisations'], ['SaaS B2B', '/realisations'], ['Beauté & Santé', '/realisations'], ['Événementiel', '/realisations']
+  ['Paris', '/agence-digitale/paris'], ['Énergie', '/agence-digitale/energie'],
+  ['Immobilier', '/realisations/cushman-wakefield-veritas'], ['SaaS B2B', '/realisations/fibbl'], ['Beauté & Santé', '/realisations/campagnes-beaute-sante'], ['Événementiel', '/realisations/tunisia-franchise-show']
 ]

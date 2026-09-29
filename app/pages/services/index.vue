@@ -22,8 +22,23 @@
 </template>
 
 <script setup lang="ts">
-import { SERVICES } from '~/data/content'
-useSeoMeta({ title: 'Nos expertises', description: 'Création de sites, applications métier et mobiles, référencement SEO & GEO, marketing digital & ADS, social media : six expertises au sein d’une même équipe.' })
+import { SERVICES, SERVICE_SEO } from '~/data/content'
+usePageSeo({ title: 'Agence web & marketing digital : nos expertises', description: 'Création de sites, applications métier et mobiles, SEO & GEO, publicité en ligne et social media : six expertises réunies dans une même agence à Paris.' })
+const site = useRuntimeConfig().public.siteUrl as string
+useHead({
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'CollectionPage', '@id': `${site}/services#webpage`, url: `${site}/services`, name: 'Nos expertises', inLanguage: 'fr-FR',
+          mainEntity: { '@type': 'ItemList', itemListElement: SERVICES.map((sv, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site}/services/${sv.slug}`, name: SERVICE_SEO[sv.slug]?.h1 ?? sv.crumb })) }
+        }
+      ]
+    })
+  }]
+})
 </script>
 
 <style scoped>

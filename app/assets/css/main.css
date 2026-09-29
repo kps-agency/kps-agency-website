@@ -2,26 +2,32 @@
    KPS Agency — design tokens & base (from the Design canvas maquettes)
    ========================================================================== */
 :root {
-  --bg: #F7F6F2;
+  /* Palette dérivée du logo KPS : indigo profond + une seule couleur d'accent indigo-violet */
+  --bg: #F8F7FC;
   --white: #FFFFFF;
-  --ink: #0E1726;
-  --muted: #4A5363;
-  --muted-2: #5B6474;
-  --muted-3: #7A8190;
-  --line: #E3E1DA;
-  --line-soft: #EEECE6;
-  --line-2: #D9D6CC;
-  --line-3: #C9C6BC;
-  --accent: #1F3FE0;
-  --accent-soft: #EEF1FF;
-  --accent-tint: #DDE3FF;
-  --accent-light: #9EAEFF;
-  --dark-2: #1A2538;
-  --dark-line: #243047;
-  --dark-line-2: #3A4659;
-  --dark-muted: #C3C9D5;
-  --dark-muted-2: #A9B1C2;
-  --dark-muted-3: #8A93A6;
+  --ink: #17123D;
+  --ink-hover: #251E5A;
+  --muted: #4D4A63;
+  --muted-2: #5E5B74;
+  --muted-3: #7D7A90;
+  --line: #E4E2EE;
+  --line-soft: #EEEDF5;
+  --line-2: #D9D6E6;
+  --line-3: #C9C5DB;
+  --surface-hover: #F2F0FA;
+  --accent: #4F2FD6;
+  --accent-hover: #3E22B8;
+  --accent-soft: #F0EDFE;
+  --accent-tint: #E0D9FC;
+  --accent-tint-2: #C8BCF8;
+  --accent-mid: #8B72F0;
+  --accent-light: #AE9CFA;
+  --dark-2: #231D52;
+  --dark-line: #2F2862;
+  --dark-line-2: #463E7E;
+  --dark-muted: #C9C5DE;
+  --dark-muted-2: #ABA6C8;
+  --dark-muted-3: #8E89AE;
   --green: #1B7A4B;
   --red: #B42318;
   --font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', Georgia, serif;
@@ -69,9 +75,9 @@ img { max-width: 100%; display: block; }
 .btn { display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; font-weight: 600; font-size: 17px; padding: 18px 28px; border: 1px solid transparent; transition: transform .15s ease, background .15s ease, color .15s ease; white-space: nowrap; }
 .btn:hover { transform: translateY(-1px); }
 .btn--primary { background: var(--accent); color: var(--white); }
-.btn--primary:hover { background: #1733C4; color: var(--white); }
+.btn--primary:hover { background: var(--accent-hover); color: var(--white); }
 .btn--dark { background: var(--ink); color: var(--white); }
-.btn--dark:hover { background: #1E2A40; color: var(--white); }
+.btn--dark:hover { background: var(--ink-hover); color: var(--white); }
 .btn--ghost { background: var(--white); border-color: var(--line-3); color: var(--ink); padding: 18px 26px; }
 .btn--light { background: var(--white); color: var(--ink); padding: 20px 30px; }
 .btn--outline-dark { border-color: var(--dark-line-2); color: var(--white); font-size: 16px; padding: 16px 26px; }

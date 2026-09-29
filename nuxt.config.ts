@@ -11,14 +11,22 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'theme-color', content: '#0E1726' }
+        { name: 'theme-color', content: '#17123D' }
       ],
       link: [
-        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }
+        { rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/icon-32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/icon-192.png' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }
       ]
     }
   },
   nitro: {
-    prerender: { crawlLinks: true, routes: ['/'] }
+    prerender: {
+      crawlLinks: true,
+      routes: ['/', '/sitemap.xml'],
+      // /services → services.html (et non services/index.html) : URL sans slash final, servie par public/.htaccess
+      autoSubfolderIndex: false
+    }
   }
 })

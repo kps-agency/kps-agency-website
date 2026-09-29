@@ -32,7 +32,22 @@
 
 <script setup lang="ts">
 import { PROJECTS } from '~/data/content'
-useSeoMeta({ title: 'Réalisations', description: 'Sites corporate, campagnes social media et dispositifs d’acquisition : les projets de KPS Agency en France et à l’international.' })
+usePageSeo({ title: 'Réalisations : sites web & campagnes digitales', description: 'Sites corporate, campagnes Google & Meta Ads et social media : découvrez les projets de KPS Agency pour des marques en France et à l’international.' })
+const site = useRuntimeConfig().public.siteUrl as string
+useHead({
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'CollectionPage', '@id': `${site}/realisations#webpage`, url: `${site}/realisations`, name: 'Réalisations', inLanguage: 'fr-FR',
+          mainEntity: { '@type': 'ItemList', numberOfItems: PROJECTS.length, itemListElement: PROJECTS.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site}/realisations/${p.slug}`, name: `${p.client} — ${p.label}` })) }
+        }
+      ]
+    })
+  }]
+})
 
 const filters = [{ id: 'all', label: 'Tous' }, { id: 'Web', label: 'Sites Web' }, { id: 'Social', label: 'Social/Médias' }, { id: 'ADS', label: 'ADS' }]
 const filter = ref('all')

@@ -11,8 +11,8 @@
       <!-- HERO -->
       <section class="container hero">
         <div class="hero__text">
-          <div class="hero__badge"><span class="hero__badge-dot" />Agence digitale à Paris pour PME &amp; TPE</div>
-          <h1 class="h1">Votre croissance digitale, gérée de A&nbsp;à&nbsp;Z.</h1>
+          <h1 class="hero__badge"><span class="hero__badge-dot" aria-hidden="true" />Agence digitale à Paris pour PME &amp; TPE</h1>
+          <p class="h1 hero__title">Votre croissance digitale, gérée de A&nbsp;à&nbsp;Z.</p>
           <p class="lead hero__lead">Site web, application sur mesure, référencement Google &amp; IA, publicité en ligne : une seule équipe pour vous rendre visible, attirer des clients et les convertir.</p>
           <div class="hero__ctas">
             <NuxtLink to="/contact" class="btn btn--primary">Demander un devis gratuit <IconArrow /></NuxtLink>
@@ -29,14 +29,14 @@
             <div class="browser__bar"><span /><span /><span /><em>votre-entreprise.fr</em></div>
             <div class="browser__body">
               <i style="width: 70%; height: 22px; background: var(--ink)" /><i style="width: 50%; height: 22px; background: var(--ink)" />
-              <i style="width: 60%; height: 10px; background: #B9C2E8; margin-top: 8px" /><i style="width: 45%; height: 10px; background: #B9C2E8" />
+              <i style="width: 60%; height: 10px; background: var(--accent-tint-2); margin-top: 8px" /><i style="width: 45%; height: 10px; background: var(--accent-tint-2)" />
               <i style="width: 140px; height: 36px; border-radius: 99px; background: var(--accent); margin-top: 10px" />
             </div>
           </div>
           <div class="float float--seo">
             <div class="float__label">Référencement Google</div>
-            <div class="float__row"><span class="float__big">Top 3</span><span class="float__kw">[mot-clé cible]</span></div>
-            <div class="float__bars"><i style="height: 20%; background: #DDE3FF" /><i style="height: 35%; background: #DDE3FF" /><i style="height: 45%; background: #C3CDFF" /><i style="height: 62%; background: #9EAEFF" /><i style="height: 80%; background: #6F86FF" /><i style="height: 100%; background: var(--accent)" /></div>
+            <div class="float__row"><span class="float__big">Top 3</span><span class="float__kw">sur votre mot-clé</span></div>
+            <div class="float__bars"><i style="height: 20%; background: var(--accent-tint)" /><i style="height: 35%; background: var(--accent-tint)" /><i style="height: 45%; background: var(--accent-tint-2)" /><i style="height: 62%; background: var(--accent-light)" /><i style="height: 80%; background: var(--accent-mid)" /><i style="height: 100%; background: var(--accent)" /></div>
           </div>
           <div class="float float--ads">
             <div class="float__label">Campagne ADS · YASSIR</div>
@@ -107,7 +107,7 @@
           <div class="grid grid-3 work">
             <NuxtLink v-for="p in projects" :key="p.client" :to="p.to" class="work__card">
               <div class="work__visual" :style="{ background: p.bg }">
-                <img :src="p.img" :alt="`Réalisation ${p.client} — ${p.title}`" class="work__img" loading="lazy" decoding="async" width="1600" height="900">
+                <img :src="thumb(p.img)" :srcset="`${thumb(p.img)} 800w, ${p.img} 1600w`" sizes="(max-width: 720px) 100vw, (max-width: 1180px) 50vw, 420px" :alt="`Réalisation ${p.client} — ${p.title}`" class="work__img" loading="lazy" decoding="async" width="800" height="450">
                 <span class="work__cat">{{ p.cat }}</span>
               </div>
               <div class="work__body">
@@ -133,7 +133,7 @@
             <thead>
               <tr>
                 <td />
-                <th scope="col" class="compare__kps"><span class="compare__k">K</span>KPS Agency</th>
+                <th scope="col" class="compare__kps"><img src="/icon-192.png" alt="" width="28" height="28" class="compare__k">KPS Agency</th>
                 <th scope="col">Freelance</th>
                 <th scope="col">Agence classique</th>
                 <th scope="col">Recrutement interne</th>
@@ -158,24 +158,23 @@
       </section>
 
       <!-- TEMOIGNAGES -->
-      <section class="bg-white section--96">
+      <section id="avis" class="bg-white section--96">
         <div class="container">
           <div class="sec-head">
             <div class="sec-head__title">
               <div class="eyebrow">Avis clients</div>
               <h2 class="h2">Ils en parlent mieux que nous.</h2>
             </div>
-            <div class="rating"><span class="rating__v">[4,9]</span><div class="rating__t"><strong>Note Google</strong><span>[XX] avis vérifiés</span></div></div>
+            <a :href="GOOGLE_REVIEWS_URL" target="_blank" rel="noopener" class="rating">
+              <svg class="rating__g" width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.8-2.1 5.1-4.4 6.7v5.6h7.1c4.2-3.8 6.6-9.5 6.6-16.3z" /><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.3l-7.1-5.5c-2 1.3-4.5 2.1-7.4 2.1-5.7 0-10.5-3.8-12.3-9H4.4v5.7C8 41.1 15.4 46 24 46z" /><path fill="#FBBC05" d="M11.7 28.3c-.4-1.3-.7-2.8-.7-4.3s.3-3 .7-4.3V14H4.4C2.9 17 2 20.4 2 24s.9 7 2.4 10z" /><path fill="#EA4335" d="M24 10.7c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 4.2 29.9 2 24 2 15.4 2 8 6.9 4.4 14l7.3 5.7c1.8-5.2 6.6-9 12.3-9z" /></svg>
+              <span class="rating__v">{{ REVIEWS_AVG.toFixed(1).replace('.', ',') }}</span>
+              <span class="rating__t">
+                <span class="review__stars" :aria-label="`${REVIEWS_AVG} étoiles sur 5`"><svg v-for="n in 5" :key="n" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path :d="STAR" /></svg></span>
+                <span>{{ REVIEWS.length }} avis Google · <u>Voir la fiche</u></span>
+              </span>
+            </a>
           </div>
-          <div class="grid grid-3">
-            <figure v-for="rv in reviews" :key="rv.ini" class="review">
-              <div class="review__stars" aria-label="5 étoiles sur 5">
-                <svg v-for="n in 5" :key="n" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7.2L12 17.8 5.7 21.5l1.6-7.2L2 9.6 9 9z" /></svg>
-              </div>
-              <blockquote class="review__q">{{ rv.quote }}</blockquote>
-              <figcaption class="review__who"><span class="review__ini">{{ rv.ini }}</span><span><strong>{{ rv.name }}</strong><span>{{ rv.role }}</span></span></figcaption>
-            </figure>
-          </div>
+          <ReviewCarousel :reviews="REVIEWS" />
         </div>
       </section>
 
@@ -228,7 +227,7 @@
           <div class="hfoot__brand">
             <SiteLogo light />
             <p>Agence digitale à Paris : création de sites, applications sur mesure, SEO &amp; GEO, publicité en ligne pour les PME et TPE.</p>
-            <address>[Adresse] · Paris<br>[Téléphone] · <a href="mailto:contact@kps-agency.com">contact@kps-agency.com</a></address>
+            <address>{{ CONTACT.address }} Paris<br><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></address>
           </div>
           <div v-for="col in footer" :key="col.title" class="hfoot__col">
             <div class="hfoot__title">{{ col.title }}</div>
@@ -236,12 +235,11 @@
           </div>
         </div>
         <div class="hfoot__tags">
-          <div><span>Création de site web à :</span><NuxtLink v-for="c in cities" :key="c" to="/agence-digitale/paris" class="hfoot__pill">{{ c }}</NuxtLink></div>
-          <div><span>Agence digitale pour :</span><NuxtLink v-for="c in sectors" :key="c" to="/agence-digitale/energie" class="hfoot__pill">{{ c }}</NuxtLink></div>
+          <div><span>Agence digitale :</span><NuxtLink v-for="[label, to] in FOOTER_LOCAL" :key="label" :to="to" class="hfoot__pill">{{ label }}</NuxtLink></div>
         </div>
         <div class="hfoot__bottom">
           <span>© 2026 KPS Agency · Paris, France</span>
-          <div><NuxtLink to="/mentions-legales">Mentions légales</NuxtLink><NuxtLink to="/mentions-legales">Confidentialité</NuxtLink><NuxtLink to="/cgv">CGV</NuxtLink><NuxtLink to="/">Plan du site</NuxtLink></div>
+          <div><NuxtLink to="/mentions-legales">Mentions légales</NuxtLink><NuxtLink to="/mentions-legales#article-7">Confidentialité</NuxtLink><NuxtLink to="/cgv">CGV</NuxtLink></div>
         </div>
       </div>
     </footer>
@@ -249,12 +247,25 @@
 </template>
 
 <script setup lang="ts">
+import { CONTACT, REVIEWS, REVIEWS_AVG, GOOGLE_REVIEWS_URL, FOOTER_LOCAL, organizationSchema, thumb } from '~/data/content'
 definePageMeta({ layout: false })
-useSeoMeta({
-  title: 'Agence digitale à Paris — sites web, apps, SEO & ADS',
-  description: 'Site web, application sur mesure, référencement Google & IA, publicité en ligne : une seule équipe pour vous rendre visible, attirer des clients et les convertir.',
-  ogTitle: 'KPS Agency — Votre croissance digitale, gérée de A à Z',
-  ogType: 'website'
+usePageSeo({
+  title: 'Agence digitale à Paris : site web, SEO & Ads',
+  description: 'Agence digitale à Paris pour PME et TPE : création de site web, application sur mesure, référencement Google & IA et publicité en ligne. Devis sous 48 h.'
+})
+const site = useRuntimeConfig().public.siteUrl as string
+useHead({
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        organizationSchema(site),
+        { '@type': 'WebSite', '@id': `${site}/#website`, url: `${site}/`, name: 'KPS Agency', inLanguage: 'fr-FR', publisher: { '@id': `${site}/#organization` } },
+        { '@type': 'WebPage', '@id': `${site}/#webpage`, url: `${site}/`, name: 'Agence digitale à Paris : site web, SEO & Ads', isPartOf: { '@id': `${site}/#website` }, about: { '@id': `${site}/#organization` }, inLanguage: 'fr-FR' }
+      ]
+    })
+  }]
 })
 
 const logos = ['KPMG', 'Cushman & Wakefield', 'YASSIR', 'PowerCell', 'Copenhagen Energy', 'Fibbl', 'ZAYN', 'Galeries LIVE']
@@ -302,19 +313,17 @@ const compare: { label: string; cells: [string, string][] }[] = [
   { label: 'Vous restez propriétaire de tout', cells: [['y', ''], ['-', 'Selon contrat'], ['-', 'Selon contrat'], ['y', '']] }
 ]
 
-const reviews = [
-  { quote: '[Témoignage client réel à insérer — ex. résultat obtenu après la refonte du site.]', ini: 'A', name: '[Prénom Nom]', role: '[Poste, Entreprise]' },
-  { quote: '[Témoignage client réel à insérer — ex. gain de visibilité sur Google.]', ini: 'B', name: '[Prénom Nom]', role: '[Poste, Entreprise]' },
-  { quote: '[Témoignage client réel à insérer — ex. retour sur investissement d’une campagne ADS.]', ini: 'C', name: '[Prénom Nom]', role: '[Poste, Entreprise]' }
-]
+const STAR = 'M12 2l3 7 7 .6-5.3 4.7 1.6 7.2L12 17.8 5.7 21.5l1.6-7.2L2 9.6 9 9z'
 
 const faq: [string, string][] = [
-  ['Combien coûte un site internet ?', 'Chaque projet est différent : nous établissons un devis gratuit et détaillé sous 48 h, après un appel pour comprendre vos besoins. Aucun frais caché.'],
-  ['En combien de temps mon site sera-t-il en ligne ?', 'Comptez en général [X] semaines pour un site vitrine et [X] semaines pour un e-commerce. Le planning exact figure dans votre devis.'],
+  ['Combien coûte un site internet ?', 'Chaque projet est différent : nous établissons un devis gratuit et détaillé sous 48 h, après un appel pour comprendre vos besoins. Aucun frais caché, et le devis reste valable 30 jours.'],
+  ['Comment se passe le paiement ?', '50 % à la commande, 50 % à la livraison, par virement ou carte bancaire. Les conditions précises figurent toujours dans votre devis.'],
+  ['En combien de temps mon site sera-t-il en ligne ?', 'Cela dépend de la complexité du projet et de la transmission de vos contenus. Un planning indicatif, jalonné d’étapes de validation, figure dans votre devis, et nous vous tenons informé de l’avancement.'],
+  ['Combien de modifications sont incluses ?', 'Chaque prestation comprend deux cycles de révision. Au-delà, les modifications font l’objet d’un complément de devis.'],
   ['Qu’est-ce que le GEO ?', 'Le Generative Engine Optimization consiste à optimiser votre contenu pour être cité par les IA comme ChatGPT, Gemini ou Perplexity, en complément du SEO classique.'],
   ['Puis-je modifier mon site moi-même ?', 'Oui. Nous livrons un site facile à administrer et nous vous formons à son utilisation.'],
-  ['Suis-je propriétaire de mon site et de mes comptes publicitaires ?', 'Oui, à 100 %. Le nom de domaine, le code, les contenus et les comptes ADS sont à votre nom.'],
-  ['Proposez-vous un suivi après la mise en ligne ?', 'Oui : maintenance, hébergement, mises à jour et optimisation SEO ou ADS mensuelle, selon vos besoins.'],
+  ['Suis-je propriétaire de mon site et de mes comptes publicitaires ?', 'Oui. Les créations vous appartiennent dès le paiement intégral, et le nom de domaine, les contenus et les comptes ADS sont à votre nom.'],
+  ['Proposez-vous un suivi après la mise en ligne ?', 'Oui. 12 mois de maintenance technique sont inclus pour chaque site, e-commerce, application ou agent IA. Ensuite, un abonnement optionnel couvre les mises à jour de sécurité, le suivi des performances et l’optimisation SEO ou ADS.'],
   ['Travaillez-vous uniquement à Paris ?', 'Nous sommes basés à Paris et accompagnons des entreprises partout en France et à l’international, en visio ou sur place.']
 ]
 
@@ -338,35 +347,34 @@ const footer: { title: string; links: [string, string][] }[] = [
   { title: 'Sites web', links: [['Site vitrine', S + 'creation-site-web'], ['Site e-commerce', S + 'creation-site-web'], ['Landing page', S + 'creation-site-web'], ['Blog', S + 'creation-site-web'], ['Refonte de site', S + 'creation-site-web'], ['Maintenance', S + 'creation-site-web']] },
   { title: 'Apps & SEO', links: [['Application métier', S + 'application-metier'], ['Application mobile', S + 'application-mobile'], ['Audit SEO', S + 'referencement-seo-geo'], ['SEO local', S + 'referencement-seo-geo'], ['GEO / IA', S + 'referencement-seo-geo'], ['Rédaction web', S + 'referencement-seo-geo']] },
   { title: 'Marketing', links: [['Google Ads', S + 'marketing-digital-ads'], ['Meta Ads', S + 'marketing-digital-ads'], ['TikTok Ads', S + 'marketing-digital-ads'], ['Social media', S + 'social-media'], ['Création de contenu', S + 'social-media']] },
-  { title: 'L’agence', links: [['À propos', '/agence'], ['Méthode', '/agence'], ['Réalisations', '/realisations'], ['Avis clients', '/agence'], ['Blog', '/agence'], ['Contact', '/contact']] }
+  { title: 'L’agence', links: [['À propos', '/agence'], ['Méthode', '/agence'], ['Réalisations', '/realisations'], ['Avis clients', '/#avis'], ['Blog', '/agence'], ['Contact', '/contact']] }
 ]
-const cities = ['Paris', 'Boulogne-Billancourt', 'Versailles', 'Lyon', 'Marseille', 'Bordeaux', 'Lille', 'Toulouse', 'Nantes']
-const sectors = ['Artisans', 'Restaurants', 'Immobilier', 'Santé', 'Avocats', 'Commerces', 'E-commerce', 'Coachs', 'BTP']
 </script>
 
 <style scoped>
 /* Top bar */
-.topbar { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 32px; padding: 10px 20px; background: var(--ink); color: #D6DAE3; font-size: 13px; }
+.topbar { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 32px; padding: 10px 20px; background: var(--ink); color: var(--dark-muted); font-size: 13px; }
 .topbar__dot { color: var(--muted-2); }
 
 /* Hero */
 .hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; padding-top: 96px; padding-bottom: 88px; align-items: center; }
 .hero__text { display: flex; flex-direction: column; gap: 28px; }
-.hero__badge { display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; padding: 8px 14px; background: var(--white); border: 1px solid var(--line); border-radius: 999px; font-size: 14px; font-weight: 500; }
+.hero__badge { display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; padding: 8px 14px; background: var(--white); border: 1px solid var(--line); border-radius: 999px; font-family: var(--font-body); font-size: 14px; font-weight: 500; letter-spacing: 0; line-height: 1.4; }
+.hero__title { font-family: var(--font-display); }
 .hero__badge-dot { width: 8px; height: 8px; border-radius: 99px; background: var(--accent); }
 .hero__lead { max-width: 560px; }
 .hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; }
 .hero__trust { list-style: none; padding: 8px 0 0; margin: 0; display: flex; flex-wrap: wrap; gap: 12px 28px; font-size: 14px; color: var(--muted); }
 .hero__trust li { display: flex; align-items: center; gap: 8px; }
 .hero__visual { position: relative; height: 560px; }
-.browser { position: absolute; top: 0; left: 40px; right: 0; height: 400px; background: var(--white); border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 30px 60px -30px rgba(14,23,38,.25); display: flex; flex-direction: column; overflow: hidden; }
+.browser { position: absolute; top: 0; left: 40px; right: 0; height: 400px; background: var(--white); border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 30px 60px -30px rgba(23, 18, 61,.25); display: flex; flex-direction: column; overflow: hidden; }
 .browser__bar { display: flex; align-items: center; gap: 6px; padding: 14px 16px; border-bottom: 1px solid var(--line-soft); }
 .browser__bar > span { width: 10px; height: 10px; border-radius: 99px; background: var(--line); }
-.browser__bar em { margin-left: 16px; padding: 2px 12px; background: #F2F1EC; border-radius: 6px; font-size: 12px; color: var(--muted-2); font-style: normal; }
+.browser__bar em { margin-left: 16px; padding: 2px 12px; background: var(--surface-hover); border-radius: 6px; font-size: 12px; color: var(--muted-2); font-style: normal; }
 .browser__body { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 36px; background: var(--accent-soft); }
 .browser__body i { display: block; border-radius: 6px; }
 .float { position: absolute; padding: 22px; border-radius: 18px; display: flex; flex-direction: column; }
-.float--seo { left: 0; bottom: 20px; width: 290px; gap: 10px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 24px 48px -24px rgba(14,23,38,.3); }
+.float--seo { left: 0; bottom: 20px; width: 290px; gap: 10px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 24px 48px -24px rgba(23, 18, 61,.3); }
 .float--ads { right: 24px; bottom: 0; width: 270px; gap: 6px; background: var(--ink); color: var(--white); }
 .float__label { font-size: 13px; color: var(--muted-2); font-weight: 500; }
 .float--ads .float__label { color: var(--dark-muted-2); }
@@ -374,7 +382,7 @@ const sectors = ['Artisans', 'Restaurants', 'Immobilier', 'Santé', 'Avocats', '
 .float__big { font-family: var(--font-display); font-size: 34px; font-weight: 800; }
 .float__big--40 { font-size: 40px; letter-spacing: -1px; }
 .float__kw { font-size: 14px; color: var(--green); font-weight: 600; }
-.float__sub { font-size: 14px; color: #D6DAE3; }
+.float__sub { font-size: 14px; color: var(--dark-muted); }
 .float__bars { display: flex; align-items: flex-end; gap: 6px; height: 48px; }
 .float__bars i { flex-grow: 1; border-radius: 4px; display: block; }
 
@@ -401,7 +409,7 @@ const sectors = ['Artisans', 'Restaurants', 'Immobilier', 'Santé', 'Avocats', '
 .svc--dark .svc__num, .svc--soft .svc__num { background: var(--accent); color: var(--white); }
 .svc__tag { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line-2); }
 .svc--dark .svc__tag { border-color: var(--dark-line-2); }
-.svc--soft .svc__tag { border-color: #B9C2E8; }
+.svc--soft .svc__tag { border-color: var(--accent-tint-2); }
 .svc__title { font-size: 28px; line-height: 1.15; letter-spacing: -.6px; font-weight: 700; }
 .svc__desc { font-size: 16px; line-height: 1.55; color: var(--muted); }
 .svc--dark .svc__desc { color: var(--dark-muted); }
@@ -429,7 +437,7 @@ const sectors = ['Artisans', 'Restaurants', 'Immobilier', 'Santé', 'Avocats', '
 .work__visual { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
 .work__img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .4s ease; }
 .work__card:hover .work__img { transform: scale(1.04); }
-.work__cat { position: absolute; left: 16px; top: 16px; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 999px; background: var(--white); color: var(--ink); box-shadow: 0 4px 12px -4px rgba(14,23,38,.3); }
+.work__cat { position: absolute; left: 16px; top: 16px; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 999px; background: var(--white); color: var(--ink); box-shadow: 0 4px 12px -4px rgba(23, 18, 61,.3); }
 .work__body { display: flex; flex-direction: column; gap: 8px; padding: 22px 24px 24px; }
 .work__sector { font-size: 13px; color: var(--muted-2); font-weight: 500; }
 .work__title { font-size: 18px; font-weight: 600; line-height: 1.35; }
@@ -444,27 +452,21 @@ const sectors = ['Artisans', 'Restaurants', 'Immobilier', 'Santé', 'Avocats', '
 .compare { width: 100%; min-width: 900px; border-collapse: collapse; table-layout: fixed; font-size: 15px; }
 .compare thead th, .compare thead td { padding: 22px 28px; font-weight: 600; text-align: left; border-bottom: 1px solid var(--line); }
 .compare__kps { background: var(--ink); color: var(--white); }
-.compare__k { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; background: var(--accent); font-size: 11px; font-weight: 800; margin-right: 10px; vertical-align: middle; }
+.compare__k { display: inline-block; width: 28px; height: 28px; margin-right: 10px; vertical-align: middle; }
 .compare tbody th { padding: 20px 28px; font-weight: 500; text-align: left; }
 .compare tbody td { padding: 20px 28px; color: var(--muted); }
 .compare tbody tr { border-bottom: 1px solid var(--line-soft); }
 .compare tbody tr:last-child { border-bottom: none; }
-.compare__hi { background: #F1F3FF; color: var(--ink) !important; font-weight: 600; }
+.compare__hi { background: var(--accent-soft); color: var(--ink) !important; font-weight: 600; }
 .compare__cell { display: flex; align-items: center; gap: 10px; }
 
 /* Reviews */
-.rating { display: flex; align-items: center; gap: 14px; padding: 14px 20px; border: 1px solid var(--line); border-radius: 16px; }
+.rating { display: flex; align-items: center; gap: 14px; padding: 14px 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--white); color: var(--ink); transition: border-color .15s, box-shadow .15s; }
+.rating:hover { color: var(--ink); border-color: var(--line-3); box-shadow: 0 12px 24px -16px rgba(23, 18, 61, .3); }
 .rating__v { font-family: var(--font-display); font-size: 32px; font-weight: 800; }
-.rating__t { display: flex; flex-direction: column; font-size: 13px; color: var(--muted); }
-.rating__t strong { color: var(--ink); font-weight: 600; }
-.review { display: flex; flex-direction: column; gap: 24px; padding: 32px; border: 1px solid var(--line); border-radius: 20px; background: var(--bg); }
+.rating__t { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
+.rating__t u { text-underline-offset: 2px; }
 .review__stars { display: flex; gap: 4px; color: #C27803; }
-.review__q { font-size: 18px; line-height: 1.55; }
-.review__who { display: flex; align-items: center; gap: 12px; margin-top: auto; font-size: 14px; }
-.review__who > span:last-child { display: flex; flex-direction: column; }
-.review__who strong { font-weight: 600; }
-.review__who span span { color: var(--muted-2); }
-.review__ini { width: 44px; height: 44px; border-radius: 99px; background: var(--accent-tint); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--accent); }
 
 /* FAQ */
 .faq-sec { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 64px; }
@@ -478,7 +480,7 @@ const sectors = ['Artisans', 'Restaurants', 'Immobilier', 'Santé', 'Avocats', '
 .final__box { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; padding: 72px; border-radius: 32px; background: var(--accent); color: var(--white); }
 .final__text { display: flex; flex-direction: column; gap: 24px; }
 .final__h { font-size: 60px; line-height: 1.02; letter-spacing: -2px; font-weight: 800; }
-.final__p { font-size: 19px; line-height: 1.55; color: #E4E9FF; max-width: 480px; }
+.final__p { font-size: 19px; line-height: 1.55; color: var(--accent-soft); max-width: 480px; }
 .final__list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 16px; }
 .final__list li { display: flex; align-items: center; gap: 10px; }
 .final__call { align-self: flex-start; margin-top: 12px; padding: 16px 24px; border: 1px solid rgba(255,255,255,.5); border-radius: 999px; color: var(--white); font-weight: 600; }
@@ -493,11 +495,11 @@ const sectors = ['Artisans', 'Restaurants', 'Immobilier', 'Santé', 'Avocats', '
 .final__needs button { padding: 9px 14px; border-radius: 999px; font-size: 14px; font-weight: 500; background: var(--white); color: var(--ink); border: 1px solid var(--line-2); }
 .final__needs button.is-on { background: var(--ink); color: var(--white); border-color: var(--ink); }
 .final__submit { padding: 18px; background: var(--ink); color: var(--white); border: none; border-radius: 999px; font-size: 16px; font-weight: 600; }
-.final__submit:hover { background: #1E2A40; }
+.final__submit:hover { background: var(--ink-hover); }
 .final__note { font-size: 12px; color: var(--muted-2); text-align: center; }
 
 /* Footer home */
-.hfoot { background: var(--ink); color: #D6DAE3; }
+.hfoot { background: var(--ink); color: var(--dark-muted); }
 .hfoot__inner { display: flex; flex-direction: column; gap: 56px; padding-top: 80px; padding-bottom: 40px; }
 .hfoot__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 32px; }
 .hfoot__brand { grid-column: span 2; display: flex; flex-direction: column; gap: 18px; padding-right: 40px; }

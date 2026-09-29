@@ -103,12 +103,12 @@ const isActive = (item: NavItem) => {
 .nav__dd svg { transition: transform .2s; }
 .nav__item { position: relative; }
 .nav__item::after { content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 18px; }
-.nav__panel { position: absolute; top: calc(100% + 18px); left: -20px; z-index: 60; min-width: 320px; padding: 10px; display: grid; gap: 2px; background: var(--white); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 24px 48px -24px rgba(14,23,38,.3); opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .18s, transform .18s, visibility .18s; }
+.nav__panel { position: absolute; top: calc(100% + 18px); left: -20px; z-index: 60; min-width: 320px; padding: 10px; display: grid; gap: 2px; background: var(--white); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 24px 48px -24px rgba(23, 18, 61,.3); opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .18s, transform .18s, visibility .18s; }
 .nav__item:hover .nav__panel, .nav__item:focus-within .nav__panel { opacity: 1; visibility: visible; transform: none; }
 .nav__item:hover .nav__dd svg, .nav__item:focus-within .nav__dd svg { transform: rotate(180deg); }
 .nav__sub { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-radius: 10px; }
-.nav__sub:hover, .nav__sub:focus-visible { background: #F2F1EC; }
-.nav__sub-i { flex: none; width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; background: #EEF1FF; color: var(--accent); transition: background .15s, color .15s; }
+.nav__sub:hover, .nav__sub:focus-visible { background: var(--surface-hover); }
+.nav__sub-i { flex: none; width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--accent-soft); color: var(--accent); transition: background .15s, color .15s; }
 .nav__sub:hover .nav__sub-i, .nav__sub:focus-visible .nav__sub-i { background: var(--accent); color: var(--white); }
 .nav__sub-txt { display: flex; flex-direction: column; gap: 2px; }
 .nav__sub-t { font-size: 15px; font-weight: 600; color: var(--ink); }
@@ -116,7 +116,7 @@ const isActive = (item: NavItem) => {
 .nav__ctas { display: flex; gap: 12px; align-items: center; }
 .nav__call { padding: 12px 18px; font-size: 15px; font-weight: 500; border: 1px solid var(--line-3); border-radius: 999px; }
 .nav__quote { padding: 12px 20px; font-size: 15px; font-weight: 600; background: var(--ink); color: var(--white); border-radius: 999px; }
-.nav__quote:hover { color: var(--white); background: #1E2A40; }
+.nav__quote:hover { color: var(--white); background: var(--ink-hover); }
 .nav__burger, .nav__mobile-cta { display: none; }
 .nav__burger { background: none; border: none; width: 44px; height: 44px; align-items: center; justify-content: center; color: var(--ink); }
 

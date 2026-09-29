@@ -4,8 +4,8 @@
     <section class="container hero">
       <Breadcrumb :items="[{ label: 'Accueil', to: '/' }, { label: 'Expertises', to: '/services' }, { label: svc.crumb }]" class="hero__crumb" />
       <div class="hero__main">
-        <div class="eyebrow hero__eyebrow"><span class="hero__num">{{ svc.num }}</span>{{ svc.eyebrow }}</div>
-        <h1 class="hero__h1">{{ svc.h1 }}</h1>
+        <div class="hero__eyebrow"><span class="hero__num" aria-hidden="true">{{ svc.num }}</span><h1 class="eyebrow hero__kw">{{ seo.h1 }}</h1></div>
+        <p class="hero__h1">{{ svc.h1 }}</p>
         <p class="lead hero__sub">{{ svc.sub }}</p>
         <div class="hero__ctas">
           <NuxtLink to="/contact" class="btn btn--primary">Parler de votre projet →</NuxtLink>
@@ -74,15 +74,7 @@
         <NuxtLink to="/realisations" class="btn btn--ghost btn--sm">Toutes les réalisations</NuxtLink>
       </div>
       <div class="grid grid-3">
-        <template v-if="related.length">
-          <ProjectCard v-for="p in related" :key="p.slug" :project="p" compact bordered />
-        </template>
-        <template v-else>
-          <div v-for="(bg, i) in ['#EEF1FF', '#F2E6D8', '#E4EFE9']" :key="i" class="ph card">
-            <div class="ph__visual" :style="{ background: bg }">[Projet à ajouter]</div>
-            <div class="ph__body"><span>[Secteur]</span><strong>[Résultat]</strong></div>
-          </div>
-        </template>
+        <ProjectCard v-for="p in related" :key="p.slug" :project="p" compact bordered />
       </div>
     </section>
 
@@ -99,26 +91,42 @@
 </template>
 
 <script setup lang="ts">
-import { serviceBySlug, projectBySlug, SERVICE_FAQ, type Project } from '~/data/content'
+import { PROJECTS, serviceBySlug, projectBySlug, SERVICE_FAQ, SERVICE_SEO, type Project } from '~/data/content'
 
 const route = useRoute()
 const svc = computed(() => serviceBySlug(String(route.params.slug)))
 if (!svc.value) throw createError({ statusCode: 404, statusMessage: 'Page introuvable', fatal: true })
 
-const related = computed(() => (svc.value?.related ?? []).map(projectBySlug).filter(Boolean) as Project[])
-
-useSeoMeta({
-  title: () => svc.value?.crumb ?? '',
-  description: () => svc.value?.sub ?? '',
-  ogTitle: () => `${svc.value?.crumb} · KPS Agency`,
-  ogDescription: () => svc.value?.sub ?? ''
+// Projets liés au service ; à défaut, les réalisations les plus récentes (jamais de carte vide)
+const related = computed(() => {
+  const own = (svc.value?.related ?? []).map(projectBySlug).filter(Boolean) as Project[]
+  return own.length ? own : PROJECTS.slice(0, 3)
 })
+
+const seo = computed(() => SERVICE_SEO[svc.value!.slug]!)
+usePageSeo({ title: () => seo.value.title, description: () => seo.value.desc })
+const site = useRuntimeConfig().public.siteUrl as string
 useHead({
   script: [{
     type: 'application/ld+json',
-    innerHTML: JSON.stringify({
-      '@context': 'https://schema.org', '@type': 'FAQPage',
-      mainEntity: SERVICE_FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+    innerHTML: () => JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Service', '@id': `${site}/services/${svc.value!.slug}#service`,
+          name: seo.value.h1, serviceType: svc.value!.crumb, description: seo.value.desc, url: `${site}/services/${svc.value!.slug}`,
+          provider: { '@id': `${site}/#organization` },
+          areaServed: [{ '@type': 'City', name: 'Paris' }, { '@type': 'Country', name: 'France' }],
+          hasOfferCatalog: {
+            '@type': 'OfferCatalog', name: svc.value!.offersTitle,
+            itemListElement: svc.value!.offers.map(of => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: of.t, description: of.d } }))
+          }
+        },
+        {
+          '@type': 'FAQPage', '@id': `${site}/services/${svc.value!.slug}#faq`,
+          mainEntity: SERVICE_FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+        }
+      ]
     })
   }]
 })
@@ -129,8 +137,9 @@ useHead({
 .hero__crumb { grid-column: 1 / -1; margin-bottom: 56px; }
 .hero__main { grid-column: span 7; display: flex; flex-direction: column; gap: 28px; }
 .hero__eyebrow { display: flex; align-items: center; gap: 12px; }
+.hero__kw { font-family: var(--font-body); }
 .hero__num { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: var(--accent); color: var(--white); font-family: var(--font-display); font-size: 14px; letter-spacing: 0; }
-.hero__h1 { font-size: 72px; line-height: 1.02; letter-spacing: -2.4px; font-weight: 800; }
+.hero__h1 { font-family: var(--font-display); font-size: 72px; line-height: 1.02; letter-spacing: -2.4px; font-weight: 800; }
 .hero__sub { max-width: 640px; }
 .hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; }
 .hero__offers { grid-column: 9 / span 4; align-self: end; display: flex; flex-direction: column; gap: 10px; padding: 28px; }
@@ -164,11 +173,6 @@ useHead({
 .mstep p { font-size: 15px; line-height: 1.6; color: var(--dark-muted); }
 
 .rel-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
-.ph { overflow: hidden; display: flex; flex-direction: column; }
-.ph__visual { height: 200px; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--muted-2); }
-.ph__body { display: flex; flex-direction: column; gap: 8px; padding: 22px 24px; }
-.ph__body span { font-size: 13px; color: var(--muted-2); font-weight: 500; }
-.ph__body strong { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--accent); }
 .faq-wrap { border-bottom: none; }
 
 @media (max-width: 1180px) {

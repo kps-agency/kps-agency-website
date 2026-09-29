@@ -9,8 +9,6 @@
       </div>
     </section>
 
-    <section class="container photo-wrap"><div class="photo">[Photo de l’équipe ou des locaux]</div></section>
-
     <section class="bg-white section--96">
       <div class="container">
         <div class="head">
@@ -61,14 +59,9 @@
     </section>
 
     <section class="container section">
-      <h2 class="h2 h2--52 team__h">Le Crew KPS</h2>
-      <div class="grid grid-4">
-        <div v-for="n in 4" :key="n" class="member">
-          <div class="member__photo">[Photo]</div>
-          <span class="member__name">[Prénom Nom]</span>
-          <span class="member__role">[Rôle]</span>
-        </div>
-      </div>
+      <div class="eyebrow">Avis Google</div>
+      <h2 class="h2 h2--52 team__h">Ce que nos clients disent de nous.</h2>
+      <ReviewCarousel :reviews="REVIEWS" />
     </section>
 
     <CtaBand title="Envie de travailler avec nous ?" label="Parler de votre projet" />
@@ -76,7 +69,25 @@
 </template>
 
 <script setup lang="ts">
-useSeoMeta({ title: 'L’agence', description: 'KPS Agency, agence digitale basée à Paris : six expertises réunies au sein d’une même équipe pour faire grandir les entreprises.' })
+import { REVIEWS, organizationSchema } from '~/data/content'
+
+usePageSeo({
+  title: 'L’agence KPS : équipe digitale basée à Paris',
+  description: 'KPS Agency, agence digitale basée à Paris 8e : six expertises (web, apps, SEO & GEO, Ads, social media) réunies dans une même équipe pour faire grandir les PME.'
+})
+const site = useRuntimeConfig().public.siteUrl as string
+useHead({
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        organizationSchema(site),
+        { '@type': 'AboutPage', '@id': `${site}/agence#webpage`, url: `${site}/agence`, name: 'L’agence KPS', inLanguage: 'fr-FR', about: { '@id': `${site}/#organization` }, mainEntity: { '@id': `${site}/#organization` } }
+      ]
+    })
+  }]
+})
 const adn = [
   { n: '01', t: 'Vision stratégique', d: 'Nous ne nous contentons pas d’exécuter. Nous construisons une feuille de route précise pour vous aider à dominer votre marché.' },
   { n: '02', t: 'Le Crew KPS', d: 'Une équipe de passionnés qui devient l’extension directe de votre marque et s’engage sur vos objectifs.' },
@@ -102,8 +113,6 @@ const why = [
 .intro__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; margin-top: 24px; }
 .intro__lead { font-size: 22px; line-height: 1.5; }
 .intro__p { font-size: 18px; line-height: 1.65; color: var(--muted); }
-.photo-wrap { padding-bottom: 96px; }
-.photo { height: 520px; border-radius: 28px; background: #E6ECF5; display: flex; align-items: center; justify-content: center; color: var(--muted-2); font-size: 15px; }
 .head { display: flex; flex-direction: column; gap: 16px; margin-bottom: 48px; }
 .head--row { flex-direction: row; justify-content: space-between; align-items: flex-end; gap: 48px; }
 .head__col { display: flex; flex-direction: column; gap: 16px; }
@@ -118,14 +127,10 @@ const why = [
 .method__t { grid-column: span 4; font-size: 30px; letter-spacing: -.6px; font-weight: 700; }
 .method__d { grid-column: span 7; font-size: 17px; line-height: 1.6; color: var(--muted); }
 .why { display: flex; flex-direction: column; gap: 14px; padding: 32px 28px; min-height: 230px; background: var(--dark-2); border-radius: 20px; }
-.why__tag { align-self: flex-start; font-size: 12px; font-weight: 700; letter-spacing: 1.2px; padding: 6px 10px; border-radius: 999px; background: var(--dark-line); color: #C3CDFF; }
+.why__tag { align-self: flex-start; font-size: 12px; font-weight: 700; letter-spacing: 1.2px; padding: 6px 10px; border-radius: 999px; background: var(--dark-line); color: var(--accent-tint-2); }
 .why__t { font-size: 23px; font-weight: 700; }
 .why__d { font-size: 15px; line-height: 1.6; color: var(--dark-muted); }
 .team__h { margin-bottom: 40px; }
-.member { display: flex; flex-direction: column; gap: 14px; }
-.member__photo { height: 300px; border-radius: 20px; background: var(--line); display: flex; align-items: center; justify-content: center; color: var(--muted-2); font-size: 14px; }
-.member__name { font-size: 18px; font-weight: 600; }
-.member__role { font-size: 15px; color: var(--muted-2); margin-top: -8px; }
 @media (max-width: 1180px) {
   .intro__h1 { font-size: 64px; letter-spacing: -2px; }
   .intro__cols { grid-template-columns: minmax(0, 1fr); gap: 24px; }
@@ -133,12 +138,10 @@ const why = [
   .method__n { grid-column: span 2; }
   .method__t { grid-column: span 10; }
   .method__d { grid-column: 3 / -1; margin-top: 10px; }
-  .photo { height: 400px; }
 }
 @media (max-width: 720px) {
   .intro { padding-top: 64px; }
   .intro__h1 { font-size: 42px; letter-spacing: -1.2px; }
-  .photo { height: 260px; }
   .method__t { font-size: 24px; }
   .method__d { grid-column: 1 / -1; }
 }

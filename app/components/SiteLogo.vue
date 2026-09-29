@@ -1,7 +1,6 @@
 <template>
   <NuxtLink to="/" class="logo" :class="{ 'logo--light': light }" aria-label="KPS Agency — accueil">
-    <span class="logo__mark">K</span>
-    KPS Agency
+    <img src="/logo-kps.webp" alt="KPS Agency" width="311" height="120" class="logo__img">
   </NuxtLink>
 </template>
 
@@ -10,8 +9,9 @@ defineProps<{ light?: boolean }>()
 </script>
 
 <style scoped>
-.logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.5px; color: var(--ink); }
-.logo:hover { color: var(--ink); }
-.logo--light, .logo--light:hover { color: var(--white); }
-.logo__mark { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: var(--accent); color: var(--white); font-size: 16px; }
+.logo { display: inline-flex; align-items: center; flex: none; }
+.logo__img { height: 58px; width: auto; }
+/* Sur fond sombre, le logo passe en blanc monochrome pour rester lisible */
+.logo--light .logo__img { filter: brightness(0) invert(1); }
+@media (max-width: 720px) { .logo__img { height: 46px; } }
 </style>

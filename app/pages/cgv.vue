@@ -1,5 +1,12 @@
 <template>
-  <LegalPage title="Conditions Générales de Vente" eyebrow="Conditions générales" lead="Parce que des engagements clairs font les meilleurs partenariats.">
+  <LegalPage
+    title="Conditions Générales de Vente"
+    eyebrow="Conditions générales"
+    lead="Parce que des engagements clairs font les meilleurs partenariats."
+    :articles="articles"
+    articles-title="Conditions détaillées"
+    footnote="Les présentes conditions générales sont applicables à compter du 1er janvier 2026. KPS Agency se réserve le droit de les modifier à tout moment. Les modifications s’appliquent uniquement aux commandes et devis émis après la date de mise à jour."
+  >
     <div class="keys">
       <div v-for="k in keys" :key="k.t" class="keys__item">
         <span class="keys__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="k.icon" /></svg></span>
@@ -7,42 +14,17 @@
         <p class="keys__d">{{ k.d }}</p>
       </div>
     </div>
-
-    <div class="terms">
-      <nav class="toc" aria-label="Sommaire des conditions générales">
-        <div class="toc__title">Sommaire</div>
-        <ol class="toc__list">
-          <li v-for="(a, i) in articles" :key="a.t"><a :href="`#article-${i + 1}`"><span>{{ num(i) }}</span>{{ a.t }}</a></li>
-        </ol>
-      </nav>
-
-      <div class="articles">
-        <h2 class="articles__h">Conditions détaillées</h2>
-        <article v-for="(a, i) in articles" :id="`article-${i + 1}`" :key="a.t" class="art">
-          <div class="art__n">{{ num(i) }}.</div>
-          <div class="art__body">
-            <h3 class="art__t">{{ a.t }}</h3>
-            <template v-for="(b, j) in a.blocks" :key="j">
-              <ul v-if="Array.isArray(b)" class="art__list"><li v-for="li in b" :key="li">{{ li }}</li></ul>
-              <h4 v-else-if="typeof b === 'object'" class="art__sub">{{ b.h }}</h4>
-              <p v-else class="art__p">{{ b }}</p>
-            </template>
-          </div>
-        </article>
-        <p class="terms__date">Les présentes conditions générales sont applicables à compter du 1<sup>er</sup> janvier 2026. KPS Agency se réserve le droit de les modifier à tout moment. Les modifications s’appliquent uniquement aux commandes et devis émis après la date de mise à jour.</p>
-      </div>
-    </div>
   </LegalPage>
 </template>
 
 <script setup lang="ts">
-useSeoMeta({
+import type { LegalArticle } from '~/components/LegalPage.vue'
+
+usePageSeo({
   title: 'Conditions Générales de Vente',
   description: 'Conditions générales de vente de KPS Agency : devis, paiement, délais, maintenance, propriété intellectuelle et responsabilités.',
-  robots: 'noindex'
+  noindex: true
 })
-
-const num = (i: number) => String(i + 1).padStart(2, '0')
 
 const keys = [
   { t: 'Des prestations cadrées', d: 'Chaque prestation fait l’objet d’un devis détaillé et de votre validation préalable. Vous gardez la maîtrise du périmètre de votre projet.', icon: 'M9 12l2 2 4-4M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z' },
@@ -51,8 +33,7 @@ const keys = [
   { t: 'Responsabilité encadrée', d: 'Notre engagement porte sur les moyens mis en œuvre. La performance dépend aussi de facteurs externes (algorithmes, marché…).', icon: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z' }
 ]
 
-type Block = string | string[] | { h: string }
-const articles: { t: string; blocks: Block[] }[] = [
+const articles: LegalArticle[] = [
   { t: 'Présentation de la société', blocks: [
     'Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre KPS Agency, agence digitale spécialisée dans la conception, la gestion et le déploiement de solutions digitales, ci-après « KPS Agency », et toute personne physique ou morale souhaitant bénéficier de ses services, ci-après « le Client ».',
     'La validation d’un devis, d’une commande ou d’une prestation implique l’acceptation pleine et entière des présentes CGV.'
@@ -180,36 +161,10 @@ const articles: { t: string; blocks: Block[] }[] = [
 .keys__t { font-size: 20px; font-weight: 700; letter-spacing: -.3px; }
 .keys__d { font-size: 15px; line-height: 1.55; color: var(--muted); }
 
-.terms { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 64px; align-items: start; margin-top: 48px; }
-.toc { position: sticky; top: 112px; max-height: calc(100vh - 136px); overflow-y: auto; padding: 24px; background: var(--white); border: 1px solid var(--line); border-radius: 20px; }
-.toc__title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted-2); margin-bottom: 12px; }
-.toc__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
-.toc__list a { display: flex; gap: 10px; padding: 6px 8px; border-radius: 8px; font-size: 14px; line-height: 1.35; color: var(--muted); }
-.toc__list a span { flex: none; width: 22px; font-weight: 600; color: var(--muted-3); font-variant-numeric: tabular-nums; }
-.toc__list a:hover { background: var(--bg); color: var(--accent); }
-
-.articles__h { font-size: 36px; letter-spacing: -1px; font-weight: 800; margin-bottom: 8px; }
-.art { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; padding: 32px 0; border-top: 1px solid var(--line); scroll-margin-top: 112px; }
-.art__n { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--accent); }
-.art__body { display: flex; flex-direction: column; gap: 14px; max-width: 760px; }
-.art__t { font-size: 24px; font-weight: 700; letter-spacing: -.4px; }
-.art__sub { margin: 8px 0 0; font-size: 17px; font-weight: 700; }
-.art__p { font-size: 17px; line-height: 1.7; color: var(--muted); }
-.art__list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 17px; line-height: 1.6; color: var(--muted); }
-.art__list li::marker { color: var(--accent); }
-.terms__date { margin-top: 16px; padding: 24px 28px; background: var(--accent-soft); border-radius: 16px; font-size: 15px; line-height: 1.6; color: var(--ink); }
-
 @media (max-width: 1180px) {
   .keys { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .terms { grid-template-columns: minmax(0, 1fr); gap: 32px; }
-  .toc { position: static; max-height: none; }
-  .toc__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 16px; }
 }
 @media (max-width: 720px) {
   .keys { grid-template-columns: minmax(0, 1fr); }
-  .toc__list { grid-template-columns: minmax(0, 1fr); }
-  .art { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 24px 0; }
-  .art__t { font-size: 21px; }
-  .articles__h { font-size: 28px; }
 }
 </style>
