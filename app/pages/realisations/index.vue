@@ -2,57 +2,67 @@
   <div>
     <section class="container head">
       <div class="head__title">
-        <div class="eyebrow">Réalisations</div>
-        <h1 class="head__h1">Des projets concrets. Des résultats mesurables.</h1>
+        <div class="eyebrow">{{ t.eyebrow }}</div>
+        <h1 class="head__h1">{{ t.h1 }}</h1>
       </div>
-      <p class="head__p">Sites corporate, campagnes social media, dispositifs d’acquisition : découvrez comment nous accompagnons des marques en France et à l’international.</p>
+      <p class="head__p">{{ t.lead }}</p>
     </section>
 
     <section class="container">
       <dl class="stats">
-        <div v-for="s in stats" :key="s.v" class="stats__item"><dt class="sr-only">{{ s.l }}</dt><dd class="stats__v">{{ s.v }}</dd><dd class="stats__l">{{ s.l }}</dd></div>
+        <div v-for="s in t.stats" :key="s.v" class="stats__item"><dt class="sr-only">{{ s.l }}</dt><dd class="stats__v">{{ s.v }}</dd><dd class="stats__l">{{ s.l }}</dd></div>
       </dl>
     </section>
 
     <section class="container work">
       <div class="work__bar">
-        <div class="filters" role="group" aria-label="Filtrer les réalisations">
-          <button v-for="f in filters" :key="f.id" type="button" :aria-pressed="filter === f.id" :class="{ 'is-on': filter === f.id }" @click="filter = f.id">{{ f.label }}</button>
+        <div class="filters" role="group" :aria-label="t.filterLabel">
+          <button v-for="f in t.filters" :key="f.id" type="button" :aria-pressed="filter === f.id" :class="{ 'is-on': filter === f.id }" @click="filter = f.id">{{ f.label }}</button>
         </div>
-        <span class="work__count" aria-live="polite">{{ list.length }} projets</span>
+        <span class="work__count" aria-live="polite">{{ list.length }} {{ t.projects }}</span>
       </div>
       <div class="grid grid-3">
         <ProjectCard v-for="p in list" :key="p.slug" :project="p" bordered />
       </div>
     </section>
 
-    <CtaBand title="Votre projet sera notre prochaine référence." label="Parler de votre projet" />
+    <CtaBand :title="t.ctaTitle" :label="t.ctaLabel" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { PROJECTS } from '~/data/content'
-usePageSeo({ title: 'Réalisations : sites web & campagnes digitales', description: 'Sites corporate, campagnes Google & Meta Ads et social media : découvrez les projets de KPS Agency pour des marques en France et à l’international.' })
+const { en, link, projects } = useSite()
+const t = useLocaleText({
+  fr: {
+    eyebrow: 'Réalisations', h1: 'Des projets concrets. Des résultats mesurables.', lead: 'Sites corporate, campagnes social media, dispositifs d’acquisition : découvrez comment nous accompagnons des marques en France et à l’international.',
+    filterLabel: 'Filtrer les réalisations', filters: [{ id: 'all', label: 'Tous' }, { id: 'Web', label: 'Sites Web' }, { id: 'Social', label: 'Social/Médias' }, { id: 'ADS', label: 'ADS' }],
+    projects: 'projets', ctaTitle: 'Votre projet sera notre prochaine référence.', ctaLabel: 'Parler de votre projet',
+    stats: [{ v: '5M', l: 'paid reach · YASSIR' }, { v: '6.4M', l: 'impressions · groupado PRO' }, { v: '2.2M', l: 'reach · Tunisia Franchise Show' }, { v: '308.8K', l: 'couverture · ZAYN' }],
+    title: 'Réalisations : sites web & campagnes digitales', desc: 'Sites corporate, campagnes Google & Meta Ads et social media : découvrez les projets de KPS Agency pour des marques en France et à l’international.'
+  },
+  en: {
+    eyebrow: 'Our work', h1: 'Real projects. Measurable results.', lead: 'Corporate websites, social media campaigns, acquisition set-ups: see how we support brands in France and internationally.',
+    filterLabel: 'Filter projects', filters: [{ id: 'all', label: 'All' }, { id: 'Web', label: 'Websites' }, { id: 'Social', label: 'Social media' }, { id: 'ADS', label: 'Paid ads' }],
+    projects: 'projects', ctaTitle: 'Your project could be our next reference.', ctaLabel: 'Discuss your project',
+    stats: [{ v: '5M', l: 'paid reach · YASSIR' }, { v: '6.4M', l: 'impressions · groupado PRO' }, { v: '2.2M', l: 'reach · Tunisia Franchise Show' }, { v: '308.8K', l: 'reach · ZAYN' }],
+    title: 'Our work: websites & digital campaigns', desc: 'Corporate websites, Google & Meta Ads campaigns and social media: discover the projects KPS Agency has delivered for brands in France and worldwide.'
+  }
+})
+usePageSeo({ title: () => t.value.title, description: () => t.value.desc })
 const site = useRuntimeConfig().public.siteUrl as string
 useHead({
   script: [{
     type: 'application/ld+json',
-    innerHTML: JSON.stringify({
+    innerHTML: () => JSON.stringify({
       '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'CollectionPage', '@id': `${site}/realisations#webpage`, url: `${site}/realisations`, name: 'Réalisations', inLanguage: 'fr-FR',
-          mainEntity: { '@type': 'ItemList', numberOfItems: PROJECTS.length, itemListElement: PROJECTS.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site}/realisations/${p.slug}`, name: `${p.client} — ${p.label}` })) }
-        }
-      ]
+      '@type': 'CollectionPage', '@id': `${site}${link.work()}#webpage`, url: `${site}${link.work()}`, name: t.value.title, inLanguage: en.value ? 'en' : 'fr-FR',
+      mainEntity: { '@type': 'ItemList', numberOfItems: projects.value.length, itemListElement: projects.value.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site}${link.project(p.slug)}`, name: `${p.client} — ${p.label}` })) }
     })
   }]
 })
 
-const filters = [{ id: 'all', label: 'Tous' }, { id: 'Web', label: 'Sites Web' }, { id: 'Social', label: 'Social/Médias' }, { id: 'ADS', label: 'ADS' }]
 const filter = ref('all')
-const list = computed(() => filter.value === 'all' ? PROJECTS : PROJECTS.filter(p => p.cat === filter.value))
-const stats = [{ v: '5M', l: 'paid reach · YASSIR' }, { v: '6.4M', l: 'impressions · groupado PRO' }, { v: '2.2M', l: 'reach · Tunisia Franchise Show' }, { v: '308.8K', l: 'couverture · ZAYN' }]
+const list = computed(() => filter.value === 'all' ? projects.value : projects.value.filter(p => p.cat === filter.value))
 </script>
 
 <style scoped>

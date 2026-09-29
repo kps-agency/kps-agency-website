@@ -1,26 +1,26 @@
 <template>
   <section class="container contact">
     <div class="contact__intro">
-      <div class="eyebrow">Contact &amp; devis</div>
-      <h1 class="contact__h1">Parlons de votre prochain projet.</h1>
-      <p class="contact__lead">Décrivez-nous votre besoin en quelques étapes : nous revenons vers vous avec une recommandation claire et un devis personnalisé.</p>
+      <div class="eyebrow">{{ t.eyebrow }}</div>
+      <h1 class="contact__h1">{{ t.h1 }}</h1>
+      <p class="contact__lead">{{ t.lead }}</p>
       <dl class="contact__info">
-        <div><dt>E-mail</dt><dd><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></dd></div>
-        <div v-if="!CONTACT.phone.startsWith('[')"><dt>Téléphone</dt><dd>{{ CONTACT.phone }}</dd></div>
-        <div><dt>Adresse</dt><dd>{{ CONTACT.address }} Paris</dd></div>
+        <div><dt>{{ t.email }}</dt><dd><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></dd></div>
+        <div v-if="!CONTACT.phone.startsWith('[')"><dt>{{ t.phone }}</dt><dd>{{ CONTACT.phone }}</dd></div>
+        <div><dt>{{ t.address }}</dt><dd>{{ CONTACT.address }} Paris</dd></div>
       </dl>
     </div>
 
     <form class="wizard" novalidate @submit.prevent="onNext">
       <div class="wizard__bars" aria-hidden="true"><i v-for="i in 3" :key="i" :class="{ 'is-on': i <= step }" /></div>
-      <span class="wizard__step" aria-live="polite">{{ step < 4 ? `Étape ${step} sur 3` : 'Demande envoyée' }}</span>
+      <span class="wizard__step" aria-live="polite">{{ step < 4 ? `${t.step} ${step} ${t.of} 3` : t.sentShort }}</span>
 
       <!-- Étape 1 -->
       <fieldset v-if="step === 1" class="wizard__panel">
-        <legend class="wizard__h">De quoi avez-vous besoin ?</legend>
-        <span class="wizard__hint">Plusieurs choix possibles.</span>
+        <legend class="wizard__h">{{ t.s1 }}</legend>
+        <span class="wizard__hint">{{ t.s1hint }}</span>
         <div class="svc-grid">
-          <button v-for="s in services" :key="s.id" type="button" class="svc" :class="{ 'is-on': data.services.includes(s.id) }" :aria-pressed="data.services.includes(s.id)" @click="toggle(s.id)">
+          <button v-for="s in t.services" :key="s.id" type="button" class="svc" :class="{ 'is-on': data.services.includes(s.id) }" :aria-pressed="data.services.includes(s.id)" @click="toggle(s.id)">
             <span class="svc__t">{{ s.t }}</span><span class="svc__d">{{ s.d }}</span>
           </button>
         </div>
@@ -29,41 +29,41 @@
 
       <!-- Étape 2 -->
       <div v-else-if="step === 2" class="wizard__panel">
-        <h2 class="wizard__h">Parlez-nous de votre projet.</h2>
-        <fieldset class="chips"><legend>Budget indicatif</legend>
-          <div><button v-for="b in budgets" :key="b" type="button" :class="{ 'is-on': data.budget === b }" :aria-pressed="data.budget === b" @click="data.budget = b">{{ b }}</button></div>
+        <h2 class="wizard__h">{{ t.s2 }}</h2>
+        <fieldset class="chips"><legend>{{ t.budget }}</legend>
+          <div><button v-for="b in t.budgets" :key="b" type="button" :class="{ 'is-on': data.budget === b }" :aria-pressed="data.budget === b" @click="data.budget = b">{{ b }}</button></div>
         </fieldset>
-        <fieldset class="chips"><legend>Échéance souhaitée</legend>
-          <div><button v-for="t in timings" :key="t" type="button" :class="{ 'is-on': data.timing === t }" :aria-pressed="data.timing === t" @click="data.timing = t">{{ t }}</button></div>
+        <fieldset class="chips"><legend>{{ t.timing }}</legend>
+          <div><button v-for="tm in t.timings" :key="tm" type="button" :class="{ 'is-on': data.timing === tm }" :aria-pressed="data.timing === tm" @click="data.timing = tm">{{ tm }}</button></div>
         </fieldset>
-        <label class="field">Votre projet en quelques mots<textarea v-model="data.message" rows="5" placeholder="Objectifs, contexte, site actuel…" /></label>
+        <label class="field">{{ t.msg }}<textarea v-model="data.message" rows="5" :placeholder="t.msgPh" /></label>
       </div>
 
       <!-- Étape 3 -->
       <div v-else-if="step === 3" class="wizard__panel">
-        <h2 class="wizard__h">Comment vous joindre ?</h2>
+        <h2 class="wizard__h">{{ t.s3 }}</h2>
         <div class="fields">
-          <label class="field">Prénom et nom<input v-model="data.name" type="text" autocomplete="name" required></label>
-          <label class="field">Entreprise<input v-model="data.company" type="text" autocomplete="organization"></label>
-          <label class="field">E-mail<input v-model="data.email" type="email" autocomplete="email" required></label>
-          <label class="field">Téléphone<input v-model="data.phone" type="tel" autocomplete="tel"></label>
+          <label class="field">{{ t.name }}<input v-model="data.name" type="text" autocomplete="name" required></label>
+          <label class="field">{{ t.company }}<input v-model="data.company" type="text" autocomplete="organization"></label>
+          <label class="field">{{ t.email }}<input v-model="data.email" type="email" autocomplete="email" required></label>
+          <label class="field">{{ t.phone }}<input v-model="data.phone" type="tel" autocomplete="tel"></label>
         </div>
-        <label class="field">Site web actuel (facultatif)<input v-model="data.website" type="url" placeholder="https://"></label>
-        <label class="consent"><input v-model="data.consent" type="checkbox"><span>J’accepte que mes données soient utilisées pour traiter ma demande, conformément à la <NuxtLink to="/mentions-legales#article-7" target="_blank">politique de confidentialité</NuxtLink>.</span></label>
+        <label class="field">{{ t.website }}<input v-model="data.website" type="url" placeholder="https://"></label>
+        <label class="consent"><input v-model="data.consent" type="checkbox"><span>{{ t.consent }} <NuxtLink :to="link.legal('#article-7')" target="_blank">{{ t.privacy }}</NuxtLink>.</span></label>
         <p v-if="error" class="wizard__error" role="alert">{{ error }}</p>
       </div>
 
       <!-- Confirmation -->
       <div v-else class="wizard__panel wizard__done">
         <span class="done__icon"><IconCheck :size="30" /></span>
-        <h2 class="wizard__h wizard__h--38">Merci, votre demande est envoyée.</h2>
-        <p class="done__p">Notre équipe étudie votre projet et revient vers vous sous 48 h ouvrées avec une recommandation et un devis personnalisé.</p>
-        <NuxtLink to="/realisations" class="btn btn--ghost btn--sm">Découvrir nos réalisations</NuxtLink>
+        <h2 class="wizard__h wizard__h--38">{{ t.doneH }}</h2>
+        <p class="done__p">{{ t.doneP }}</p>
+        <NuxtLink :to="link.work()" class="btn btn--ghost btn--sm">{{ t.doneCta }}</NuxtLink>
       </div>
 
       <div v-if="step < 4" class="wizard__nav">
-        <button type="button" class="wizard__back" :disabled="step === 1" @click="step--">← Retour</button>
-        <button type="submit" class="btn btn--primary wizard__next" :disabled="sending">{{ step === 3 ? (sending ? 'Envoi…' : 'Envoyer ma demande') : 'Continuer →' }}</button>
+        <button type="button" class="wizard__back" :disabled="step === 1" @click="step--">← {{ t.back }}</button>
+        <button type="submit" class="btn btn--primary wizard__next" :disabled="sending">{{ step === 3 ? (sending ? t.sending : t.send) : `${t.next} →` }}</button>
       </div>
     </form>
   </section>
@@ -71,16 +71,59 @@
 
 <script setup lang="ts">
 import { CONTACT, organizationSchema } from '~/data/content'
-usePageSeo({ title: 'Contact & devis gratuit sous 48 h', description: 'Contactez KPS Agency, agence digitale à Paris 8e : décrivez votre projet de site web, d’application, de SEO ou de publicité. Devis gratuit sous 48 h.' })
+
+const { en, locale, link } = useSite()
+const t = useLocaleText({
+  fr: {
+    title: 'Contact & devis gratuit sous 48 h', desc: 'Contactez KPS Agency, agence digitale à Paris 8e : décrivez votre projet de site web, d’application, de SEO ou de publicité. Devis gratuit sous 48 h.',
+    eyebrow: 'Contact & devis', h1: 'Parlons de votre prochain projet.', lead: 'Décrivez-nous votre besoin en quelques étapes : nous revenons vers vous avec une recommandation claire et un devis personnalisé.',
+    email: 'E-mail', phone: 'Téléphone', address: 'Adresse', step: 'Étape', of: 'sur', sentShort: 'Demande envoyée',
+    s1: 'De quoi avez-vous besoin ?', s1hint: 'Plusieurs choix possibles.',
+    services: [
+      { id: 'web', t: 'Site web', d: 'Vitrine, blog, landing, e-commerce' }, { id: 'app', t: 'Application métier', d: 'CRM, back-office, portail' },
+      { id: 'seo', t: 'SEO & GEO', d: 'Google et IA génératives' }, { id: 'mobile', t: 'Application mobile', d: 'iOS et Android' },
+      { id: 'ads', t: 'Marketing & ADS', d: 'Campagnes d’acquisition' }, { id: 'social', t: 'Social media', d: 'Visuel et vidéo' }
+    ],
+    s2: 'Parlez-nous de votre projet.', budget: 'Budget indicatif', budgets: ['< 5 k€', '5 – 15 k€', '15 – 50 k€', '> 50 k€', 'À définir'],
+    timing: 'Échéance souhaitée', timings: ['Dès que possible', 'Sous 3 mois', 'Sous 6 mois', 'Pas de contrainte'],
+    msg: 'Votre projet en quelques mots', msgPh: 'Objectifs, contexte, site actuel…',
+    s3: 'Comment vous joindre ?', name: 'Prénom et nom', company: 'Entreprise', website: 'Site web actuel (facultatif)',
+    consent: 'J’accepte que mes données soient utilisées pour traiter ma demande, conformément à la', privacy: 'politique de confidentialité',
+    doneH: 'Merci, votre demande est envoyée.', doneP: 'Notre équipe étudie votre projet et revient vers vous sous 48 h ouvrées avec une recommandation et un devis personnalisé.', doneCta: 'Découvrir nos réalisations',
+    back: 'Retour', next: 'Continuer', send: 'Envoyer ma demande', sending: 'Envoi…',
+    errNeed: 'Sélectionnez au moins un besoin.', errId: 'Merci d’indiquer votre nom et une adresse e-mail valide.', errConsent: 'Merci d’accepter l’utilisation de vos données pour traiter votre demande.', errSend: 'L’envoi a échoué. Vous pouvez nous écrire directement à'
+  },
+  en: {
+    title: 'Contact us: free quote within 48 hours', desc: 'Contact KPS Agency, a digital agency in Paris: tell us about your website, software, SEO or paid ads project and get a free quote within 48 hours.',
+    eyebrow: 'Contact & quote', h1: 'Let’s talk about your next project.', lead: 'Describe what you need in a few steps: we’ll come back to you with a clear recommendation and a tailored quote.',
+    email: 'Email', phone: 'Phone', address: 'Address', step: 'Step', of: 'of', sentShort: 'Request sent',
+    s1: 'What do you need?', s1hint: 'You can select several options.',
+    services: [
+      { id: 'web', t: 'Website', d: 'Showcase, blog, landing page, e-commerce' }, { id: 'app', t: 'Business software', d: 'CRM, back office, portal' },
+      { id: 'seo', t: 'SEO & GEO', d: 'Google and generative AI' }, { id: 'mobile', t: 'Mobile app', d: 'iOS and Android' },
+      { id: 'ads', t: 'Marketing & ads', d: 'Acquisition campaigns' }, { id: 'social', t: 'Social media', d: 'Visuals and video' }
+    ],
+    s2: 'Tell us about your project.', budget: 'Indicative budget', budgets: ['< €5k', '€5k – 15k', '€15k – 50k', '> €50k', 'To be defined'],
+    timing: 'Desired timeline', timings: ['As soon as possible', 'Within 3 months', 'Within 6 months', 'No constraint'],
+    msg: 'Your project in a few words', msgPh: 'Goals, context, current website…',
+    s3: 'How can we reach you?', name: 'Full name', company: 'Company', website: 'Current website (optional)',
+    consent: 'I agree that my data may be used to process my request, in accordance with the', privacy: 'privacy policy',
+    doneH: 'Thank you, your request has been sent.', doneP: 'Our team is reviewing your project and will come back to you within 48 business hours with a recommendation and a tailored quote.', doneCta: 'Discover our work',
+    back: 'Back', next: 'Continue', send: 'Send my request', sending: 'Sending…',
+    errNeed: 'Please select at least one option.', errId: 'Please enter your name and a valid email address.', errConsent: 'Please agree to the use of your data to process your request.', errSend: 'Sending failed. You can email us directly at'
+  }
+})
+
+usePageSeo({ title: () => t.value.title, description: () => t.value.desc })
 const site = useRuntimeConfig().public.siteUrl as string
 useHead({
   script: [{
     type: 'application/ld+json',
-    innerHTML: JSON.stringify({
+    innerHTML: () => JSON.stringify({
       '@context': 'https://schema.org',
       '@graph': [
-        organizationSchema(site),
-        { '@type': 'ContactPage', '@id': `${site}/contact#webpage`, url: `${site}/contact`, name: 'Contact & devis', inLanguage: 'fr-FR', about: { '@id': `${site}/#organization` } }
+        organizationSchema(site, en.value ? 'en' : 'fr'),
+        { '@type': 'ContactPage', '@id': `${site}${link.contact()}#webpage`, url: `${site}${link.contact()}`, name: t.value.title, inLanguage: en.value ? 'en' : 'fr-FR', about: { '@id': `${site}/#organization` } }
       ]
     })
   }]
@@ -88,14 +131,6 @@ useHead({
 
 const route = useRoute()
 const config = useRuntimeConfig()
-const services = [
-  { id: 'web', t: 'Site web', d: 'Vitrine, blog, landing, e-commerce' }, { id: 'app', t: 'Application métier', d: 'CRM, back-office, portail' },
-  { id: 'seo', t: 'SEO & GEO', d: 'Google et IA génératives' }, { id: 'mobile', t: 'Application mobile', d: 'iOS et Android' },
-  { id: 'ads', t: 'Marketing & ADS', d: 'Campagnes d’acquisition' }, { id: 'social', t: 'Social media', d: 'Visuel et vidéo' }
-]
-const budgets = ['< 5 k€', '5 – 15 k€', '15 – 50 k€', '> 50 k€', 'À définir']
-const timings = ['Dès que possible', 'Sous 3 mois', 'Sous 6 mois', 'Pas de contrainte']
-
 const step = ref(1)
 const error = ref('')
 const sending = ref(false)
@@ -109,18 +144,18 @@ const toggle = (id: string) => {
 
 async function onNext() {
   error.value = ''
-  if (step.value === 1 && !data.services.length) { error.value = 'Sélectionnez au moins un besoin.'; return }
+  if (step.value === 1 && !data.services.length) { error.value = t.value.errNeed; return }
   if (step.value < 3) { step.value++; return }
-  if (!data.name.trim() || !/^\S+@\S+\.\S+$/.test(data.email)) { error.value = 'Merci d’indiquer votre nom et une adresse e-mail valide.'; return }
-  if (!data.consent) { error.value = 'Merci d’accepter l’utilisation de vos données pour traiter votre demande.'; return }
+  if (!data.name.trim() || !/^\S+@\S+\.\S+$/.test(data.email)) { error.value = t.value.errId; return }
+  if (!data.consent) { error.value = t.value.errConsent; return }
   sending.value = true
   try {
     // Brancher ici votre service de formulaire (Formspree, Brevo, API interne…) via NUXT_PUBLIC_FORM_ENDPOINT.
     const endpoint = config.public.formEndpoint as string
-    if (endpoint) await $fetch(endpoint, { method: 'POST', body: { ...data } })
+    if (endpoint) await $fetch(endpoint, { method: 'POST', body: { ...data, locale: locale.value } })
     step.value = 4
   } catch {
-    error.value = `L’envoi a échoué. Vous pouvez nous écrire directement à ${CONTACT.email}.`
+    error.value = `${t.value.errSend} ${CONTACT.email}.`
   } finally {
     sending.value = false
   }

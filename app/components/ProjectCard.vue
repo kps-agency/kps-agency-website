@@ -1,8 +1,8 @@
 <template>
-  <NuxtLink :to="`/realisations/${project.slug}`" class="pcard" :class="{ 'pcard--bordered': bordered }">
+  <NuxtLink :to="link.project(project.slug)" class="pcard" :class="{ 'pcard--bordered': bordered }">
     <div class="pcard__visual" :style="{ background: project.bg }">
       <img :src="thumb(project.img)" :srcset="`${thumb(project.img)} 800w, ${project.img} 1600w`" sizes="(max-width: 720px) 100vw, (max-width: 1180px) 50vw, 420px" :alt="project.alt" class="pcard__img" loading="lazy" decoding="async" width="800" height="450">
-      <span class="pcard__cat">{{ CAT_LABEL[project.cat] }}</span>
+      <span class="pcard__cat">{{ catLabel[project.cat] }}</span>
     </div>
     <div v-if="compact" class="pcard__body pcard__body--compact">
       <span class="pcard__client">{{ project.client }}</span>
@@ -15,15 +15,16 @@
       <div v-if="!project.desc.startsWith('[')" class="pcard__desc">{{ project.desc }}</div>
       <div class="pcard__foot">
         <span class="pcard__metric">{{ project.metric.startsWith('[') ? '' : project.metric }}</span>
-        <span class="pcard__more">{{ moreLabel }} →</span>
+        <span class="pcard__more">{{ moreLabel ?? (en ? 'Discover' : 'Découvrir') }} →</span>
       </div>
     </div>
   </NuxtLink>
 </template>
 
 <script setup lang="ts">
-import { CAT_LABEL, thumb, type Project } from '~/data/content'
-withDefaults(defineProps<{ project: Project; compact?: boolean; bordered?: boolean; moreLabel?: string }>(), { moreLabel: 'Découvrir' })
+import { thumb, type Project } from '~/data/content'
+defineProps<{ project: Project; compact?: boolean; bordered?: boolean; moreLabel?: string }>()
+const { en, link, catLabel } = useSite()
 </script>
 
 <style scoped>

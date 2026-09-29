@@ -6,14 +6,16 @@
           <h2 class="h2 h2--48 cta__title">{{ title }}</h2>
           <p v-if="text" class="cta__p">{{ text }}</p>
         </div>
-        <NuxtLink :to="to" class="btn btn--light">{{ label }} →</NuxtLink>
+        <NuxtLink :to="to ?? link.contact()" class="btn btn--light">{{ label ?? t.quote }} →</NuxtLink>
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{ title: string; text?: string; label?: string; to?: string; white?: boolean }>(), { label: 'Demander un devis', to: '/contact' })
+defineProps<{ title: string; text?: string; label?: string; to?: string; white?: boolean }>()
+const { link } = useSite()
+const t = useLocaleText({ fr: { quote: 'Demander un devis' }, en: { quote: 'Get a quote' } })
 </script>
 
 <style scoped>

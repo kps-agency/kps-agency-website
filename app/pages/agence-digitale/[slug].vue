@@ -1,13 +1,13 @@
 <template>
   <div v-if="page">
     <section class="container hero">
-      <Breadcrumb :items="[{ label: 'Accueil', to: '/' }, { label: page.crumbParent }, { label: page.crumb }]" class="hero__crumb" />
+      <Breadcrumb :items="[{ label: t.home, to: link.home() }, { label: page.crumbParent }, { label: page.crumb }]" class="hero__crumb" />
       <div class="eyebrow">{{ page.eyebrow }}</div>
       <h1 class="hero__h1">{{ page.h1 }}</h1>
       <p class="lead hero__sub">{{ page.sub }}</p>
       <div class="hero__ctas">
-        <NuxtLink to="/contact" class="btn btn--primary">Parler de votre projet →</NuxtLink>
-        <NuxtLink to="/realisations" class="btn btn--ghost">Voir les réalisations</NuxtLink>
+        <NuxtLink :to="link.contact()" class="btn btn--primary">{{ t.talk }} →</NuxtLink>
+        <NuxtLink :to="link.work()" class="btn btn--ghost">{{ t.seeWork }}</NuxtLink>
       </div>
     </section>
 
@@ -15,11 +15,11 @@
       <div class="container">
         <h2 class="h2 h2--52 svc-h">{{ page.svcTitle }}</h2>
         <div class="grid grid-3">
-          <NuxtLink v-for="s in SERVICES" :key="s.slug" :to="`/services/${s.slug}`" class="svc">
+          <NuxtLink v-for="s in services" :key="s.slug" :to="link.service(s.slug)" class="svc">
             <span class="svc__n">{{ s.num }}</span>
             <h3 class="svc__t">{{ s.crumb }}</h3>
-            <p class="svc__d">{{ short[s.key] }}</p>
-            <span class="svc__more">En savoir plus →</span>
+            <p class="svc__d">{{ t.short[s.key] }}</p>
+            <span class="svc__more">{{ t.more }} →</span>
           </NuxtLink>
         </div>
       </div>
@@ -42,7 +42,7 @@
     </section>
 
     <section class="container section split">
-      <h2 class="h2 h2--48">Questions fréquentes</h2>
+      <h2 class="h2 h2--48">{{ t.faq }}</h2>
       <FaqList :items="page.faq" class="split__faq" />
     </section>
 
@@ -51,17 +51,26 @@
 </template>
 
 <script setup lang="ts">
-import { SERVICES, localBySlug, projectBySlug, organizationSchema, type Project } from '~/data/content'
+import { organizationSchema, type Project } from '~/data/content'
 
 const route = useRoute()
-const page = computed(() => localBySlug(String(route.params.slug)))
+const { en, link, services, projects, localPages, localSlug } = useSite()
+// Le slug doit correspondre à la langue de l'URL (/agence-digitale/energie ↔ /en/digital-agency/energy)
+const page = computed(() => localPages.value.find(l => localSlug(l.slug) === String(route.params.slug)))
 if (!page.value) throw createError({ statusCode: 404, statusMessage: 'Page introuvable', fatal: true })
-const refs = computed(() => (page.value?.refs ?? []).map(projectBySlug).filter(Boolean) as Project[])
+useSetI18nParams()({ fr: { slug: page.value.slug }, en: { slug: localSlug(page.value.slug, 'en') } })
+const refs = computed(() => (page.value?.refs ?? []).map(slug => projects.value.find(p => p.slug === slug)).filter(Boolean) as Project[])
 
-const short: Record<string, string> = {
-  web: 'Vitrine, blog, landing page, e-commerce.', app: 'Des outils sur mesure pour vos équipes.', seo: 'Visibilité sur Google et les IA génératives.',
-  mobile: 'iOS et Android, de l’UX aux stores.', ads: 'Des campagnes pilotées par la donnée.', social: 'Visuel, vidéo et stratégie éditoriale.'
-}
+const t = useLocaleText({
+  fr: {
+    home: 'Accueil', talk: 'Parler de votre projet', seeWork: 'Voir les réalisations', more: 'En savoir plus', faq: 'Questions fréquentes',
+    short: { web: 'Vitrine, blog, landing page, e-commerce.', app: 'Des outils sur mesure pour vos équipes.', seo: 'Visibilité sur Google et les IA génératives.', mobile: 'iOS et Android, de l’UX aux stores.', ads: 'Des campagnes pilotées par la donnée.', social: 'Visuel, vidéo et stratégie éditoriale.' } as Record<string, string>
+  },
+  en: {
+    home: 'Home', talk: 'Discuss your project', seeWork: 'See our work', more: 'Learn more', faq: 'Frequently asked questions',
+    short: { web: 'Showcase sites, blogs, landing pages, e-commerce.', app: 'Tailor-made tools for your teams.', seo: 'Visibility on Google and generative AI.', mobile: 'iOS and Android, from UX to the stores.', ads: 'Data-driven campaigns.', social: 'Visuals, video and editorial strategy.' } as Record<string, string>
+  }
+})
 
 usePageSeo({ title: () => page.value?.title ?? '', description: () => page.value?.description ?? '' })
 
@@ -72,10 +81,10 @@ useHead({
     innerHTML: () => JSON.stringify({
       '@context': 'https://schema.org',
       '@graph': [
-        organizationSchema(site),
+        organizationSchema(site, en.value ? 'en' : 'fr'),
         {
           '@type': 'WebPage', '@id': `${site}${route.path}#webpage`, url: `${site}${route.path}`, name: page.value?.title, description: page.value?.description,
-          inLanguage: 'fr-FR', about: { '@id': `${site}/#organization` }, isPartOf: { '@id': `${site}/#website` }
+          inLanguage: en.value ? 'en' : 'fr-FR', about: { '@id': `${site}/#organization` }, isPartOf: { '@id': `${site}/#website` }
         },
         {
           '@type': 'FAQPage', '@id': `${site}${route.path}#faq`,

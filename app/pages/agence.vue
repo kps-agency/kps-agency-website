@@ -1,22 +1,22 @@
 <template>
   <div>
     <section class="container intro">
-      <div class="eyebrow">L’agence</div>
-      <h1 class="intro__h1">Plus qu’une agence, votre co-pilote digital.</h1>
+      <div class="eyebrow">{{ t.eyebrow }}</div>
+      <h1 class="intro__h1">{{ t.h1 }}</h1>
       <div class="intro__cols">
-        <p class="intro__lead">Nous combinons créativité humaine et intelligence data pour construire des présences digitales qui font grandir les entreprises.</p>
-        <p class="intro__p">Basée à Paris, KPS réunit au sein d’une même équipe six expertises complémentaires : création de sites, applications métier, applications mobiles, référencement SEO &amp; GEO, marketing digital et social media. Une organisation pensée pour que stratégie, design, technologie et acquisition avancent dans la même direction.</p>
+        <p class="intro__lead">{{ t.lead }}</p>
+        <p class="intro__p">{{ t.intro }}</p>
       </div>
     </section>
 
     <section class="bg-white section--96">
       <div class="container">
         <div class="head">
-          <div class="eyebrow">Notre ADN</div>
-          <h2 class="h2 h2--52">Trois convictions guident chacun de nos projets.</h2>
+          <div class="eyebrow">{{ t.adnEyebrow }}</div>
+          <h2 class="h2 h2--52">{{ t.adnH2 }}</h2>
         </div>
         <div class="grid grid-3">
-          <div v-for="a in adn" :key="a.n" class="adn">
+          <div v-for="a in t.adn" :key="a.n" class="adn">
             <span class="adn__n">{{ a.n }}</span>
             <h3 class="adn__t">{{ a.t }}</h3>
             <p class="adn__d">{{ a.d }}</p>
@@ -28,13 +28,13 @@
     <section class="container section">
       <div class="head head--row">
         <div class="head__col">
-          <div class="eyebrow">Méthode</div>
-          <h2 class="h2 h2--52">Une méthode claire, du brief au décollage.</h2>
+          <div class="eyebrow">{{ t.methodEyebrow }}</div>
+          <h2 class="h2 h2--52">{{ t.methodH2 }}</h2>
         </div>
-        <p class="text-18 head__p">Un cadre précis, des étapes validées ensemble, aucune zone d’ombre.</p>
+        <p class="text-18 head__p">{{ t.methodP }}</p>
       </div>
       <ol class="method">
-        <li v-for="s in steps" :key="s.n" class="method__row">
+        <li v-for="s in t.steps" :key="s.n" class="method__row">
           <span class="method__n">{{ s.n }}</span>
           <h3 class="method__t">{{ s.t }}</h3>
           <p class="method__d">{{ s.d }}</p>
@@ -45,11 +45,11 @@
     <section class="bg-dark section--96">
       <div class="container">
         <div class="head">
-          <div class="eyebrow">Pourquoi KPS</div>
-          <h2 class="h2 h2--52">L’exigence d’une grande agence, l’agilité d’une équipe engagée.</h2>
+          <div class="eyebrow">{{ t.whyEyebrow }}</div>
+          <h2 class="h2 h2--52">{{ t.whyH2 }}</h2>
         </div>
         <div class="grid grid-4">
-          <div v-for="w in why" :key="w.tag" class="why">
+          <div v-for="w in t.why" :key="w.tag" class="why">
             <span class="why__tag">{{ w.tag }}</span>
             <h3 class="why__t">{{ w.t }}</h3>
             <p class="why__d">{{ w.d }}</p>
@@ -59,52 +59,90 @@
     </section>
 
     <section class="container section">
-      <div class="eyebrow">Avis Google</div>
-      <h2 class="h2 h2--52 team__h">Ce que nos clients disent de nous.</h2>
+      <div class="eyebrow">{{ t.reviewsEyebrow }}</div>
+      <h2 class="h2 h2--52 team__h">{{ t.reviewsH2 }}</h2>
       <ReviewCarousel :reviews="REVIEWS" />
     </section>
 
-    <CtaBand title="Envie de travailler avec nous ?" label="Parler de votre projet" />
+    <CtaBand :title="t.ctaTitle" :label="t.ctaLabel" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { REVIEWS, organizationSchema } from '~/data/content'
 
-usePageSeo({
-  title: 'L’agence KPS : équipe digitale basée à Paris',
-  description: 'KPS Agency, agence digitale basée à Paris 8e : six expertises (web, apps, SEO & GEO, Ads, social media) réunies dans une même équipe pour faire grandir les PME.'
+const { en, link } = useSite()
+const t = useLocaleText({
+  fr: {
+    title: 'L’agence KPS : équipe digitale basée à Paris', desc: 'KPS Agency, agence digitale basée à Paris 8e : six expertises (web, apps, SEO & GEO, Ads, social media) réunies dans une même équipe pour faire grandir les PME.',
+    eyebrow: 'L’agence', h1: 'Plus qu’une agence, votre co-pilote digital.',
+    lead: 'Nous combinons créativité humaine et intelligence data pour construire des présences digitales qui font grandir les entreprises.',
+    intro: 'Basée à Paris, KPS réunit au sein d’une même équipe six expertises complémentaires : création de sites, applications métier, applications mobiles, référencement SEO & GEO, marketing digital et social media. Une organisation pensée pour que stratégie, design, technologie et acquisition avancent dans la même direction.',
+    adnEyebrow: 'Notre ADN', adnH2: 'Trois convictions guident chacun de nos projets.',
+    adn: [
+      { n: '01', t: 'Vision stratégique', d: 'Nous ne nous contentons pas d’exécuter. Nous construisons une feuille de route précise pour vous aider à dominer votre marché.' },
+      { n: '02', t: 'Le Crew KPS', d: 'Une équipe de passionnés qui devient l’extension directe de votre marque et s’engage sur vos objectifs.' },
+      { n: '03', t: 'Croissance accélérée', d: 'Des résultats tangibles : plus de visibilité, plus d’engagement, plus de conversions.' }
+    ],
+    methodEyebrow: 'Méthode', methodH2: 'Une méthode claire, du brief au décollage.', methodP: 'Un cadre précis, des étapes validées ensemble, aucune zone d’ombre.',
+    steps: [
+      { n: '01', t: 'Cadrage', d: 'Nous analysons votre marché, vos concurrents et vos objectifs pour définir ensemble les priorités et le périmètre du projet.' },
+      { n: '02', t: 'Stratégie & conception', d: 'Parcours utilisateurs, maquettes, plan média : la stratégie prend forme et vous la validez avant toute production.' },
+      { n: '03', t: 'Production', d: 'Design, développement, contenus ou campagnes : nos équipes produisent avec exigence et vous associent à chaque jalon.' },
+      { n: '04', t: 'Lancement & croissance', d: 'Mise en ligne, mesure des performances, optimisation continue. Un projet digital ne s’arrête pas le jour de sa livraison.' }
+    ],
+    whyEyebrow: 'Pourquoi KPS', whyH2: 'L’exigence d’une grande agence, l’agilité d’une équipe engagée.',
+    why: [
+      { tag: '# 360°', t: 'Une vision globale', d: 'Site, référencement, publicité et contenus conçus ensemble, pour une présence cohérente.' },
+      { tag: '# DATA', t: 'Des décisions fondées sur la donnée', d: 'Audits, analyses d’audience, suivi des KPIs : des recommandations appuyées sur des chiffres.' },
+      { tag: '# RÉACTIVITÉ', t: 'Le rythme du digital', d: 'Le digital n’attend pas. Nous livrons vite pour que vous gardiez une longueur d’avance.' },
+      { tag: '# EXIGENCE', t: 'Une qualité premium', d: 'L’image de votre marque est sacrée. Chaque livrable est pensé, relu et optimisé.' }
+    ],
+    reviewsEyebrow: 'Avis Google', reviewsH2: 'Ce que nos clients disent de nous.', ctaTitle: 'Envie de travailler avec nous ?', ctaLabel: 'Parler de votre projet'
+  },
+  en: {
+    title: 'About KPS: a Paris-based digital team', desc: 'KPS Agency, a digital agency in Paris 8th: six areas of expertise (web, apps, SEO & GEO, ads, social media) in one team, helping SMEs grow online.',
+    eyebrow: 'About us', h1: 'More than an agency, your digital co-pilot.',
+    lead: 'We combine human creativity and data intelligence to build digital presences that help companies grow.',
+    intro: 'Based in Paris, KPS brings six complementary areas of expertise together in one team: website design, business software, mobile apps, SEO & GEO, digital marketing and social media. An organisation designed so that strategy, design, technology and acquisition move in the same direction.',
+    adnEyebrow: 'Our DNA', adnH2: 'Three convictions guide every project we take on.',
+    adn: [
+      { n: '01', t: 'Strategic vision', d: 'We don’t just execute. We build a precise roadmap to help you lead your market.' },
+      { n: '02', t: 'The KPS crew', d: 'A passionate team that becomes a direct extension of your brand and commits to your goals.' },
+      { n: '03', t: 'Accelerated growth', d: 'Tangible results: more visibility, more engagement, more conversions.' }
+    ],
+    methodEyebrow: 'Method', methodH2: 'A clear method, from brief to take-off.', methodP: 'A precise framework, steps agreed together, no grey areas.',
+    steps: [
+      { n: '01', t: 'Scoping', d: 'We analyse your market, competitors and goals to agree on priorities and project scope together.' },
+      { n: '02', t: 'Strategy & design', d: 'User journeys, mock-ups, media plan: the strategy takes shape and you approve it before anything is produced.' },
+      { n: '03', t: 'Production', d: 'Design, development, content or campaigns: our team delivers to a high standard and involves you at every milestone.' },
+      { n: '04', t: 'Launch & growth', d: 'Go-live, performance tracking, continuous optimisation. A digital project doesn’t end on delivery day.' }
+    ],
+    whyEyebrow: 'Why KPS', whyH2: 'The standards of a large agency, the agility of a committed team.',
+    why: [
+      { tag: '# 360°', t: 'A global view', d: 'Website, SEO, advertising and content designed together for a consistent presence.' },
+      { tag: '# DATA', t: 'Data-driven decisions', d: 'Audits, audience analysis, KPI tracking: recommendations backed by numbers.' },
+      { tag: '# SPEED', t: 'Digital pace', d: 'Digital doesn’t wait. We deliver fast so you stay one step ahead.' },
+      { tag: '# QUALITY', t: 'Premium quality', d: 'Your brand image matters. Every deliverable is thought through, reviewed and optimised.' }
+    ],
+    reviewsEyebrow: 'Google reviews', reviewsH2: 'What our clients say about us.', ctaTitle: 'Want to work with us?', ctaLabel: 'Discuss your project'
+  }
 })
+
+usePageSeo({ title: () => t.value.title, description: () => t.value.desc })
 const site = useRuntimeConfig().public.siteUrl as string
 useHead({
   script: [{
     type: 'application/ld+json',
-    innerHTML: JSON.stringify({
+    innerHTML: () => JSON.stringify({
       '@context': 'https://schema.org',
       '@graph': [
-        organizationSchema(site),
-        { '@type': 'AboutPage', '@id': `${site}/agence#webpage`, url: `${site}/agence`, name: 'L’agence KPS', inLanguage: 'fr-FR', about: { '@id': `${site}/#organization` }, mainEntity: { '@id': `${site}/#organization` } }
+        organizationSchema(site, en.value ? 'en' : 'fr'),
+        { '@type': 'AboutPage', '@id': `${site}${link.about()}#webpage`, url: `${site}${link.about()}`, name: t.value.title, inLanguage: en.value ? 'en' : 'fr-FR', about: { '@id': `${site}/#organization` }, mainEntity: { '@id': `${site}/#organization` } }
       ]
     })
   }]
 })
-const adn = [
-  { n: '01', t: 'Vision stratégique', d: 'Nous ne nous contentons pas d’exécuter. Nous construisons une feuille de route précise pour vous aider à dominer votre marché.' },
-  { n: '02', t: 'Le Crew KPS', d: 'Une équipe de passionnés qui devient l’extension directe de votre marque et s’engage sur vos objectifs.' },
-  { n: '03', t: 'Croissance accélérée', d: 'Des résultats tangibles : plus de visibilité, plus d’engagement, plus de conversions.' }
-]
-const steps = [
-  { n: '01', t: 'Cadrage', d: 'Nous analysons votre marché, vos concurrents et vos objectifs pour définir ensemble les priorités et le périmètre du projet.' },
-  { n: '02', t: 'Stratégie & conception', d: 'Parcours utilisateurs, maquettes, plan média : la stratégie prend forme et vous la validez avant toute production.' },
-  { n: '03', t: 'Production', d: 'Design, développement, contenus ou campagnes : nos équipes produisent avec exigence et vous associent à chaque jalon.' },
-  { n: '04', t: 'Lancement & croissance', d: 'Mise en ligne, mesure des performances, optimisation continue. Un projet digital ne s’arrête pas le jour de sa livraison.' }
-]
-const why = [
-  { tag: '# 360°', t: 'Une vision globale', d: 'Site, référencement, publicité et contenus conçus ensemble, pour une présence cohérente.' },
-  { tag: '# DATA', t: 'Des décisions fondées sur la donnée', d: 'Audits, analyses d’audience, suivi des KPIs : des recommandations appuyées sur des chiffres.' },
-  { tag: '# RÉACTIVITÉ', t: 'Le rythme du digital', d: 'Le digital n’attend pas. Nous livrons vite pour que vous gardiez une longueur d’avance.' },
-  { tag: '# EXIGENCE', t: 'Une qualité premium', d: 'L’image de votre marque est sacrée. Chaque livrable est pensé, relu et optimisé.' }
-]
 </script>
 
 <style scoped>

@@ -1,11 +1,12 @@
 <template>
-  <NuxtLink to="/" class="logo" :class="{ 'logo--light': light }" aria-label="KPS Agency — accueil">
+  <NuxtLink :to="link.home()" class="logo" :class="{ 'logo--light': light }" :aria-label="en ? 'KPS Agency — home' : 'KPS Agency — accueil'">
     <img src="/logo-kps.webp" alt="KPS Agency" width="311" height="120" class="logo__img">
   </NuxtLink>
 </template>
 
 <script setup lang="ts">
 defineProps<{ light?: boolean }>()
+const { en, link } = useSite()
 </script>
 
 <style scoped>

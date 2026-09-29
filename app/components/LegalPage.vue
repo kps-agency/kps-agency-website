@@ -1,19 +1,17 @@
 <template>
   <section class="container legal">
-    <Breadcrumb :items="[{ label: 'Accueil', to: '/' }, { label: title }]" />
+    <Breadcrumb :items="[{ label: t.home, to: link.home() }, { label: title }]" />
     <div class="legal__head">
       <div v-if="eyebrow" class="eyebrow">{{ eyebrow }}</div>
       <h1 class="legal__h1">{{ title }}</h1>
       <p v-if="lead" class="lead legal__lead">{{ lead }}</p>
     </div>
 
-    <slot>
-      <p v-if="!articles" class="legal__p">[Contenu juridique à fournir par KPS Agency.]</p>
-    </slot>
+    <slot />
 
     <div v-if="articles" class="terms">
-      <nav class="toc" :aria-label="`Sommaire — ${title}`">
-        <div class="toc__title">Sommaire</div>
+      <nav class="toc" :aria-label="`${t.toc} — ${title}`">
+        <div class="toc__title">{{ t.toc }}</div>
         <ol class="toc__list">
           <li v-for="(a, i) in articles" :key="a.t"><a :href="`#article-${i + 1}`"><span>{{ num(i) }}</span>{{ a.t }}</a></li>
         </ol>
@@ -51,6 +49,8 @@ export interface LegalArticle { t: string; blocks: LegalBlock[] }
 
 defineProps<{ title: string; eyebrow?: string; lead?: string; articles?: LegalArticle[]; articlesTitle?: string; footnote?: string }>()
 const num = (i: number) => String(i + 1).padStart(2, '0')
+const { link } = useSite()
+const t = useLocaleText({ fr: { home: 'Accueil', toc: 'Sommaire' }, en: { home: 'Home', toc: 'Contents' } })
 </script>
 
 <style scoped>

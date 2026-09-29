@@ -2,8 +2,8 @@
   <div
     class="rc"
     role="region"
-    aria-roledescription="carrousel"
-    aria-label="Avis Google de nos clients"
+    :aria-roledescription="t.carousel"
+    :aria-label="t.region"
     @mouseenter="hover = true"
     @mouseleave="hover = false"
     @focusin="focus = true"
@@ -16,13 +16,13 @@
         class="rc__slide review"
         role="group"
         aria-roledescription="avis"
-        :aria-label="`${i + 1} sur ${reviews.length}`"
+        :aria-label="`${i + 1} ${t.of} ${reviews.length}`"
       >
-        <div class="review__stars" :aria-label="`${rv.rating} étoiles sur 5`">
+        <div class="review__stars" :aria-label="`${rv.rating} ${t.stars}`">
           <svg v-for="n in rv.rating" :key="n" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path :d="STAR" /></svg>
         </div>
         <div class="review__body">
-          <blockquote :id="`review-${i}`" ref="quotes" class="review__q" :class="{ 'is-clamped': !expanded.has(i) }">{{ rv.text }}<template v-if="rv.truncated"> …</template></blockquote>
+          <blockquote :id="`review-${i}`" ref="quotes" class="review__q" lang="fr" :class="{ 'is-clamped': !expanded.has(i) }">{{ rv.text }}<template v-if="rv.truncated"> …</template></blockquote>
           <button
             type="button"
             class="review__more"
@@ -32,11 +32,11 @@
             :aria-expanded="expanded.has(i)"
             :aria-controls="`review-${i}`"
             @click="toggle(i)"
-          >{{ expanded.has(i) ? 'Voir moins' : 'Voir plus' }}</button>
+          >{{ expanded.has(i) ? t.less : t.more }}</button>
         </div>
         <figcaption class="review__who">
           <span class="review__ini">{{ rv.name.charAt(0).toUpperCase() }}</span>
-          <span><strong>{{ rv.name }}</strong><span>Avis Google · {{ rv.date }}<template v-if="rv.translated"> · traduit de l’anglais</template></span></span>
+          <span><strong>{{ rv.name }}</strong><span>{{ t.google }} · {{ month(rv.date) }}<template v-if="rv.translated"> · {{ t.translated }}</template><template v-else-if="en"> · {{ t.original }}</template></span></span>
         </figcaption>
       </figure>
     </div>
@@ -49,19 +49,19 @@
           type="button"
           class="rc__dot"
           :class="{ 'is-on': p - 1 === current }"
-          :aria-label="`Aller à l’avis ${p}`"
+          :aria-label="`${t.goto} ${p}`"
           :aria-current="p - 1 === current"
           @click="goTo(p - 1, true)"
         />
       </div>
       <div class="rc__arrows">
-        <button type="button" class="rc__btn" :aria-label="playing ? 'Mettre en pause le défilement' : 'Reprendre le défilement'" @click="userPaused = !userPaused">
+        <button type="button" class="rc__btn" :aria-label="playing ? t.pause : t.play" @click="userPaused = !userPaused">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path v-if="playing" d="M7 5h3v14H7zM14 5h3v14h-3z" /><path v-else d="M8 5v14l11-7z" /></svg>
         </button>
-        <button type="button" class="rc__btn" aria-label="Avis précédent" @click="goTo(current - 1, true)">
+        <button type="button" class="rc__btn" :aria-label="t.prev" @click="goTo(current - 1, true)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
         </button>
-        <button type="button" class="rc__btn" aria-label="Avis suivant" @click="goTo(current + 1, true)">
+        <button type="button" class="rc__btn" :aria-label="t.next" @click="goTo(current + 1, true)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6" /></svg>
         </button>
       </div>
@@ -73,6 +73,13 @@
 import type { Review } from '~/data/content'
 
 const props = withDefaults(defineProps<{ reviews: Review[]; interval?: number }>(), { interval: 5000 })
+
+const { en, locale } = useSite()
+const t = useLocaleText({
+  fr: { carousel: 'carrousel', region: 'Avis Google de nos clients', of: 'sur', stars: 'étoiles sur 5', more: 'Voir plus', less: 'Voir moins', google: 'Avis Google', translated: 'traduit de l’anglais', original: '', goto: 'Aller à l’avis', pause: 'Mettre en pause le défilement', play: 'Reprendre le défilement', prev: 'Avis précédent', next: 'Avis suivant' },
+  en: { carousel: 'carousel', region: 'Our clients’ Google reviews', of: 'of', stars: 'stars out of 5', more: 'Read more', less: 'Show less', google: 'Google review', translated: 'translated into French by Google', original: 'original in French', goto: 'Go to review', pause: 'Pause autoplay', play: 'Resume autoplay', prev: 'Previous review', next: 'Next review' }
+})
+const month = (ym: string) => new Intl.DateTimeFormat(locale.value === 'en' ? 'en-GB' : 'fr-FR', { month: 'long', year: 'numeric' }).format(new Date(`${ym}-01T12:00:00`))
 
 const STAR = 'M12 2l3 7 7 .6-5.3 4.7 1.6 7.2L12 17.8 5.7 21.5l1.6-7.2L2 9.6 9 9z'
 

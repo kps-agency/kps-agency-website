@@ -1,9 +1,9 @@
 <template>
   <NuxtLayout>
     <section class="container err">
-      <div class="eyebrow">Erreur {{ error?.statusCode }}</div>
-      <h1 class="err__h1">Cette page n’existe pas (ou plus).</h1>
-      <NuxtLink to="/" class="btn btn--primary" @click.prevent="clearError({ redirect: '/' })">Revenir à l’accueil</NuxtLink>
+      <div class="eyebrow">{{ t.error }} {{ error?.statusCode }}</div>
+      <h1 class="err__h1">{{ t.h1 }}</h1>
+      <NuxtLink :to="link.home()" class="btn btn--primary" @click.prevent="clearError({ redirect: link.home() })">{{ t.back }}</NuxtLink>
     </section>
   </NuxtLayout>
 </template>
@@ -11,7 +11,12 @@
 <script setup lang="ts">
 import type { NuxtError } from '#app'
 defineProps<{ error: NuxtError }>()
-useSeoMeta({ title: 'Page introuvable', robots: 'noindex, follow' })
+const { link } = useSite()
+const t = useLocaleText({
+  fr: { error: 'Erreur', h1: 'Cette page n’existe pas (ou plus).', back: 'Revenir à l’accueil', title: 'Page introuvable' },
+  en: { error: 'Error', h1: 'This page doesn’t exist (or no longer exists).', back: 'Back to home', title: 'Page not found' }
+})
+useSeoMeta({ title: () => t.value.title, robots: 'noindex, follow' })
 </script>
 
 <style scoped>

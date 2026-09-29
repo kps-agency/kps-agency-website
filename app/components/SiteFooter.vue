@@ -4,28 +4,33 @@
       <div class="footer__grid">
         <div class="footer__brand">
           <SiteLogo light />
-          <p class="footer__desc">Agence digitale basée à Paris : création de sites, applications sur mesure, référencement SEO &amp; GEO et marketing digital pour les entreprises qui veulent grandir.</p>
+          <p class="footer__desc">{{ t.desc }}</p>
           <address class="footer__contact">{{ CONTACT.address }} Paris<br><template v-if="!CONTACT.phone.startsWith('[')">{{ CONTACT.phone }}<br></template><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></address>
         </div>
-        <div v-for="c in FOOTER_COLS" :key="c.title" class="footer__col">
+        <div v-for="c in footerCols" :key="c.title" class="footer__col">
           <div class="footer__title">{{ c.title }}</div>
           <NuxtLink v-for="[label, to] in c.links" :key="label" :to="to">{{ label }}</NuxtLink>
         </div>
       </div>
       <div class="footer__local">
-        <span class="footer__local-title">Agence digitale :</span>
-        <NuxtLink v-for="([label, to], i) in FOOTER_LOCAL" :key="i" :to="to" class="footer__pill">{{ label }}</NuxtLink>
+        <span class="footer__local-title">{{ t.local }}</span>
+        <NuxtLink v-for="([label, to], i) in footerLocal" :key="i" :to="to" class="footer__pill">{{ label }}</NuxtLink>
       </div>
       <div class="footer__bottom">
-        <span>© 2026 KPS Agency. Tous droits réservés.</span>
-        <div class="footer__legal"><NuxtLink to="/cgv">Conditions Générales</NuxtLink><NuxtLink to="/mentions-legales">Mentions légales</NuxtLink><NuxtLink to="/mentions-legales#article-7">Confidentialité</NuxtLink></div>
+        <span>{{ t.rights }}</span>
+        <div class="footer__legal"><NuxtLink :to="link.terms()">{{ t.terms }}</NuxtLink><NuxtLink :to="link.legal()">{{ t.legal }}</NuxtLink><NuxtLink :to="link.legal('#article-7')">{{ t.privacy }}</NuxtLink></div>
       </div>
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
-import { CONTACT, FOOTER_COLS, FOOTER_LOCAL } from '~/data/content'
+import { CONTACT } from '~/data/content'
+const { link, footerCols, footerLocal } = useSite()
+const t = useLocaleText({
+  fr: { desc: 'Agence digitale basée à Paris : création de sites, applications sur mesure, référencement SEO & GEO et marketing digital pour les entreprises qui veulent grandir.', local: 'Agence digitale :', rights: '© 2026 KPS Agency. Tous droits réservés.', terms: 'Conditions Générales', legal: 'Mentions légales', privacy: 'Confidentialité' },
+  en: { desc: 'Paris-based digital agency: website design, custom software, SEO & GEO and digital marketing for companies that want to grow.', local: 'Digital agency:', rights: '© 2026 KPS Agency. All rights reserved.', terms: 'Terms & conditions', legal: 'Legal notice', privacy: 'Privacy' }
+})
 </script>
 
 <style scoped>

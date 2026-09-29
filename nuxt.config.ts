@@ -4,9 +4,33 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   css: ['@fontsource-variable/bricolage-grotesque', '@fontsource-variable/geist', '~/assets/css/main.css'],
   runtimeConfig: { public: { siteUrl: 'https://kps-agency.com', formEndpoint: '' } },
+  modules: ['@nuxtjs/i18n'],
+  i18n: {
+    // Français à la racine (/), anglais sous /en, URL traduites (customRoutes)
+    locales: [
+      { code: 'fr', language: 'fr-FR', name: 'Français' },
+      { code: 'en', language: 'en-GB', name: 'English' }
+    ],
+    defaultLocale: 'fr',
+    strategy: 'prefix_except_default',
+    baseUrl: 'https://kps-agency.com',
+    detectBrowserLanguage: false, // pas de redirection automatique : chaque URL reste stable pour Google
+    customRoutes: 'config',
+    pages: {
+      'services/index': { fr: '/services', en: '/services' },
+      'services/[slug]': { fr: '/services/[slug]', en: '/services/[slug]' },
+      'realisations/index': { fr: '/realisations', en: '/work' },
+      'realisations/[slug]': { fr: '/realisations/[slug]', en: '/work/[slug]' },
+      'agence': { fr: '/agence', en: '/about' },
+      'contact': { fr: '/contact', en: '/contact' },
+      'agence-digitale/[slug]': { fr: '/agence-digitale/[slug]', en: '/digital-agency/[slug]' },
+      'cgv': { fr: '/cgv', en: '/terms' },
+      'mentions-legales': { fr: '/mentions-legales', en: '/legal-notice' }
+    },
+    experimental: { strictSeo: true }
+  },
   app: {
     head: {
-      htmlAttrs: { lang: 'fr' },
       titleTemplate: '%s · KPS Agency',
       meta: [
         { charset: 'utf-8' },
@@ -24,7 +48,7 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/sitemap.xml'],
+      routes: ['/', '/en', '/sitemap.xml'],
       // /services → services.html (et non services/index.html) : URL sans slash final, servie par public/.htaccess
       autoSubfolderIndex: false
     }

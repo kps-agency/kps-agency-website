@@ -1,5 +1,5 @@
 <template>
-  <nav class="crumb" aria-label="Fil d’Ariane">
+  <nav class="crumb" :aria-label="en ? 'Breadcrumb' : 'Fil d’Ariane'">
     <template v-for="(it, i) in items" :key="i">
       <NuxtLink v-if="it.to" :to="it.to">{{ it.label }}</NuxtLink>
       <span v-else :class="{ 'crumb__current': i === items.length - 1 }" :aria-current="i === items.length - 1 ? 'page' : undefined">{{ it.label }}</span>
@@ -12,6 +12,7 @@
 const props = defineProps<{ items: { label: string; to?: string }[] }>()
 const site = useRuntimeConfig().public.siteUrl as string
 const route = useRoute()
+const { en } = useSite()
 
 // Données structurées : chaque étape pointe vers une vraie URL (la dernière = page courante) ;
 // les étapes intermédiaires sans page sont ignorées pour rester conformes aux exigences Google.

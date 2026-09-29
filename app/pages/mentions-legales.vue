@@ -1,25 +1,21 @@
 <template>
   <LegalPage
-    title="Mentions légales"
-    eyebrow="Informations légales"
-    lead="Informations réglementaires concernant le site, nos engagements et l’activité de KPS Agency."
-    :articles="articles"
+    :title="t.title"
+    :eyebrow="t.eyebrow"
+    :lead="t.lead"
+    :articles="t.articles"
   />
 </template>
 
 <script setup lang="ts">
 import type { LegalArticle } from '~/components/LegalPage.vue'
 import { CONTACT } from '~/data/content'
+import { LEGAL_EN } from '~/data/legal.en'
 
-usePageSeo({
-  title: 'Mentions légales',
-  description: 'Mentions légales du site kps-agency.com : éditeur, hébergement, propriété intellectuelle, données personnelles et cookies.',
-  noindex: true
-})
 
 const mail: [string, string, string] = ['Contact', CONTACT.email, `mailto:${CONTACT.email}`]
 
-const articles: LegalArticle[] = [
+const articlesFr: LegalArticle[] = [
   { t: 'Éditeur du site', blocks: [
     'Le présent site web kps-agency.com est édité par l’agence KPS Agency.',
     { kv: [
@@ -78,4 +74,13 @@ const articles: LegalArticle[] = [
     { kv: [mail] }
   ] }
 ]
+
+const t = useLocaleText({
+  fr: {
+    title: 'Mentions légales', eyebrow: 'Informations légales', lead: 'Informations réglementaires concernant le site, nos engagements et l’activité de KPS Agency.', articles: articlesFr,
+    seoTitle: 'Mentions légales', seoDesc: 'Mentions légales du site kps-agency.com : éditeur, hébergement, propriété intellectuelle, données personnelles et cookies.'
+  },
+  en: LEGAL_EN
+})
+usePageSeo({ title: () => t.value.seoTitle, description: () => t.value.seoDesc, noindex: true })
 </script>

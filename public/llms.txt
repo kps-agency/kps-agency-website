@@ -28,3 +28,18 @@
 - [Contact et devis](https://kps-agency.com/contact)
 - [Conditions générales de vente](https://kps-agency.com/cgv)
 - [Mentions légales](https://kps-agency.com/mentions-legales)
+
+## English version
+
+KPS Agency is a Paris-based digital agency (59 rue de Ponthieu, 75008 Paris) helping SMEs in France and internationally with website design, custom software, mobile apps, SEO & GEO, paid ads and social media. Free quote within 48 hours: contact@kps-agency.com.
+
+- [Home (English)](https://kps-agency.com/en)
+- [Website design](https://kps-agency.com/en/services/website-design)
+- [Custom business software](https://kps-agency.com/en/services/custom-business-software)
+- [Mobile app development](https://kps-agency.com/en/services/mobile-app-development)
+- [SEO & GEO](https://kps-agency.com/en/services/seo-geo)
+- [Digital marketing & ads](https://kps-agency.com/en/services/digital-marketing-ads)
+- [Social media & content](https://kps-agency.com/en/services/social-media)
+- [Our work](https://kps-agency.com/en/work)
+- [About us](https://kps-agency.com/en/about)
+- [Contact & quote](https://kps-agency.com/en/contact)

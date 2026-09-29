@@ -1,15 +1,15 @@
 <template>
   <LegalPage
-    title="Conditions Générales de Vente"
-    eyebrow="Conditions générales"
-    lead="Parce que des engagements clairs font les meilleurs partenariats."
-    :articles="articles"
-    articles-title="Conditions détaillées"
-    footnote="Les présentes conditions générales sont applicables à compter du 1er janvier 2026. KPS Agency se réserve le droit de les modifier à tout moment. Les modifications s’appliquent uniquement aux commandes et devis émis après la date de mise à jour."
+    :title="t.title"
+    :eyebrow="t.eyebrow"
+    :lead="t.lead"
+    :articles="t.articles"
+    :articles-title="t.articlesTitle"
+    :footnote="t.footnote"
   >
     <div class="keys">
-      <div v-for="k in keys" :key="k.t" class="keys__item">
-        <span class="keys__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="k.icon" /></svg></span>
+      <div v-for="(k, i) in t.keys" :key="k.t" class="keys__item">
+        <span class="keys__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="KEY_ICONS[i]" /></svg></span>
         <h2 class="keys__t">{{ k.t }}</h2>
         <p class="keys__d">{{ k.d }}</p>
       </div>
@@ -19,21 +19,17 @@
 
 <script setup lang="ts">
 import type { LegalArticle } from '~/components/LegalPage.vue'
+import { TERMS_EN } from '~/data/legal.en'
 
-usePageSeo({
-  title: 'Conditions Générales de Vente',
-  description: 'Conditions générales de vente de KPS Agency : devis, paiement, délais, maintenance, propriété intellectuelle et responsabilités.',
-  noindex: true
-})
 
-const keys = [
+const keysFr = [
   { t: 'Des prestations cadrées', d: 'Chaque prestation fait l’objet d’un devis détaillé et de votre validation préalable. Vous gardez la maîtrise du périmètre de votre projet.', icon: 'M9 12l2 2 4-4M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z' },
   { t: 'Modalités de paiement', d: 'Une structure claire : 50 % à la commande, 50 % à la livraison. Les conditions spécifiques sont toujours précisées dans votre devis.', icon: 'M2 7h20v12H2zM2 11h20M6 15h4' },
   { t: 'Délais de réalisation', d: 'Les délais sont estimés avec soin et donnés à titre indicatif. Nous nous engageons à une communication transparente sur l’avancement.', icon: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2' },
   { t: 'Responsabilité encadrée', d: 'Notre engagement porte sur les moyens mis en œuvre. La performance dépend aussi de facteurs externes (algorithmes, marché…).', icon: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z' }
 ]
 
-const articles: LegalArticle[] = [
+const articlesFr: LegalArticle[] = [
   { t: 'Présentation de la société', blocks: [
     'Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre KPS Agency, agence digitale spécialisée dans la conception, la gestion et le déploiement de solutions digitales, ci-après « KPS Agency », et toute personne physique ou morale souhaitant bénéficier de ses services, ci-après « le Client ».',
     'La validation d’un devis, d’une commande ou d’une prestation implique l’acceptation pleine et entière des présentes CGV.'
@@ -152,6 +148,18 @@ const articles: LegalArticle[] = [
     'À défaut, le litige sera porté devant les tribunaux compétents du siège social de KPS Agency.'
   ] }
 ]
+
+const KEY_ICONS = keysFr.map(k => k.icon)
+const t = useLocaleText({
+  fr: {
+    title: 'Conditions Générales de Vente', eyebrow: 'Conditions générales', lead: 'Parce que des engagements clairs font les meilleurs partenariats.',
+    articlesTitle: 'Conditions détaillées', articles: articlesFr, keys: keysFr.map(({ t, d }) => ({ t, d })),
+    footnote: 'Les présentes conditions générales sont applicables à compter du 1er janvier 2026. KPS Agency se réserve le droit de les modifier à tout moment. Les modifications s’appliquent uniquement aux commandes et devis émis après la date de mise à jour.',
+    seoTitle: 'Conditions Générales de Vente', seoDesc: 'Conditions générales de vente de KPS Agency : devis, paiement, délais, maintenance, propriété intellectuelle et responsabilités.'
+  },
+  en: TERMS_EN
+})
+usePageSeo({ title: () => t.value.seoTitle, description: () => t.value.seoDesc, noindex: true })
 </script>
 
 <style scoped>

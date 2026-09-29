@@ -2,7 +2,7 @@
   <header class="nav">
     <div class="container nav__inner">
       <SiteLogo />
-      <nav class="nav__links" :class="{ 'is-open': open }" aria-label="Navigation principale">
+      <nav class="nav__links" :class="{ 'is-open': open }" :aria-label="t.navLabel">
         <template v-for="item in navItems" :key="item.label">
           <div v-if="item.links" class="nav__item">
             <NuxtLink :to="item.to" class="nav__dd" :class="{ 'is-active': isActive(item) }" aria-haspopup="true">
@@ -21,13 +21,15 @@
           </div>
           <NuxtLink v-else :to="item.to" class="nav__link" :class="{ 'is-active': isActive(item) }" @click="open = false">{{ item.label }}</NuxtLink>
         </template>
-        <NuxtLink to="/contact" class="btn btn--dark btn--sm nav__mobile-cta" @click="open = false">Demander un devis</NuxtLink>
+        <span class="nav__lang nav__lang--mobile" @click="open = false"><SwitchLocalePathLink :locale="switchTo.code" :hreflang="switchTo.code" :lang="switchTo.code">{{ switchTo.long }}</SwitchLocalePathLink></span>
+        <NuxtLink :to="link.contact()" class="btn btn--dark btn--sm nav__mobile-cta" @click="open = false">{{ t.quote }}</NuxtLink>
       </nav>
       <div class="nav__ctas">
-        <NuxtLink to="/contact" class="nav__call">Réserver un appel</NuxtLink>
-        <NuxtLink to="/contact" class="nav__quote">Demander un devis</NuxtLink>
+        <span class="nav__lang"><SwitchLocalePathLink :locale="switchTo.code" :hreflang="switchTo.code" :lang="switchTo.code" :aria-label="switchTo.long">{{ switchTo.short }}</SwitchLocalePathLink></span>
+        <NuxtLink :to="link.contact()" class="nav__call">{{ t.call }}</NuxtLink>
+        <NuxtLink :to="link.contact()" class="nav__quote">{{ t.quote }}</NuxtLink>
       </div>
-      <button type="button" class="nav__burger" :aria-expanded="open" aria-label="Ouvrir le menu" @click="open = !open">
+      <button type="button" class="nav__burger" :aria-expanded="open" :aria-label="t.menu" @click="open = !open">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path v-if="!open" d="M4 7h16M4 12h16M4 17h16" /><path v-else d="M6 6l12 12M18 6L6 18" /></svg>
       </button>
     </div>
@@ -56,41 +58,54 @@ const NAV_ICONS = {
 }
 
 interface NavLink { label: string; desc: string; icon: keyof typeof NAV_ICONS; to: string }
-interface NavItem { label: string; to: string; match?: string; links?: NavLink[] }
+interface NavItem { label: string; to: string; match?: string[]; links?: NavLink[] }
 
-const navItems: NavItem[] = [
-  {
-    label: 'Services', to: '/services', match: '/services',
-    links: [
-      { label: 'Création de site web', desc: 'Vitrine, e-commerce, landing page', icon: 'web', to: '/services/creation-site-web' },
-      { label: 'Application métier', desc: 'CRM, back-office, portail client', icon: 'app', to: '/services/application-metier' },
-      { label: 'Application mobile', desc: 'iOS & Android, de la maquette aux stores', icon: 'mobile', to: '/services/application-mobile' },
-      { label: 'Référencement SEO & GEO', desc: 'Google et moteurs IA', icon: 'seo', to: '/services/referencement-seo-geo' },
-      { label: 'Marketing digital & ADS', desc: 'Meta, Google & TikTok Ads', icon: 'ads', to: '/services/marketing-digital-ads' },
-      { label: 'Social media & contenus', desc: 'Stratégie, visuels, vidéo courte', icon: 'social', to: '/services/social-media' },
-      { label: 'Toutes nos expertises', desc: 'Vue d’ensemble des services', icon: 'grid', to: '/services' }
-    ]
-  },
-  { label: 'Réalisations', to: '/realisations', match: '/realisations' },
-  { label: 'Méthode', to: '/#methode' },
-  {
-    label: 'Secteurs', to: '/agence-digitale/energie', match: '/agence-digitale',
-    links: [
-      { label: 'Énergie', desc: 'PowerCell Group, Copenhagen Energy', icon: 'energy', to: '/agence-digitale/energie' },
-      { label: 'Immobilier', desc: 'Cushman & Wakefield Veritas', icon: 'building', to: '/realisations/cushman-wakefield-veritas' },
-      { label: 'SaaS B2B', desc: 'Fibbl', icon: 'cloud', to: '/realisations/fibbl' },
-      { label: 'Beauté & Santé', desc: 'Brasileia, Jardins de Carthage', icon: 'heart', to: '/realisations/campagnes-beaute-sante' },
-      { label: 'Finance & Conseil', desc: 'KPMG, BR Finanzen', icon: 'finance', to: '/realisations/kpmg' },
-      { label: 'Événementiel', desc: 'Tunisia Franchise Show, Galeries LIVE', icon: 'event', to: '/realisations/tunisia-franchise-show' }
-    ]
-  },
-  { label: 'L’agence', to: '/agence', match: '/agence' }
-]
+const { en, link, services } = useSite()
+const getRouteBaseName = useRouteBaseName()
 
-const isActive = (item: NavItem) => {
-  if (!item.match) return false
-  return item.match === '/agence' ? route.path === '/agence' : route.path.startsWith(item.match)
-}
+const t = useLocaleText({
+  fr: { navLabel: 'Navigation principale', quote: 'Demander un devis', call: 'Réserver un appel', menu: 'Ouvrir le menu' },
+  en: { navLabel: 'Main navigation', quote: 'Get a quote', call: 'Book a call', menu: 'Open menu' }
+})
+// Lien vers la même page dans l'autre langue (SwitchLocalePathLink résout les slugs traduits même en SSR)
+const switchTo = computed(() => en.value
+  ? { code: 'fr' as const, short: 'FR', long: 'Version française' }
+  : { code: 'en' as const, short: 'EN', long: 'English version' })
+
+const ICON_BY_KEY: Record<string, NavLink['icon']> = { web: 'web', app: 'app', mobile: 'mobile', seo: 'seo', ads: 'ads', social: 'social' }
+const SVC_DESC = {
+  fr: { web: 'Vitrine, e-commerce, landing page', app: 'CRM, back-office, portail client', mobile: 'iOS & Android, de la maquette aux stores', seo: 'Google et moteurs IA', ads: 'Meta, Google & TikTok Ads', social: 'Stratégie, visuels, vidéo courte' },
+  en: { web: 'Showcase sites, e-commerce, landing pages', app: 'CRM, back office, client portals', mobile: 'iOS & Android, from mock-up to stores', seo: 'Google and AI search engines', ads: 'Meta, Google & TikTok Ads', social: 'Strategy, visuals, short-form video' }
+} as Record<'fr' | 'en', Record<string, string>>
+// Ordre du menu : sites, apps, mobile, SEO, ADS, social
+const MENU_ORDER = ['creation-site-web', 'application-metier', 'application-mobile', 'referencement-seo-geo', 'marketing-digital-ads', 'social-media']
+
+const navItems = computed<NavItem[]>(() => {
+  const lang = en.value ? 'en' : 'fr'
+  const svcLinks: NavLink[] = MENU_ORDER.map((slug) => {
+    const sv = services.value.find(x => x.slug === slug)!
+    return { label: sv.crumb, desc: SVC_DESC[lang][sv.key]!, icon: ICON_BY_KEY[sv.key]!, to: link.service(slug) }
+  })
+  return [
+    { label: 'Services', to: link.services(), match: ['services', 'services-slug'], links: [...svcLinks, { label: en.value ? 'All our services' : 'Toutes nos expertises', desc: en.value ? 'Overview of what we do' : 'Vue d’ensemble des services', icon: 'grid', to: link.services() }] },
+    { label: en.value ? 'Our work' : 'Réalisations', to: link.work(), match: ['realisations', 'realisations-slug'] },
+    { label: en.value ? 'Method' : 'Méthode', to: link.method() },
+    {
+      label: en.value ? 'Industries' : 'Secteurs', to: link.local('energie'), match: ['agence-digitale-slug'],
+      links: [
+        { label: en.value ? 'Energy' : 'Énergie', desc: 'PowerCell Group, Copenhagen Energy', icon: 'energy', to: link.local('energie') },
+        { label: en.value ? 'Real estate' : 'Immobilier', desc: 'Cushman & Wakefield Veritas', icon: 'building', to: link.project('cushman-wakefield-veritas') },
+        { label: 'SaaS B2B', desc: 'Fibbl', icon: 'cloud', to: link.project('fibbl') },
+        { label: en.value ? 'Beauty & health' : 'Beauté & Santé', desc: 'Brasileia, Jardins de Carthage', icon: 'heart', to: link.project('campagnes-beaute-sante') },
+        { label: en.value ? 'Finance & consulting' : 'Finance & Conseil', desc: 'KPMG, BR Finanzen', icon: 'finance', to: link.project('kpmg') },
+        { label: en.value ? 'Events' : 'Événementiel', desc: 'Tunisia Franchise Show, Galeries LIVE', icon: 'event', to: link.project('tunisia-franchise-show') }
+      ]
+    },
+    { label: en.value ? 'About' : 'L’agence', to: link.about(), match: ['agence'] }
+  ]
+})
+
+const isActive = (item: NavItem) => !!item.match?.includes(getRouteBaseName(route) ?? '')
 </script>
 
 <style scoped>
@@ -114,6 +129,11 @@ const isActive = (item: NavItem) => {
 .nav__sub-t { font-size: 15px; font-weight: 600; color: var(--ink); }
 .nav__sub-d { font-size: 13px; font-weight: 400; color: var(--muted); }
 .nav__ctas { display: flex; gap: 12px; align-items: center; }
+/* SwitchLocalePathLink rend un fragment : le style passe par le conteneur + :deep(a) */
+.nav__lang { display: inline-flex; }
+.nav__lang :deep(a) { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 10px; border-radius: 999px; font-size: 14px; font-weight: 700; letter-spacing: .5px; color: var(--ink); }
+.nav__lang :deep(a:hover) { background: var(--surface-hover); color: var(--accent); }
+.nav__lang--mobile { display: none; }
 .nav__call { padding: 12px 18px; font-size: 15px; font-weight: 500; border: 1px solid var(--line-3); border-radius: 999px; }
 .nav__quote { padding: 12px 20px; font-size: 15px; font-weight: 600; background: var(--ink); color: var(--white); border-radius: 999px; }
 .nav__quote:hover { color: var(--white); background: var(--ink-hover); }
@@ -135,6 +155,9 @@ const isActive = (item: NavItem) => {
   .nav__sub { padding: 8px 0; gap: 12px; }
   .nav__sub-i { width: 30px; height: 30px; border-radius: 8px; }
   .nav__sub-d { display: none; }
+  .nav__lang--mobile { display: flex; border-bottom: 1px solid var(--line); }
+  .nav__lang--mobile :deep(a) { justify-content: flex-start; height: auto; min-width: 0; padding: 14px 0; border-radius: 0; font-size: 17px; font-weight: 500; letter-spacing: 0; }
+  .nav__lang--mobile :deep(a:hover) { background: none; }
   .nav__mobile-cta { display: inline-flex; justify-content: center; margin-top: 18px; border: none; color: var(--white); }
 }
 </style>

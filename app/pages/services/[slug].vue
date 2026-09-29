@@ -2,18 +2,18 @@
   <div v-if="svc">
     <!-- HERO -->
     <section class="container hero">
-      <Breadcrumb :items="[{ label: 'Accueil', to: '/' }, { label: 'Expertises', to: '/services' }, { label: svc.crumb }]" class="hero__crumb" />
+      <Breadcrumb :items="[{ label: t.home, to: link.home() }, { label: t.crumb, to: link.services() }, { label: svc.crumb }]" class="hero__crumb" />
       <div class="hero__main">
         <div class="hero__eyebrow"><span class="hero__num" aria-hidden="true">{{ svc.num }}</span><h1 class="eyebrow hero__kw">{{ seo.h1 }}</h1></div>
         <p class="hero__h1">{{ svc.h1 }}</p>
         <p class="lead hero__sub">{{ svc.sub }}</p>
         <div class="hero__ctas">
-          <NuxtLink to="/contact" class="btn btn--primary">Parler de votre projet →</NuxtLink>
-          <NuxtLink to="/realisations" class="btn btn--ghost">Voir les réalisations</NuxtLink>
+          <NuxtLink :to="link.contact()" class="btn btn--primary">{{ t.talk }} →</NuxtLink>
+          <NuxtLink :to="link.work()" class="btn btn--ghost">{{ t.seeWork }}</NuxtLink>
         </div>
       </div>
       <div class="hero__offers card">
-        <div class="hero__offers-title">Nos offres</div>
+        <div class="hero__offers-title">{{ t.offers }}</div>
         <a v-for="of in svc.offers" :key="of.n" :href="`#offre-${of.n}`" class="hero__offer">{{ of.t }}<span>→</span></a>
       </div>
     </section>
@@ -39,7 +39,7 @@
     <!-- APPROCHE -->
     <section class="container section split">
       <div class="split__head">
-        <div class="eyebrow">L’approche KPS</div>
+        <div class="eyebrow">{{ t.approach }}</div>
         <h2 class="h2 h2--48">{{ svc.benTitle }}</h2>
       </div>
       <div class="split__body">
@@ -54,7 +54,7 @@
     <section class="bg-dark section--96">
       <div class="container">
         <div class="meth-head">
-          <div class="eyebrow">Méthode</div>
+          <div class="eyebrow">{{ t.method }}</div>
           <h2 class="h2 h2--52">{{ svc.methTitle }}</h2>
         </div>
         <ol class="grid grid-4 msteps">
@@ -70,8 +70,8 @@
     <!-- REALISATIONS LIEES -->
     <section class="container section">
       <div class="rel-head">
-        <h2 class="h2 h2--52">Ils nous ont fait confiance</h2>
-        <NuxtLink to="/realisations" class="btn btn--ghost btn--sm">Toutes les réalisations</NuxtLink>
+        <h2 class="h2 h2--52">{{ t.trusted }}</h2>
+        <NuxtLink :to="link.work()" class="btn btn--ghost btn--sm">{{ t.allWork }}</NuxtLink>
       </div>
       <div class="grid grid-3">
         <ProjectCard v-for="p in related" :key="p.slug" :project="p" compact bordered />
@@ -81,53 +81,66 @@
     <!-- FAQ -->
     <section class="bg-white faq-wrap">
       <div class="container section--96 split">
-        <h2 class="h2 h2--48">Questions fréquentes</h2>
-        <FaqList :items="SERVICE_FAQ" class="split__body split__body--block" />
+        <h2 class="h2 h2--48">{{ t.faq }}</h2>
+        <FaqList :items="serviceFaq" class="split__body split__body--block" />
       </div>
     </section>
 
-    <CtaBand :title="svc.cta" text="Décrivez-nous votre besoin : nous revenons vers vous avec une recommandation claire et un devis personnalisé." white />
+    <CtaBand :title="svc.cta" :text="t.ctaText" white />
   </div>
 </template>
 
 <script setup lang="ts">
-import { PROJECTS, serviceBySlug, projectBySlug, SERVICE_FAQ, SERVICE_SEO, type Project } from '~/data/content'
+import type { Project } from '~/data/content'
 
 const route = useRoute()
-const svc = computed(() => serviceBySlug(String(route.params.slug)))
+const { en, link, services, projects, serviceFaq, serviceSeo, serviceSlug } = useSite()
+
+// Le slug doit correspondre à la langue de l'URL (/services/creation-site-web ↔ /en/services/website-design)
+const svc = computed(() => services.value.find(s => serviceSlug(s.slug) === String(route.params.slug)))
 if (!svc.value) throw createError({ statusCode: 404, statusMessage: 'Page introuvable', fatal: true })
+useSetI18nParams()({ fr: { slug: svc.value.slug }, en: { slug: serviceSlug(svc.value.slug, 'en') } })
+
+const t = useLocaleText({
+  fr: { home: 'Accueil', crumb: 'Expertises', talk: 'Parler de votre projet', seeWork: 'Voir les réalisations', offers: 'Nos offres', approach: 'L’approche KPS', method: 'Méthode', trusted: 'Ils nous ont fait confiance', allWork: 'Toutes les réalisations', faq: 'Questions fréquentes', ctaText: 'Décrivez-nous votre besoin : nous revenons vers vous avec une recommandation claire et un devis personnalisé.' },
+  en: { home: 'Home', crumb: 'Services', talk: 'Discuss your project', seeWork: 'See our work', offers: 'What we offer', approach: 'The KPS approach', method: 'Method', trusted: 'They trusted us', allWork: 'All our work', faq: 'Frequently asked questions', ctaText: 'Tell us what you need: we’ll come back to you with a clear recommendation and a tailored quote.' }
+})
 
 // Projets liés au service ; à défaut, les réalisations les plus récentes (jamais de carte vide)
 const related = computed(() => {
-  const own = (svc.value?.related ?? []).map(projectBySlug).filter(Boolean) as Project[]
-  return own.length ? own : PROJECTS.slice(0, 3)
+  const own = (svc.value?.related ?? []).map(slug => projects.value.find(p => p.slug === slug)).filter(Boolean) as Project[]
+  return own.length ? own : projects.value.slice(0, 3)
 })
 
-const seo = computed(() => SERVICE_SEO[svc.value!.slug]!)
+const seo = computed(() => serviceSeo.value[svc.value!.slug]!)
 usePageSeo({ title: () => seo.value.title, description: () => seo.value.desc })
 const site = useRuntimeConfig().public.siteUrl as string
 useHead({
   script: [{
     type: 'application/ld+json',
-    innerHTML: () => JSON.stringify({
-      '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'Service', '@id': `${site}/services/${svc.value!.slug}#service`,
-          name: seo.value.h1, serviceType: svc.value!.crumb, description: seo.value.desc, url: `${site}/services/${svc.value!.slug}`,
-          provider: { '@id': `${site}/#organization` },
-          areaServed: [{ '@type': 'City', name: 'Paris' }, { '@type': 'Country', name: 'France' }],
-          hasOfferCatalog: {
-            '@type': 'OfferCatalog', name: svc.value!.offersTitle,
-            itemListElement: svc.value!.offers.map(of => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: of.t, description: of.d } }))
+    innerHTML: () => {
+      const url = `${site}${link.service(svc.value!.slug)}`
+      const lang = en.value ? 'en' : 'fr-FR'
+      return JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Service', '@id': `${url}#service`,
+            name: seo.value.h1, serviceType: svc.value!.crumb, description: seo.value.desc, url, inLanguage: lang,
+            provider: { '@id': `${site}/#organization` },
+            areaServed: [{ '@type': 'City', name: 'Paris' }, { '@type': 'Country', name: 'France' }],
+            hasOfferCatalog: {
+              '@type': 'OfferCatalog', name: svc.value!.offersTitle,
+              itemListElement: svc.value!.offers.map(of => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: of.t, description: of.d } }))
+            }
+          },
+          {
+            '@type': 'FAQPage', '@id': `${url}#faq`, inLanguage: lang,
+            mainEntity: serviceFaq.value.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
           }
-        },
-        {
-          '@type': 'FAQPage', '@id': `${site}/services/${svc.value!.slug}#faq`,
-          mainEntity: SERVICE_FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
-        }
-      ]
-    })
+        ]
+      })
+    }
   }]
 })
 </script>

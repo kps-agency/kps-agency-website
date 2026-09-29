@@ -1,14 +1,14 @@
 <template>
   <div v-if="project">
     <section class="container head">
-      <Breadcrumb :items="[{ label: 'Accueil', to: '/' }, { label: 'Réalisations', to: '/realisations' }, { label: project.client }]" class="head__crumb" />
+      <Breadcrumb :items="[{ label: t.home, to: link.home() }, { label: t.work, to: link.work() }, { label: project.client }]" class="head__crumb" />
       <div class="head__tags">
-        <span class="head__tag head__tag--dark">{{ CAT_LABEL[project.cat] }}</span>
+        <span class="head__tag head__tag--dark">{{ catLabel[project.cat] }}</span>
         <span class="head__tag">{{ project.label }}</span>
       </div>
       <h1 class="head__h1">{{ project.client }} — {{ project.label }}</h1>
       <p class="lead head__sub">{{ c.sub }}</p>
-      <a v-if="project.url" :href="project.url" target="_blank" rel="noopener" class="btn btn--dark head__site">Voir le site {{ project.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '') }} ↗</a>
+      <a v-if="project.url" :href="project.url" target="_blank" rel="noopener" class="btn btn--dark head__site">{{ t.visit }} {{ project.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '') }} ↗</a>
     </section>
 
     <section class="container">
@@ -35,8 +35,8 @@
     </section>
 
     <section class="container next-wrap">
-      <NuxtLink :to="`/realisations/${next.slug}`" class="next">
-        <div class="next__text"><span class="next__k">Projet suivant</span><span class="next__t">{{ next.client }}<template v-if="!next.metric.startsWith('[')"> · {{ next.metric }}</template></span></div>
+      <NuxtLink :to="link.project(next.slug)" class="next">
+        <div class="next__text"><span class="next__k">{{ t.next }}</span><span class="next__t">{{ next.client }}<template v-if="!next.metric.startsWith('[')"> · {{ next.metric }}</template></span></div>
         <span class="next__arrow" aria-hidden="true">→</span>
       </NuxtLink>
     </section>
@@ -44,19 +44,25 @@
 </template>
 
 <script setup lang="ts">
-import { PROJECTS, CAT_LABEL, projectBySlug, serviceByKey, type ProjectCat } from '~/data/content'
+import type { ProjectCat } from '~/data/content'
 
 const route = useRoute()
-const project = computed(() => projectBySlug(String(route.params.slug)))
+const { en, link, projects, services, catLabel } = useSite()
+const project = computed(() => projects.value.find(p => p.slug === String(route.params.slug)))
 if (!project.value) throw createError({ statusCode: 404, statusMessage: 'Projet introuvable', fatal: true })
 
-// Indicateurs publiés sur kps-agency.com (public/realisations.json)
-const KPIS: Record<string, { v: string; l: string }[]> = {
-  yassir: [{ v: '5M', l: 'paid reach' }, { v: '3.9M', l: 'reach Facebook' }, { v: '1.4M', l: 'reach Instagram' }],
-  zayn: [{ v: '308.8K', l: 'couverture' }, { v: '6.5K', l: 'interactions' }],
-  'groupado-pro': [{ v: '6.4M', l: 'impressions' }, { v: '1.7M', l: 'reach payante' }],
-  'brasileia-cosmetics': [{ v: '1.8M', l: 'vues' }, { v: '996K', l: 'couverture' }],
-  'tunisia-franchise-show': [{ v: '2.2M', l: 'reach' }, { v: '2.9K', l: 'interactions' }]
+const t = useLocaleText({
+  fr: { home: 'Accueil', work: 'Réalisations', visit: 'Voir le site', next: 'Projet suivant', expertise: 'Expertise mobilisée', discover: 'Découvrir notre offre' },
+  en: { home: 'Home', work: 'Our work', visit: 'Visit', next: 'Next project', expertise: 'Expertise involved', discover: 'Discover our service:' }
+})
+
+// Indicateurs publiés sur kps-agency.com
+const KPIS: Record<string, { v: string; fr: string; en: string }[]> = {
+  yassir: [{ v: '5M', fr: 'paid reach', en: 'paid reach' }, { v: '3.9M', fr: 'reach Facebook', en: 'Facebook reach' }, { v: '1.4M', fr: 'reach Instagram', en: 'Instagram reach' }],
+  zayn: [{ v: '308.8K', fr: 'couverture', en: 'reach' }, { v: '6.5K', fr: 'interactions', en: 'interactions' }],
+  'groupado-pro': [{ v: '6.4M', fr: 'impressions', en: 'impressions' }, { v: '1.7M', fr: 'reach payante', en: 'paid reach' }],
+  'brasileia-cosmetics': [{ v: '1.8M', fr: 'vues', en: 'views' }, { v: '996K', fr: 'couverture', en: 'reach' }],
+  'tunisia-franchise-show': [{ v: '2.2M', fr: 'reach', en: 'reach' }, { v: '2.9K', fr: 'interactions', en: 'interactions' }]
 }
 
 // Service mobilisé selon le type de projet : maillage interne vers la page d'expertise
@@ -65,35 +71,43 @@ const SERVICE_BY_CAT: Record<ProjectCat, string> = { Web: 'web', ADS: 'ads', Soc
 interface Block { k: string; t: string; d: string; link?: { to: string; label: string } }
 const c = computed(() => {
   const p = project.value!
-  const svc = serviceByKey(SERVICE_BY_CAT[p.cat])
+  const svc = services.value.find(s => s.key === SERVICE_BY_CAT[p.cat])!
   const hasDesc = !p.desc.startsWith('[')
   const sub = hasDesc
     ? p.desc
-    : `Réalisation web de KPS Agency pour ${p.client}, acteur du secteur ${p.label.toLowerCase()}${p.url ? ' : découvrez le site en ligne' : ''}.`
-  const blocks: Block[] = [{ k: 'Expertise mobilisée', t: svc.crumb, d: svc.sub, link: { to: `/services/${svc.slug}`, label: `Découvrir notre offre ${svc.crumb.toLowerCase()}` } }]
-  return { sub, kpis: KPIS[p.slug] ?? [], blocks, hasDesc }
+    : en.value
+      ? `Website project by KPS Agency for ${p.client}, a company in the ${p.label.toLowerCase()} sector${p.url ? ': see the live website' : ''}.`
+      : `Réalisation web de KPS Agency pour ${p.client}, acteur du secteur ${p.label.toLowerCase()}${p.url ? ' : découvrez le site en ligne' : ''}.`
+  const blocks: Block[] = [{ k: t.value.expertise, t: svc.crumb, d: svc.sub, link: { to: link.service(svc.slug), label: `${t.value.discover} ${svc.crumb.toLowerCase()}` } }]
+  const kpis = (KPIS[p.slug] ?? []).map(k => ({ v: k.v, l: en.value ? k.en : k.fr }))
+  return { sub, kpis, blocks, hasDesc }
 })
 
 const next = computed(() => {
-  const i = PROJECTS.findIndex(x => x.slug === project.value!.slug)
-  return PROJECTS[(i + 1) % PROJECTS.length]!
+  const i = projects.value.findIndex(x => x.slug === project.value!.slug)
+  return projects.value[(i + 1) % projects.value.length]!
 })
 
 const site = useRuntimeConfig().public.siteUrl as string
 const metaDesc = computed(() => {
   const p = project.value!
   if (c.value.hasDesc && p.desc.length >= 110) return p.desc
+  const cat = catLabel.value[p.cat].toLowerCase()
   const long = c.value.hasDesc
-    ? `${p.desc} Projet ${CAT_LABEL[p.cat].toLowerCase()} réalisé par KPS Agency, agence digitale à Paris.`
-    : `Réalisation web de KPS Agency pour ${p.client} (${p.label.toLowerCase()}) : découvrez le projet et le site en ligne. Agence de création de site web à Paris.`
-  const short = c.value.hasDesc ? p.desc : `Réalisation web de KPS Agency pour ${p.client} (${p.label.toLowerCase()}) : découvrez le projet et le site en ligne.`
+    ? (en.value ? `${p.desc} A ${cat} project delivered by KPS Agency, a digital agency in Paris.` : `${p.desc} Projet ${cat} réalisé par KPS Agency, agence digitale à Paris.`)
+    : (en.value
+        ? `Website project by KPS Agency for ${p.client} (${p.label.toLowerCase()}): discover the project and the live website. Website design agency in Paris.`
+        : `Réalisation web de KPS Agency pour ${p.client} (${p.label.toLowerCase()}) : découvrez le projet et le site en ligne. Agence de création de site web à Paris.`)
+  const short = c.value.hasDesc
+    ? p.desc
+    : (en.value ? `Website project by KPS Agency for ${p.client} (${p.label.toLowerCase()}): discover the project and the live website.` : `Réalisation web de KPS Agency pour ${p.client} (${p.label.toLowerCase()}) : découvrez le projet et le site en ligne.`)
   return long.length <= 160 ? long : short
 })
 // Titre ≤ 60 caractères avec la marque : libellé complet si possible, sinon le type de projet
 const pageTitle = computed(() => {
   const p = project.value!
   const full = `${p.client} — ${p.label}`
-  return full.length <= 47 ? full : `${p.client} — ${CAT_LABEL[p.cat]}`
+  return full.length <= 47 ? full : `${p.client} — ${catLabel.value[p.cat]}`
 })
 
 // Tant qu'une étude de cas n'est pas rédigée (description réelle), la page reste hors index mais ses liens sont suivis
@@ -107,12 +121,15 @@ usePageSeo({
 useHead({
   script: [{
     type: 'application/ld+json',
-    innerHTML: () => JSON.stringify({
-      '@context': 'https://schema.org', '@type': 'CreativeWork', '@id': `${site}${route.path}#projet`,
-      name: `${project.value!.client} — ${project.value!.label}`, description: metaDesc.value, url: `${site}${route.path}`,
-      image: site + project.value!.img, inLanguage: 'fr-FR', genre: CAT_LABEL[project.value!.cat],
-      creator: { '@id': `${site}/#organization` }, ...(project.value!.url ? { sameAs: project.value!.url } : {})
-    })
+    innerHTML: () => {
+      const url = `${site}${link.project(project.value!.slug)}`
+      return JSON.stringify({
+        '@context': 'https://schema.org', '@type': 'CreativeWork', '@id': `${url}#projet`,
+        name: `${project.value!.client} — ${project.value!.label}`, description: metaDesc.value, url,
+        image: site + project.value!.img, inLanguage: en.value ? 'en' : 'fr-FR', genre: catLabel.value[project.value!.cat],
+        creator: { '@id': `${site}/#organization` }, ...(project.value!.url ? { sameAs: project.value!.url } : {})
+      })
+    }
   }]
 })
 </script>

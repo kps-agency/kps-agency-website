@@ -2,7 +2,7 @@
   <div class="home">
     <!-- TOP BAR -->
     <div class="topbar">
-      <span>Devis gratuit sous 48 h</span><span class="topbar__dot">·</span><span>Sans engagement</span><span class="topbar__dot">·</span><span>Une équipe basée à Paris</span>
+      <template v-for="(b, i) in t.topbar" :key="b"><span v-if="i" class="topbar__dot">·</span><span>{{ b }}</span></template>
     </div>
 
     <SiteHeader />
@@ -11,22 +11,20 @@
       <!-- HERO -->
       <section class="container hero">
         <div class="hero__text">
-          <h1 class="hero__badge"><span class="hero__badge-dot" aria-hidden="true" />Agence digitale à Paris pour PME &amp; TPE</h1>
-          <p class="h1 hero__title">Votre croissance digitale, gérée de A&nbsp;à&nbsp;Z.</p>
-          <p class="lead hero__lead">Site web, application sur mesure, référencement Google &amp; IA, publicité en ligne : une seule équipe pour vous rendre visible, attirer des clients et les convertir.</p>
+          <h1 class="hero__badge"><span class="hero__badge-dot" aria-hidden="true" />{{ t.hero.badge }}</h1>
+          <p class="h1 hero__title">{{ t.hero.title }}</p>
+          <p class="lead hero__lead">{{ t.hero.lead }}</p>
           <div class="hero__ctas">
-            <NuxtLink to="/contact" class="btn btn--primary">Demander un devis gratuit <IconArrow /></NuxtLink>
-            <NuxtLink to="/realisations" class="btn btn--ghost">Voir nos réalisations</NuxtLink>
+            <NuxtLink :to="link.contact()" class="btn btn--primary">{{ t.hero.cta }} <IconArrow /></NuxtLink>
+            <NuxtLink :to="link.work()" class="btn btn--ghost">{{ t.hero.cta2 }}</NuxtLink>
           </div>
           <ul class="hero__trust">
-            <li><IconCheck />Réponse sous 48 h</li>
-            <li><IconCheck />Interlocuteur dédié</li>
-            <li><IconCheck />Sans engagement</li>
+            <li v-for="x in t.hero.trust" :key="x"><IconCheck />{{ x }}</li>
           </ul>
         </div>
         <div class="hero__visual" aria-hidden="true">
           <div class="browser">
-            <div class="browser__bar"><span /><span /><span /><em>votre-entreprise.fr</em></div>
+            <div class="browser__bar"><span /><span /><span /><em>{{ t.hero.domain }}</em></div>
             <div class="browser__body">
               <i style="width: 70%; height: 22px; background: var(--ink)" /><i style="width: 50%; height: 22px; background: var(--ink)" />
               <i style="width: 60%; height: 10px; background: var(--accent-tint-2); margin-top: 8px" /><i style="width: 45%; height: 10px; background: var(--accent-tint-2)" />
@@ -34,21 +32,21 @@
             </div>
           </div>
           <div class="float float--seo">
-            <div class="float__label">Référencement Google</div>
-            <div class="float__row"><span class="float__big">Top 3</span><span class="float__kw">sur votre mot-clé</span></div>
+            <div class="float__label">{{ t.hero.seoLabel }}</div>
+            <div class="float__row"><span class="float__big">Top 3</span><span class="float__kw">{{ t.hero.seoKw }}</span></div>
             <div class="float__bars"><i style="height: 20%; background: var(--accent-tint)" /><i style="height: 35%; background: var(--accent-tint)" /><i style="height: 45%; background: var(--accent-tint-2)" /><i style="height: 62%; background: var(--accent-light)" /><i style="height: 80%; background: var(--accent-mid)" /><i style="height: 100%; background: var(--accent)" /></div>
           </div>
           <div class="float float--ads">
-            <div class="float__label">Campagne ADS · YASSIR</div>
+            <div class="float__label">{{ t.hero.adsLabel }}</div>
             <div class="float__big float__big--40">5M</div>
-            <div class="float__sub">de portée payante sur Meta</div>
+            <div class="float__sub">{{ t.hero.adsSub }}</div>
           </div>
         </div>
       </section>
 
       <!-- LOGOS -->
       <section class="container logos">
-        <p class="logos__title">Ils nous ont fait confiance en France et à l'international</p>
+        <p class="logos__title">{{ t.logos }}</p>
         <ul class="logos__list">
           <li v-for="l in logos" :key="l">{{ l }}</li>
         </ul>
@@ -59,18 +57,18 @@
         <div class="container">
           <div class="sec-head">
             <div class="sec-head__title">
-              <div class="eyebrow">Nos services</div>
-              <h2 class="h2">Tout ce qu'il faut pour exister et vendre en ligne.</h2>
+              <div class="eyebrow">{{ t.services.eyebrow }}</div>
+              <h2 class="h2">{{ t.services.h2 }}</h2>
             </div>
-            <p class="text-18 sec-head__p">Choisissez un service ou combinez-les. Chaque projet est piloté par un chef de projet unique, du brief au lancement.</p>
+            <p class="text-18 sec-head__p">{{ t.services.p }}</p>
           </div>
           <div class="grid grid-3 svc-grid">
-            <NuxtLink v-for="s in services" :key="s.num" :to="s.to" class="svc" :class="`svc--${s.theme}`">
-              <div class="svc__top"><span class="svc__num">{{ s.num }}</span><span class="svc__tag">{{ s.tag }}</span></div>
-              <h3 class="svc__title">{{ s.title }}</h3>
-              <p class="svc__desc">{{ s.desc }}</p>
-              <div class="svc__pills"><span v-for="i in s.items" :key="i">{{ i }}</span></div>
-              <span class="svc__cta">{{ s.cta }} <IconArrow :size="16" /></span>
+            <NuxtLink v-for="sv in t.services.items" :key="sv.num" :to="sv.slug ? link.service(sv.slug) : link.contact()" class="svc" :class="`svc--${sv.theme}`">
+              <div class="svc__top"><span class="svc__num">{{ sv.num }}</span><span class="svc__tag">{{ sv.tag }}</span></div>
+              <h3 class="svc__title">{{ sv.title }}</h3>
+              <p class="svc__desc">{{ sv.desc }}</p>
+              <div class="svc__pills"><span v-for="i in sv.items" :key="i">{{ i }}</span></div>
+              <span class="svc__cta">{{ sv.cta }} <IconArrow :size="16" /></span>
             </NuxtLink>
           </div>
         </div>
@@ -79,12 +77,12 @@
       <!-- METHODE -->
       <section id="methode" class="container section">
         <div class="center-head">
-          <div class="eyebrow">Comment ça marche</div>
-          <h2 class="h2">Simple, rapide, transparent.</h2>
-          <p class="text-18">Pas de jargon, pas de réunion inutile. Un process en 4 étapes, et vous validez tout avant la mise en ligne.</p>
+          <div class="eyebrow">{{ t.method.eyebrow }}</div>
+          <h2 class="h2">{{ t.method.h2 }}</h2>
+          <p class="text-18">{{ t.method.p }}</p>
         </div>
         <ol class="grid grid-4 steps">
-          <li v-for="st in steps" :key="st.n" class="card step">
+          <li v-for="st in t.method.steps" :key="st.n" class="card step">
             <div class="step__top"><span class="step__n">{{ st.n }}</span><span class="step__time">{{ st.time }}</span></div>
             <h3 class="step__title">{{ st.title }}</h3>
             <p class="step__desc">{{ st.desc }}</p>
@@ -97,57 +95,55 @@
         <div class="container">
           <div class="sec-head">
             <div class="sec-head__title">
-              <div class="eyebrow">Réalisations</div>
-              <h2 class="h2">Des projets concrets,<br>des résultats mesurés.</h2>
+              <div class="eyebrow">{{ t.work.eyebrow }}</div>
+              <h2 class="h2">{{ t.work.h2a }}<br>{{ t.work.h2b }}</h2>
             </div>
-            <div class="filters" role="group" aria-label="Filtrer les réalisations">
-              <button v-for="f in filters" :key="f.id" type="button" :aria-pressed="filter === f.id" :class="{ 'is-on': filter === f.id }" @click="filter = f.id">{{ f.label }}</button>
+            <div class="filters" role="group" :aria-label="t.work.filterLabel">
+              <button v-for="f in t.work.filters" :key="f.id" type="button" :aria-pressed="filter === f.id" :class="{ 'is-on': filter === f.id }" @click="filter = f.id">{{ f.label }}</button>
             </div>
           </div>
           <div class="grid grid-3 work">
-            <NuxtLink v-for="p in projects" :key="p.client" :to="p.to" class="work__card">
-              <div class="work__visual" :style="{ background: p.bg }">
-                <img :src="thumb(p.img)" :srcset="`${thumb(p.img)} 800w, ${p.img} 1600w`" sizes="(max-width: 720px) 100vw, (max-width: 1180px) 50vw, 420px" :alt="`Réalisation ${p.client} — ${p.title}`" class="work__img" loading="lazy" decoding="async" width="800" height="450">
-                <span class="work__cat">{{ p.cat }}</span>
+            <NuxtLink v-for="pr in shown" :key="pr.slug" :to="link.project(pr.slug)" class="work__card">
+              <div class="work__visual" :style="{ background: pr.bg }">
+                <img :src="thumb(pr.img)" :srcset="`${thumb(pr.img)} 800w, ${pr.img} 1600w`" sizes="(max-width: 720px) 100vw, (max-width: 1180px) 50vw, 420px" :alt="`${t.work.alt} ${pr.client} — ${pr.title}`" class="work__img" loading="lazy" decoding="async" width="800" height="450">
+                <span class="work__cat">{{ pr.cat }}</span>
               </div>
               <div class="work__body">
-                <div class="work__sector">{{ p.client }} · {{ p.sector }}</div>
-                <div class="work__title">{{ p.title }}</div>
-                <div class="work__foot"><span class="work__metric">{{ p.metric }}</span><span class="work__more">Voir le cas →</span></div>
+                <div class="work__sector">{{ pr.client }} · {{ pr.sector }}</div>
+                <div class="work__title">{{ pr.title }}</div>
+                <div class="work__foot"><span class="work__metric">{{ pr.metric }}</span><span class="work__more">{{ t.work.more }} →</span></div>
               </div>
             </NuxtLink>
           </div>
-          <div class="work__all"><NuxtLink to="/realisations" class="btn btn--outline-dark">Voir toutes les réalisations</NuxtLink></div>
+          <div class="work__all"><NuxtLink :to="link.work()" class="btn btn--outline-dark">{{ t.work.all }}</NuxtLink></div>
         </div>
       </section>
 
       <!-- COMPARATIF -->
       <section class="container section">
         <div class="center-head">
-          <div class="eyebrow">Pourquoi KPS</div>
-          <h2 class="h2 compare__h">Le meilleur des deux mondes : la réactivité d'un freelance, la force d'une agence.</h2>
+          <div class="eyebrow">{{ t.compare.eyebrow }}</div>
+          <h2 class="h2 compare__h">{{ t.compare.h2 }}</h2>
         </div>
         <div class="compare-wrap">
           <table class="compare">
-            <caption class="sr-only">Comparatif KPS Agency, freelance, agence classique et recrutement interne</caption>
+            <caption class="sr-only">{{ t.compare.caption }}</caption>
             <thead>
               <tr>
                 <td />
                 <th scope="col" class="compare__kps"><img src="/icon-192.png" alt="" width="28" height="28" class="compare__k">KPS Agency</th>
-                <th scope="col">Freelance</th>
-                <th scope="col">Agence classique</th>
-                <th scope="col">Recrutement interne</th>
+                <th v-for="h in t.compare.cols" :key="h" scope="col">{{ h }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="r in compare" :key="r.label">
+              <tr v-for="r in t.compare.rows" :key="r.label">
                 <th scope="row">{{ r.label }}</th>
                 <td v-for="(c, i) in r.cells" :key="i" :class="{ 'compare__hi': i === 0 }">
                   <span class="compare__cell">
                     <IconCheck v-if="c[0] === 'y'" :size="18" />
                     <svg v-else-if="c[0] === 'n'" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
-                    <span v-if="c[0] === 'y' && !c[1]" class="sr-only">Oui</span>
-                    <span v-if="c[0] === 'n' && !c[1]" class="sr-only">Non</span>
+                    <span v-if="c[0] === 'y' && !c[1]" class="sr-only">{{ t.compare.yes }}</span>
+                    <span v-if="c[0] === 'n' && !c[1]" class="sr-only">{{ t.compare.no }}</span>
                     <span>{{ c[1] }}</span>
                   </span>
                 </td>
@@ -162,15 +158,15 @@
         <div class="container">
           <div class="sec-head">
             <div class="sec-head__title">
-              <div class="eyebrow">Avis clients</div>
-              <h2 class="h2">Ils en parlent mieux que nous.</h2>
+              <div class="eyebrow">{{ t.reviews.eyebrow }}</div>
+              <h2 class="h2">{{ t.reviews.h2 }}</h2>
             </div>
             <a :href="GOOGLE_REVIEWS_URL" target="_blank" rel="noopener" class="rating">
               <svg class="rating__g" width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.8-2.1 5.1-4.4 6.7v5.6h7.1c4.2-3.8 6.6-9.5 6.6-16.3z" /><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.3l-7.1-5.5c-2 1.3-4.5 2.1-7.4 2.1-5.7 0-10.5-3.8-12.3-9H4.4v5.7C8 41.1 15.4 46 24 46z" /><path fill="#FBBC05" d="M11.7 28.3c-.4-1.3-.7-2.8-.7-4.3s.3-3 .7-4.3V14H4.4C2.9 17 2 20.4 2 24s.9 7 2.4 10z" /><path fill="#EA4335" d="M24 10.7c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 4.2 29.9 2 24 2 15.4 2 8 6.9 4.4 14l7.3 5.7c1.8-5.2 6.6-9 12.3-9z" /></svg>
-              <span class="rating__v">{{ REVIEWS_AVG.toFixed(1).replace('.', ',') }}</span>
+              <span class="rating__v">{{ en ? REVIEWS_AVG.toFixed(1) : REVIEWS_AVG.toFixed(1).replace('.', ',') }}</span>
               <span class="rating__t">
-                <span class="review__stars" :aria-label="`${REVIEWS_AVG} étoiles sur 5`"><svg v-for="n in 5" :key="n" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path :d="STAR" /></svg></span>
-                <span>{{ REVIEWS.length }} avis Google · <u>Voir la fiche</u></span>
+                <span class="review__stars" :aria-label="`${REVIEWS_AVG} ${t.reviews.stars}`"><svg v-for="n in 5" :key="n" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path :d="STAR" /></svg></span>
+                <span>{{ REVIEWS.length }} {{ t.reviews.count }} · <u>{{ t.reviews.see }}</u></span>
               </span>
             </a>
           </div>
@@ -182,64 +178,62 @@
       <section id="ressources" class="container section faq-sec">
         <div class="faq-sec__head">
           <div class="eyebrow">FAQ</div>
-          <h2 class="h2">Vos questions, nos réponses.</h2>
-          <p class="faq-sec__p">Une autre question ? Écrivez-nous, on répond sous 24 h ouvrées.</p>
-          <NuxtLink to="/contact" class="btn btn--ghost btn--sm">Poser une question</NuxtLink>
+          <h2 class="h2">{{ t.faq.h2 }}</h2>
+          <p class="faq-sec__p">{{ t.faq.p }}</p>
+          <NuxtLink :to="link.contact()" class="btn btn--ghost btn--sm">{{ t.faq.cta }}</NuxtLink>
         </div>
-        <FaqList :items="faq" numbered class="faq-sec__list" />
+        <FaqList :items="t.faq.items" numbered class="faq-sec__list" />
       </section>
 
       <!-- CTA + FORM -->
       <section id="contact" class="container final">
         <div class="final__box">
           <div class="final__text">
-            <h2 class="final__h">Parlons de votre projet.</h2>
-            <p class="final__p">30 minutes pour comprendre vos besoins et vous proposer la bonne solution. Sans jargon, sans pression, sans engagement.</p>
+            <h2 class="final__h">{{ t.final.h2 }}</h2>
+            <p class="final__p">{{ t.final.p }}</p>
             <ul class="final__list">
-              <li><IconCheck :size="18" color="#FFFFFF" />Devis détaillé et gratuit sous 48 h</li>
-              <li><IconCheck :size="18" color="#FFFFFF" />Un chef de projet dédié du début à la fin</li>
-              <li><IconCheck :size="18" color="#FFFFFF" />Vous restez propriétaire de votre site et de vos comptes</li>
+              <li v-for="x in t.final.list" :key="x"><IconCheck :size="18" color="#FFFFFF" />{{ x }}</li>
             </ul>
-            <NuxtLink to="/contact" class="final__call">Ou réserver un appel directement →</NuxtLink>
+            <NuxtLink :to="link.contact()" class="final__call">{{ t.final.call }} →</NuxtLink>
           </div>
           <form class="final__form" @submit.prevent="submit">
             <div class="final__row">
-              <label>Nom<input v-model="form.name" type="text" autocomplete="name" placeholder="Jean Dupont" required></label>
-              <label>Entreprise<input v-model="form.company" type="text" autocomplete="organization" placeholder="Votre société"></label>
+              <label>{{ t.form.name }}<input v-model="form.name" type="text" autocomplete="name" :placeholder="t.form.namePh" required></label>
+              <label>{{ t.form.company }}<input v-model="form.company" type="text" autocomplete="organization" :placeholder="t.form.companyPh"></label>
             </div>
-            <label>E-mail professionnel<input v-model="form.email" type="email" autocomplete="email" placeholder="vous@entreprise.fr" required></label>
+            <label>{{ t.form.email }}<input v-model="form.email" type="email" autocomplete="email" :placeholder="t.form.emailPh" required></label>
             <fieldset class="final__needs">
-              <legend>Votre besoin</legend>
-              <div><button v-for="n in needs" :key="n" type="button" :aria-pressed="need === n" :class="{ 'is-on': need === n }" @click="need = n">{{ n }}</button></div>
+              <legend>{{ t.form.need }}</legend>
+              <div><button v-for="(n, i) in t.form.needs" :key="n" type="button" :aria-pressed="need === i" :class="{ 'is-on': need === i }" @click="need = i">{{ n }}</button></div>
             </fieldset>
-            <label>Votre projet en quelques mots<textarea v-model="form.msg" rows="3" placeholder="Objectifs, délais, budget indicatif…" /></label>
-            <button type="submit" class="final__submit">{{ sent ? 'Merci, demande envoyée' : sending ? 'Envoi…' : 'Recevoir mon devis gratuit' }}</button>
-            <span class="final__note">Vos données restent confidentielles. Réponse sous 48 h ouvrées.</span>
+            <label>{{ t.form.msg }}<textarea v-model="form.msg" rows="3" :placeholder="t.form.msgPh" /></label>
+            <button type="submit" class="final__submit">{{ sent ? t.form.sent : sending ? t.form.sending : t.form.submit }}</button>
+            <span class="final__note">{{ t.form.note }}</span>
           </form>
         </div>
       </section>
     </main>
 
-    <!-- FOOTER (version home v1) -->
+    <!-- FOOTER (version accueil) -->
     <footer class="hfoot">
       <div class="container hfoot__inner">
         <div class="hfoot__grid">
           <div class="hfoot__brand">
             <SiteLogo light />
-            <p>Agence digitale à Paris : création de sites, applications sur mesure, SEO &amp; GEO, publicité en ligne pour les PME et TPE.</p>
+            <p>{{ t.footer.desc }}</p>
             <address>{{ CONTACT.address }} Paris<br><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></address>
           </div>
-          <div v-for="col in footer" :key="col.title" class="hfoot__col">
+          <div v-for="col in footerCols" :key="col.title" class="hfoot__col">
             <div class="hfoot__title">{{ col.title }}</div>
             <NuxtLink v-for="[l, to] in col.links" :key="l" :to="to">{{ l }}</NuxtLink>
           </div>
         </div>
         <div class="hfoot__tags">
-          <div><span>Agence digitale :</span><NuxtLink v-for="[label, to] in FOOTER_LOCAL" :key="label" :to="to" class="hfoot__pill">{{ label }}</NuxtLink></div>
+          <div><span>{{ t.footer.local }}</span><NuxtLink v-for="[label, to] in footerLocal" :key="label" :to="to" class="hfoot__pill">{{ label }}</NuxtLink></div>
         </div>
         <div class="hfoot__bottom">
           <span>© 2026 KPS Agency · Paris, France</span>
-          <div><NuxtLink to="/mentions-legales">Mentions légales</NuxtLink><NuxtLink to="/mentions-legales#article-7">Confidentialité</NuxtLink><NuxtLink to="/cgv">CGV</NuxtLink></div>
+          <div><NuxtLink :to="link.legal()">{{ t.footer.legal }}</NuxtLink><NuxtLink :to="link.legal('#article-7')">{{ t.footer.privacy }}</NuxtLink><NuxtLink :to="link.terms()">{{ t.footer.terms }}</NuxtLink></div>
         </div>
       </div>
     </footer>
@@ -247,108 +241,59 @@
 </template>
 
 <script setup lang="ts">
-import { CONTACT, REVIEWS, REVIEWS_AVG, GOOGLE_REVIEWS_URL, FOOTER_LOCAL, organizationSchema, thumb } from '~/data/content'
+import { CONTACT, REVIEWS, REVIEWS_AVG, GOOGLE_REVIEWS_URL, PROJECTS, organizationSchema, thumb } from '~/data/content'
+import { HOME } from '~/data/home'
 definePageMeta({ layout: false })
-usePageSeo({
-  title: 'Agence digitale à Paris : site web, SEO & Ads',
-  description: 'Agence digitale à Paris pour PME et TPE : création de site web, application sur mesure, référencement Google & IA et publicité en ligne. Devis sous 48 h.'
-})
+
+const { en, locale, link, footerCols, footerLocal } = useSite()
 const site = useRuntimeConfig().public.siteUrl as string
+const STAR = 'M12 2l3 7 7 .6-5.3 4.7 1.6 7.2L12 17.8 5.7 21.5l1.6-7.2L2 9.6 9 9z'
+const logos = ['KPMG', 'Cushman & Wakefield', 'YASSIR', 'PowerCell', 'Copenhagen Energy', 'Fibbl', 'ZAYN', 'Galeries LIVE']
+const t = useLocaleText(HOME)
+
+usePageSeo({ title: () => t.value.seo.title, description: () => t.value.seo.desc })
 useHead({
   script: [{
     type: 'application/ld+json',
-    innerHTML: JSON.stringify({
-      '@context': 'https://schema.org',
-      '@graph': [
-        organizationSchema(site),
-        { '@type': 'WebSite', '@id': `${site}/#website`, url: `${site}/`, name: 'KPS Agency', inLanguage: 'fr-FR', publisher: { '@id': `${site}/#organization` } },
-        { '@type': 'WebPage', '@id': `${site}/#webpage`, url: `${site}/`, name: 'Agence digitale à Paris : site web, SEO & Ads', isPartOf: { '@id': `${site}/#website` }, about: { '@id': `${site}/#organization` }, inLanguage: 'fr-FR' }
-      ]
-    })
+    innerHTML: () => {
+      const url = en.value ? `${site}/en` : `${site}/`
+      return JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          organizationSchema(site, en.value ? 'en' : 'fr'),
+          { '@type': 'WebSite', '@id': `${site}/#website`, url: `${site}/`, name: 'KPS Agency', inLanguage: ['fr-FR', 'en'], publisher: { '@id': `${site}/#organization` } },
+          { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: t.value.seo.title, isPartOf: { '@id': `${site}/#website` }, about: { '@id': `${site}/#organization` }, inLanguage: en.value ? 'en' : 'fr-FR' }
+        ]
+      })
+    }
   }]
 })
 
-const logos = ['KPMG', 'Cushman & Wakefield', 'YASSIR', 'PowerCell', 'Copenhagen Energy', 'Fibbl', 'ZAYN', 'Galeries LIVE']
-
-const services = [
-  { num: '01', tag: 'Le plus demandé', title: 'Création de site web', desc: 'Des sites rapides, beaux et pensés pour convertir vos visiteurs en clients.', items: ['Site vitrine', 'E-commerce', 'Landing page', 'Blog'], cta: 'Découvrir', theme: 'dark', to: '/services/creation-site-web' },
-  { num: '02', tag: 'Sur mesure', title: 'Application métier', desc: 'Automatisez vos process avec un outil taillé pour votre activité : CRM, back-office, portail client.', items: ['CRM', 'Back-office', 'Portail client', 'SaaS'], cta: 'Découvrir', theme: 'light', to: '/services/application-metier' },
-  { num: '03', tag: 'Google + IA', title: 'Référencement SEO & GEO', desc: 'Soyez trouvé sur Google et cité par ChatGPT, Gemini et Perplexity.', items: ['Audit SEO', 'SEO local', 'Contenu', 'GEO / IA'], cta: 'Découvrir', theme: 'light', to: '/services/referencement-seo-geo' },
-  { num: '04', tag: 'iOS & Android', title: 'Application mobile', desc: 'Des apps natives ou cross-platform, de la maquette à la publication sur les stores.', items: ['iOS', 'Android', 'Flutter', 'React Native'], cta: 'Découvrir', theme: 'light', to: '/services/application-mobile' },
-  { num: '05', tag: 'Acquisition', title: 'Marketing digital & ADS', desc: 'Des campagnes rentables sur Google, Meta et TikTok, pilotées par la donnée.', items: ['Google Ads', 'Meta Ads', 'TikTok Ads', 'Social media'], cta: 'Découvrir', theme: 'light', to: '/services/marketing-digital-ads' },
-  { num: '?', tag: 'Gratuit', title: 'Pas sûr de ce qu’il vous faut ?', desc: 'On analyse votre présence en ligne et on vous dit exactement par où commencer.', items: ['Audit offert', '30 min', 'Sans engagement'], cta: 'Demander mon audit', theme: 'soft', to: '/contact' }
-]
-
-const steps = [
-  { n: '1', time: 'Jour 1', title: 'Le brief', desc: 'Un appel de 30 min pour comprendre votre activité, vos objectifs et votre budget.' },
-  { n: '2', time: 'Sous 48 h', title: 'La proposition', desc: 'Un devis clair, un planning et une maquette de principe. Vous validez, on démarre.' },
-  { n: '3', time: 'Production', title: 'La création', desc: 'Design, développement ou campagne : vous suivez l’avancement et validez chaque étape.' },
-  { n: '4', time: 'Lancement', title: 'La croissance', desc: 'Mise en ligne, suivi des résultats et optimisation continue. On reste à vos côtés.' }
-]
-
-const all = [
-  { cat: 'Web', client: 'PowerCell', sector: 'Énergie renouvelable', title: 'Site corporate international', metric: '[Résultat]', bg: '#DDE3FF', fg: '#1A2A8A', to: '/realisations/powercell-group' },
-  { cat: 'ADS', client: 'YASSIR', sector: 'Mobilité & livraison', title: 'Campagne ADS multi-plateforme', metric: '5M reach', bg: '#0E1726', fg: '#FFFFFF', to: '/realisations/yassir' },
-  { cat: 'Social', client: 'ZAYN', sector: 'Retail', title: 'Campagne social media intégrée', metric: '308,8K couverture', bg: '#F2E6D8', fg: '#6B3E12', to: '/realisations/zayn' },
-  { cat: 'Web', client: 'Cushman & W.', sector: 'Immobilier', title: 'Site Cushman & Wakefield Veritas', metric: '[Résultat]', bg: '#E4EFE9', fg: '#14532D', to: '/realisations/cushman-wakefield-veritas' },
-  { cat: 'ADS', client: 'groupado PRO', sector: 'E-commerce B2B', title: 'Campagne ADS performance', metric: '6,4M impressions', bg: '#EDE7F6', fg: '#4C1D95', to: '/realisations/groupado-pro' },
-  { cat: 'Social', client: 'KPMG', sector: 'Audit & conseil', title: 'Audit et analyse d’audience', metric: '[Résultat]', bg: '#E6ECF5', fg: '#0B3A75', to: '/realisations/kpmg' },
-  { cat: 'Web', client: 'Fibbl', sector: 'SaaS B2B', title: 'Site produit SaaS', metric: '[Résultat]', bg: '#FFF1E6', fg: '#9A3412', to: '/realisations/fibbl' },
-  { cat: 'Web', client: 'Copenhagen Energy', sector: 'Énergie', title: 'Site institutionnel', metric: '[Résultat]', bg: '#E0F2FE', fg: '#075985', to: '/realisations/copenhagen-energy' },
-  { cat: 'ADS', client: 'Brasileia', sector: 'Beauté', title: 'Campagne produit beauté', metric: '1,8M vues', bg: '#FCE7F3', fg: '#9D174D', to: '/realisations/brasileia-cosmetics' },
-  { cat: 'ADS', client: 'Tunisia Franchise Show', sector: 'Événementiel', title: 'Campagne événementielle', metric: '2,2M reach', bg: '#FEF3C7', fg: '#92400E', to: '/realisations/tunisia-franchise-show' },
-  { cat: 'Social', client: 'Jardins de Carthage', sector: 'Santé', title: 'Branding & communication santé', metric: '[Résultat]', bg: '#DCFCE7', fg: '#166534', to: '/realisations/jardins-de-carthage' },
-  { cat: 'Web', client: 'Dunstan', sector: 'Animalier', title: 'Site e-commerce', metric: '[Résultat]', bg: '#F5F5F4', fg: '#44403C', to: '/realisations/dunstan' }
-].map(p => ({ ...p, img: `/images/realisations/${p.to.split('/').pop()}.webp`, metric: p.metric.startsWith('[') ? '' : p.metric }))
-const filters = [{ id: 'all', label: 'Tous' }, { id: 'Web', label: 'Sites & apps' }, { id: 'Social', label: 'Social media' }, { id: 'ADS', label: 'Publicité' }]
+// Réalisations mises en avant (ordre éditorial) ; textes courts propres à l'accueil
+const featured = ['powercell-group', 'yassir', 'zayn', 'cushman-wakefield-veritas', 'groupado-pro', 'kpmg', 'fibbl', 'copenhagen-energy', 'brasileia-cosmetics', 'tunisia-franchise-show', 'jardins-de-carthage', 'dunstan']
+const catShort = computed(() => (en.value ? { Web: 'Web', ADS: 'Ads', Social: 'Social' } : { Web: 'Web', ADS: 'ADS', Social: 'Social' }))
 const filter = ref('all')
-const projects = computed(() => (filter.value === 'all' ? all : all.filter(p => p.cat === filter.value)).slice(0, 6))
+const shown = computed(() => featured
+  .map((slug) => {
+    const pr = PROJECTS.find(x => x.slug === slug)!
+    return { ...t.value.work.items[slug]!, slug, img: pr.img, bg: pr.bg, cat: catShort.value[pr.cat], type: pr.cat }
+  })
+  .filter(x => filter.value === 'all' || x.type === filter.value)
+  .slice(0, 6))
 
-const compare: { label: string; cells: [string, string][] }[] = [
-  { label: 'Tous les services digitaux au même endroit', cells: [['y', ''], ['n', ''], ['y', ''], ['n', 'Plusieurs profils']] },
-  { label: 'Interlocuteur unique et dédié', cells: [['y', ''], ['y', ''], ['n', 'Commercial + équipe'], ['y', '']] },
-  { label: 'Délai de démarrage', cells: [['y', 'Sous 1 semaine'], ['-', 'Variable'], ['n', '3 à 6 semaines'], ['n', '2 à 3 mois']] },
-  { label: 'Continuité si absence', cells: [['y', 'Équipe'], ['n', ''], ['y', ''], ['n', '']] },
-  { label: 'Coût adapté aux PME', cells: [['y', 'Sur devis'], ['y', ''], ['n', 'Élevé'], ['n', 'Salaire + charges']] },
-  { label: 'Vous restez propriétaire de tout', cells: [['y', ''], ['-', 'Selon contrat'], ['-', 'Selon contrat'], ['y', '']] }
-]
-
-const STAR = 'M12 2l3 7 7 .6-5.3 4.7 1.6 7.2L12 17.8 5.7 21.5l1.6-7.2L2 9.6 9 9z'
-
-const faq: [string, string][] = [
-  ['Combien coûte un site internet ?', 'Chaque projet est différent : nous établissons un devis gratuit et détaillé sous 48 h, après un appel pour comprendre vos besoins. Aucun frais caché, et le devis reste valable 30 jours.'],
-  ['Comment se passe le paiement ?', '50 % à la commande, 50 % à la livraison, par virement ou carte bancaire. Les conditions précises figurent toujours dans votre devis.'],
-  ['En combien de temps mon site sera-t-il en ligne ?', 'Cela dépend de la complexité du projet et de la transmission de vos contenus. Un planning indicatif, jalonné d’étapes de validation, figure dans votre devis, et nous vous tenons informé de l’avancement.'],
-  ['Combien de modifications sont incluses ?', 'Chaque prestation comprend deux cycles de révision. Au-delà, les modifications font l’objet d’un complément de devis.'],
-  ['Qu’est-ce que le GEO ?', 'Le Generative Engine Optimization consiste à optimiser votre contenu pour être cité par les IA comme ChatGPT, Gemini ou Perplexity, en complément du SEO classique.'],
-  ['Puis-je modifier mon site moi-même ?', 'Oui. Nous livrons un site facile à administrer et nous vous formons à son utilisation.'],
-  ['Suis-je propriétaire de mon site et de mes comptes publicitaires ?', 'Oui. Les créations vous appartiennent dès le paiement intégral, et le nom de domaine, les contenus et les comptes ADS sont à votre nom.'],
-  ['Proposez-vous un suivi après la mise en ligne ?', 'Oui. 12 mois de maintenance technique sont inclus pour chaque site, e-commerce, application ou agent IA. Ensuite, un abonnement optionnel couvre les mises à jour de sécurité, le suivi des performances et l’optimisation SEO ou ADS.'],
-  ['Travaillez-vous uniquement à Paris ?', 'Nous sommes basés à Paris et accompagnons des entreprises partout en France et à l’international, en visio ou sur place.']
-]
-
-const needs = ['Site web', 'Application', 'SEO / GEO', 'App mobile', 'Publicité']
-const need = ref('Site web')
+const need = ref(0)
 const form = reactive({ name: '', company: '', email: '', msg: '' })
 const sent = ref(false)
 const sending = ref(false)
 const config = useRuntimeConfig()
 async function submit() {
   const endpoint = config.public.formEndpoint as string
-  if (!endpoint) { await navigateTo('/contact'); return } // aucun service branché : on redirige vers le formulaire complet
+  if (!endpoint) { await navigateTo(link.contact()); return } // aucun service branché : on redirige vers le formulaire complet
   sending.value = true
-  try { await $fetch(endpoint, { method: 'POST', body: { ...form, need: need.value } }); sent.value = true }
-  catch { await navigateTo('/contact') }
+  try { await $fetch(endpoint, { method: 'POST', body: { ...form, need: t.value.form.needs[need.value], locale: locale.value } }); sent.value = true }
+  catch { await navigateTo(link.contact()) }
   finally { sending.value = false }
 }
-
-const S = '/services/'
-const footer: { title: string; links: [string, string][] }[] = [
-  { title: 'Sites web', links: [['Site vitrine', S + 'creation-site-web'], ['Site e-commerce', S + 'creation-site-web'], ['Landing page', S + 'creation-site-web'], ['Blog', S + 'creation-site-web'], ['Refonte de site', S + 'creation-site-web'], ['Maintenance', S + 'creation-site-web']] },
-  { title: 'Apps & SEO', links: [['Application métier', S + 'application-metier'], ['Application mobile', S + 'application-mobile'], ['Audit SEO', S + 'referencement-seo-geo'], ['SEO local', S + 'referencement-seo-geo'], ['GEO / IA', S + 'referencement-seo-geo'], ['Rédaction web', S + 'referencement-seo-geo']] },
-  { title: 'Marketing', links: [['Google Ads', S + 'marketing-digital-ads'], ['Meta Ads', S + 'marketing-digital-ads'], ['TikTok Ads', S + 'marketing-digital-ads'], ['Social media', S + 'social-media'], ['Création de contenu', S + 'social-media']] },
-  { title: 'L’agence', links: [['À propos', '/agence'], ['Méthode', '/agence'], ['Réalisations', '/realisations'], ['Avis clients', '/#avis'], ['Blog', '/agence'], ['Contact', '/contact']] }
-]
 </script>
 
 <style scoped>

@@ -1,41 +1,51 @@
 <template>
   <div>
     <section class="container head">
-      <Breadcrumb :items="[{ label: 'Accueil', to: '/' }, { label: 'Expertises' }]" />
-      <div class="eyebrow">Expertises</div>
-      <h1 class="head__h1">Six expertises. Une seule équipe. Un objectif : votre croissance.</h1>
-      <p class="lead head__p">Chaque expertise se mobilise seule ou en synergie. C’est dans leur articulation — un site bien référencé, nourri par des campagnes rentables et des contenus engageants — que naît la performance durable.</p>
+      <Breadcrumb :items="[{ label: t.home, to: link.home() }, { label: t.crumb }]" />
+      <div class="eyebrow">{{ t.crumb }}</div>
+      <h1 class="head__h1">{{ t.h1 }}</h1>
+      <p class="lead head__p">{{ t.lead }}</p>
     </section>
     <section class="container list">
       <div class="grid grid-3">
-        <NuxtLink v-for="(s, i) in SERVICES" :key="s.slug" :to="`/services/${s.slug}`" class="item" :class="{ 'item--dark': i === 0 }">
-          <span class="item__num">{{ s.num }}</span>
-          <h2 class="item__t">{{ s.crumb }}</h2>
-          <p class="item__d">{{ s.sub }}</p>
-          <div class="item__pills"><span v-for="o in s.offers" :key="o.n">{{ o.t }}</span></div>
-          <span class="item__cta">Découvrir →</span>
+        <NuxtLink v-for="(sv, i) in services" :key="sv.slug" :to="link.service(sv.slug)" class="item" :class="{ 'item--dark': i === 0 }">
+          <span class="item__num">{{ sv.num }}</span>
+          <h2 class="item__t">{{ sv.crumb }}</h2>
+          <p class="item__d">{{ sv.sub }}</p>
+          <div class="item__pills"><span v-for="of in sv.offers" :key="of.n">{{ of.t }}</span></div>
+          <span class="item__cta">{{ t.more }} →</span>
         </NuxtLink>
       </div>
     </section>
-    <CtaBand title="Un projet en tête ?" text="Décrivez-nous votre besoin : nous revenons vers vous avec une recommandation claire et un devis personnalisé." />
+    <CtaBand :title="t.ctaTitle" :text="t.ctaText" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { SERVICES, SERVICE_SEO } from '~/data/content'
-usePageSeo({ title: 'Agence web & marketing digital : nos expertises', description: 'Création de sites, applications métier et mobiles, SEO & GEO, publicité en ligne et social media : six expertises réunies dans une même agence à Paris.' })
+const { en, link, services, serviceSeo } = useSite()
+const t = useLocaleText({
+  fr: {
+    home: 'Accueil', crumb: 'Expertises', h1: 'Six expertises. Une seule équipe. Un objectif : votre croissance.',
+    lead: 'Chaque expertise se mobilise seule ou en synergie. C’est dans leur articulation — un site bien référencé, nourri par des campagnes rentables et des contenus engageants — que naît la performance durable.',
+    more: 'Découvrir', ctaTitle: 'Un projet en tête ?', ctaText: 'Décrivez-nous votre besoin : nous revenons vers vous avec une recommandation claire et un devis personnalisé.',
+    title: 'Agence web & marketing digital : nos expertises', desc: 'Création de sites, applications métier et mobiles, SEO & GEO, publicité en ligne et social media : six expertises réunies dans une même agence à Paris.'
+  },
+  en: {
+    home: 'Home', crumb: 'Services', h1: 'Six areas of expertise. One team. One goal: your growth.',
+    lead: 'Each service works on its own or in synergy with the others. Lasting performance comes from how they fit together — a well-ranked website, fuelled by profitable campaigns and engaging content.',
+    more: 'Discover', ctaTitle: 'Got a project in mind?', ctaText: 'Tell us what you need: we’ll come back to you with a clear recommendation and a tailored quote.',
+    title: 'Web & digital marketing agency: our services', desc: 'Website design, custom business software and mobile apps, SEO & GEO, paid advertising and social media: six areas of expertise in one Paris agency.'
+  }
+})
+usePageSeo({ title: () => t.value.title, description: () => t.value.desc })
 const site = useRuntimeConfig().public.siteUrl as string
 useHead({
   script: [{
     type: 'application/ld+json',
-    innerHTML: JSON.stringify({
+    innerHTML: () => JSON.stringify({
       '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'CollectionPage', '@id': `${site}/services#webpage`, url: `${site}/services`, name: 'Nos expertises', inLanguage: 'fr-FR',
-          mainEntity: { '@type': 'ItemList', itemListElement: SERVICES.map((sv, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site}/services/${sv.slug}`, name: SERVICE_SEO[sv.slug]?.h1 ?? sv.crumb })) }
-        }
-      ]
+      '@type': 'CollectionPage', '@id': `${site}${link.services()}#webpage`, url: `${site}${link.services()}`, name: t.value.title, inLanguage: en.value ? 'en' : 'fr-FR',
+      mainEntity: { '@type': 'ItemList', itemListElement: services.value.map((sv, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site}${link.service(sv.slug)}`, name: serviceSeo.value[sv.slug]?.h1 ?? sv.crumb })) }
     })
   }]
 })

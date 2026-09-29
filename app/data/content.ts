@@ -21,7 +21,7 @@ export const COMPANY = {
 const hasPhone = !CONTACT.phone.startsWith('[')
 
 /** Entité ProfessionalService de référence, réutilisée par toutes les pages (même @id) */
-export const organizationSchema = (site: string) => ({
+export const organizationSchema = (site: string, lang: 'fr' | 'en' = 'fr') => ({
   '@type': ['ProfessionalService', 'Organization'],
   '@id': `${site}/#organization`,
   name: COMPANY.name,
@@ -29,8 +29,11 @@ export const organizationSchema = (site: string) => ({
   url: `${site}/`,
   logo: { '@type': 'ImageObject', url: `${site}/logo-kps.webp`, width: 311, height: 120 },
   image: `${site}/og-image.jpg`,
-  description: 'Agence digitale à Paris : création de sites web, applications sur mesure, référencement SEO & GEO, publicité en ligne et social media pour les PME et TPE.',
+  description: lang === 'en'
+    ? 'Paris-based digital agency: website design, custom software, SEO & GEO, paid advertising and social media for SMEs.'
+    : 'Agence digitale à Paris : création de sites web, applications sur mesure, référencement SEO & GEO, publicité en ligne et social media pour les PME et TPE.',
   email: CONTACT.email,
+  contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', email: CONTACT.email, availableLanguage: ['French', 'English'], areaServed: 'FR' },
   ...(hasPhone ? { telephone: CONTACT.phone } : {}),
   identifier: { '@type': 'PropertyValue', propertyID: 'SIRET', value: COMPANY.siret },
   address: { '@type': 'PostalAddress', streetAddress: COMPANY.street, postalCode: COMPANY.postalCode, addressLocality: COMPANY.city, addressRegion: 'Île-de-France', addressCountry: 'FR' },
@@ -41,17 +44,17 @@ export const organizationSchema = (site: string) => ({
 })
 
 /* ---------------- Avis Google (copiés depuis la fiche Google, textes verbatim) ---------------- */
-export interface Review { name: string; date: string; text: string; rating: number; truncated?: boolean; translated?: boolean }
+export interface Review { name: string; /** AAAA-MM */ date: string; text: string; rating: number; truncated?: boolean; translated?: boolean }
 export const GOOGLE_REVIEWS_URL = 'https://www.google.com/maps/search/?api=1&query=KPS+Agency+59+rue+de+Ponthieu+75008+Paris'
 export const REVIEWS: Review[] = [
-  { name: 'Amine', date: 'septembre 2026', rating: 5, text: 'Intervention rapide et extrêmement efficace sur mon site WordPress. En quelques jours, mon score de performance a grimpé à 81/100 et tout mon référencement local est enfin en place (fiche Google, pages villes, données structurées). Le prestataire est d’une grande honnêteté intellectuelle, fournit des rapports précis et respecte scrupuleusement les délais.' },
-  { name: 'Sofia Jacobs', date: 'avril 2026', rating: 5, text: 'Super content du rendu du site, process clair, suivi régulier et pas de mauvaises surprises. Le projet a été livré dans les délais et conforme à nos attentes. Je recommande' },
-  { name: 'ali Khan', date: 'août 2026', rating: 5, text: 'Équipe professionnelle ! Ils m’ont fait mon site pour mon restaurant au top ! Prix super accessible, je vous le conseille' },
-  { name: 'nelly varenne', date: 'avril 2026', rating: 5, text: 'En tant qu’architecte, j’accorde beaucoup d’importance a l’image, la communication et la façon dont une entreprise met en valeur son savoir faire. J’ai eu l’occasion de travailler avec KPS et j’ai particulièrement apprécié leur', truncated: true },
-  { name: 'Julien Chantemesse', date: 'avril 2026', rating: 5, text: 'Super agence. La team KPS agency est sérieuse et à l’écoute. Projet de site web rapide et efficace.' },
-  { name: 'Axel Schafers', date: 'avril 2026', rating: 5, text: 'Professionnel, efficace et créatif. Résultats rapides sur Instagram et Facebook. 100 % recommandé.', truncated: true, translated: true },
-  { name: 'NeedyMindSet', date: 'mai 2026', rating: 5, text: 'Très pro et réactif – Site web parfait, bon accompagnement. Je recommande.' },
-  { name: 'Malaine Kougbeadjo', date: 'avril 2026', rating: 5, text: 'super agence de marketing dynamique et réactive! Je recommande!' }
+  { name: 'Amine', date: '2026-09', rating: 5, text: 'Intervention rapide et extrêmement efficace sur mon site WordPress. En quelques jours, mon score de performance a grimpé à 81/100 et tout mon référencement local est enfin en place (fiche Google, pages villes, données structurées). Le prestataire est d’une grande honnêteté intellectuelle, fournit des rapports précis et respecte scrupuleusement les délais.' },
+  { name: 'Sofia Jacobs', date: '2026-04', rating: 5, text: 'Super content du rendu du site, process clair, suivi régulier et pas de mauvaises surprises. Le projet a été livré dans les délais et conforme à nos attentes. Je recommande' },
+  { name: 'ali Khan', date: '2026-08', rating: 5, text: 'Équipe professionnelle ! Ils m’ont fait mon site pour mon restaurant au top ! Prix super accessible, je vous le conseille' },
+  { name: 'nelly varenne', date: '2026-04', rating: 5, text: 'En tant qu’architecte, j’accorde beaucoup d’importance a l’image, la communication et la façon dont une entreprise met en valeur son savoir faire. J’ai eu l’occasion de travailler avec KPS et j’ai particulièrement apprécié leur', truncated: true },
+  { name: 'Julien Chantemesse', date: '2026-04', rating: 5, text: 'Super agence. La team KPS agency est sérieuse et à l’écoute. Projet de site web rapide et efficace.' },
+  { name: 'Axel Schafers', date: '2026-04', rating: 5, text: 'Professionnel, efficace et créatif. Résultats rapides sur Instagram et Facebook. 100 % recommandé.', truncated: true, translated: true },
+  { name: 'NeedyMindSet', date: '2026-05', rating: 5, text: 'Très pro et réactif – Site web parfait, bon accompagnement. Je recommande.' },
+  { name: 'Malaine Kougbeadjo', date: '2026-04', rating: 5, text: 'super agence de marketing dynamique et réactive! Je recommande!' }
 ]
 export const REVIEWS_AVG = REVIEWS.reduce((s, r) => s + r.rating, 0) / REVIEWS.length
 
@@ -101,7 +104,6 @@ export const PROJECTS: Project[] = [
 ]
 
 export const CAT_LABEL: Record<ProjectCat, string> = { Web: 'Site web', ADS: 'ADS', Social: 'Social/Médias' }
-export const projectBySlug = (slug: string) => PROJECTS.find(x => x.slug === slug)
 /** Vignette 800 px générée à côté de chaque visuel (cartes, listes) */
 export const thumb = (img: string) => img.replace(/\.webp$/, '-800.webp')
 
@@ -267,8 +269,6 @@ export const SERVICE_SEO: Record<string, { title: string; h1: string; desc: stri
   'social-media': { title: 'Agence social media : contenus TikTok & Instagram', h1: 'Agence social media & création de contenus', desc: 'Stratégie social media, création visuelle et vidéos courtes pour TikTok et Instagram : des contenus qui renforcent votre image et créent l’engagement.' }
 }
 
-export const serviceBySlug = (slug: string) => SERVICES.find(x => x.slug === slug)
-export const serviceByKey = (key: string) => SERVICES.find(x => x.key === key)!
 
 export const SERVICE_FAQ: [string, string][] = [
   ['Combien coûte ce service ?', 'Chaque projet est unique : son budget dépend de la complexité, des technologies et des délais demandés. Après un premier échange, nous vous remettons un devis détaillé, valable 30 jours. Le paiement se fait en deux temps : 50 % à la commande, 50 % à la livraison.'],
@@ -326,18 +326,4 @@ export const LOCAL_PAGES: LocalPage[] = [
     ],
     cta: 'Un projet dans l’énergie ?'
   }
-]
-export const localBySlug = (slug: string) => LOCAL_PAGES.find(x => x.slug === slug)
-
-/* ---------------- Liens pied de page ---------------- */
-export const FOOTER_COLS = [
-  { title: 'Sites web', links: [['Site vitrine', '/services/creation-site-web#offre-01'], ['Blog', '/services/creation-site-web#offre-02'], ['Landing page', '/services/creation-site-web#offre-03'], ['E-commerce', '/services/creation-site-web#offre-04']] },
-  { title: 'Apps & SEO', links: [['Application métier', '/services/application-metier'], ['Application mobile', '/services/application-mobile'], ['SEO & GEO', '/services/referencement-seo-geo']] },
-  { title: 'Marketing', links: [['Marketing digital & ADS', '/services/marketing-digital-ads'], ['Social media & contenus', '/services/social-media']] },
-  { title: 'L’agence', links: [['À propos', '/agence'], ['Réalisations', '/realisations'], ['Contact & devis', '/contact']] }
-]
-// Chaque libellé mène à une page qui traite réellement du sujet (pas de fausses pages villes)
-export const FOOTER_LOCAL: [string, string][] = [
-  ['Paris', '/agence-digitale/paris'], ['Énergie', '/agence-digitale/energie'],
-  ['Immobilier', '/realisations/cushman-wakefield-veritas'], ['SaaS B2B', '/realisations/fibbl'], ['Beauté & Santé', '/realisations/campagnes-beaute-sante'], ['Événementiel', '/realisations/tunisia-franchise-show']
 ]
