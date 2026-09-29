@@ -35,7 +35,7 @@ const t = useLocaleText({
     facts: [
       { icon: I.clock, t: '30 minutes', d: ' pour comprendre votre activité et vos priorités' },
       { icon: I.cal, t: 'Du lundi au samedi', d: ', de 10 h à 17 h (heure de Paris)' },
-      { icon: I.video, t: 'Visio ou téléphone', d: ', selon votre préférence' },
+      { icon: I.video, t: 'Visio (kMeet) ou téléphone', d: ', selon votre préférence' },
       { icon: I.gift, t: 'Gratuit et sans engagement', d: ', devis sous 48 h si besoin' }
     ],
     alt: 'Vous préférez écrire ?', altLink: 'Envoyer une demande de devis →'
@@ -47,7 +47,7 @@ const t = useLocaleText({
     facts: [
       { icon: I.clock, t: '30 minutes', d: ' to understand your business and priorities' },
       { icon: I.cal, t: 'Monday to Saturday', d: ', 10 am to 5 pm (Paris time)' },
-      { icon: I.video, t: 'Video or phone', d: ', whichever you prefer' },
+      { icon: I.video, t: 'Video (kMeet) or phone', d: ', whichever you prefer' },
       { icon: I.gift, t: 'Free, no commitment', d: ', quote within 48 hours if needed' }
     ],
     alt: 'Prefer to write?', altLink: 'Send a quote request →'

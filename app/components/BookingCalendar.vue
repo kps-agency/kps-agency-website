@@ -104,7 +104,7 @@
       <span class="bk__done-i"><IconCheck :size="30" /></span>
       <h3 class="bk__done-h">{{ t.doneH }}</h3>
       <p class="bk__done-when">{{ longDate(selectedDay!.date) }} · {{ time(selectedSlot!.start) }} – {{ time(selectedSlot!.end) }}<template v-if="showParis"> ({{ t.paris }} {{ time(selectedSlot!.start, BOOKING.timeZone) }})</template></p>
-      <p class="bk__muted">{{ form.mode === 'phone' ? t.donePhone : result?.meetLink ? t.doneMeet : t.doneVisio }}</p>
+      <p class="bk__muted">{{ form.mode === 'phone' ? t.donePhone : result?.meetLink ? t.doneMeet : t.doneVisio }}<template v-if="result?.emailed"> {{ t.doneMail }}</template></p>
       <a v-if="result?.meetLink" :href="result.meetLink" target="_blank" rel="noopener" class="btn btn--primary btn--sm">{{ t.joinMeet }}</a>
       <div class="bk__add">
         <a :href="googleLink" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">{{ t.addGoogle }}</a>
@@ -127,28 +127,28 @@ const t = useLocaleText({
     calendar: 'Choisir une date', prevMonth: 'Mois précédent', nextMonth: 'Mois suivant', legend: 'Jours avec des créneaux libres (du lundi au samedi, 10 h – 17 h, heure de Paris)',
     loading: 'Chargement des disponibilités…', loadError: 'Impossible de charger les disponibilités pour le moment.', retry: 'Réessayer', mailUs: 'Nous écrire', mailSubject: 'Demande de rendez-vous',
     duration: 'Appel de 30 min', paris: 'Paris :', continue: 'Continuer', noSlots: 'Aucun créneau disponible pour le moment. Écrivez-nous, nous trouverons un moment.',
-    yourSlot: 'Votre créneau', change: 'Modifier', mode: 'Format de l’appel', visio: 'Visio', visioD: 'Google Meet, lien envoyé', phoneMode: 'Téléphone', phoneD: 'Nous vous appelons',
+    yourSlot: 'Votre créneau', change: 'Modifier', mode: 'Format de l’appel', visio: 'Visio', visioD: 'Lien kMeet envoyé par e-mail', phoneMode: 'Téléphone', phoneD: 'Nous vous appelons',
     name: 'Prénom et nom', company: 'Entreprise', email: 'E-mail', phone: 'Téléphone', message: 'Votre projet en quelques mots (facultatif)', messagePh: 'Objectifs, site actuel, échéance…',
     consent: 'J’accepte que mes données soient utilisées pour organiser ce rendez-vous, conformément à la', privacy: 'politique de confidentialité',
     back: 'Retour', confirm: 'Confirmer le rendez-vous', sending: 'Réservation…',
     errId: 'Merci d’indiquer votre nom et une adresse e-mail valide.', errPhone: 'Merci d’indiquer un numéro de téléphone pour être rappelé.', errConsent: 'Merci d’accepter l’utilisation de vos données.',
     errTaken: 'Ce créneau vient d’être réservé. Choisissez-en un autre, les disponibilités ont été mises à jour.', errSetup: 'La réservation en ligne n’est pas encore active. Écrivez-nous à', errGeneric: 'La réservation a échoué. Réessayez ou écrivez-nous à',
-    doneH: 'C’est réservé, à bientôt !', doneMeet: 'Vous recevez une invitation par e-mail avec le lien Google Meet.', doneVisio: 'Nous vous envoyons le lien de la visio par e-mail avant le rendez-vous.', donePhone: 'Nous vous appellerons au numéro indiqué, à l’heure prévue.',
-    joinMeet: 'Ouvrir le lien Google Meet', addGoogle: 'Ajouter à Google Agenda', addIcs: 'Ajouter à mon agenda (.ics)',
+    doneH: 'C’est réservé, à bientôt !', doneMeet: 'Voici votre lien de visio : il suffit de l’ouvrir à l’heure du rendez-vous.', doneVisio: 'Nous vous envoyons le lien de la visio par e-mail avant le rendez-vous.', donePhone: 'Nous vous appellerons au numéro indiqué, à l’heure prévue.', doneMail: 'Un e-mail de confirmation vient de vous être envoyé.',
+    joinMeet: 'Ouvrir le lien de la visio', addGoogle: 'Ajouter à Google Agenda', addIcs: 'Ajouter à mon agenda (.ics)',
     eventTitle: 'Appel découverte avec KPS Agency', tz: 'heure de Paris', tzLocal: 'heures affichées dans votre fuseau'
   },
   en: {
     calendar: 'Choose a date', prevMonth: 'Previous month', nextMonth: 'Next month', legend: 'Days with available slots (Monday to Saturday, 10 am – 5 pm, Paris time)',
     loading: 'Loading availability…', loadError: 'We can’t load availability right now.', retry: 'Try again', mailUs: 'Email us', mailSubject: 'Call request',
     duration: '30-minute call', paris: 'Paris:', continue: 'Continue', noSlots: 'No slots available right now. Email us and we’ll find a time.',
-    yourSlot: 'Your slot', change: 'Change', mode: 'Call format', visio: 'Video call', visioD: 'Google Meet, link sent', phoneMode: 'Phone', phoneD: 'We call you',
+    yourSlot: 'Your slot', change: 'Change', mode: 'Call format', visio: 'Video call', visioD: 'kMeet link sent by email', phoneMode: 'Phone', phoneD: 'We call you',
     name: 'Full name', company: 'Company', email: 'Email', phone: 'Phone', message: 'Your project in a few words (optional)', messagePh: 'Goals, current website, timeline…',
     consent: 'I agree that my data may be used to arrange this call, in accordance with the', privacy: 'privacy policy',
     back: 'Back', confirm: 'Confirm booking', sending: 'Booking…',
     errId: 'Please enter your name and a valid email address.', errPhone: 'Please enter a phone number so we can call you.', errConsent: 'Please agree to the use of your data.',
     errTaken: 'This slot has just been booked. Please choose another one — availability has been refreshed.', errSetup: 'Online booking isn’t active yet. Email us at', errGeneric: 'Booking failed. Please try again or email us at',
-    doneH: 'You’re booked — talk soon!', doneMeet: 'You’ll receive an email invitation with the Google Meet link.', doneVisio: 'We’ll email you the video call link before the meeting.', donePhone: 'We’ll call you on the number you provided at the scheduled time.',
-    joinMeet: 'Open the Google Meet link', addGoogle: 'Add to Google Calendar', addIcs: 'Add to my calendar (.ics)',
+    doneH: 'You’re booked — talk soon!', doneMeet: 'Here is your video call link — just open it at the time of the meeting.', doneVisio: 'We’ll email you the video call link before the meeting.', donePhone: 'We’ll call you on the number you provided at the scheduled time.', doneMail: 'A confirmation email is on its way.',
+    joinMeet: 'Open the video call link', addGoogle: 'Add to Google Calendar', addIcs: 'Add to my calendar (.ics)',
     eventTitle: 'Discovery call with KPS Agency', tz: 'Paris time', tzLocal: 'times shown in your time zone'
   }
 })
@@ -246,7 +246,7 @@ const step = ref<'pick' | 'form' | 'done'>('pick')
 const form = reactive({ mode: 'visio' as 'visio' | 'phone', name: '', company: '', email: '', phone: '', message: '', website: '', consent: false })
 const error = ref('')
 const sending = ref(false)
-const result = ref<{ meetLink: string | null } | null>(null)
+const result = ref<{ meetLink: string | null; emailed?: boolean } | null>(null)
 
 async function book() {
   error.value = ''
@@ -256,8 +256,8 @@ async function book() {
   sending.value = true
   try {
     const { consent: _consent, ...payload } = form
-    const res = await $fetch<{ meetLink: string | null }>(`${api}/api/booking/book`, {
-      method: 'POST', body: { ...payload, start: selectedSlot.value!.start, locale: locale.value }
+    const res = await $fetch<{ meetLink: string | null; emailed?: boolean }>(`${api}/api/booking/book`, {
+      method: 'POST', body: { ...payload, start: selectedSlot.value!.start, locale: locale.value, tz: visitorTz.value }
     })
     result.value = res
     step.value = 'done'
@@ -279,7 +279,7 @@ async function book() {
 
 // ---------- Ajout à l'agenda du visiteur ----------
 const stamp = (iso: string) => iso.replace(/[-:]/g, '').replace(/\.\d{3}/, '')
-const eventDetails = computed(() => (form.mode === 'phone' ? `${t.value.phoneMode} : ${form.phone}` : result.value?.meetLink ?? 'Google Meet') + ` — ${CONTACT.email}`)
+const eventDetails = computed(() => (form.mode === 'phone' ? `${t.value.phoneMode} : ${form.phone}` : result.value?.meetLink ?? t.value.visio) + ` — ${CONTACT.email}`)
 const googleLink = computed(() => {
   if (!selectedSlot.value) return '#'
   const q = new URLSearchParams({ action: 'TEMPLATE', text: t.value.eventTitle, dates: `${stamp(selectedSlot.value.start)}/${stamp(selectedSlot.value.end)}`, details: eventDetails.value, ctz: BOOKING.timeZone })

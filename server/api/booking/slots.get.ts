@@ -1,24 +1,24 @@
 import { BOOKING, candidateSlots } from '#shared/booking'
 
-// Créneaux disponibles : règles (lun–sam, 10 h–17 h Paris, jours fériés, délai 2 h, 30 jours) moins les périodes occupées de Google Agenda.
+// Créneaux disponibles : règles (lun–sam, 10 h–17 h Paris, jours fériés, délai 2 h, 30 jours) moins les périodes occupées de l'agenda (kSuite ou Google).
 export default defineEventHandler(async (event) => {
   if (bookingCors(event)) return
   setHeader(event, 'cache-control', 'no-store')
 
   const days = candidateSlots()
   const base = { timeZone: BOOKING.timeZone, duration: BOOKING.duration }
-  const cfg = googleConfig()
-  // Sans configuration Google (développement), on renvoie les créneaux théoriques
-  if (!cfg) return { ...base, configured: false, days }
+  const provider = calendarProvider()
+  // Sans agenda configuré (développement), on renvoie les créneaux théoriques
+  if (!provider) return { ...base, configured: false, days }
 
   const all = days.flatMap(d => d.slots)
   if (!all.length) return { ...base, configured: true, days: [] }
 
   let busy: { start: number; end: number }[]
   try {
-    busy = await busyPeriods(cfg, all[0]!.start, all[all.length - 1]!.end)
+    busy = await provider.busy(all[0]!.start, all[all.length - 1]!.end)
   } catch (err) {
-    console.error('[booking] freeBusy', err)
+    console.error(`[booking] ${provider.name} busy`, err)
     throw createError({ statusCode: 502, statusMessage: 'Agenda indisponible' })
   }
 

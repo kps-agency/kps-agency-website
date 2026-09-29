@@ -5,6 +5,17 @@ export default defineNuxtConfig({
   css: ['@fontsource-variable/bricolage-grotesque', '@fontsource-variable/geist', '~/assets/css/main.css'],
   runtimeConfig: {
     // Réservation d'appels (serveur uniquement) — voir .env.example
+    calendarProvider: 'ksuite', // ksuite (CalDAV Infomaniak) | google
+    caldavUrl: '',
+    caldavUsername: '',
+    caldavPassword: '',
+    kmeetBase: 'https://kmeet.infomaniak.com/',
+    smtpHost: 'mail.infomaniak.com',
+    smtpPort: '465',
+    smtpUser: '',
+    smtpPassword: '',
+    mailFrom: '',
+    bookingNotifyEmail: '',
     googleServiceAccountEmail: '',
     googlePrivateKey: '',
     googleCalendarId: '',
