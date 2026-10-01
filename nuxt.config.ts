@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2026-09-01',
   devtools: { enabled: false },
-  css: ['@fontsource-variable/bricolage-grotesque', '@fontsource-variable/geist', '~/assets/css/main.css'],
+  css: ['@fontsource-variable/dm-sans', '~/assets/css/main.css'],
   runtimeConfig: {
     // Réservation d'appels (serveur uniquement) — voir .env.example
     calendarProvider: 'ksuite', // ksuite (CalDAV Infomaniak) | google
@@ -10,12 +10,13 @@ export default defineNuxtConfig({
     caldavUsername: '',
     caldavPassword: '',
     kmeetBase: 'https://kmeet.infomaniak.com/',
-    smtpHost: 'mail.infomaniak.com',
+    smtpHost: 'smtp.hostinger.com',
     smtpPort: '465',
     smtpUser: '',
     smtpPassword: '',
     mailFrom: '',
     bookingNotifyEmail: '',
+    contactNotifyEmail: '', // destinataire des demandes de contact / devis
     googleServiceAccountEmail: '',
     googlePrivateKey: '',
     googleCalendarId: '',
@@ -23,7 +24,7 @@ export default defineNuxtConfig({
     bookingAllowedOrigins: '',
     public: {
       siteUrl: 'https://kps-agency.com',
-      formEndpoint: '',
+      formEndpoint: '', // vide = API interne /api/contact (e-mail SMTP) ; sinon URL d'un service externe
       // URL de l'API de réservation si elle est hébergée ailleurs que le site statique (ex. https://kps-agency.vercel.app)
       bookingApi: ''
     }
@@ -60,7 +61,7 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'theme-color', content: '#17123D' }
+        { name: 'theme-color', content: '#020617' }
       ],
       link: [
         { rel: 'icon', href: '/favicon.ico', sizes: '48x48' },

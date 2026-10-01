@@ -1,15 +1,15 @@
 import { createTransport, type Transporter } from 'nodemailer'
 import { BOOKING } from '#shared/booking'
 
-// E-mails de rendez-vous via SMTP (kMail Infomaniak : mail.infomaniak.com, port 465, SSL).
+// E-mails du site (rendez-vous, demandes de contact) via SMTP — boîte Hostinger : smtp.hostinger.com, port 465, SSL.
 // Optionnel : sans NUXT_SMTP_USER / NUXT_SMTP_PASSWORD, aucun e-mail n'est envoyé.
 
 let transporter: Transporter | null = null
-function smtp() {
+export function smtpTransport() {
   const c = useRuntimeConfig()
   if (!c.smtpUser || !c.smtpPassword) return null
   transporter ??= createTransport({
-    host: String(c.smtpHost || 'mail.infomaniak.com'),
+    host: String(c.smtpHost || 'smtp.hostinger.com'),
     port: Number(c.smtpPort || 465),
     secure: Number(c.smtpPort || 465) === 465,
     auth: { user: String(c.smtpUser), pass: String(c.smtpPassword) }
@@ -30,7 +30,7 @@ const esc = (s: string) => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;
 
 /** Envoie la confirmation au client et la notification à l'équipe. Ne lève jamais : l'e-mail ne doit pas annuler une réservation créée. */
 export async function sendBookingMails(b: BookingMail) {
-  const tx = smtp()
+  const tx = smtpTransport()
   if (!tx) return { sent: false }
   const c = useRuntimeConfig()
   const from = String(c.mailFrom || c.smtpUser)

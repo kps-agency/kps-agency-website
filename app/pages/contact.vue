@@ -150,9 +150,9 @@ async function onNext() {
   if (!data.consent) { error.value = t.value.errConsent; return }
   sending.value = true
   try {
-    // Brancher ici votre service de formulaire (Formspree, Brevo, API interne…) via NUXT_PUBLIC_FORM_ENDPOINT.
-    const endpoint = config.public.formEndpoint as string
-    if (endpoint) await $fetch(endpoint, { method: 'POST', body: { ...data, locale: locale.value } })
+    // Par défaut : API interne /api/contact (e-mail à l'équipe). NUXT_PUBLIC_FORM_ENDPOINT permet de brancher un service externe.
+    const endpoint = (config.public.formEndpoint as string) || `${(config.public.bookingApi as string || '').replace(/\/$/, '')}/api/contact`
+    await $fetch(endpoint, { method: 'POST', body: { ...data, locale: locale.value } })
     step.value = 4
   } catch {
     error.value = `${t.value.errSend} ${CONTACT.email}.`
@@ -165,13 +165,13 @@ async function onNext() {
 <style scoped>
 .contact { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding-top: 88px; padding-bottom: 112px; }
 .contact__intro { grid-column: span 5; display: flex; flex-direction: column; gap: 28px; padding-right: 32px; }
-.contact__h1 { font-size: 68px; line-height: 1.02; letter-spacing: -2.2px; font-weight: 800; }
+.contact__h1 { font-size: 68px; line-height: 1.02; letter-spacing: -2.2px; font-weight: 900; }
 .contact__lead { font-size: 19px; line-height: 1.55; color: var(--muted); }
 .contact__info { margin: 16px 0 0; border-top: 1px solid var(--line-2); }
 .contact__info > div { display: flex; flex-direction: column; gap: 4px; padding: 20px 0; border-bottom: 1px solid var(--line-2); }
 .contact__info dt { font-size: 13px; color: var(--muted-2); }
 .contact__info dd { margin: 0; font-size: 19px; font-weight: 600; }
-.wizard { grid-column: 7 / span 6; align-self: start; display: flex; flex-direction: column; gap: 28px; padding: 44px; background: var(--white); border: 1px solid var(--line); border-radius: 28px; box-shadow: 0 30px 60px -40px rgba(23, 18, 61,.3); }
+.wizard { grid-column: 7 / span 6; align-self: start; display: flex; flex-direction: column; gap: 28px; padding: 44px; background: var(--surface); border: 1px solid var(--line); border-radius: 28px; box-shadow: 0 30px 60px -40px rgba(0, 0, 0,.3); }
 .wizard__bars { display: flex; gap: 8px; }
 .wizard__bars i { flex-grow: 1; height: 6px; border-radius: 99px; background: var(--line); display: block; transition: background .2s; }
 .wizard__bars i.is-on { background: var(--accent); }
@@ -183,15 +183,15 @@ async function onNext() {
 legend.wizard__h { margin-bottom: 12px; }
 .wizard__error { color: var(--red); font-size: 14px; font-weight: 500; }
 .svc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.svc { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 18px 20px; text-align: left; border-radius: 16px; background: var(--white); color: var(--ink); border: 2px solid var(--line); }
+.svc { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 18px 20px; text-align: left; border-radius: 16px; background: var(--surface); color: var(--ink); border: 2px solid var(--line); }
 .svc.is-on { background: var(--accent-soft); border-color: var(--accent); }
 .svc__t { font-weight: 600; font-size: 16px; }
 .svc__d { font-size: 13px; opacity: .75; }
 .chips { border: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .chips legend { font-size: 14px; font-weight: 600; margin-bottom: 10px; padding: 0; }
 .chips div { display: flex; flex-wrap: wrap; gap: 8px; }
-.chips button { padding: 10px 16px; border-radius: 999px; font-size: 14px; font-weight: 500; background: var(--white); color: var(--ink); border: 1px solid var(--line-2); }
-.chips button.is-on { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.chips button { padding: 10px 16px; border-radius: 999px; font-size: 14px; font-weight: 500; background: var(--surface); color: var(--ink); border: 1px solid var(--line-2); }
+.chips button.is-on { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .field { display: flex; flex-direction: column; gap: 8px; font-size: 14px; font-weight: 600; }
 .field input, .field textarea { padding: 14px; border: 1px solid var(--line-2); border-radius: 12px; font-size: 15px; font-family: inherit; font-weight: 400; resize: none; color: var(--ink); }
