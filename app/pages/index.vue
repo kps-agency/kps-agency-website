@@ -23,9 +23,56 @@
           <ul class="hero__trust">
             <li v-for="x in t.hero.trust" :key="x"><IconCheck />{{ x }}</li>
           </ul>
-          <HeroShowcase class="hero__visual" />
+          <HeroShowcase v-if="SHOW_HERO_SHOWCASE" class="hero__visual" />
         </section>
         <div class="hero__wave" aria-hidden="true"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" /></svg></div>
+      </div>
+
+      <!-- NOTRE ADN (maquette) -->
+      <section id="adn" class="adn">
+        <div class="container">
+          <div class="lhead lhead--adn">
+            <div class="adn__badge">{{ t.adn.badge }}</div>
+            <h2 class="lhead__h lhead__h--xl">{{ t.adn.h2 }}<br><span class="lhead__grad">{{ t.adn.hi }}</span></h2>
+            <p class="lhead__p lhead__p--why">{{ t.adn.p }}</p>
+          </div>
+          <div class="adn__grid">
+            <article v-for="(f, i) in t.adn.items" :key="f.title" class="adn__card" :style="{ '--g': ADN_GRADS[i] }">
+              <div class="adn__icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" v-html="ADN_ICONS[i]" /></div>
+              <h3 class="adn__title">{{ f.title }}</h3>
+              <p class="adn__desc">{{ f.desc }}</p>
+              <div class="adn__more">{{ t.adn.more }} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" v-html="ICON_ZAP" /></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- REALISATIONS : trois blocs (Social/Médias, Web, ADS), comme sur la maquette kps-agency.com -->
+      <div id="realisations" ref="pfRoot" class="pf-wrap" :class="{ 'pf-wrap--anim': pfAnim }">
+        <section v-for="sec in portfolio" :key="sec.id" class="pf" :class="`pf--${sec.id}`" :aria-labelledby="`pf-${sec.id}`">
+          <div class="pf__blobs" aria-hidden="true"><i /><i /></div>
+          <div class="container pf__inner">
+            <div class="pf__head">
+              <div class="pf__badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" v-html="ICON_SPARKLES" />{{ sec.text.badge }}</div>
+              <h2 :id="`pf-${sec.id}`" class="pf__h">{{ sec.text.title }} <span>{{ sec.text.hi }}</span></h2>
+              <p class="pf__p">{{ sec.text.p }}</p>
+            </div>
+            <div class="pf__grid">
+              <NuxtLink v-for="(pr, i) in sec.items" :key="pr.slug" :to="link.project(pr.slug)" class="pf__card" :class="{ 'pf__card--half': sec.halves.includes(i) }" :style="{ '--i': i % 3 }">
+                <div class="pf__visual">
+                  <img :src="thumb(pr.img)" :srcset="`${thumb(pr.img)} 800w, ${pr.img} 1600w`" sizes="(max-width: 720px) 100vw, (max-width: 1180px) 50vw, 600px" :alt="`${t.portfolio.alt} ${pr.client} — ${pr.label}`" loading="lazy" decoding="async" width="800" height="450">
+                  <span class="pf__cat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" v-html="PF_ICONS[sec.id]" /><span>{{ pr.label }}</span></span>
+                </div>
+                <div class="pf__body">
+                  <h3 class="pf__title">{{ pr.client }}</h3>
+                  <p v-if="!pr.desc.startsWith('[')" class="pf__desc">{{ pr.desc }}</p>
+                  <div v-else class="pf__more"><span>{{ t.portfolio.more }}</span><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" v-html="ICON_EXTERNAL" /></i></div>
+                </div>
+              </NuxtLink>
+            </div>
+          </div>
+        </section>
+        <div class="pf__all"><NuxtLink :to="link.work()" class="btn btn--outline-dark">{{ t.portfolio.all }}</NuxtLink></div>
       </div>
 
       <!-- WORKFLOW (maquette) -->
@@ -105,43 +152,6 @@
               <div class="why__stat"># {{ b.stat }}</div>
             </article>
           </div>
-        </div>
-      </section>
-
-      <!-- REALISATIONS -->
-      <section id="realisations" class="bg-dark section">
-        <div class="container">
-          <div class="sec-head">
-            <div class="sec-head__title">
-              <div class="eyebrow">{{ t.work.eyebrow }}</div>
-              <h2 class="h2">{{ t.work.h2a }}<br>{{ t.work.h2b }}</h2>
-            </div>
-            <div class="filters" role="group" :aria-label="t.work.filterLabel">
-              <button v-for="f in t.work.filters" :key="f.id" type="button" :aria-pressed="filter === f.id" :class="{ 'is-on': filter === f.id }" @click="filter = f.id">{{ f.label }}</button>
-            </div>
-          </div>
-          <!-- Défilement automatique par groupes de 6 (en pause au survol, au focus et si l'utilisateur préfère moins d'animations) -->
-          <div class="work__stage" @touchstart.passive="workHover = true" @mouseenter="workHover = true" @mouseleave="workHover = false" @focusin="workFocus = true" @focusout="workFocus = false">
-          <Transition name="wk" mode="out-in">
-          <div :key="`${filter}-${workPage}`" class="grid grid-3 work m-swipe">
-            <NuxtLink v-for="(pr, i) in shown" :key="pr.slug" :to="link.project(pr.slug)" class="work__card" :style="{ '--i': i }">
-              <div class="work__visual" :style="{ background: pr.bg }">
-                <img :src="thumb(pr.img)" :srcset="`${thumb(pr.img)} 800w, ${pr.img} 1600w`" sizes="(max-width: 720px) 100vw, (max-width: 1180px) 50vw, 420px" :alt="`${t.work.alt} ${pr.client} — ${pr.title}`" class="work__img" loading="lazy" decoding="async" width="800" height="450">
-                <span class="work__cat">{{ pr.cat }}</span>
-              </div>
-              <div class="work__body">
-                <div class="work__sector">{{ pr.client }} · {{ pr.sector }}</div>
-                <div class="work__title">{{ pr.title }}</div>
-                <div class="work__foot"><span class="work__metric">{{ pr.metric }}</span><span class="work__more">{{ t.work.more }} →</span></div>
-              </div>
-            </NuxtLink>
-          </div>
-          </Transition>
-          </div>
-          <div v-if="workPages > 1" class="work__dots" role="group" :aria-label="t.work.pagesLabel">
-            <button v-for="n in workPages" :key="n" type="button" :class="{ 'is-on': workPage === n - 1 }" :aria-current="workPage === n - 1 ? 'true' : undefined" :aria-label="`${t.work.pageLabel} ${n} / ${workPages}`" @click="goWork(n - 1)"><i :key="`${filter}-${workPage}-${workPaused}`" /></button>
-          </div>
-          <div class="work__all"><NuxtLink :to="link.work()" class="btn btn--outline-dark">{{ t.work.all }}</NuxtLink></div>
         </div>
       </section>
 
@@ -250,7 +260,8 @@
               <div><button v-for="(n, i) in t.form.needs" :key="n" type="button" :aria-pressed="need === i" :class="{ 'is-on': need === i }" @click="need = i">{{ n }}</button></div>
             </fieldset>
             <label>{{ t.form.msg }}<textarea v-model="form.msg" rows="3" :placeholder="t.form.msgPh" /></label>
-            <button type="submit" class="final__submit">{{ sent ? t.form.sent : sending ? t.form.sending : t.form.submit }}</button>
+            <button type="submit" class="final__submit" :disabled="sending">{{ sending ? t.form.sending : t.form.submit }}</button>
+            <Transition name="ok"><p v-if="sent" class="final__ok" role="status"><IconCheck :size="18" />{{ t.form.sent }}</p></Transition>
             <span class="final__note">{{ t.form.note }}</span>
           </form>
         </div>
@@ -284,11 +295,11 @@
 </template>
 
 <script setup lang="ts">
-import { CONTACT, REVIEWS, REVIEWS_AVG, GOOGLE_REVIEWS_URL, PROJECTS, organizationSchema, thumb } from '~/data/content'
+import { CONTACT, REVIEWS, REVIEWS_AVG, GOOGLE_REVIEWS_URL, organizationSchema, thumb } from '~/data/content'
 import { HOME } from '~/data/home'
 definePageMeta({ layout: false })
 
-const { en, locale, link, footerCols, footerLocal } = useSite()
+const { en, locale, link, projects, footerCols, footerLocal } = useSite()
 const site = useRuntimeConfig().public.siteUrl as string
 const STAR = 'M12 2l3 7 7 .6-5.3 4.7 1.6 7.2L12 17.8 5.7 21.5l1.6-7.2L2 9.6 9 9z'
 const BOOK_ICONS = [
@@ -298,9 +309,18 @@ const BOOK_ICONS = [
   'M9 12l2 2 4-4M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z'
 ]
 const t = useLocaleText(HOME)
+// Animation des services dans le hero (onglets Site web, App métier, App mobile, SEO & GEO, Publicité, Social) : désactivée pour l'instant, remettre à true pour la réafficher
+const SHOW_HERO_SHOWCASE = false
 // Icônes (Lucide) et couleurs des sections reprises de la maquette kps-agency.com
 const ICON_WAVES = '<path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>'
 const ICON_SPARKLES = '<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/>'
+const ICON_ZAP = '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>'
+const ADN_ICONS = [
+  '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>'
+]
+const ADN_GRADS = ['linear-gradient(135deg, #3B82F6, #22D3EE)', 'linear-gradient(135deg, #A855F7, #EC4899)', 'linear-gradient(135deg, #F97316, #EF4444)']
 const WF_ICONS = [
   '<path d="M14 4.1 12 6"/><path d="m5.1 8-2.9-.8"/><path d="m6 12-1.9 2"/><path d="M7.2 2.2 8 5.1"/><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/>',
   '<path d="M12.5 22H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v9.5"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M13.378 15.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/>',
@@ -340,54 +360,51 @@ useHead({
   }]
 })
 
-// Réalisations mises en avant (ordre éditorial) ; textes courts propres à l'accueil
-const featured = ['powercell-group', 'yassir', 'zayn', 'cushman-wakefield-veritas', 'groupado-pro', 'kpmg', 'fibbl', 'copenhagen-energy', 'brasileia-cosmetics', 'tunisia-franchise-show', 'jardins-de-carthage', 'dunstan']
-const catShort = computed(() => (en.value ? { Web: 'Web', ADS: 'Ads', Social: 'Social' } : { Web: 'Web', ADS: 'ADS', Social: 'Social' }))
-const filter = ref('all')
-const filtered = computed(() => featured
-  .map((slug) => {
-    const pr = PROJECTS.find(x => x.slug === slug)!
-    return { ...t.value.work.items[slug]!, slug, img: pr.img, bg: pr.bg, cat: catShort.value[pr.cat], type: pr.cat }
-  })
-  .filter(x => filter.value === 'all' || x.type === filter.value))
-
-// Réalisations affichées par groupes de 6, qui défilent automatiquement
-const WORK_GROUP = 6
-const WORK_DELAY = 6000
-const workPage = ref(0)
-const workPages = computed(() => Math.ceil(filtered.value.length / WORK_GROUP))
-const shown = computed(() => filtered.value.slice(workPage.value * WORK_GROUP, (workPage.value + 1) * WORK_GROUP))
-const workHover = ref(false)
-const workFocus = ref(false)
-const workReduced = ref(false)
-const workPaused = computed(() => workHover.value || workFocus.value || workReduced.value || workPages.value < 2)
-let workTimer: ReturnType<typeof setTimeout> | undefined
-function scheduleWork() {
-  clearTimeout(workTimer)
-  if (workPaused.value) return
-  workTimer = setTimeout(() => { if (!document.hidden) workPage.value = (workPage.value + 1) % workPages.value; else scheduleWork() }, WORK_DELAY)
+// Réalisations : trois blocs dans l'ordre de la maquette ; `halves` = cartes en demi-largeur (les autres vont par trois)
+const ICON_EXTERNAL = '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>'
+const PF_ICONS = {
+  social: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>',
+  web: '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+  ads: '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>'
 }
-function goWork(n: number) { workPage.value = n }
-watch(filter, () => { workPage.value = 0 })
-watch([workPage, workPaused, filter], scheduleWork)
+const PF_BLOCKS = [
+  { id: 'social', slugs: ['kpmg', 'zayn', 'br-finanzen', 'campagnes-beaute-sante', 'jardins-de-carthage'], halves: [3, 4] },
+  { id: 'web', slugs: ['powercell-group', 'fibbl', 'foscolo', 'cushman-wakefield-veritas', 'dunstan', 'copenhagen-energy', 'radiumhemmets-forskningsfonder'], halves: [3, 4, 5, 6] },
+  { id: 'ads', slugs: ['lore-and-heart', 'yassir', 'groupado-pro', 'galeries-live', 'founa-com-by-smg', 'brasileia-cosmetics', 'prostarseo', 'tunisia-franchise-show'], halves: [3, 4] }
+] as const
+const portfolio = computed(() => PF_BLOCKS.map(b => ({
+  ...b, text: t.value.portfolio[b.id], items: b.slugs.map(slug => projects.value.find(x => x.slug === slug)!).filter(Boolean)
+})))
+
+// Apparition en douceur des cartes à l'entrée dans l'écran (sans JavaScript ou avec « moins d'animations », tout reste visible)
+const pfRoot = ref<HTMLElement>()
+const pfAnim = ref(false)
+let pfObserver: IntersectionObserver | undefined
 onMounted(() => {
-  const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-  workReduced.value = mq.matches
-  mq.addEventListener?.('change', (e) => { workReduced.value = e.matches })
-  scheduleWork()
+  if (!pfRoot.value || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  pfObserver = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); pfObserver!.unobserve(e.target) } })
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 })
+  pfRoot.value.querySelectorAll('.pf__head, .pf__card').forEach(el => pfObserver!.observe(el))
+  pfAnim.value = true
 })
-onBeforeUnmount(() => clearTimeout(workTimer))
+onBeforeUnmount(() => pfObserver?.disconnect())
 
 const need = ref(0)
 const form = reactive({ name: '', company: '', email: '', msg: '' })
 const sent = ref(false)
+let sentTimer: ReturnType<typeof setTimeout> | undefined
 const sending = ref(false)
 const config = useRuntimeConfig()
 async function submit() {
   // Par défaut : API interne /api/contact (e-mail à l'équipe) ; en cas d'échec, on redirige vers le formulaire complet
   const endpoint = (config.public.formEndpoint as string) || `${(config.public.bookingApi as string || '').replace(/\/$/, '')}/api/contact`
   sending.value = true
-  try { await $fetch(endpoint, { method: 'POST', body: { ...form, need: t.value.form.needs[need.value], locale: locale.value } }); sent.value = true }
+  try { await $fetch(endpoint, { method: 'POST', body: { ...form, need: t.value.form.needs[need.value], locale: locale.value } })
+    // Succès : message de confirmation (8 s) et formulaire remis à zéro
+    Object.assign(form, { name: '', company: '', email: '', msg: '' }); need.value = 0
+    sent.value = true; clearTimeout(sentTimer); sentTimer = setTimeout(() => { sent.value = false }, 8000)
+  }
   catch { await navigateTo(link.contact()) }
   finally { sending.value = false }
 }
@@ -419,7 +436,26 @@ async function submit() {
 .hero__visual { position: relative; width: 100%; max-width: 680px; margin-top: 40px; text-align: left; }
 .hero__wave { position: absolute; left: 0; bottom: -1px; width: 100%; line-height: 0; transform: rotate(180deg); }
 .hero__wave svg { display: block; width: calc(100% + 1.3px); height: 60px; }
-.hero__wave path { fill: #FFFFFF; }
+.hero__wave path { fill: #F8FAFC; }
+
+/* Section claire « Notre ADN » de la maquette */
+.adn { padding-block: 128px; background: #F8FAFC; color: #0F172A; }
+.lhead--adn { margin-bottom: 80px; }
+.adn__badge { display: inline-block; margin-bottom: 16px; padding: 4px 12px; border-radius: 999px; background: #E0E7FF; color: #4338CA; font-size: 14px; font-weight: 700; letter-spacing: .35px; text-transform: uppercase; }
+.lhead__h--xl { font-size: 60px; }
+.adn__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.adn__card { position: relative; overflow: hidden; padding: 32px; border-radius: 24px; background: rgba(255, 255, 255, .9); border: 1px solid rgba(255, 255, 255, .5); backdrop-filter: blur(24px); box-shadow: 0 8px 30px rgba(0, 0, 0, .04); transition: box-shadow .5s; }
+.adn__card::before { content: ''; position: absolute; inset: 0; background: var(--g); opacity: 0; transition: opacity .5s; }
+.adn__card:hover { box-shadow: 0 8px 30px rgba(99, 102, 241, .1); }
+.adn__card:hover::before { opacity: .05; }
+.adn__card > * { position: relative; }
+.adn__icon { display: flex; align-items: center; justify-content: center; width: 80px; height: 80px; margin-bottom: 32px; border-radius: 16px; background: var(--g); color: #FFFFFF; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -4px rgba(0, 0, 0, .1); transition: transform .3s; }
+.adn__card:hover .adn__icon { transform: scale(1.1) rotate(3deg); }
+.adn__title { margin-bottom: 16px; font-size: 24px; line-height: 1.33; font-weight: 700; color: #111827; transition: color .3s; }
+.adn__card:hover .adn__title { color: #4F46E5; }
+.adn__desc { font-size: 16px; line-height: 1.625; font-weight: 500; color: #4B5563; }
+.adn__more { display: flex; align-items: center; gap: 4px; margin-top: 24px; font-size: 14px; font-weight: 700; color: #4F46E5; opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s; }
+.adn__card:hover .adn__more { opacity: 1; transform: none; }
 
 /* Sections claires de la maquette : Workflow et Pourquoi choisir la Team KPS */
 .wf { padding-block: 128px; background: #FFFFFF; color: #0F172A; overflow: hidden; }
@@ -490,46 +526,44 @@ async function submit() {
 .step__title { font-size: 24px; letter-spacing: -.4px; font-weight: 700; }
 .step__desc { font-size: 16px; line-height: 1.55; color: var(--muted); }
 
-/* Work */
-.filters { display: flex; gap: 8px; padding: 6px; background: var(--dark-2); border-radius: 999px; flex-wrap: wrap; }
-.filters button { padding: 10px 18px; border: none; border-radius: 999px; font-size: 14px; font-weight: 600; background: transparent; color: var(--dark-muted); }
-.filters button.is-on { background: var(--accent); color: var(--on-accent); }
-.work { margin-top: 40px; }
-/* Visuel en haut, bas de carte sur fond sombre, détaché de la section par une bordure */
-.work__card { display: flex; flex-direction: column; background: var(--dark-2); color: var(--white); border: 1px solid var(--dark-line); border-radius: 20px; overflow: hidden; transition: transform .2s ease, border-color .2s ease; }
-.work__card:hover { color: var(--white); transform: translateY(-3px); border-color: var(--dark-line-2); }
-.work__visual { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
-.work__img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .4s ease; }
-.work__card:hover .work__img { transform: scale(1.04); }
-.work__cat { position: absolute; left: 16px; top: 16px; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 999px; background: var(--surface); color: var(--ink); box-shadow: 0 4px 12px -4px rgba(0, 0, 0,.3); }
-.work__body { display: flex; flex-direction: column; flex-grow: 1; gap: 8px; padding: 22px 24px 24px; }
-.work__sector { font-size: 13px; color: var(--dark-muted-2); font-weight: 500; }
-.work__title { font-size: 18px; font-weight: 600; line-height: 1.35; }
-.work__foot { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--dark-line-2); margin-top: auto; }
-.work__metric { font-family: var(--font-display); font-size: 22px; font-weight: 900; color: var(--accent-light); }
-.work__more { font-size: 14px; font-weight: 600; }
-.work__card:hover .work__more { color: var(--accent-light); }
-/* Changement de groupe : les cartes sortent en fondu puis les suivantes arrivent en cascade */
-.work__stage { --ease: cubic-bezier(.22, 1, .36, 1); }
-.wk-leave-active { transition: opacity .3s ease, transform .3s ease; }
-.wk-leave-to { opacity: 0; transform: translateY(-12px) scale(.985); }
-.wk-enter-active .work__card { animation: wk-in .7s var(--ease) both; animation-delay: calc(var(--i) * 80ms); }
-@keyframes wk-in { from { opacity: 0; transform: translateY(36px) scale(.96); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
-.work__dots { display: flex; justify-content: center; gap: 10px; margin-top: 32px; }
-.work__dots button { position: relative; width: 12px; height: 28px; padding: 0; border: none; background: none; transition: width .4s cubic-bezier(.22, 1, .36, 1); }
-.work__dots button::before { content: ''; position: absolute; left: 0; right: 0; top: 11px; height: 6px; border-radius: 99px; background: var(--dark-line-2); }
-.work__dots button.is-on { width: 48px; }
-/* Jauge du groupe en cours : elle se remplit le temps de l'affichage */
-.work__dots i { position: absolute; left: 0; top: 11px; height: 6px; width: 100%; border-radius: 99px; background: var(--grad-neon); transform-origin: left; transform: scaleX(0); }
-.work__dots button.is-on i { animation: wk-fill 6s linear forwards; }
-.work__stage:hover + .work__dots button.is-on i, .work__stage:focus-within + .work__dots button.is-on i { animation: none; transform: scaleX(1); }
-@keyframes wk-fill { to { transform: scaleX(1); } }
-@media (prefers-reduced-motion: reduce) {
-  .wk-leave-active { transition: none; }
-  .wk-enter-active .work__card { animation: none; }
-  .work__dots button.is-on i { animation: none; transform: scaleX(1); }
-}
-.work__all { display: flex; justify-content: center; margin-top: 40px; }
+/* Réalisations — trois blocs de la maquette */
+.pf-wrap { --ease: cubic-bezier(.22, 1, .36, 1); background: var(--bg); }
+.pf { position: relative; overflow: hidden; padding-block: 112px; border-top: 1px solid rgba(30, 41, 59, .5); --pf: #818CF8; --pf-rgb: 79, 70, 229; --pf-grad: linear-gradient(90deg, #818CF8, #A855F7, #EC4899); }
+.pf--web { --pf: #22D3EE; --pf-rgb: 6, 182, 212; --pf-grad: linear-gradient(90deg, #22D3EE, #3B82F6, #6366F1); }
+.pf--ads { --pf: #60A5FA; --pf-rgb: 59, 130, 246; --pf-grad: linear-gradient(90deg, #60A5FA, #6366F1, #A855F7); }
+.pf__blobs i { position: absolute; border-radius: 50%; filter: blur(150px); mix-blend-mode: screen; opacity: .5; }
+.pf__blobs i:nth-child(1) { top: 0; right: 25%; width: 600px; height: 600px; background: rgba(49, 46, 129, .25); }
+.pf__blobs i:nth-child(2) { bottom: 0; left: 25%; width: 800px; height: 800px; background: rgba(22, 78, 99, .25); }
+.pf__inner { position: relative; max-width: 1280px; padding-inline: 24px; }
+.pf__head { max-width: 768px; margin: 0 auto 64px; text-align: center; }
+.pf__badge { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px; padding: 8px 16px; border-radius: 999px; background: rgba(15, 23, 42, .8); border: 1px solid #1E293B; box-shadow: 0 0 30px rgba(var(--pf-rgb), .1); backdrop-filter: blur(12px); font-size: 14px; font-weight: 600; letter-spacing: .35px; color: var(--pf); }
+.pf__h { margin-bottom: 24px; font-size: 60px; line-height: 1; letter-spacing: -1.5px; font-weight: 800; color: var(--white); }
+.pf__h span { background: var(--pf-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.pf__p { font-size: 20px; line-height: 1.625; font-weight: 300; color: var(--muted-2); }
+.pf__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 32px; }
+.pf__card { grid-column: span 2; display: flex; flex-direction: column; overflow: hidden; background: rgba(15, 23, 42, .4); border: 1px solid rgba(30, 41, 59, .6); border-radius: 24px; color: var(--white); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, .1), 0 8px 10px -6px rgba(0, 0, 0, .1); transition: border-color .5s, box-shadow .5s; }
+.pf__card--half { grid-column: span 3; }
+.pf__card:hover { color: var(--white); border-color: rgba(var(--pf-rgb), .3); box-shadow: 0 20px 40px -15px rgba(var(--pf-rgb), .2); }
+.pf__visual { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 4 / 3; padding: 16px; overflow: hidden; background: #070B14; border-bottom: 1px solid rgba(30, 41, 59, .5); }
+.pf--web .pf__visual { aspect-ratio: 16 / 11; background: linear-gradient(135deg, rgba(30, 41, 59, .2), rgba(15, 23, 42, .8)), #020617; }
+.pf__visual img { width: 100%; height: 100%; object-fit: contain; transition: transform .7s ease-out; }
+.pf--web .pf__visual img { filter: drop-shadow(0 10px 20px rgba(0, 0, 0, .5)); }
+.pf__card:hover .pf__visual img { transform: scale(1.05); }
+.pf__cat { position: absolute; top: 16px; left: 16px; z-index: 1; display: inline-flex; align-items: center; gap: 6px; max-width: calc(100% - 32px); padding: 6px 12px; border-radius: 999px; background: rgba(2, 6, 23, .8); border: 1px solid rgba(51, 65, 85, .8); backdrop-filter: blur(12px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1); font-size: 12px; font-weight: 500; color: #E2E8F0; }
+.pf__cat svg { flex: none; color: var(--pf); }
+.pf__cat span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pf__body { display: flex; flex-direction: column; flex: 1; padding: 32px; background: linear-gradient(180deg, rgba(15, 23, 42, .4), rgba(15, 23, 42, .8)); }
+.pf__title { margin-bottom: 12px; font-family: var(--font-body); font-size: 24px; line-height: 1.25; font-weight: 700; transition: color .3s; }
+.pf__card:hover .pf__title { color: var(--pf); }
+.pf__desc { font-size: 16px; line-height: 1.625; color: var(--muted-2); }
+.pf__more { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 24px; font-size: 14px; font-weight: 500; letter-spacing: .35px; text-transform: uppercase; color: var(--muted-2); transition: color .3s; }
+.pf__more i { display: flex; align-items: center; justify-content: center; flex: none; width: 40px; height: 40px; border-radius: 999px; background: rgba(30, 41, 59, .8); border: 1px solid #334155; transition: background .3s, border-color .3s, transform .3s; }
+.pf__card:hover .pf__more { color: #67E8F9; }
+.pf__card:hover .pf__more i { background: rgba(6, 182, 212, .2); border-color: rgba(6, 182, 212, .5); transform: scale(1.1); }
+.pf__all { display: flex; justify-content: center; padding: 0 24px 112px; }
+/* Apparition au défilement : en-tête puis cartes en cascade */
+.pf-wrap--anim .pf__head, .pf-wrap--anim .pf__card { opacity: 0; transform: translateY(32px); }
+.pf-wrap--anim .pf__head.is-in, .pf-wrap--anim .pf__card.is-in { opacity: 1; transform: none; transition: opacity .8s var(--ease), transform .8s var(--ease), border-color .5s, box-shadow .5s; transition-delay: calc(var(--i, 0) * 110ms), calc(var(--i, 0) * 110ms), 0s, 0s; }
 
 /* Compare */
 .compare__h { max-width: 900px; }
@@ -589,6 +623,10 @@ async function submit() {
 .final__needs button { padding: 9px 14px; border-radius: 999px; font-size: 14px; font-weight: 500; background: var(--surface); color: var(--ink); border: 1px solid var(--line-2); }
 .final__needs button.is-on { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .final__submit { padding: 18px; background: var(--grad-neon); color: var(--white); border: none; border-radius: 16px; box-shadow: var(--glow-neon); font-size: 16px; font-weight: 600; }
+.final__submit:disabled { opacity: .7; cursor: wait; }
+.final__ok { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 12px; background: rgba(34, 197, 94, .14); border: 1px solid rgba(34, 197, 94, .4); color: var(--green); font-size: 15px; font-weight: 600; }
+.ok-enter-active, .ok-leave-active { transition: opacity .4s ease, transform .4s ease; }
+.ok-enter-from, .ok-leave-to { opacity: 0; transform: translateY(-6px); }
 .final__submit:hover { background: var(--grad-neon-hover); }
 .final__note { font-size: 12px; color: var(--muted-2); text-align: center; }
 
@@ -615,7 +653,13 @@ async function submit() {
 /* Responsive */
 @media (max-width: 1180px) {
   .hero__title { font-size: 68px; letter-spacing: -2px; }
-  .wf, .why { padding-block: 96px; }
+  .wf, .why, .adn { padding-block: 96px; }
+  .adn__grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .lhead__h--xl { font-size: 48px; }
+  .pf { padding-block: 88px; }
+  .pf__h { font-size: 44px; }
+  .pf__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .pf__card, .pf__card--half { grid-column: auto; }
   .wf__steps, .why__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .wf__steps::before { display: none; }
   .sec-head { flex-direction: column; align-items: flex-start; }
@@ -635,7 +679,9 @@ async function submit() {
   .hero__lead { font-size: 18px; }
   .hero__ctas { width: 100%; padding-top: 0; }
   .hero__ctas .btn { padding: 20px 24px; font-size: 17px; }
-  .wf, .why { padding-block: 80px; }
+  .wf, .why, .adn { padding-block: 80px; }
+  .lhead__h--xl { font-size: 36px; }
+  .adn__more { opacity: 1; transform: none; }
   .lhead { margin-bottom: 56px; }
   .lhead__h { font-size: 36px; line-height: 1.1; }
   .lhead__p { font-size: 18px; }
@@ -643,10 +689,18 @@ async function submit() {
   /* Barre du haut sur une ligne : on garde les deux arguments principaux */
   .topbar { flex-wrap: nowrap; gap: 10px; font-size: 12px; padding: 9px 12px; }
   .topbar > span:nth-last-child(-n + 2) { display: none; }
-  /* Filtres : une rangée qui se fait glisser */
-  .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
-  .filters::-webkit-scrollbar { display: none; }
-  .filters button { flex: none; white-space: nowrap; padding: 9px 14px; }
+  .pf { padding-block: 56px; }
+  .pf__head { margin-bottom: 36px; }
+  .pf__badge { font-size: 12px; padding: 6px 12px; margin-bottom: 16px; }
+  .pf__h { font-size: 30px; letter-spacing: -.6px; margin-bottom: 16px; }
+  .pf__p { font-size: 15px; }
+  .pf__grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .pf__visual { padding: 12px; }
+  .pf__body { padding: 20px; }
+  .pf__title { font-size: 18px; margin-bottom: 8px; }
+  .pf__desc { font-size: 14px; }
+  .pf__cat { top: 10px; left: 10px; font-size: 11px; padding: 4px 10px; }
+  .pf__all { padding-bottom: 64px; }
   /* Tableau comparatif : colonne des critères figée, indication de défilement */
   .compare__hint { display: block; margin: -8px 0 10px; font-size: 13px; font-weight: 600; color: var(--accent); text-align: right; }
   .compare { min-width: 620px; font-size: 14px; }

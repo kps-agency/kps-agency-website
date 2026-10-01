@@ -59,6 +59,7 @@
         <h2 class="wizard__h wizard__h--38">{{ t.doneH }}</h2>
         <p class="done__p">{{ t.doneP }}</p>
         <NuxtLink :to="link.work()" class="btn btn--ghost btn--sm">{{ t.doneCta }}</NuxtLink>
+        <button type="button" class="btn btn--ghost btn--sm" @click="step = 1">{{ t.again }}</button>
       </div>
 
       <div v-if="step < 4" class="wizard__nav">
@@ -89,7 +90,7 @@ const t = useLocaleText({
     msg: 'Votre projet en quelques mots', msgPh: 'Objectifs, contexte, site actuel…',
     s3: 'Comment vous joindre ?', name: 'Prénom et nom', company: 'Entreprise', website: 'Site web actuel (facultatif)',
     consent: 'J’accepte que mes données soient utilisées pour traiter ma demande, conformément à la', privacy: 'politique de confidentialité',
-    doneH: 'Merci, votre demande est envoyée.', doneP: 'Notre équipe étudie votre projet et revient vers vous sous 48 h ouvrées avec une recommandation et un devis personnalisé.', doneCta: 'Découvrir nos réalisations',
+    doneH: 'Merci, votre demande est envoyée.', doneP: 'Notre équipe étudie votre projet et revient vers vous sous 48 h ouvrées avec une recommandation et un devis personnalisé.', doneCta: 'Découvrir nos réalisations', again: 'Envoyer une autre demande',
     back: 'Retour', next: 'Continuer', send: 'Envoyer ma demande', sending: 'Envoi…',
     errNeed: 'Sélectionnez au moins un besoin.', errId: 'Merci d’indiquer votre nom et une adresse e-mail valide.', errConsent: 'Merci d’accepter l’utilisation de vos données pour traiter votre demande.', errSend: 'L’envoi a échoué. Vous pouvez nous écrire directement à'
   },
@@ -108,7 +109,7 @@ const t = useLocaleText({
     msg: 'Your project in a few words', msgPh: 'Goals, context, current website…',
     s3: 'How can we reach you?', name: 'Full name', company: 'Company', website: 'Current website (optional)',
     consent: 'I agree that my data may be used to process my request, in accordance with the', privacy: 'privacy policy',
-    doneH: 'Thank you, your request has been sent.', doneP: 'Our team is reviewing your project and will come back to you within 48 business hours with a recommendation and a tailored quote.', doneCta: 'Discover our work',
+    doneH: 'Thank you, your request has been sent.', doneP: 'Our team is reviewing your project and will come back to you within 48 business hours with a recommendation and a tailored quote.', doneCta: 'Discover our work', again: 'Send another request',
     back: 'Back', next: 'Continue', send: 'Send my request', sending: 'Sending…',
     errNeed: 'Please select at least one option.', errId: 'Please enter your name and a valid email address.', errConsent: 'Please agree to the use of your data to process your request.', errSend: 'Sending failed. You can email us directly at'
   }
@@ -153,6 +154,8 @@ async function onNext() {
     // Par défaut : API interne /api/contact (e-mail à l'équipe). NUXT_PUBLIC_FORM_ENDPOINT permet de brancher un service externe.
     const endpoint = (config.public.formEndpoint as string) || `${(config.public.bookingApi as string || '').replace(/\/$/, '')}/api/contact`
     await $fetch(endpoint, { method: 'POST', body: { ...data, locale: locale.value } })
+    // Succès : écran de confirmation et formulaire remis à zéro
+    Object.assign(data, { services: ['web'], budget: '', timing: '', message: '', name: '', company: '', email: '', phone: '', website: '', consent: false })
     step.value = 4
   } catch {
     error.value = `${t.value.errSend} ${CONTACT.email}.`

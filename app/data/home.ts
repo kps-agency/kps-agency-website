@@ -22,6 +22,14 @@ const fr = {
     ]
   },
   // Sections reprises de la maquette kps-agency.com
+  adn: {
+    badge: 'Notre ADN', h2: 'Plus qu’une agence,', hi: 'votre co-pilote digital', p: 'Nous combinons créativité humaine et intelligence data pour créer des vagues sur lesquelles votre business peut surfer.', more: 'En savoir plus',
+    items: [
+      { title: 'Vision Stratégique', desc: 'Nous ne faisons pas que poster. Nous construisons une roadmap précise pour dominer votre niche.' },
+      { title: 'Le Crew KPS', desc: 'Une équipe de passionnés, experts en viralité, qui devient l’extension directe de votre marque.' },
+      { title: 'Croissance Accélérée', desc: 'Des résultats tangibles : plus de vues, plus d’engagement, plus de conversions. C’est mathématique.' }
+    ]
+  },
   workflow: {
     eyebrow: 'Workflow', h2: '1, 2, 3...', hi: 'Partez !', p: 'Pas de blabla, pas de perte de temps. Un process huilé pour des résultats rapides.',
     steps: [
@@ -39,6 +47,13 @@ const fr = {
       { title: 'Rusé comme un Renard', desc: 'Nous connaissons les failles des algorithmes et nous les utilisons à votre avantage.', stat: 'Malin' },
       { title: 'Qualité Premium', desc: 'L’image de votre marque est sacrée. Nous ne produisons que de l’excellence.', stat: 'Top Tier' }
     ]
+  },
+  // Réalisations présentées en trois blocs, comme sur la maquette kps-agency.com
+  portfolio: {
+    more: 'Découvrir le projet', all: 'Voir toutes les réalisations', alt: 'Réalisation',
+    social: { badge: 'Portfolio Social/Médias', title: 'Nos Réalisations', hi: 'Social/Médias', p: 'Découvrez des contenus, concepts visuels et dispositifs de communication pensés pour renforcer l’image, la présence et l’impact digital de nos clients.' },
+    web: { badge: 'Portfolio Premium', title: 'Nos', hi: 'Réalisations Web', p: 'Découvrez nos dernières créations digitales. Chaque projet est une réponse sur-mesure aux enjeux stratégiques de nos clients.' },
+    ads: { badge: 'Portfolio ADS', title: 'Nos', hi: 'Réalisations ADS', p: 'Découvrez des campagnes et dispositifs d’acquisition conçus pour améliorer la visibilité, structurer la diffusion et soutenir la performance marketing de nos clients.' }
   },
   method: {
     eyebrow: 'Comment ça marche', h2: 'Simple, rapide, transparent.', p: 'Pas de jargon, pas de réunion inutile. Un process en 4 étapes, et vous validez tout avant la mise en ligne.',
@@ -111,7 +126,7 @@ const fr = {
   form: {
     name: 'Nom', namePh: 'Jean Dupont', company: 'Entreprise', companyPh: 'Votre société', email: 'E-mail professionnel', emailPh: 'vous@entreprise.fr',
     need: 'Votre besoin', needs: ['Site web', 'Application', 'SEO / GEO', 'App mobile', 'Publicité'], msg: 'Votre projet en quelques mots', msgPh: 'Objectifs, délais, budget indicatif…',
-    submit: 'Recevoir mon devis gratuit', sending: 'Envoi…', sent: 'Merci, demande envoyée', note: 'Vos données restent confidentielles. Réponse sous 48 h ouvrées.'
+    submit: 'Recevoir mon devis gratuit', sending: 'Envoi…', sent: 'Merci ! Votre demande est bien envoyée, nous revenons vers vous sous 48 h.', note: 'Vos données restent confidentielles. Réponse sous 48 h ouvrées.'
   },
   footer: { desc: 'Agence digitale à Paris : création de sites, applications sur mesure, SEO & GEO, publicité en ligne pour les PME et TPE.', local: 'Agence digitale :', legal: 'Mentions légales', privacy: 'Confidentialité', terms: 'CGV' }
 }
@@ -136,6 +151,14 @@ const en: typeof fr = {
     ]
   },
   // Sections taken from the kps-agency.com design
+  adn: {
+    badge: 'Our DNA', h2: 'More than an agency,', hi: 'your digital co-pilot', p: 'We combine human creativity and data intelligence to create waves your business can surf.', more: 'Learn more',
+    items: [
+      { title: 'Strategic Vision', desc: 'We don’t just post. We build a precise roadmap to dominate your niche.' },
+      { title: 'The KPS Crew', desc: 'A team of enthusiasts, virality experts, who become the direct extension of your brand.' },
+      { title: 'Accelerated Growth', desc: 'Tangible results: more views, more engagement, more conversions. It’s mathematical.' }
+    ]
+  },
   workflow: {
     eyebrow: 'Workflow', h2: '1, 2, 3...', hi: 'Go!', p: 'No fluff, no time wasted. A streamlined process for fast results.',
     steps: [
@@ -153,6 +176,13 @@ const en: typeof fr = {
       { title: 'Clever as a Fox', desc: 'We know the algorithm loopholes and we use them to your advantage.', stat: 'Smart' },
       { title: 'Premium Quality', desc: 'Your brand image is sacred. We only produce excellence.', stat: 'Top Tier' }
     ]
+  },
+  // Work shown in three blocks, as in the kps-agency.com design
+  portfolio: {
+    more: 'Discover the project', all: 'See all our work', alt: 'Project for',
+    social: { badge: 'Social/Media Portfolio', title: 'Our', hi: 'Social/Media Work', p: 'Discover content, visual concepts, and communication strategies designed to strengthen the image, presence, and digital impact of our clients.' },
+    web: { badge: 'Premium Portfolio', title: 'Our', hi: 'Web Creations', p: 'Discover our latest digital creations. Each project is a custom response to our clients’ strategic challenges.' },
+    ads: { badge: 'ADS Portfolio', title: 'Our', hi: 'ADS Campaigns', p: 'Discover acquisition campaigns and setups designed to improve visibility, structure distribution, and support the marketing performance of our clients.' }
   },
   method: {
     eyebrow: 'How it works', h2: 'Simple, fast, transparent.', p: 'No jargon, no pointless meetings. A 4-step process, and you sign off on everything before go-live.',
@@ -225,7 +255,7 @@ const en: typeof fr = {
   form: {
     name: 'Name', namePh: 'Jane Smith', company: 'Company', companyPh: 'Your company', email: 'Business email', emailPh: 'you@company.com',
     need: 'What you need', needs: ['Website', 'Software', 'SEO / GEO', 'Mobile app', 'Paid ads'], msg: 'Your project in a few words', msgPh: 'Goals, timeline, indicative budget…',
-    submit: 'Get my free quote', sending: 'Sending…', sent: 'Thank you, request sent', note: 'Your data stays confidential. Reply within 48 business hours.'
+    submit: 'Get my free quote', sending: 'Sending…', sent: 'Thank you! Your request has been sent, we will reply within 48 hours.', note: 'Your data stays confidential. Reply within 48 business hours.'
   },
   footer: { desc: 'Paris digital agency: websites, custom software, SEO & GEO and paid ads for SMEs.', local: 'Digital agency:', legal: 'Legal notice', privacy: 'Privacy', terms: 'Terms' }
 }
