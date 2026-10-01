@@ -71,7 +71,7 @@ useHead({
 <style scoped>
 .book { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: start; padding-top: 40px; padding-bottom: 112px; }
 .book__intro { display: flex; flex-direction: column; gap: 22px; position: sticky; top: 110px; }
-.book__h1 { font-size: 56px; line-height: 1.02; letter-spacing: -1.8px; font-weight: 800; margin-top: 16px; }
+.book__h1 { font-size: 56px; line-height: 1.02; letter-spacing: -1.8px; font-weight: 900; margin-top: 16px; }
 .book__lead { font-size: 18px; }
 .book__facts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
 .book__facts li { display: flex; align-items: center; gap: 14px; font-size: 16px; color: var(--muted); }

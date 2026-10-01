@@ -147,7 +147,7 @@ useHead({
 
 <style scoped>
 .intro { display: flex; flex-direction: column; gap: 32px; padding-top: 112px; padding-bottom: 80px; }
-.intro__h1 { font-size: 96px; line-height: .98; letter-spacing: -3.2px; font-weight: 800; max-width: 1180px; }
+.intro__h1 { font-size: 96px; line-height: .98; letter-spacing: -3.2px; font-weight: 900; max-width: 1180px; }
 .intro__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; margin-top: 24px; }
 .intro__lead { font-size: 22px; line-height: 1.5; }
 .intro__p { font-size: 18px; line-height: 1.65; color: var(--muted); }
@@ -156,12 +156,12 @@ useHead({
 .head__col { display: flex; flex-direction: column; gap: 16px; }
 .head__p { max-width: 440px; }
 .adn { display: flex; flex-direction: column; gap: 16px; padding: 40px 36px; min-height: 280px; background: var(--bg); border: 1px solid var(--line); border-radius: 20px; }
-.adn__n { font-family: var(--font-display); font-size: 44px; font-weight: 800; color: var(--accent); }
+.adn__n { font-family: var(--font-display); font-size: 44px; font-weight: 900; color: var(--accent); }
 .adn__t { font-size: 28px; letter-spacing: -.6px; font-weight: 700; }
 .adn__d { font-size: 17px; line-height: 1.6; color: var(--muted); }
 .method { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-2); }
 .method__row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding: 32px 0; border-bottom: 1px solid var(--line-2); align-items: baseline; }
-.method__n { grid-column: span 1; font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--accent); }
+.method__n { grid-column: span 1; font-family: var(--font-display); font-size: 28px; font-weight: 900; color: var(--accent); }
 .method__t { grid-column: span 4; font-size: 30px; letter-spacing: -.6px; font-weight: 700; }
 .method__d { grid-column: span 7; font-size: 17px; line-height: 1.6; color: var(--muted); }
 .why { display: flex; flex-direction: column; gap: 14px; padding: 32px 28px; min-height: 230px; background: var(--dark-2); border-radius: 20px; }

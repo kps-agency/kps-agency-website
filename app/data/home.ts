@@ -21,6 +21,25 @@ const fr = {
       { num: '?', slug: '', tag: 'Gratuit', title: 'Pas sûr de ce qu’il vous faut ?', desc: 'On analyse votre présence en ligne et on vous dit exactement par où commencer.', items: ['Audit offert', '30 min', 'Sans engagement'], cta: 'Demander mon audit', theme: 'soft' }
     ]
   },
+  // Sections reprises de la maquette kps-agency.com
+  workflow: {
+    eyebrow: 'Workflow', h2: '1, 2, 3...', hi: 'Partez !', p: 'Pas de blabla, pas de perte de temps. Un process huilé pour des résultats rapides.',
+    steps: [
+      { title: 'Le Choix', desc: 'Sélectionnez votre arme : Visuel & Vidéo, Sites Web ou ADS. Définissez votre puissance de feu.' },
+      { title: 'Le Brief', desc: 'Remplissez notre formulaire intelligent. Transmettez-nous votre vision et vos assets.' },
+      { title: 'La Stratégie', desc: 'Notre cerveau collectif analyse, crée et optimise. La magie opère en coulisses.' },
+      { title: 'Le Décollage', desc: 'Livraison des contenus prêts à poster. Vous n’avez plus qu’à récolter les likes.' }
+    ]
+  },
+  whyTeam: {
+    h2: 'Pourquoi choisir la Team', hi: 'KPS', suffix: ' ?', p: 'Parce que dans la jungle digitale, il vaut mieux être bien accompagné.',
+    items: [
+      { title: 'Vitesse Supersonique', desc: 'Le digital n’attend pas. Nous livrons vite pour que vous restiez toujours dans la tendance.', stat: 'Rapide' },
+      { title: 'Précision Chirurgicale', desc: 'Chaque contenu est calibré pour votre audience cible. On ne tire pas au hasard.', stat: 'Ciblé' },
+      { title: 'Rusé comme un Renard', desc: 'Nous connaissons les failles des algorithmes et nous les utilisons à votre avantage.', stat: 'Malin' },
+      { title: 'Qualité Premium', desc: 'L’image de votre marque est sacrée. Nous ne produisons que de l’excellence.', stat: 'Top Tier' }
+    ]
+  },
   method: {
     eyebrow: 'Comment ça marche', h2: 'Simple, rapide, transparent.', p: 'Pas de jargon, pas de réunion inutile. Un process en 4 étapes, et vous validez tout avant la mise en ligne.',
     steps: [
@@ -31,7 +50,7 @@ const fr = {
     ]
   },
   work: {
-    eyebrow: 'Réalisations', h2a: 'Des projets concrets,', h2b: 'des résultats mesurés.', filterLabel: 'Filtrer les réalisations', alt: 'Réalisation', more: 'Voir le cas', all: 'Voir toutes les réalisations',
+    eyebrow: 'Réalisations', h2a: 'Des projets concrets,', h2b: 'des résultats mesurés.', filterLabel: 'Filtrer les réalisations', alt: 'Réalisation', pagesLabel: 'Groupes de réalisations', pageLabel: 'Groupe', more: 'Voir le cas', all: 'Voir toutes les réalisations',
     filters: [{ id: 'all', label: 'Tous' }, { id: 'Web', label: 'Sites & apps' }, { id: 'Social', label: 'Social media' }, { id: 'ADS', label: 'Publicité' }],
     items: {
       'powercell-group': { client: 'PowerCell', sector: 'Énergie renouvelable', title: 'Site corporate international', metric: '' },
@@ -116,6 +135,25 @@ const en: typeof fr = {
       { num: '?', slug: '', tag: 'Free', title: 'Not sure what you need?', desc: 'We review your online presence and tell you exactly where to start.', items: ['Free audit', '30 min', 'No commitment'], cta: 'Request my audit', theme: 'soft' }
     ]
   },
+  // Sections taken from the kps-agency.com design
+  workflow: {
+    eyebrow: 'Workflow', h2: '1, 2, 3...', hi: 'Go!', p: 'No fluff, no time wasted. A streamlined process for fast results.',
+    steps: [
+      { title: 'The Choice', desc: 'Select your weapon: Visual & Video, Websites or ADS. Define your firepower.' },
+      { title: 'The Brief', desc: 'Fill out our smart form. Share your vision and assets with us.' },
+      { title: 'The Strategy', desc: 'Our collective brain analyzes, creates, and optimizes. Magic happens behind the scenes.' },
+      { title: 'The Launch', desc: 'Ready-to-post content delivered. All you have to do is reap the likes.' }
+    ]
+  },
+  whyTeam: {
+    h2: 'Why choose Team', hi: 'KPS', suffix: '?', p: 'Because in the digital jungle, it’s better to have good company.',
+    items: [
+      { title: 'Supersonic Speed', desc: 'Digital doesn’t wait. We deliver fast so you always stay on trend.', stat: 'Fast' },
+      { title: 'Surgical Precision', desc: 'Every piece of content is calibrated for your target audience. We don’t shoot blind.', stat: 'Targeted' },
+      { title: 'Clever as a Fox', desc: 'We know the algorithm loopholes and we use them to your advantage.', stat: 'Smart' },
+      { title: 'Premium Quality', desc: 'Your brand image is sacred. We only produce excellence.', stat: 'Top Tier' }
+    ]
+  },
   method: {
     eyebrow: 'How it works', h2: 'Simple, fast, transparent.', p: 'No jargon, no pointless meetings. A 4-step process, and you sign off on everything before go-live.',
     steps: [
@@ -126,7 +164,7 @@ const en: typeof fr = {
     ]
   },
   work: {
-    eyebrow: 'Our work', h2a: 'Real projects,', h2b: 'measurable results.', filterLabel: 'Filter projects', alt: 'Project for', more: 'View project', all: 'See all our work',
+    eyebrow: 'Our work', h2a: 'Real projects,', h2b: 'measurable results.', filterLabel: 'Filter projects', alt: 'Project for', pagesLabel: 'Project groups', pageLabel: 'Group', more: 'View project', all: 'See all our work',
     filters: [{ id: 'all', label: 'All' }, { id: 'Web', label: 'Websites & apps' }, { id: 'Social', label: 'Social media' }, { id: 'ADS', label: 'Paid ads' }],
     items: {
       'powercell-group': { client: 'PowerCell', sector: 'Renewable energy', title: 'International corporate website', metric: '' },

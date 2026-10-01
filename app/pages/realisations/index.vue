@@ -62,25 +62,30 @@ useHead({
 })
 
 const filter = ref('all')
+// Le menu « Nos réalisations » ouvre la page sur une catégorie (?cat=Web|Social|ADS) ; appliqué côté navigateur pour garder une seule page statique
+const route = useRoute()
+const applyCat = () => { const c = String(route.query.cat ?? ''); filter.value = ['Web', 'Social', 'ADS'].includes(c) ? c : 'all' }
+onMounted(applyCat)
+watch(() => route.query.cat, applyCat)
 const list = computed(() => filter.value === 'all' ? projects.value : projects.value.filter(p => p.cat === filter.value))
 </script>
 
 <style scoped>
 .head { display: flex; justify-content: space-between; align-items: flex-end; gap: 64px; padding-top: 96px; padding-bottom: 64px; }
 .head__title { display: flex; flex-direction: column; gap: 24px; max-width: 820px; }
-.head__h1 { font-size: 80px; line-height: 1; letter-spacing: -2.6px; font-weight: 800; }
+.head__h1 { font-size: 80px; line-height: 1; letter-spacing: -2.6px; font-weight: 900; }
 .head__p { font-size: 19px; line-height: 1.55; color: var(--muted); max-width: 400px; }
-.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0 0 72px; background: var(--ink); color: var(--white); border-radius: 24px; overflow: hidden; }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0 0 72px; background: var(--deep); color: var(--white); border-radius: 24px; overflow: hidden; }
 .stats__item { display: flex; flex-direction: column; gap: 8px; padding: 36px 32px; border-right: 1px solid var(--dark-line); }
 .stats__item:last-child { border-right: none; }
 .stats dd { margin: 0; }
-.stats__v { font-family: var(--font-display); font-size: 52px; font-weight: 800; letter-spacing: -1.5px; }
+.stats__v { font-family: var(--font-display); font-size: 52px; font-weight: 900; letter-spacing: -1.5px; }
 .stats__l { font-size: 15px; color: var(--dark-muted); }
 .work { padding-bottom: 112px; }
 .work__bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
-.filters { display: flex; gap: 8px; padding: 6px; background: var(--white); border: 1px solid var(--line); border-radius: 999px; flex-wrap: wrap; }
+.filters { display: flex; gap: 8px; padding: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; flex-wrap: wrap; }
 .filters button { padding: 10px 18px; border: none; border-radius: 999px; font-size: 14px; font-weight: 600; background: transparent; color: var(--muted); }
-.filters button.is-on { background: var(--ink); color: var(--white); }
+.filters button.is-on { background: var(--deep); color: var(--white); }
 .work__count { font-size: 15px; color: var(--muted-2); }
 @media (max-width: 1180px) {
   .head { flex-direction: column; align-items: flex-start; gap: 24px; }

@@ -75,7 +75,7 @@ onMounted(() => { reducedMotion.value = window.matchMedia('(prefers-reduced-moti
 .trust__head { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
 .trust__title { font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--muted); letter-spacing: .2px; }
 .trust__countries { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.trust__countries li { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--white); font-size: 13px; font-weight: 500; color: var(--ink); }
+.trust__countries li { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: 13px; font-weight: 500; color: var(--ink); }
 .trust__pin { width: 7px; height: 7px; border-radius: 99px; background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 
 /* Défilé */
@@ -83,11 +83,11 @@ onMounted(() => { reducedMotion.value = window.matchMedia('(prefers-reduced-moti
 .marquee__track { display: flex; width: max-content; animation: trust-scroll 60s linear infinite; }
 .marquee:hover .marquee__track, .marquee:focus-within .marquee__track { animation-play-state: paused; }
 .marquee__list { list-style: none; margin: 0; padding: 0 12px 0 0; display: flex; gap: 12px; }
-.client { display: flex; align-items: center; gap: 12px; padding: 14px 20px 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--white); color: var(--ink); white-space: nowrap; transition: border-color .2s, box-shadow .2s, transform .2s; }
-.client:hover { color: var(--ink); border-color: var(--accent-tint-2); box-shadow: 0 14px 28px -20px rgba(79, 47, 214, .55); transform: translateY(-2px); }
+.client { display: flex; align-items: center; gap: 12px; padding: 14px 20px 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); white-space: nowrap; transition: border-color .2s, box-shadow .2s, transform .2s; }
+.client:hover { color: var(--ink); border-color: var(--accent-tint-2); box-shadow: 0 14px 28px -20px rgba(6, 182, 212, .55); transform: translateY(-2px); }
 .client__dot { flex: none; width: 10px; height: 10px; border-radius: 99px; }
 .client__txt { display: flex; flex-direction: column; gap: 1px; }
-.client__name { font-family: var(--font-display); font-size: 19px; font-weight: 800; letter-spacing: -.3px; line-height: 1.15; }
+.client__name { font-family: var(--font-display); font-size: 19px; font-weight: 900; letter-spacing: -.3px; line-height: 1.15; }
 .client__sector { font-size: 12px; color: var(--muted-2); font-weight: 500; }
 .client:hover .client__name { color: var(--accent); }
 @keyframes trust-scroll { to { transform: translateX(-50%); } }
@@ -98,11 +98,11 @@ onMounted(() => { reducedMotion.value = window.matchMedia('(prefers-reduced-moti
 .marquee.is-static .marquee__list { padding: 0; }
 
 /* Chiffres clés */
-.trust__stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; border: 1px solid var(--line); border-radius: 20px; background: var(--white); overflow: hidden; }
+.trust__stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); overflow: hidden; }
 .stat { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 20px 16px; text-align: center; border-right: 1px solid var(--line-soft); }
 .stat:last-child { border-right: none; }
 .stat dd { margin: 0; }
-.stat__v { font-family: var(--font-display); font-size: 32px; font-weight: 800; letter-spacing: -.8px; color: var(--ink); line-height: 1.1; }
+.stat__v { font-family: var(--font-display); font-size: 32px; font-weight: 900; letter-spacing: -.8px; color: var(--ink); line-height: 1.1; }
 .stat__star { margin-left: 4px; font-size: 22px; color: #C27803; vertical-align: 3px; }
 .stat__l { font-size: 13px; color: var(--muted-2); }
 

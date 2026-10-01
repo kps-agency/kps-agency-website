@@ -21,6 +21,6 @@ useSeoMeta({ title: () => t.value.title, robots: 'noindex, follow' })
 
 <style scoped>
 .err { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; padding-top: 120px; padding-bottom: 160px; }
-.err__h1 { font-size: 64px; line-height: 1.02; letter-spacing: -2px; font-weight: 800; max-width: 900px; }
+.err__h1 { font-size: 64px; line-height: 1.02; letter-spacing: -2px; font-weight: 900; max-width: 900px; }
 @media (max-width: 720px) { .err__h1 { font-size: 38px; } }
 </style>

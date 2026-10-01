@@ -20,10 +20,11 @@ const t = useLocaleText({ fr: { quote: 'Demander un devis' }, en: { quote: 'Get 
 
 <style scoped>
 .cta { padding-bottom: 96px; }
-.cta--white { background: var(--white); }
-.cta__box { display: flex; justify-content: space-between; align-items: center; gap: 48px; padding: 64px 72px; border-radius: 32px; background: var(--accent); color: var(--white); }
+.cta--white { background: var(--surface); }
+.cta__title { background: none; color: var(--white); }
+.cta__box { display: flex; justify-content: space-between; align-items: center; gap: 48px; padding: 64px 72px; border-radius: 32px; background: var(--grad-brand); color: var(--white); }
 .cta__text { display: flex; flex-direction: column; gap: 14px; max-width: 760px; }
-.cta__p { font-size: 18px; line-height: 1.55; color: var(--accent-soft); }
+.cta__p { font-size: 18px; line-height: 1.55; color: rgba(255, 255, 255, .88); }
 .btn--light { flex-shrink: 0; }
 @media (max-width: 960px) {
   .cta__box { flex-direction: column; align-items: flex-start; padding: 48px 32px; }

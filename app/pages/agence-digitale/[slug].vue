@@ -99,13 +99,13 @@ useHead({
 <style scoped>
 .hero { display: flex; flex-direction: column; gap: 28px; padding-top: 40px; padding-bottom: 96px; }
 .hero__crumb { margin-bottom: 40px; }
-.hero__h1 { font-size: 84px; line-height: 1; letter-spacing: -2.8px; font-weight: 800; max-width: 1100px; }
+.hero__h1 { font-size: 84px; line-height: 1; letter-spacing: -2.8px; font-weight: 900; max-width: 1100px; }
 .hero__sub { max-width: 760px; }
 .hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; }
 .svc-h { max-width: 900px; margin-bottom: 40px; }
 .svc { display: flex; flex-direction: column; gap: 12px; padding: 28px; min-height: 200px; background: var(--bg); border: 1px solid var(--line); border-radius: 20px; color: var(--ink); transition: transform .2s ease; }
 .svc:hover { color: var(--ink); transform: translateY(-3px); }
-.svc__n { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--accent); }
+.svc__n { font-family: var(--font-display); font-size: 15px; font-weight: 900; color: var(--accent); }
 .svc__t { font-size: 24px; font-weight: 700; letter-spacing: -.4px; }
 .svc__d { font-size: 15px; line-height: 1.55; color: var(--muted); }
 .svc__more { margin-top: auto; font-size: 14px; font-weight: 600; }

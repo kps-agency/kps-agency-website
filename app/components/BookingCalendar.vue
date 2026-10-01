@@ -299,13 +299,13 @@ const icsHref = computed(() => {
 </script>
 
 <style scoped>
-.bk { background: var(--white); border: 1px solid var(--line); border-radius: 24px; padding: 32px; box-shadow: 0 30px 60px -40px rgba(23, 18, 61, .3); }
+.bk { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 32px; box-shadow: 0 30px 60px -40px rgba(0, 0, 0, .3); }
 .bk__pick { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; }
 .bk__month { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .bk__month-t { font-size: 20px; font-weight: 700; }
-.bk__nav { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line-3); border-radius: 99px; background: var(--white); color: var(--ink); }
+.bk__nav { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line-3); border-radius: 99px; background: var(--surface); color: var(--ink); }
 .bk__nav:disabled { opacity: .35; cursor: not-allowed; }
-.bk__nav:not(:disabled):hover { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.bk__nav:not(:disabled):hover { background: var(--deep-hover); color: var(--white); border-color: var(--accent); }
 .bk__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
 .bk__wd { text-align: center; font-size: 12px; font-weight: 600; color: var(--muted-2); text-transform: uppercase; letter-spacing: .5px; padding-bottom: 6px; }
 .bk__day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border: none; border-radius: 12px; background: transparent; font-size: 15px; font-weight: 500; color: var(--muted-3); }
@@ -313,17 +313,17 @@ const icsHref = computed(() => {
 .bk__day.is-open { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
 .bk__day.is-open:hover { background: var(--accent-tint); }
 .bk__day.is-today { box-shadow: inset 0 0 0 1px var(--line-3); }
-.bk__day.is-selected { background: var(--accent); color: var(--white); }
+.bk__day.is-selected { background: var(--accent); color: var(--on-accent); }
 .bk__legend { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 13px; color: var(--muted-2); }
 .bk__dot { width: 12px; height: 12px; border-radius: 4px; background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-tint); flex: none; }
 .bk__slots { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .bk__slots-t { font-size: 20px; font-weight: 700; }
 .bk__muted { font-size: 14px; color: var(--muted-2); }
 .bk__slot-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; max-height: 340px; overflow-y: auto; padding: 2px; }
-.bk__slot { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 8px; border: 1px solid var(--line-3); border-radius: 12px; background: var(--white); font-size: 16px; font-weight: 600; color: var(--ink); }
+.bk__slot { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 8px; border: 1px solid var(--line-3); border-radius: 12px; background: var(--surface); font-size: 16px; font-weight: 600; color: var(--ink); }
 .bk__slot small { font-size: 11px; font-weight: 500; color: var(--muted-2); }
 .bk__slot:hover { border-color: var(--accent); color: var(--accent); }
-.bk__slot.is-selected { background: var(--accent); border-color: var(--accent); color: var(--white); }
+.bk__slot.is-selected { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .bk__slot.is-selected small { color: var(--accent-tint); }
 .bk__next { align-self: flex-start; margin-top: 8px; }
 .bk__next:disabled { opacity: .45; cursor: not-allowed; transform: none; }
@@ -348,19 +348,19 @@ const icsHref = computed(() => {
 .bk__modes small { font-size: 13px; color: var(--muted-2); }
 .bk__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .bk__fields label, .bk__full { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600; }
-.bk__fields input, .bk__full textarea { padding: 13px 14px; border: 1px solid var(--line-3); border-radius: 12px; font: inherit; font-weight: 400; font-size: 16px; background: var(--white); color: var(--ink); }
+.bk__fields input, .bk__full textarea { padding: 13px 14px; border: 1px solid var(--line-3); border-radius: 12px; font: inherit; font-weight: 400; font-size: 16px; background: var(--surface); color: var(--ink); }
 .bk__fields input:focus, .bk__full textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
 .bk__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .bk__consent { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--muted); }
 .bk__consent input { margin-top: 3px; accent-color: var(--accent); }
 .bk__consent a { color: var(--accent); text-decoration: underline; }
-.bk__error { padding: 12px 16px; border-radius: 12px; background: #FDECEA; color: var(--red); font-size: 14px; }
+.bk__error { padding: 12px 16px; border-radius: 12px; background: rgba(248, 113, 113, .12); color: var(--red); font-size: 14px; }
 .bk__actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .bk__back { border: none; background: none; font-weight: 600; color: var(--muted); padding: 0; }
 
 .bk__done { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 24px 8px; }
-.bk__done-i { width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; border-radius: 99px; background: #E6F4EC; }
-.bk__done-h { font-size: 30px; font-weight: 800; letter-spacing: -.6px; }
+.bk__done-i { width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; border-radius: 99px; background: rgba(34, 197, 94, .14); }
+.bk__done-h { font-size: 30px; font-weight: 900; letter-spacing: -.6px; }
 .bk__done-when { font-size: 18px; font-weight: 600; }
 .bk__add { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 6px; }
 

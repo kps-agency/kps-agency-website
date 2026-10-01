@@ -151,8 +151,8 @@ useHead({
 .hero__main { grid-column: span 7; display: flex; flex-direction: column; gap: 28px; }
 .hero__eyebrow { display: flex; align-items: center; gap: 12px; }
 .hero__kw { font-family: var(--font-body); }
-.hero__num { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: var(--accent); color: var(--white); font-family: var(--font-display); font-size: 14px; letter-spacing: 0; }
-.hero__h1 { font-family: var(--font-display); font-size: 72px; line-height: 1.02; letter-spacing: -2.4px; font-weight: 800; }
+.hero__num { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: var(--accent); color: var(--on-accent); font-family: var(--font-display); font-size: 14px; letter-spacing: 0; }
+.hero__h1 { font-family: var(--font-display); font-size: 72px; line-height: 1.02; letter-spacing: -2.4px; font-weight: 900; }
 .hero__sub { max-width: 640px; }
 .hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; }
 .hero__offers { grid-column: 9 / span 4; align-self: end; display: flex; flex-direction: column; gap: 10px; padding: 28px; }
@@ -164,11 +164,11 @@ useHead({
 .sec-head__h { max-width: 760px; }
 .sec-head__p { max-width: 420px; }
 .offer { display: flex; flex-direction: column; gap: 16px; padding: 36px; min-height: 250px; background: var(--bg); border: 1px solid var(--line); border-radius: 20px; scroll-margin-top: 110px; }
-.offer__n { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--accent); }
+.offer__n { font-family: var(--font-display); font-size: 15px; font-weight: 900; color: var(--accent); }
 .offer__t { font-size: 30px; letter-spacing: -.6px; font-weight: 700; }
 .offer__d { font-size: 17px; line-height: 1.6; color: var(--muted); }
 .offer__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
-.offer__tags span { font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--white); border: 1px solid var(--line); }
+.offer__tags span { font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); }
 
 .split { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 64px; }
 .split__head { display: flex; flex-direction: column; gap: 16px; }

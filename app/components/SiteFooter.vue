@@ -34,7 +34,7 @@ const t = useLocaleText({
 </script>
 
 <style scoped>
-.footer { background: var(--ink); color: var(--dark-muted); }
+.footer { background: var(--deep); color: var(--dark-muted); }
 .footer__inner { min-height: 500px; display: flex; flex-direction: column; gap: 44px; padding-top: 72px; padding-bottom: 36px; }
 .footer__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 32px; }
 .footer__brand { grid-column: span 2; display: flex; flex-direction: column; gap: 16px; padding-right: 40px; }

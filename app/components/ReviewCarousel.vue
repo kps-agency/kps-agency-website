@@ -199,8 +199,8 @@ onBeforeUnmount(() => {
 .rc__dot::before { content: ''; width: 8px; height: 8px; border-radius: 99px; background: var(--line-3); transition: width .25s, background .25s; }
 .rc__dot.is-on::before { width: 28px; background: var(--accent); }
 .rc__arrows { display: flex; gap: 8px; }
-.rc__btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--line-3); border-radius: 99px; background: var(--white); color: var(--ink); transition: background .15s, color .15s, border-color .15s; }
-.rc__btn:hover { background: var(--ink); border-color: var(--ink); color: var(--white); }
+.rc__btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--line-3); border-radius: 99px; background: var(--surface); color: var(--ink); transition: background .15s, color .15s, border-color .15s; }
+.rc__btn:hover { background: var(--deep); border-color: var(--ink); color: var(--white); }
 
 @media (max-width: 1024px) { .rc__track { --per: 2; } }
 @media (max-width: 640px) { .rc__track { --per: 1; grid-auto-columns: 86%; } }

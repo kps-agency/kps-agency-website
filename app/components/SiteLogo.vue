@@ -12,7 +12,9 @@ const { en, link } = useSite()
 <style scoped>
 .logo { display: inline-flex; align-items: center; flex: none; }
 .logo__img { height: 58px; width: auto; }
-/* Sur fond sombre, le logo passe en blanc monochrome pour rester lisible */
+/* Pied de page : logo en blanc monochrome */
 .logo--light .logo__img { filter: brightness(0) invert(1); }
+
+
 @media (max-width: 720px) { .logo__img { height: 46px; } }
 </style>

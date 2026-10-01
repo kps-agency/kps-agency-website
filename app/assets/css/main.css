@@ -1,37 +1,50 @@
 /* ==========================================================================
-   KPS Agency — design tokens & base (from the Design canvas maquettes)
+   KPS Agency — design tokens & base
+   Identité visuelle reprise de kps-agency.com : fond bleu nuit, accent cyan,
+   dégradés indigo → violet, DM Sans en graisse « black » pour les titres.
    ========================================================================== */
 :root {
-  /* Palette dérivée du logo KPS : indigo profond + une seule couleur d'accent indigo-violet */
-  --bg: #F8F7FC;
+  color-scheme: dark;
+  --bg: #020617;
   --white: #FFFFFF;
-  --ink: #17123D;
-  --ink-hover: #251E5A;
-  --muted: #4D4A63;
-  --muted-2: #5E5B74;
-  --muted-3: #7D7A90;
-  --line: #E4E2EE;
-  --line-soft: #EEEDF5;
-  --line-2: #D9D6E6;
-  --line-3: #C9C5DB;
-  --surface-hover: #F2F0FA;
-  --accent: #4F2FD6;
-  --accent-hover: #3E22B8;
-  --accent-soft: #F0EDFE;
-  --accent-tint: #E0D9FC;
-  --accent-tint-2: #C8BCF8;
-  --accent-mid: #8B72F0;
-  --accent-light: #AE9CFA;
-  --dark-2: #231D52;
-  --dark-line: #2F2862;
-  --dark-line-2: #463E7E;
-  --dark-muted: #C9C5DE;
-  --dark-muted-2: #ABA6C8;
-  --dark-muted-3: #8E89AE;
-  --green: #1B7A4B;
-  --red: #B42318;
-  --font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', Georgia, serif;
-  --font-body: 'Geist Variable', 'Geist', system-ui, -apple-system, sans-serif;
+  --surface: #0F172A;
+  --band: #070D1E;
+  --deep: #0B1121;
+  --deep-hover: #1E293B;
+  --ink: #FFFFFF;
+  --ink-hover: #E2E8F0;
+  --muted: #CBD5E1;
+  --muted-2: #94A3B8;
+  --muted-3: #8492A6;
+  --line: #1E293B;
+  --line-soft: #172033;
+  --line-2: #334155;
+  --line-3: #475569;
+  --surface-hover: #1E293B;
+  --accent: #06B6D4;
+  --accent-hover: #0891B2;
+  --on-accent: #020617;
+  --accent-soft: rgba(6, 182, 212, .1);
+  --accent-tint: rgba(6, 182, 212, .2);
+  --accent-tint-2: rgba(6, 182, 212, .5);
+  --accent-mid: #6366F1;
+  --accent-light: #22D3EE;
+  --dark-2: #162036;
+  --dark-line: #1E293B;
+  --dark-line-2: #334155;
+  --dark-muted: #CBD5E1;
+  --dark-muted-2: #94A3B8;
+  --dark-muted-3: #8492A6;
+  --green: #22C55E;
+  --red: #F87171;
+  /* Dégradés de la marque */
+  --grad-neon: linear-gradient(90deg, #06B6D4, #3B82F6);
+  --grad-neon-hover: linear-gradient(90deg, #0891B2, #2563EB);
+  --grad-brand: linear-gradient(90deg, #6366F1, #A855F7);
+  --grad-text: linear-gradient(90deg, #6366F1, #06B6D4, #A855F7);
+  --glow-neon: 0 0 20px rgba(6, 182, 212, .5);
+  --font-display: 'DM Sans Variable', 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'DM Sans Variable', 'DM Sans', system-ui, -apple-system, sans-serif;
   --gutter: 80px;
 }
 
@@ -45,47 +58,58 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+::selection { background: rgba(6, 182, 212, .3); }
 h1, h2, h3 { font-family: var(--font-display); margin: 0; }
 p, figure, blockquote { margin: 0; }
 a { color: inherit; text-decoration: none; }
-a:hover { color: var(--accent); }
+a:hover { color: var(--accent-light); }
 button { font-family: var(--font-body); cursor: pointer; }
 img { max-width: 100%; display: block; }
+input:not([type='checkbox']):not([type='radio']), textarea, select { background: var(--deep); color: var(--ink); }
+::placeholder { color: var(--muted-3); opacity: 1; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
 
 /* ---------- Layout ---------- */
 .container { width: 100%; max-width: 1440px; margin: 0 auto; padding-inline: var(--gutter); }
 .section { padding-block: 112px; }
 .section--96 { padding-block: 96px; }
-.bg-white { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.bg-dark { background: var(--ink); color: var(--white); }
+.bg-white { background: var(--band); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.bg-dark { background: var(--deep); color: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 
 /* ---------- Type ---------- */
-.eyebrow { font-size: 14px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; }
+.eyebrow { font-size: 14px; font-weight: 700; color: var(--accent-light); text-transform: uppercase; letter-spacing: 1.5px; }
 .bg-dark .eyebrow { color: var(--accent-light); }
-.h1 { font-size: 76px; line-height: 1.02; letter-spacing: -2.5px; font-weight: 800; }
-.h2 { font-size: 56px; line-height: 1.05; letter-spacing: -1.8px; font-weight: 800; }
+.h1 { font-size: 76px; line-height: 1.05; letter-spacing: -2.5px; font-weight: 900; }
+.h2 { font-size: 56px; line-height: 1.08; letter-spacing: -1.8px; font-weight: 900; }
 .h2--52 { font-size: 52px; letter-spacing: -1.6px; }
 .h2--48 { font-size: 48px; letter-spacing: -1.5px; }
 .lead { font-size: 20px; line-height: 1.55; color: var(--muted); }
 .text-18 { font-size: 18px; line-height: 1.55; color: var(--muted); }
 .bg-dark .text-18 { color: var(--dark-muted); }
+/* Jeu de couleur des gros titres : blanc qui glisse vers le cyan puis le violet de la marque */
+.h1, .h2 { background: linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #22D3EE 62%, #818CF8 82%, #A855F7 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+/* Texte en dégradé de la marque (mot mis en avant dans un titre) */
+.text-gradient { background: var(--grad-text); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: kps-gradient 6s ease infinite; }
+@keyframes kps-gradient { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@media (prefers-reduced-motion: reduce) { .text-gradient { animation: none; } }
 
 /* ---------- Buttons ---------- */
-.btn { display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; font-weight: 600; font-size: 17px; padding: 18px 28px; border: 1px solid transparent; transition: transform .15s ease, background .15s ease, color .15s ease; white-space: nowrap; }
-.btn:hover { transform: translateY(-1px); }
-.btn--primary { background: var(--accent); color: var(--white); }
-.btn--primary:hover { background: var(--accent-hover); color: var(--white); }
-.btn--dark { background: var(--ink); color: var(--white); }
-.btn--dark:hover { background: var(--ink-hover); color: var(--white); }
-.btn--ghost { background: var(--white); border-color: var(--line-3); color: var(--ink); padding: 18px 26px; }
-.btn--light { background: var(--white); color: var(--ink); padding: 20px 30px; }
-.btn--outline-dark { border-color: var(--dark-line-2); color: var(--white); font-size: 16px; padding: 16px 26px; }
-.btn--outline-dark:hover { color: var(--white); background: var(--dark-2); }
-.btn--sm { font-size: 15px; padding: 13px 22px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; border-radius: 16px; font-weight: 700; font-size: 17px; padding: 18px 28px; border: 1px solid transparent; transition: transform .3s ease, background .3s ease, color .3s ease, box-shadow .3s ease; white-space: nowrap; }
+.btn:hover { transform: scale(1.02); }
+.btn--primary { background: var(--grad-neon); color: var(--white); box-shadow: var(--glow-neon); }
+.btn--primary:hover { background: var(--grad-neon-hover); color: var(--white); box-shadow: 0 0 30px rgba(6, 182, 212, .7); }
+.btn--dark { background: var(--grad-brand); color: var(--white); }
+.btn--dark:hover { color: var(--white); box-shadow: 0 0 20px rgba(99, 102, 241, .45); }
+.btn--ghost { background: rgba(255, 255, 255, .05); border-color: rgba(255, 255, 255, .1); color: var(--white); padding: 18px 26px; backdrop-filter: blur(4px); }
+.btn--ghost:hover { background: rgba(255, 255, 255, .1); color: var(--white); }
+.btn--light { background: var(--white); color: var(--on-accent); padding: 20px 30px; }
+.btn--light:hover { color: var(--on-accent); }
+.btn--outline-dark { border-color: rgba(255, 255, 255, .3); color: var(--white); font-size: 16px; padding: 16px 26px; }
+.btn--outline-dark:hover { color: var(--white); background: rgba(255, 255, 255, .1); }
+.btn--sm { font-size: 15px; padding: 13px 22px; border-radius: 12px; }
 
 /* ---------- Cards ---------- */
-.card { background: var(--white); border: 1px solid var(--line); border-radius: 20px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; }
 .grid { display: grid; gap: 20px; }
 .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
