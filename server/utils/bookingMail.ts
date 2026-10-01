@@ -20,6 +20,8 @@ export function smtpTransport() {
 export interface BookingMail {
   locale: 'fr' | 'en'; name: string; email: string; phone: string; company: string; message: string
   mode: 'visio' | 'phone'; start: string; end: string; meetLink: string | null; visitorTz: string; ics: string
+  /** Demande simple (sans agenda) : seul l'e-mail à l'équipe part, pas de confirmation au client */
+  notifyOnly?: boolean
 }
 
 const fmt = (iso: string, locale: 'fr' | 'en', timeZone: string, withDate = true) => new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : 'fr-FR', {
@@ -31,7 +33,7 @@ const esc = (s: string) => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;
 /** Envoie la confirmation au client et la notification à l'équipe. Ne lève jamais : l'e-mail ne doit pas annuler une réservation créée. */
 export async function sendBookingMails(b: BookingMail) {
   const tx = smtpTransport()
-  if (!tx) return { sent: false }
+  if (!tx) return { sent: false, notified: false }
   const c = useRuntimeConfig()
   const from = String(c.mailFrom || c.smtpUser)
   const notify = String(c.bookingNotifyEmail || c.smtpUser)
@@ -53,20 +55,20 @@ export async function sendBookingMails(b: BookingMail) {
   const html = `<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#17123D">${esc(text).replace(/\n/g, '<br>').replace(/(https:\/\/[^\s<]+)/g, '<a href="$1" style="color:#4F2FD6">$1</a>')}</div>`
 
   const results = await Promise.allSettled([
-    tx.sendMail({
+    b.notifyOnly ? Promise.reject(new Error('skipped')) : tx.sendMail({
       from, to: `"${b.name.replace(/"/g, '')}" <${b.email}>`, replyTo: notify, subject, text, html,
       icalEvent: { method: 'PUBLISH', filename: 'rendez-vous-kps-agency.ics', content: b.ics }
     }),
     tx.sendMail({
       from, to: notify, replyTo: b.email,
-      subject: `Nouveau rendez-vous — ${b.name}${b.company ? ` (${b.company})` : ''} — ${fmt(b.start, 'fr', BOOKING.timeZone)}`,
+      subject: `${b.notifyOnly ? 'Demande d’appel' : 'Nouveau rendez-vous'} — ${b.name}${b.company ? ` (${b.company})` : ''} — ${fmt(b.start, 'fr', BOOKING.timeZone)}`,
       text: [
-        `Rendez-vous réservé sur le site (${b.locale.toUpperCase()}) :`, '', `${fmt(b.start, 'fr', BOOKING.timeZone)} (heure de Paris)`, '',
+        b.notifyOnly ? `Demande d’appel reçue depuis le site (${b.locale.toUpperCase()}) — créneau souhaité, à confirmer au prospect :` : `Rendez-vous réservé sur le site (${b.locale.toUpperCase()}) :`, '', `${fmt(b.start, 'fr', BOOKING.timeZone)} (heure de Paris)`, '',
         `Nom : ${b.name}`, b.company && `Entreprise : ${b.company}`, `E-mail : ${b.email}`, b.phone && `Téléphone : ${b.phone}`,
         `Format : ${b.mode === 'phone' ? 'téléphone' : `visio${b.meetLink ? ` — ${b.meetLink}` : ''}`}`, b.message && `\nProjet :\n${b.message}`
       ].filter(Boolean).join('\n')
     })
   ])
-  results.forEach(r => r.status === 'rejected' && console.error('[booking] mail', r.reason))
-  return { sent: results[0].status === 'fulfilled' }
+  results.forEach((r, i) => r.status === 'rejected' && !(i === 0 && b.notifyOnly) && console.error('[booking] mail', r.reason))
+  return { sent: results[0].status === 'fulfilled', notified: results[1].status === 'fulfilled' }
 }

@@ -9,7 +9,8 @@ interface BookingBody {
 const clean = (v: unknown, max: number) => String(v ?? '').replace(/[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, max)
 const validTz = (tz: string) => { try { new Intl.DateTimeFormat('en', { timeZone: tz }); return tz } catch { return BOOKING.timeZone } }
 
-// Réservation : valide le créneau, revérifie la disponibilité (anti double réservation), crée l'événement puis envoie les e-mails.
+// Réservation. Sans agenda configuré : la demande part simplement par e-mail à l'équipe, avec toutes les infos.
+// Avec un agenda (kSuite ou Google) : revérifie la disponibilité, crée l'événement puis envoie les e-mails.
 export default defineEventHandler(async (event) => {
   if (bookingCors(event)) return // requête de pré-vérification CORS (OPTIONS) traitée
   assertMethod(event, 'POST')
@@ -33,10 +34,14 @@ export default defineEventHandler(async (event) => {
   if (!isValidSlotStart(start)) throw createError({ statusCode: 409, statusMessage: 'Créneau indisponible' })
 
   const provider = calendarProvider()
-  if (!provider) throw createError({ statusCode: 503, statusMessage: 'Réservation en ligne non configurée' })
-
   const startIso = new Date(start).toISOString()
   const end = new Date(Date.parse(startIso) + BOOKING.duration * 60000).toISOString()
+
+  if (!provider) {
+    const mail = await sendBookingMails({ locale, name, email, phone, company, message, mode, start: startIso, end, meetLink: null, visitorTz, ics: '', notifyOnly: true })
+    if (!mail.notified) throw createError({ statusCode: smtpTransport() ? 502 : 503, statusMessage: 'Envoi de la demande impossible' })
+    return { ok: true, start: startIso, end, meetLink: null, invited: false, emailed: false }
+  }
 
   // Revérification juste avant la création : le créneau a pu être pris entre-temps
   const busy = await provider.busy(startIso, end).catch((err) => {
