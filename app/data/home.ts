@@ -11,6 +11,7 @@ const fr = {
     cta: 'Demander un devis gratuit', cta2: 'Voir nos réalisations', trust: ['Réponse sous 48 h', 'Interlocuteur dédié', 'Sans engagement']
   },
   services: {
+    budget: { tag: 'Tous budgets', title: 'Quel que soit votre budget,', hi: 'nous avons une solution à votre mesure.', p: 'Site vitrine, refonte, application ou campagne : nous adaptons le périmètre à vos moyens et vous remettons un devis clair, gratuit et sans engagement.', cta: 'Obtenir mon devis gratuit' },
     eyebrow: 'Nos services', h2: 'Tout ce qu’il faut pour exister et vendre en ligne.', p: 'Choisissez un service ou combinez-les. Chaque projet est piloté par un chef de projet unique, du brief au lancement.',
     items: [
       { num: '01', slug: 'creation-site-web', tag: 'Le plus demandé', title: 'Création de site web', desc: 'Des sites rapides, beaux et pensés pour convertir vos visiteurs en clients.', items: ['Site vitrine', 'E-commerce', 'Landing page', 'Blog'], cta: 'Découvrir', theme: 'dark' },
@@ -18,6 +19,9 @@ const fr = {
       { num: '03', slug: 'referencement-seo-geo', tag: 'Google + IA', title: 'Référencement SEO & GEO', desc: 'Soyez trouvé sur Google et cité par ChatGPT, Gemini et Perplexity.', items: ['Audit SEO', 'SEO local', 'Contenu', 'GEO / IA'], cta: 'Découvrir', theme: 'light' },
       { num: '04', slug: 'application-mobile', tag: 'iOS & Android', title: 'Application mobile', desc: 'Des apps natives ou cross-platform, de la maquette à la publication sur les stores.', items: ['iOS', 'Android', 'Flutter', 'React Native'], cta: 'Découvrir', theme: 'light' },
       { num: '05', slug: 'marketing-digital-ads', tag: 'Acquisition', title: 'Marketing digital & ADS', desc: 'Des campagnes rentables sur Google, Meta et TikTok, pilotées par la donnée.', items: ['Google Ads', 'Meta Ads', 'TikTok Ads', 'Social media'], cta: 'Découvrir', theme: 'light' },
+      { num: '06', slug: 'refonte-site-web', tag: 'Modernisation', title: 'Refonte de site', desc: 'Un site daté ou lent ? On le modernise sans perdre votre référencement.', items: ['Nouveau design', 'Migration', 'Redirections SEO'], cta: 'Découvrir', theme: 'light' },
+      { num: '07', slug: 'maintenance-site-web', tag: 'Au quotidien', title: 'Maintenance de site', desc: 'Mises à jour, sauvegardes et sécurité : votre site reste rapide et disponible.', items: ['Mises à jour', 'Sauvegardes', 'Sécurité', 'Évolutions'], cta: 'Découvrir', theme: 'light' },
+      { num: '08', slug: 'creation-saas', tag: 'Produit', title: 'SaaS', desc: 'Votre logiciel en ligne par abonnement, du premier prototype à la plateforme complète.', items: ['MVP', 'Plateforme', 'Abonnements', 'Paiement'], cta: 'Découvrir', theme: 'light' },
       { num: '?', slug: '', tag: 'Gratuit', title: 'Pas sûr de ce qu’il vous faut ?', desc: 'On analyse votre présence en ligne et on vous dit exactement par où commencer.', items: ['Audit offert', '30 min', 'Sans engagement'], cta: 'Demander mon audit', theme: 'soft' }
     ]
   },
@@ -140,6 +144,7 @@ const en: typeof fr = {
     cta: 'Get a free quote', cta2: 'See our work', trust: ['Reply within 48 hours', 'Dedicated contact', 'No commitment']
   },
   services: {
+    budget: { tag: 'Every budget', title: 'Whatever your budget,', hi: 'we have a solution that fits.', p: 'Showcase site, redesign, application or campaign: we adapt the scope to your means and give you a clear, free quote with no commitment.', cta: 'Get my free quote' },
     eyebrow: 'Our services', h2: 'Everything you need to exist and sell online.', p: 'Choose one service or combine them. Every project is run by a single project manager, from brief to launch.',
     items: [
       { num: '01', slug: 'creation-site-web', tag: 'Most popular', title: 'Website design', desc: 'Fast, beautiful websites designed to turn your visitors into customers.', items: ['Showcase site', 'E-commerce', 'Landing page', 'Blog'], cta: 'Discover', theme: 'dark' },
@@ -147,6 +152,9 @@ const en: typeof fr = {
       { num: '03', slug: 'referencement-seo-geo', tag: 'Google + AI', title: 'SEO & GEO', desc: 'Get found on Google and cited by ChatGPT, Gemini and Perplexity.', items: ['SEO audit', 'Local SEO', 'Content', 'GEO / AI'], cta: 'Discover', theme: 'light' },
       { num: '04', slug: 'application-mobile', tag: 'iOS & Android', title: 'Mobile apps', desc: 'Native or cross-platform apps, from mock-up to App Store release.', items: ['iOS', 'Android', 'Flutter', 'React Native'], cta: 'Discover', theme: 'light' },
       { num: '05', slug: 'marketing-digital-ads', tag: 'Acquisition', title: 'Digital marketing & ads', desc: 'Profitable, data-driven campaigns on Google, Meta and TikTok.', items: ['Google Ads', 'Meta Ads', 'TikTok Ads', 'Social media'], cta: 'Discover', theme: 'light' },
+      { num: '06', slug: 'refonte-site-web', tag: 'Modernisation', title: 'Website redesign', desc: 'A dated or slow website? We modernise it without losing your rankings.', items: ['New design', 'Migration', 'SEO redirects'], cta: 'Discover', theme: 'light' },
+      { num: '07', slug: 'maintenance-site-web', tag: 'Day to day', title: 'Website maintenance', desc: 'Updates, backups and security: your website stays fast and available.', items: ['Updates', 'Backups', 'Security', 'Improvements'], cta: 'Discover', theme: 'light' },
+      { num: '08', slug: 'creation-saas', tag: 'Product', title: 'SaaS', desc: 'Your subscription software online, from the first prototype to the full platform.', items: ['MVP', 'Platform', 'Subscriptions', 'Payment'], cta: 'Discover', theme: 'light' },
       { num: '?', slug: '', tag: 'Free', title: 'Not sure what you need?', desc: 'We review your online presence and tell you exactly where to start.', items: ['Free audit', '30 min', 'No commitment'], cta: 'Request my audit', theme: 'soft' }
     ]
   },

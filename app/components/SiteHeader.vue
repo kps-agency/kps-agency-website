@@ -9,7 +9,7 @@
               {{ item.label }}
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
             </NuxtLink>
-            <div class="nav__panel">
+            <div class="nav__panel" :class="{ 'nav__panel--2': item.cols === 2 }">
               <NuxtLink v-for="l in item.links" :key="l.label" :to="l.to" class="nav__sub" @click="open = false">
                 <span class="nav__sub-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="NAV_ICONS[l.icon]" /></svg></span>
                 <span class="nav__sub-txt">
@@ -21,7 +21,7 @@
           </div>
           <NuxtLink v-else :to="item.to" class="nav__link" :class="{ 'is-active': isActive(item) }" @click="open = false">{{ item.label }}</NuxtLink>
         </template>
-        <div class="nav__lang nav__lang--mobile" role="group" :aria-label="en ? 'Language' : 'Langue'" @click="open = false"><SwitchLocalePathLink locale="fr" hreflang="fr" lang="fr" aria-label="Français" :class="{ 'is-on': !en }" :aria-current="!en ? 'true' : undefined">FR</SwitchLocalePathLink><span aria-hidden="true">|</span><SwitchLocalePathLink locale="en" hreflang="en" lang="en" aria-label="English" :class="{ 'is-on': en }" :aria-current="en ? 'true' : undefined">EN</SwitchLocalePathLink></div>
+        <div class="nav__lang nav__lang--mobile" role="group" :aria-label="en ? 'Language' : 'Langue'" @click="open = false"><NuxtLink v-if="blogSwitch && en" :to="blogSwitch" hreflang="fr" lang="fr" aria-label="Français">FR</NuxtLink><SwitchLocalePathLink v-else locale="fr" hreflang="fr" lang="fr" aria-label="Français" :class="{ 'is-on': !en }" :aria-current="!en ? 'true' : undefined">FR</SwitchLocalePathLink><span aria-hidden="true">|</span><NuxtLink v-if="blogSwitch && !en" :to="blogSwitch" hreflang="en" lang="en" aria-label="English">EN</NuxtLink><SwitchLocalePathLink v-else locale="en" hreflang="en" lang="en" aria-label="English" :class="{ 'is-on': en }" :aria-current="en ? 'true' : undefined">EN</SwitchLocalePathLink></div>
         <div class="nav__mobile-ctas">
           <NuxtLink :to="link.booking()" class="btn btn--ghost btn--sm" @click="open = false">{{ t.call }}</NuxtLink>
           <NuxtLink :to="link.contact()" class="btn btn--primary btn--sm" @click="open = false">{{ t.quote }}</NuxtLink>
@@ -30,7 +30,7 @@
       <div class="nav__ctas">
         <NuxtLink :to="link.booking()" class="nav__call">{{ t.call }}</NuxtLink>
         <NuxtLink :to="link.contact()" class="nav__quote">{{ t.quote }}</NuxtLink>
-        <div class="nav__lang" role="group" :aria-label="en ? 'Language' : 'Langue'"><SwitchLocalePathLink locale="fr" hreflang="fr" lang="fr" aria-label="Français" :class="{ 'is-on': !en }" :aria-current="!en ? 'true' : undefined">FR</SwitchLocalePathLink><span aria-hidden="true">|</span><SwitchLocalePathLink locale="en" hreflang="en" lang="en" aria-label="English" :class="{ 'is-on': en }" :aria-current="en ? 'true' : undefined">EN</SwitchLocalePathLink></div>
+        <div class="nav__lang" role="group" :aria-label="en ? 'Language' : 'Langue'"><NuxtLink v-if="blogSwitch && en" :to="blogSwitch" hreflang="fr" lang="fr" aria-label="Français">FR</NuxtLink><SwitchLocalePathLink v-else locale="fr" hreflang="fr" lang="fr" aria-label="Français" :class="{ 'is-on': !en }" :aria-current="!en ? 'true' : undefined">FR</SwitchLocalePathLink><span aria-hidden="true">|</span><NuxtLink v-if="blogSwitch && !en" :to="blogSwitch" hreflang="en" lang="en" aria-label="English">EN</NuxtLink><SwitchLocalePathLink v-else locale="en" hreflang="en" lang="en" aria-label="English" :class="{ 'is-on': en }" :aria-current="en ? 'true' : undefined">EN</SwitchLocalePathLink></div>
       </div>
       <button type="button" class="nav__burger" :aria-expanded="open" :aria-label="t.menu" @click="open = !open">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path v-if="!open" d="M4 7h16M4 12h16M4 17h16" /><path v-else d="M6 6l12 12M18 6L6 18" /></svg>
@@ -40,6 +40,8 @@
 </template>
 
 <script setup lang="ts">
+import { blogArticle } from '~/data/blog'
+
 const route = useRoute()
 const open = ref(false)
 watch(() => route.fullPath, () => { open.value = false })
@@ -52,6 +54,9 @@ const NAV_ICONS = {
   ads: 'M3 11v2a1 1 0 0 0 1 1h3l6 5V5L7 10H4a1 1 0 0 0-1 1zM17 8a5 5 0 0 1 0 8',
   social: 'M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12zM9 11h.01M12 11h.01M15 11h.01',
   grid: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',
+  layers: 'M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5',
+  refresh: 'M3 12a9 9 0 0 1 15.5-6.3L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.3L3 16M3 21v-5h5',
+  wrench: 'M14.7 6.3a4 4 0 0 0-5.2 5.2L3 18l3 3 6.5-6.5a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.3-.6-.6-2.3z',
   energy: 'M13 2 4 14h7l-1 8 9-12h-7l1-8z',
   building: 'M4 21V5l8-3v19M12 21V8l8 3v10M3 21h18M8 8h.01M8 12h.01M8 16h.01M16 14h.01M16 17h.01',
   cloud: 'M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 9.5a4.3 4.3 0 0 1-.5 8.5z',
@@ -61,7 +66,7 @@ const NAV_ICONS = {
 }
 
 interface NavLink { label: string; desc: string; icon: keyof typeof NAV_ICONS; to: string }
-interface NavItem { label: string; to: string; match?: string[]; links?: NavLink[] }
+interface NavItem { label: string; to: string; match?: string[]; links?: NavLink[]; cols?: 2 }
 
 const { en, link, services } = useSite()
 const getRouteBaseName = useRouteBaseName()
@@ -71,13 +76,13 @@ const t = useLocaleText({
   en: { navLabel: 'Main navigation', quote: 'Get a quote', call: 'Book a call', menu: 'Open menu' }
 })
 
-const ICON_BY_KEY: Record<string, NavLink['icon']> = { web: 'web', app: 'app', mobile: 'mobile', seo: 'seo', ads: 'ads', social: 'social' }
+const ICON_BY_KEY: Record<string, NavLink['icon']> = { web: 'web', app: 'app', mobile: 'mobile', seo: 'seo', ads: 'ads', social: 'social', refonte: 'refresh', maintenance: 'wrench', saas: 'layers' }
 const SVC_DESC = {
-  fr: { web: 'Vitrine, e-commerce, landing page', app: 'CRM, back-office, portail client', mobile: 'iOS & Android, de la maquette aux stores', seo: 'Google et moteurs IA', ads: 'Meta, Google & TikTok Ads', social: 'Stratégie, visuels, vidéo courte' },
-  en: { web: 'Showcase sites, e-commerce, landing pages', app: 'CRM, back office, client portals', mobile: 'iOS & Android, from mock-up to stores', seo: 'Google and AI search engines', ads: 'Meta, Google & TikTok Ads', social: 'Strategy, visuals, short-form video' }
+  fr: { web: 'Vitrine, e-commerce, landing page', app: 'CRM, back-office, portail client', mobile: 'iOS & Android, de la maquette aux stores', seo: 'Google et moteurs IA', ads: 'Meta, Google & TikTok Ads', social: 'Stratégie, visuels, vidéo courte', refonte: 'Nouveau design, sans perte de SEO', maintenance: 'Mises à jour, sécurité, évolutions', saas: 'MVP, plateforme, abonnements' },
+  en: { web: 'Showcase sites, e-commerce, landing pages', app: 'CRM, back office, client portals', mobile: 'iOS & Android, from mock-up to stores', seo: 'Google and AI search engines', ads: 'Meta, Google & TikTok Ads', social: 'Strategy, visuals, short-form video', refonte: 'New design, rankings preserved', maintenance: 'Updates, security, improvements', saas: 'MVP, platform, subscriptions' }
 } as Record<'fr' | 'en', Record<string, string>>
-// Ordre du menu : sites, apps, mobile, SEO, ADS, social
-const MENU_ORDER = ['creation-site-web', 'application-metier', 'application-mobile', 'referencement-seo-geo', 'marketing-digital-ads', 'social-media']
+// Ordre du menu : sites (création, refonte, maintenance), apps, SaaS, mobile, SEO, ADS, social
+const MENU_ORDER = ['creation-site-web', 'refonte-site-web', 'maintenance-site-web', 'application-metier', 'creation-saas', 'application-mobile', 'referencement-seo-geo', 'marketing-digital-ads', 'social-media']
 
 const navItems = computed<NavItem[]>(() => {
   const lang = en.value ? 'en' : 'fr'
@@ -86,7 +91,7 @@ const navItems = computed<NavItem[]>(() => {
     return { label: sv.crumb, desc: SVC_DESC[lang][sv.key]!, icon: ICON_BY_KEY[sv.key]!, to: link.service(slug) }
   })
   return [
-    { label: 'Services', to: link.services(), match: ['services', 'services-slug'], links: [...svcLinks, { label: en.value ? 'All our services' : 'Toutes nos expertises', desc: en.value ? 'Overview of what we do' : 'Vue d’ensemble des services', icon: 'grid', to: link.services() }] },
+    { label: 'Services', to: link.services(), match: ['services', 'services-slug'], cols: 2, links: [...svcLinks, { label: en.value ? 'All our services' : 'Toutes nos expertises', desc: en.value ? 'Overview of what we do' : 'Vue d’ensemble des services', icon: 'grid', to: link.services() }] },
     {
       label: en.value ? 'Our work' : 'Nos réalisations', to: link.work(), match: ['realisations', 'realisations-slug'],
       links: [
@@ -108,11 +113,22 @@ const navItems = computed<NavItem[]>(() => {
         { label: en.value ? 'Events' : 'Événementiel', desc: 'Tunisia Franchise Show, Galeries LIVE', icon: 'event', to: link.project('tunisia-franchise-show') }
       ]
     },
+    { label: 'Blog', to: link.blog(), match: ['blog', 'blog-slug'] },
     { label: en.value ? 'About' : 'L’agence', to: link.about(), match: ['agence'] }
   ]
 })
 
 const isActive = (item: NavItem) => !!item.match?.includes(getRouteBaseName(route) ?? '')
+
+// Article de blog : l'autre langue pointe vers sa traduction si elle existe, sinon vers la liste des articles
+const localePath = useLocalePath()
+const blogSwitch = computed(() => {
+  if (getRouteBaseName(route) !== 'blog-slug') return ''
+  const from = en.value ? 'en' : 'fr'
+  const to = en.value ? 'fr' : 'en'
+  const translation = blogArticle(from, String(route.params.slug))?.meta.translation
+  return translation && blogArticle(to, translation) ? localePath({ name: 'blog-slug', params: { slug: translation } }, to) : localePath('blog', to)
+})
 </script>
 
 <style scoped>
@@ -127,6 +143,9 @@ const isActive = (item: NavItem) => !!item.match?.includes(getRouteBaseName(rout
 .nav__item { position: relative; }
 .nav__item::after { content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 18px; }
 .nav__panel { position: absolute; top: calc(100% + 18px); left: -20px; z-index: 60; min-width: 320px; padding: 10px; display: grid; gap: 2px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 24px 48px -24px rgba(0, 0, 0,.3); opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .18s, transform .18s, visibility .18s; }
+/* Menu Services : deux colonnes, le lien « Toutes nos expertises » occupe toute la largeur en bas */
+.nav__panel--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 620px; column-gap: 6px; }
+.nav__panel--2 .nav__sub:last-child { grid-column: 1 / -1; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--line); border-radius: 0 0 10px 10px; }
 .nav__item:hover .nav__panel, .nav__item:focus-within .nav__panel { opacity: 1; visibility: visible; transform: none; }
 .nav__item:hover .nav__dd svg, .nav__item:focus-within .nav__dd svg { transform: rotate(180deg); }
 .nav__sub { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-radius: 10px; }
@@ -174,6 +193,8 @@ const isActive = (item: NavItem) => !!item.match?.includes(getRouteBaseName(rout
   .nav__link, .nav__dd { padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
   .nav__dd { display: flex; }
   .nav__item::after { display: none; }
+  .nav__panel--2 { grid-template-columns: minmax(0, 1fr); width: auto; }
+  .nav__panel--2 .nav__sub:last-child { margin-top: 0; padding-top: 8px; border-top: none; }
   .nav__panel { position: static; min-width: 0; padding: 4px 0 8px 12px; background: none; border: none; box-shadow: none; opacity: 1; visibility: visible; transform: none; }
   .nav__sub { padding: 8px 0; gap: 12px; }
   .nav__sub-i { width: 30px; height: 30px; border-radius: 8px; }

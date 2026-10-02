@@ -10,7 +10,10 @@
 ## Expertises
 
 - [Création de site web](https://kps-agency.com/services/creation-site-web): sites vitrines, blogs, landing pages et e-commerce rapides et optimisés pour le référencement
+- [Refonte de site web](https://kps-agency.com/services/refonte-site-web): nouveau design, migration technique et plan de redirections pour préserver le référencement
+- [Maintenance de site web](https://kps-agency.com/services/maintenance-site-web): mises à jour, sauvegardes, sécurité, corrections et évolutions à la demande
 - [Application métier sur mesure](https://kps-agency.com/services/application-metier): CRM, back-office, portail client et automatisations
+- [Création de SaaS](https://kps-agency.com/services/creation-saas): MVP, plateforme multi-clients, abonnements et paiement en ligne
 - [Application mobile](https://kps-agency.com/services/application-mobile): applications iOS et Android, de la conception UX à la publication sur les stores
 - [Référencement SEO & GEO](https://kps-agency.com/services/referencement-seo-geo): SEO technique, contenus, SEO local et visibilité dans ChatGPT, Gemini et Perplexity
 - [Marketing digital & ADS](https://kps-agency.com/services/marketing-digital-ads): campagnes Google Ads, Meta Ads et TikTok Ads pilotées par la donnée
@@ -21,6 +24,12 @@
 - [Réalisations](https://kps-agency.com/realisations): PowerCell Group, Copenhagen Energy, Cushman & Wakefield Veritas, Fibbl, KPMG, YASSIR (5M de paid reach), groupado PRO (6,4M d'impressions), Brasileia Cosmetics, Tunisia Franchise Show (2,2M de reach), ZAYN
 - [Agence digitale à Paris](https://kps-agency.com/agence-digitale/paris)
 - [Agence digitale pour le secteur de l'énergie](https://kps-agency.com/agence-digitale/energie)
+
+## Blog
+
+- [Blog : conseils digitaux par secteur](https://kps-agency.com/blog)
+- [Site internet pour une entreprise des énergies renouvelables](https://kps-agency.com/blog/site-internet-entreprise-energie-renouvelable)
+- [Référencement local pour l'immobilier](https://kps-agency.com/blog/referencement-local-agence-immobiliere)
 
 ## Informations
 
@@ -43,3 +52,4 @@ KPS Agency is a Paris-based digital agency (59 rue de Ponthieu, 75008 Paris) hel
 - [Our work](https://kps-agency.com/en/work)
 - [About us](https://kps-agency.com/en/about)
 - [Contact & quote](https://kps-agency.com/en/contact)
+- [Blog](https://kps-agency.com/en/blog)

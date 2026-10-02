@@ -10,3 +10,6 @@ dist
 !.env.example
 *.log
 .DS_Store
+
+# Fichiers temporaires de la CLI Supabase
+supabase/.temp

@@ -38,6 +38,8 @@ export function useSite() {
     about: () => lp('agence'),
     contact: () => lp('contact'),
     booking: () => lp('rendez-vous'),
+    blog: () => lp('blog'),
+    article: (slug: string) => lp({ name: 'blog-slug', params: { slug } }),
     local: (frSlug: string) => lp({ name: 'agence-digitale-slug', params: { slug: localSlug(frSlug) } }),
     terms: () => lp('cgv'),
     legal: (hash = '') => lp({ name: 'mentions-legales', hash }),
@@ -48,16 +50,16 @@ export function useSite() {
   // Pied de page commun (accueil + autres pages) : chaque libellé mène à une page qui traite du sujet
   const footerCols = computed(() => en.value
     ? [
-        { title: 'Websites', links: [['Showcase website', link.service('creation-site-web', '#offre-01')], ['Blog', link.service('creation-site-web', '#offre-02')], ['Landing page', link.service('creation-site-web', '#offre-03')], ['E-commerce', link.service('creation-site-web', '#offre-04')]] },
-        { title: 'Apps & SEO', links: [['Business software', link.service('application-metier')], ['Mobile apps', link.service('application-mobile')], ['SEO & GEO', link.service('referencement-seo-geo')]] },
+        { title: 'Websites', links: [['Showcase website', link.service('creation-site-web', '#offre-01')], ['Blog', link.service('creation-site-web', '#offre-02')], ['Landing page', link.service('creation-site-web', '#offre-03')], ['E-commerce', link.service('creation-site-web', '#offre-04')], ['Website redesign', link.service('refonte-site-web')], ['Website maintenance', link.service('maintenance-site-web')]] },
+        { title: 'Apps & SEO', links: [['Business software', link.service('application-metier')], ['SaaS', link.service('creation-saas')], ['Mobile apps', link.service('application-mobile')], ['SEO & GEO', link.service('referencement-seo-geo')]] },
         { title: 'Marketing', links: [['Digital marketing & ads', link.service('marketing-digital-ads')], ['Social media & content', link.service('social-media')]] },
-        { title: 'Agency', links: [['About us', link.about()], ['Our work', link.work()], ['Client reviews', link.reviews()], ['Book a call', link.booking()], ['Contact & quote', link.contact()]] }
+        { title: 'Agency', links: [['About us', link.about()], ['Our work', link.work()], ['Client reviews', link.reviews()], ['Blog', link.blog()], ['Book a call', link.booking()], ['Contact & quote', link.contact()]] }
       ]
     : [
-        { title: 'Sites web', links: [['Site vitrine', link.service('creation-site-web', '#offre-01')], ['Blog', link.service('creation-site-web', '#offre-02')], ['Landing page', link.service('creation-site-web', '#offre-03')], ['E-commerce', link.service('creation-site-web', '#offre-04')]] },
-        { title: 'Apps & SEO', links: [['Application métier', link.service('application-metier')], ['Application mobile', link.service('application-mobile')], ['SEO & GEO', link.service('referencement-seo-geo')]] },
+        { title: 'Sites web', links: [['Site vitrine', link.service('creation-site-web', '#offre-01')], ['Blog', link.service('creation-site-web', '#offre-02')], ['Landing page', link.service('creation-site-web', '#offre-03')], ['E-commerce', link.service('creation-site-web', '#offre-04')], ['Refonte de site', link.service('refonte-site-web')], ['Maintenance de site', link.service('maintenance-site-web')]] },
+        { title: 'Apps & SEO', links: [['Application métier', link.service('application-metier')], ['SaaS', link.service('creation-saas')], ['Application mobile', link.service('application-mobile')], ['SEO & GEO', link.service('referencement-seo-geo')]] },
         { title: 'Marketing', links: [['Marketing digital & ADS', link.service('marketing-digital-ads')], ['Social media & contenus', link.service('social-media')]] },
-        { title: 'L’agence', links: [['À propos', link.about()], ['Réalisations', link.work()], ['Avis clients', link.reviews()], ['Réserver un appel', link.booking()], ['Contact & devis', link.contact()]] }
+        { title: 'L’agence', links: [['À propos', link.about()], ['Réalisations', link.work()], ['Avis clients', link.reviews()], ['Blog', link.blog()], ['Réserver un appel', link.booking()], ['Contact & devis', link.contact()]] }
       ])
   const footerLocal = computed(() => [
     [en.value ? 'Paris' : 'Paris', link.local('paris')],

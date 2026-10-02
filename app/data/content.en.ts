@@ -12,7 +12,10 @@ export const SERVICE_SLUG_EN: Record<string, string> = {
   'application-mobile': 'mobile-app-development',
   'referencement-seo-geo': 'seo-geo',
   'marketing-digital-ads': 'digital-marketing-ads',
-  'social-media': 'social-media'
+  'social-media': 'social-media',
+  'refonte-site-web': 'website-redesign',
+  'maintenance-site-web': 'website-maintenance',
+  'creation-saas': 'saas-development'
 }
 export const LOCAL_SLUG_EN: Record<string, string> = { paris: 'paris', energie: 'energy' }
 
@@ -150,6 +153,72 @@ export const SERVICES_EN: Record<string, Omit<Service, 'slug' | 'key' | 'num' | 
     methTitle: 'From strategy to published content.',
     steps: [s('1', 'The choice', 'Defining your goals and formats: visuals, video or both.'), s('2', 'The brief', 'You share your vision and your assets.'), s('3', 'The strategy', 'We analyse, create and optimise.'), s('4', 'Take-off', 'Delivery of ready-to-publish content.')],
     cta: 'Ready to make your brand shine?'
+  },
+  'refonte-site-web': {
+    crumb: 'Website redesign', eyebrow: 'Website redesign',
+    h1: 'An ageing website? Give it a second life.',
+    sub: 'Dated design, slow pages, a site that is hard to update or no longer brings in enquiries: we rethink your website without losing your rankings or your content.',
+    offersTitle: 'A redesign that fits your needs.', offersSub: 'From a simple refresh to a full rebuild, we only redo what needs redoing.',
+    offers: [
+      o('01', 'Visual redesign', 'A current design true to your brand, on top of your existing site structure.', ['New design', 'Responsive', 'Brand identity']),
+      o('02', 'Full redesign', 'Structure, content, design and technology rethought to start again on solid foundations.', ['Site structure', 'Content', 'New foundations']),
+      o('03', 'Technical migration', 'A change of CMS or technology, with your content and data carried over.', ['CMS change', 'Content migration', 'Hosting']),
+      o('04', 'SEO-safe redesign', 'Redirect plan and page optimisation to protect your Google rankings.', ['301 redirects', 'Markup', 'Rank tracking'])
+    ],
+    benTitle: 'Redo your website without starting from scratch.',
+    benefits: [
+      b('Rankings preserved', 'Every old URL is redirected to its new one so you keep your visibility.'),
+      b('A faster website', 'Lighter pages and up-to-date technology, on mobile and desktop alike.'),
+      b('More enquiries', 'Journeys redesigned to guide visitors towards a quote request or a purchase.'),
+      b('Autonomy', 'A website your team can update easily, without relying on a developer.')
+    ],
+    methTitle: 'From audit to switch-over.',
+    steps: [s('1', 'Audit', 'Review of your current website: content, performance, SEO and friction points.'), s('2', 'Design', 'New structure and mock-ups: you approve before any production starts.'), s('3', 'Production', 'Development, content migration and redirect plan.'), s('4', 'Switch-over & follow-up', 'Launch with no downtime, then SEO checks in the following weeks.')],
+    cta: 'A website to modernise?'
+  },
+  'maintenance-site-web': {
+    crumb: 'Website maintenance', eyebrow: 'Website maintenance',
+    h1: 'Your website up to date, secure and available.',
+    sub: 'Updates, backups, security and small improvements: we look after your website so you no longer have to worry about it.',
+    offersTitle: 'Everything a worry-free website needs.', offersSub: 'Ongoing support, whether we built your website or not.',
+    offers: [
+      o('01', 'Updates', 'CMS, plugins and theme kept up to date, with the site checked after every intervention.', ['CMS', 'Plugins', 'Compatibility']),
+      o('02', 'Security & backups', 'Regular backups, monitoring and site restoration if something goes wrong.', ['Backups', 'Monitoring', 'Restoration']),
+      o('03', 'Fixes & improvements', 'A bug, a text to change, a page to add: we step in on request.', ['Fixes', 'Content', 'New pages']),
+      o('04', 'Performance & reporting', 'Speed and availability checks, with a regular report.', ['Speed', 'Availability', 'Reporting'])
+    ],
+    benTitle: 'A website needs looking after.',
+    benefits: [
+      b('Security', 'An up-to-date website is less exposed to vulnerabilities and hacking.'),
+      b('Availability', 'Problems are spotted and dealt with before they cost you customers.'),
+      b('Peace of mind', 'A contact who knows your website and answers when you need them.'),
+      b('Continuous improvement', 'Your website keeps pace with your business: new offers, new pages, new content.')
+    ],
+    methTitle: 'Simple to get started.',
+    steps: [s('1', 'Review', 'Audit of your website: versions, security, backups and performance.'), s('2', 'Upgrade', 'Website brought up to date and secured before ongoing care begins.'), s('3', 'Regular care', 'Updates, backups and monitoring all year round.'), s('4', 'Interventions', 'Fixes and improvements on request, with a report.')],
+    cta: 'Need a website that always works?'
+  },
+  'creation-saas': {
+    crumb: 'SaaS', eyebrow: 'SaaS development',
+    h1: 'Your software idea, turned into an online product.',
+    sub: 'From the first prototype to a subscription platform: we design and build your SaaS, with user accounts, online payment and foundations ready to grow.',
+    offersTitle: 'From idea to a product that sells.', offersSub: 'We move in stages, to get your product into real users’ hands quickly.',
+    offers: [
+      o('01', 'MVP', 'A first version focused on the essentials, to test your idea with your first customers.', ['Prototype', 'Core features', 'Launch']),
+      o('02', 'SaaS platform', 'Accounts, roles, client areas and dashboards: a complete application designed for many customers.', ['Multi-tenant', 'Roles & permissions', 'Dashboards']),
+      o('03', 'Subscriptions & payment', 'Plans, free trials, invoicing and online payment built into your product.', ['Plans', 'Online payment', 'Invoicing']),
+      o('04', 'Growth & integrations', 'New features, APIs and connections with your customers’ tools.', ['API', 'Integrations', 'New features'])
+    ],
+    benTitle: 'A SaaS is built to last.',
+    benefits: [
+      b('Fast launch', 'A usable first version early on, so you learn from users before going further.'),
+      b('Scalable foundations', 'An architecture that keeps up as your customer base grows.'),
+      b('Recurring revenue', 'Subscriptions and payments handled inside the product, with no workarounds.'),
+      b('Polished experience', 'A clear interface that makes people want to come back and reduces support requests.')
+    ],
+    methTitle: 'From idea to launch.',
+    steps: [s('1', 'Scoping', 'Your market, your users and the features the first version truly needs.'), s('2', 'Design', 'User journeys and application mock-ups: you approve before development.'), s('3', 'Development', 'Built in stages, with regular demos.'), s('4', 'Launch & growth', 'Go-live, usage tracking and new features driven by feedback.')],
+    cta: 'A SaaS to launch?'
   }
 }
 
@@ -160,7 +229,10 @@ export const SERVICE_SEO_EN: Record<string, { title: string; h1: string; desc: s
   'application-mobile': { title: 'iOS & Android mobile app development', h1: 'iOS & Android mobile app development', desc: 'Design and development of iOS and Android mobile apps, from UX mock-ups to App Store and Google Play release. Paris-based agency, free quote within 48 hours.' },
   'referencement-seo-geo': { title: 'SEO & GEO agency in Paris: Google and AI', h1: 'SEO & GEO agency in Paris', desc: 'SEO and GEO agency in Paris: audits, technical SEO, content and visibility in ChatGPT, Gemini and Perplexity to capture qualified, long-term search demand.' },
   'marketing-digital-ads': { title: 'Google Ads, Meta Ads & TikTok Ads agency', h1: 'Digital marketing & paid ads agency', desc: 'Data-driven Google Ads, Meta Ads and TikTok Ads campaigns: strategy, creative, delivery and continuous optimisation by a digital marketing agency in Paris.' },
-  'social-media': { title: 'Social media agency: TikTok & Instagram content', h1: 'Social media & content agency', desc: 'Social media strategy, visual design and short-form video for TikTok and Instagram: content that strengthens your brand image and drives real engagement.' }
+  'social-media': { title: 'Social media agency: TikTok & Instagram content', h1: 'Social media & content agency', desc: 'Social media strategy, visual design and short-form video for TikTok and Instagram: content that strengthens your brand image and drives real engagement.' },
+  'refonte-site-web': { title: 'Website redesign in Paris, without losing SEO', h1: 'Website redesign in Paris', desc: 'Website redesign in Paris: new design, technical migration and a redirect plan to modernise your website without losing your Google rankings. Free quote in 48 hours.' },
+  'maintenance-site-web': { title: 'Website maintenance: updates & security', h1: 'Website maintenance', desc: 'Website maintenance: updates, backups, security, fixes and improvements on request. An up-to-date, available website looked after by a Paris-based agency.' },
+  'creation-saas': { title: 'SaaS development: from MVP to platform', h1: 'Custom SaaS development', desc: 'Custom SaaS development in Paris: MVP, multi-tenant platform, subscriptions and online payment. From scoping to launch with a dedicated team. Free quote in 48 hours.' }
 }
 
 export const SERVICE_FAQ_EN: [string, string][] = [
@@ -183,7 +255,7 @@ export const LOCAL_PAGES_EN: Record<string, Omit<LocalPage, 'slug' | 'refs'>> = 
       b('Proximity', 'Direct conversations with a Paris-based team, by video call or in person.'),
       b('Market knowledge', 'A clear understanding of customer expectations and competition in the Paris region.'),
       b('Local SEO', 'Optimised visibility in your future customers’ location-based searches.'),
-      b('A full team', 'Six areas of expertise under one roof to run your project end to end.')
+      b('A full team', 'Nine areas of expertise under one roof to run your project end to end.')
     ],
     refTitle: 'Some of our references',
     faq: [

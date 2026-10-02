@@ -1,7 +1,7 @@
 interface ContactBody {
   name?: string; email?: string; phone?: string; company?: string; website?: string; locale?: 'fr' | 'en'
   // Formulaire de contact (3 étapes)
-  services?: string[]; budget?: string; timing?: string; message?: string
+  services?: string[]; budget?: string; timing?: string; message?: string; consent?: boolean
   // Formulaire court de l'accueil
   need?: string; msg?: string
   hp?: string // champ piège anti-spam (jamais rempli par un humain)
@@ -9,9 +9,10 @@ interface ContactBody {
 
 const clean = (v: unknown, max: number) => String(v ?? '').replace(/[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, max)
 const cleanText = (v: unknown, max: number) => String(v ?? '').replace(/[\u0000-\u0008\u000B-\u001F\u007F]/g, ' ').trim().slice(0, max)
-const SERVICES: Record<string, string> = { web: 'Site web', app: 'Application métier', seo: 'SEO & GEO', mobile: 'Application mobile', ads: 'Marketing & ADS', social: 'Social media' }
+const SERVICES: Record<string, string> = { web: 'Site web', app: 'Application métier', seo: 'SEO & GEO', mobile: 'Application mobile', ads: 'Marketing & ADS', social: 'Social media', refonte: 'Refonte de site', maintenance: 'Maintenance de site', saas: 'SaaS' }
 
-// Demande de contact / devis : envoyée par e-mail à l'équipe (SMTP), avec « Répondre » dirigé vers le prospect.
+// Demande de contact / devis : enregistrée dans Supabase (table leads) et envoyée par e-mail à l'équipe, avec « Répondre » dirigé vers le prospect.
+// Elle est acceptée dès qu'elle est enregistrée OU envoyée : l'un peut échouer sans perdre le contact.
 export default defineEventHandler(async (event) => {
   if (bookingCors(event)) return // requête de pré-vérification CORS (OPTIONS) traitée
   assertMethod(event, 'POST')
@@ -35,12 +36,22 @@ export default defineEventHandler(async (event) => {
     : clean(body?.need, 80)
   const locale = body?.locale === 'en' ? 'en' : 'fr'
 
+  const db = supabaseAdmin()
   const tx = smtpTransport()
-  if (!tx) throw createError({ statusCode: 503, statusMessage: 'Envoi d’e-mails non configuré' })
+  if (!db && !tx) throw createError({ statusCode: 503, statusMessage: 'Formulaire non configuré' })
   const c = useRuntimeConfig()
+  const fromContactPage = Array.isArray(body?.services)
 
-  try {
-    await tx.sendMail({
+  const [saved, mailed] = await Promise.allSettled([
+    db
+      ? db.from('leads').insert({
+          locale, source: fromContactPage ? 'contact' : 'accueil',
+          services: fromContactPage ? body!.services!.slice(0, 10).map(s => clean(s, 20)).filter(s => s in SERVICES) : (needs ? [needs] : []),
+          budget: budget || null, timing: timing || null, message: message || null, name, company: company || null, email,
+          phone: phone || null, website: website || null, consent_at: body?.consent === true ? new Date().toISOString() : null
+        }).then(({ error }) => { if (error) throw error })
+      : Promise.reject(new Error('Supabase non configuré')),
+    tx ? tx.sendMail({
       from: String(c.mailFrom || c.smtpUser),
       to: String(c.contactNotifyEmail || c.bookingNotifyEmail || c.smtpUser),
       replyTo: `"${name.replace(/"/g, '')}" <${email}>`,
@@ -51,10 +62,10 @@ export default defineEventHandler(async (event) => {
         needs && `Besoin : ${needs}`, budget && `Budget : ${budget}`, timing && `Délai : ${timing}`,
         message && `\nProjet :\n${message}`, '\nRépondez directement à cet e-mail pour écrire au prospect.'
       ].filter(Boolean).join('\n')
-    })
-  } catch (err) {
-    console.error('[contact] mail', err)
-    throw createError({ statusCode: 502, statusMessage: 'Envoi impossible' })
-  }
+    }) : Promise.reject(new Error('SMTP non configuré'))
+  ])
+  if (db && saved.status === 'rejected') console.error('[contact] supabase', saved.reason)
+  if (tx && mailed.status === 'rejected') console.error('[contact] mail', mailed.reason)
+  if (saved.status === 'rejected' && mailed.status === 'rejected') throw createError({ statusCode: 502, statusMessage: 'Envoi impossible' })
   return { ok: true }
 })

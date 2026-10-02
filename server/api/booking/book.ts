@@ -37,9 +37,25 @@ export default defineEventHandler(async (event) => {
   const startIso = new Date(start).toISOString()
   const end = new Date(Date.parse(startIso) + BOOKING.duration * 60000).toISOString()
 
+  // Copie dans Supabase (table bookings) : un échec est journalisé, il n'annule pas la demande
+  const saveBooking = async (meetLink: string | null, providerName: string) => {
+    const db = supabaseAdmin()
+    if (!db) return false
+    const { error } = await db.from('bookings').insert({
+      start_at: startIso, end_at: end, name, email, phone: phone || null, company: company || null, mode,
+      message: message || null, locale, visitor_tz: visitorTz, meet_link: meetLink, provider: providerName
+    })
+    if (error) console.error('[booking] supabase', error)
+    return !error
+  }
+
   if (!provider) {
-    const mail = await sendBookingMails({ locale, name, email, phone, company, message, mode, start: startIso, end, meetLink: null, visitorTz, ics: '', notifyOnly: true })
-    if (!mail.notified) throw createError({ statusCode: smtpTransport() ? 502 : 503, statusMessage: 'Envoi de la demande impossible' })
+    // La demande est acceptée dès qu'elle est enregistrée dans Supabase ou envoyée par e-mail
+    const [saved, mail] = await Promise.all([
+      saveBooking(null, 'email'),
+      sendBookingMails({ locale, name, email, phone, company, message, mode, start: startIso, end, meetLink: null, visitorTz, ics: '', notifyOnly: true })
+    ])
+    if (!saved && !mail.notified) throw createError({ statusCode: smtpTransport() || supabaseAdmin() ? 502 : 503, statusMessage: 'Envoi de la demande impossible' })
     return { ok: true, start: startIso, end, meetLink: null, invited: false, emailed: false }
   }
 
@@ -72,6 +88,8 @@ export default defineEventHandler(async (event) => {
     console.error(`[booking] ${provider.name} create`, err)
     throw createError({ statusCode: 502, statusMessage: 'Impossible de créer le rendez-vous' })
   }
+
+  await saveBooking(created.meetLink, provider.name)
 
   // Confirmation au client (avec invitation .ics) + notification à l'équipe, si SMTP configuré
   const ics = buildIcs({

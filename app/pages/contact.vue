@@ -83,7 +83,9 @@ const t = useLocaleText({
     services: [
       { id: 'web', t: 'Site web', d: 'Vitrine, blog, landing, e-commerce' }, { id: 'app', t: 'Application métier', d: 'CRM, back-office, portail' },
       { id: 'seo', t: 'SEO & GEO', d: 'Google et IA génératives' }, { id: 'mobile', t: 'Application mobile', d: 'iOS et Android' },
-      { id: 'ads', t: 'Marketing & ADS', d: 'Campagnes d’acquisition' }, { id: 'social', t: 'Social media', d: 'Visuel et vidéo' }
+      { id: 'ads', t: 'Marketing & ADS', d: 'Campagnes d’acquisition' }, { id: 'social', t: 'Social media', d: 'Visuel et vidéo' },
+      { id: 'refonte', t: 'Refonte de site', d: 'Nouveau design, migration' }, { id: 'maintenance', t: 'Maintenance de site', d: 'Mises à jour, sécurité' },
+      { id: 'saas', t: 'SaaS', d: 'MVP, plateforme, abonnements' }
     ],
     s2: 'Parlez-nous de votre projet.', budget: 'Budget indicatif', budgets: ['< 5 k€', '5 – 15 k€', '15 – 50 k€', '> 50 k€', 'À définir'],
     timing: 'Échéance souhaitée', timings: ['Dès que possible', 'Sous 3 mois', 'Sous 6 mois', 'Pas de contrainte'],
@@ -102,7 +104,9 @@ const t = useLocaleText({
     services: [
       { id: 'web', t: 'Website', d: 'Showcase, blog, landing page, e-commerce' }, { id: 'app', t: 'Business software', d: 'CRM, back office, portal' },
       { id: 'seo', t: 'SEO & GEO', d: 'Google and generative AI' }, { id: 'mobile', t: 'Mobile app', d: 'iOS and Android' },
-      { id: 'ads', t: 'Marketing & ads', d: 'Acquisition campaigns' }, { id: 'social', t: 'Social media', d: 'Visuals and video' }
+      { id: 'ads', t: 'Marketing & ads', d: 'Acquisition campaigns' }, { id: 'social', t: 'Social media', d: 'Visuals and video' },
+      { id: 'refonte', t: 'Website redesign', d: 'New design, migration' }, { id: 'maintenance', t: 'Website maintenance', d: 'Updates, security' },
+      { id: 'saas', t: 'SaaS', d: 'MVP, platform, subscriptions' }
     ],
     s2: 'Tell us about your project.', budget: 'Indicative budget', budgets: ['< €5k', '€5k – 15k', '€15k – 50k', '> €50k', 'To be defined'],
     timing: 'Desired timeline', timings: ['As soon as possible', 'Within 3 months', 'Within 6 months', 'No constraint'],

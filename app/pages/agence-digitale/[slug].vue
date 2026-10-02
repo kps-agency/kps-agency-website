@@ -64,11 +64,11 @@ const refs = computed(() => (page.value?.refs ?? []).map(slug => projects.value.
 const t = useLocaleText({
   fr: {
     home: 'Accueil', talk: 'Parler de votre projet', seeWork: 'Voir les réalisations', more: 'En savoir plus', faq: 'Questions fréquentes',
-    short: { web: 'Vitrine, blog, landing page, e-commerce.', app: 'Des outils sur mesure pour vos équipes.', seo: 'Visibilité sur Google et les IA génératives.', mobile: 'iOS et Android, de l’UX aux stores.', ads: 'Des campagnes pilotées par la donnée.', social: 'Visuel, vidéo et stratégie éditoriale.' } as Record<string, string>
+    short: { web: 'Vitrine, blog, landing page, e-commerce.', app: 'Des outils sur mesure pour vos équipes.', seo: 'Visibilité sur Google et les IA génératives.', mobile: 'iOS et Android, de l’UX aux stores.', ads: 'Des campagnes pilotées par la donnée.', social: 'Visuel, vidéo et stratégie éditoriale.', refonte: 'Un site modernisé, sans perte de référencement.', maintenance: 'Mises à jour, sécurité et évolutions.', saas: 'Votre logiciel en ligne, du MVP à la plateforme.' } as Record<string, string>
   },
   en: {
     home: 'Home', talk: 'Discuss your project', seeWork: 'See our work', more: 'Learn more', faq: 'Frequently asked questions',
-    short: { web: 'Showcase sites, blogs, landing pages, e-commerce.', app: 'Tailor-made tools for your teams.', seo: 'Visibility on Google and generative AI.', mobile: 'iOS and Android, from UX to the stores.', ads: 'Data-driven campaigns.', social: 'Visuals, video and editorial strategy.' } as Record<string, string>
+    short: { web: 'Showcase sites, blogs, landing pages, e-commerce.', app: 'Tailor-made tools for your teams.', seo: 'Visibility on Google and generative AI.', mobile: 'iOS and Android, from UX to the stores.', ads: 'Data-driven campaigns.', social: 'Visuals, video and editorial strategy.', refonte: 'A modernised website, rankings preserved.', maintenance: 'Updates, security and improvements.', saas: 'Your online software, from MVP to platform.' } as Record<string, string>
   }
 })
 

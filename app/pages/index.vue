@@ -118,6 +118,15 @@
               <span class="svc__cta">{{ sv.cta }} <IconArrow :size="16" /></span>
             </NuxtLink>
           </div>
+          <!-- Argument de vente : une solution pour chaque budget -->
+          <div class="budget">
+            <div class="budget__text">
+              <span class="budget__tag">{{ t.services.budget.tag }}</span>
+              <p class="budget__title">{{ t.services.budget.title }} <span class="text-gradient">{{ t.services.budget.hi }}</span></p>
+              <p class="budget__p">{{ t.services.budget.p }}</p>
+            </div>
+            <NuxtLink :to="link.contact()" class="btn btn--primary">{{ t.services.budget.cta }} <IconArrow /></NuxtLink>
+          </div>
         </div>
       </section>
 
@@ -517,6 +526,14 @@ async function submit() {
 .svc--dark .svc__pills span { background: var(--dark-2); }
 .svc__cta { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; }
 
+/* Argument « tous budgets » : encadré à liseré dégradé sous les services */
+.budget { display: flex; justify-content: space-between; align-items: center; gap: 40px; margin-top: 32px; padding: 36px 40px; border: 1px solid transparent; border-radius: 24px; background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(90deg, #6366F1, #06B6D4, #A855F7) border-box; box-shadow: 0 0 40px -18px rgba(6, 182, 212, .6); }
+.budget__text { display: flex; flex-direction: column; gap: 12px; max-width: 760px; }
+.budget__tag { align-self: flex-start; padding: 5px 12px; border-radius: 999px; background: var(--accent-soft); border: 1px solid var(--accent-tint); color: var(--accent-light); font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.budget__title { font-family: var(--font-display); font-size: 32px; line-height: 1.15; letter-spacing: -.8px; font-weight: 900; }
+.budget__p { font-size: 17px; line-height: 1.55; color: var(--muted); }
+.budget .btn { flex: none; }
+
 /* Steps */
 .steps { list-style: none; margin: 0; padding: 0; }
 .step { display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; min-height: 280px; }
@@ -663,6 +680,7 @@ async function submit() {
   .wf__steps, .why__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .wf__steps::before { display: none; }
   .sec-head { flex-direction: column; align-items: flex-start; }
+  .budget { flex-direction: column; align-items: flex-start; gap: 24px; }
   .book { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .book__intro { position: static; }
   .faq-sec { grid-template-columns: minmax(0, 1fr); gap: 40px; }
@@ -674,6 +692,9 @@ async function submit() {
 /* Mobile */
 @media (max-width: 720px) {
   .hero { gap: 24px; padding-top: 48px; padding-bottom: 110px; }
+  .budget { padding: 28px 22px; margin-top: 20px; }
+  .budget__title { font-size: 26px; }
+  .budget .btn { width: 100%; justify-content: center; white-space: normal; }
   .hero__logo img { width: 300px; }
   .hero__title { font-size: 44px; letter-spacing: -1.2px; }
   .hero__lead { font-size: 18px; }

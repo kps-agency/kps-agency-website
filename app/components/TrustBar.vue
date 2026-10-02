@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { REVIEWS, REVIEWS_AVG } from '~/data/content'
 
-const { en, link, projects } = useSite()
+const { en, link, projects, services } = useSite()
 const titleId = useId()
 const DOT = { Web: 'var(--accent)', ADS: 'var(--accent-mid)', Social: 'var(--accent-light)' } as const
 
@@ -62,7 +62,7 @@ const t = useLocaleText({
 const stats = computed(() => [
   { v: String(projects.value.length), l: t.value.projects },
   { v: en.value ? REVIEWS_AVG.toFixed(1) : REVIEWS_AVG.toFixed(1).replace('.', ','), star: true, l: `${t.value.rating} · ${REVIEWS.length} ${t.value.ratingCount}` },
-  { v: '6', l: t.value.expertise },
+  { v: String(services.value.length), l: t.value.expertise },
   { v: String(t.value.countries.length), l: t.value.countriesStat }
 ])
 

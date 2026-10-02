@@ -256,6 +256,72 @@ export const SERVICES: Service[] = [
     methTitle: 'De la stratégie au contenu publié.',
     steps: [s('1', 'Le Choix', 'Définition de vos objectifs et des formats : visuel, vidéo ou les deux.'), s('2', 'Le Brief', 'Vous nous transmettez votre vision et vos assets.'), s('3', 'La Stratégie', 'Nous analysons, créons et optimisons.'), s('4', 'Le Décollage', 'Livraison des contenus prêts à publier.')],
     related: ['zayn', 'kpmg', 'brasileia-cosmetics'], cta: 'Envie de faire rayonner votre marque ?'
+  },
+  {
+    slug: 'refonte-site-web', key: 'refonte', num: '07', crumb: 'Refonte de site', eyebrow: 'Refonte de site web',
+    h1: 'Un site vieillissant ? Donnez-lui une seconde vie.',
+    sub: 'Design daté, pages lentes, site difficile à mettre à jour ou qui ne génère plus de contacts : nous repensons votre site sans perdre votre référencement ni vos contenus.',
+    offersTitle: 'Une refonte à la mesure de votre besoin.', offersSub: 'Du simple rafraîchissement à la reconstruction complète, on ne refait que ce qui doit l’être.',
+    offers: [
+      o('01', 'Refonte graphique', 'Un design actuel et fidèle à votre marque, sur une structure de site conservée.', ['Nouveau design', 'Responsive', 'Identité']),
+      o('02', 'Refonte complète', 'Arborescence, contenus, design et technique repensés pour repartir sur des bases saines.', ['Arborescence', 'Contenus', 'Nouveau socle']),
+      o('03', 'Migration technique', 'Changement de CMS ou de technologie, avec reprise de vos contenus et de vos données.', ['Changement de CMS', 'Reprise de contenus', 'Hébergement']),
+      o('04', 'Refonte SEO', 'Plan de redirections et optimisation des pages pour préserver vos positions sur Google.', ['Redirections 301', 'Balisage', 'Suivi des positions'])
+    ],
+    benTitle: 'Refaire son site, sans repartir de zéro.',
+    benefits: [
+      b('Référencement préservé', 'Chaque ancienne adresse est redirigée vers la nouvelle pour ne pas perdre votre visibilité.'),
+      b('Site plus rapide', 'Des pages allégées et un socle technique à jour, sur mobile comme sur ordinateur.'),
+      b('Plus de contacts', 'Des parcours repensés pour guider vos visiteurs vers la demande de devis ou l’achat.'),
+      b('Autonomie', 'Un site simple à mettre à jour par vos équipes, sans dépendre d’un développeur.')
+    ],
+    methTitle: 'De l’audit à la bascule.',
+    steps: [s('1', 'Audit', 'Analyse de votre site actuel : contenus, performances, référencement et points de friction.'), s('2', 'Conception', 'Nouvelle arborescence et maquettes : vous validez avant toute production.'), s('3', 'Production', 'Développement, reprise des contenus et plan de redirections.'), s('4', 'Bascule & suivi', 'Mise en ligne sans coupure, puis contrôle du référencement dans les semaines qui suivent.')],
+    related: ['powercell-group', 'cushman-wakefield-veritas', 'dunstan'], cta: 'Un site à moderniser ?'
+  },
+  {
+    slug: 'maintenance-site-web', key: 'maintenance', num: '08', crumb: 'Maintenance de site', eyebrow: 'Maintenance de site web',
+    h1: 'Votre site à jour, sécurisé et disponible.',
+    sub: 'Mises à jour, sauvegardes, sécurité et petites évolutions : nous veillons sur votre site pour que vous n’ayez plus à vous en soucier.',
+    offersTitle: 'Tout ce qu’il faut pour un site serein.', offersSub: 'Un accompagnement dans la durée, que nous ayons créé votre site ou non.',
+    offers: [
+      o('01', 'Mises à jour', 'CMS, extensions et thème tenus à jour, avec vérification du site après chaque intervention.', ['CMS', 'Extensions', 'Compatibilité']),
+      o('02', 'Sécurité & sauvegardes', 'Sauvegardes régulières, surveillance et restauration du site en cas de problème.', ['Sauvegardes', 'Surveillance', 'Restauration']),
+      o('03', 'Corrections & évolutions', 'Un bug, un texte à modifier, une page à ajouter : nous intervenons à la demande.', ['Corrections', 'Contenus', 'Nouvelles pages']),
+      o('04', 'Performance & suivi', 'Contrôle de la vitesse et de la disponibilité, avec un compte rendu régulier.', ['Vitesse', 'Disponibilité', 'Compte rendu'])
+    ],
+    benTitle: 'Un site, ça s’entretient.',
+    benefits: [
+      b('Sécurité', 'Un site à jour est un site moins exposé aux failles et au piratage.'),
+      b('Disponibilité', 'Les problèmes sont repérés et traités avant de vous faire perdre des clients.'),
+      b('Sérénité', 'Un interlocuteur qui connaît votre site et répond quand vous en avez besoin.'),
+      b('Évolution continue', 'Votre site suit votre activité : nouvelles offres, nouvelles pages, nouveaux contenus.')
+    ],
+    methTitle: 'Une prise en main simple.',
+    steps: [s('1', 'État des lieux', 'Audit de votre site : versions, sécurité, sauvegardes et performances.'), s('2', 'Mise à niveau', 'Remise à jour et sécurisation du site avant de démarrer le suivi.'), s('3', 'Suivi régulier', 'Mises à jour, sauvegardes et surveillance tout au long de l’année.'), s('4', 'Interventions', 'Corrections et évolutions à la demande, avec un compte rendu.')],
+    related: ['fibbl', 'copenhagen-energy', 'radiumhemmets-forskningsfonder'], cta: 'Besoin d’un site toujours au point ?'
+  },
+  {
+    slug: 'creation-saas', key: 'saas', num: '09', crumb: 'SaaS', eyebrow: 'Création de SaaS',
+    h1: 'Votre idée de logiciel, transformée en produit en ligne.',
+    sub: 'Du premier prototype à la plateforme par abonnement : nous concevons et développons votre SaaS, avec comptes utilisateurs, paiement en ligne et un socle prêt à grandir.',
+    offersTitle: 'De l’idée au produit qui se vend.', offersSub: 'On avance par étapes, pour mettre rapidement votre produit entre les mains de vrais utilisateurs.',
+    offers: [
+      o('01', 'MVP', 'Une première version centrée sur l’essentiel, pour tester votre idée auprès de vos premiers clients.', ['Prototype', 'Fonctions clés', 'Mise en ligne']),
+      o('02', 'Plateforme SaaS', 'Comptes, rôles, espaces clients et tableaux de bord : une application complète, pensée pour plusieurs clients.', ['Multi-clients', 'Rôles & droits', 'Tableaux de bord']),
+      o('03', 'Abonnements & paiement', 'Formules, essais gratuits, facturation et paiement en ligne intégrés à votre produit.', ['Formules', 'Paiement en ligne', 'Facturation']),
+      o('04', 'Évolution & intégrations', 'Nouvelles fonctionnalités, API et connexions avec les outils de vos clients.', ['API', 'Intégrations', 'Nouvelles fonctions'])
+    ],
+    benTitle: 'Un SaaS se construit pour durer.',
+    benefits: [
+      b('Lancement rapide', 'Une première version utilisable tôt, pour apprendre de vos utilisateurs avant d’aller plus loin.'),
+      b('Socle évolutif', 'Une architecture qui accompagne la croissance de votre nombre de clients.'),
+      b('Revenus récurrents', 'Abonnements et paiements gérés dans le produit, sans bricolage.'),
+      b('Expérience soignée', 'Une interface claire qui donne envie de revenir et limite les demandes au support.')
+    ],
+    methTitle: 'De l’idée au lancement.',
+    steps: [s('1', 'Cadrage', 'Votre marché, vos utilisateurs et les fonctions vraiment indispensables à la première version.'), s('2', 'Conception', 'Parcours et maquettes de l’application : vous validez avant le développement.'), s('3', 'Développement', 'Construction par étapes, avec des démonstrations régulières.'), s('4', 'Lancement & évolution', 'Mise en ligne, suivi de l’usage et ajout de fonctionnalités au fil des retours.')],
+    related: ['fibbl', 'powercell-group', 'cushman-wakefield-veritas'], cta: 'Un SaaS à lancer ?'
   }
 ]
 
@@ -266,7 +332,10 @@ export const SERVICE_SEO: Record<string, { title: string; h1: string; desc: stri
   'application-mobile': { title: 'Création d’application mobile iOS & Android', h1: 'Création d’application mobile iOS & Android', desc: 'Conception et développement d’applications mobiles iOS et Android, de la maquette UX à la publication sur les stores. Agence basée à Paris, devis sous 48 h.' },
   'referencement-seo-geo': { title: 'Agence SEO & GEO à Paris : Google et IA', h1: 'Agence SEO & GEO à Paris', desc: 'Référencement naturel SEO et GEO à Paris : audit, SEO technique, contenus et visibilité dans ChatGPT, Gemini et Perplexity pour une demande qualifiée.' },
   'marketing-digital-ads': { title: 'Agence Google Ads, Meta Ads & TikTok Ads', h1: 'Agence marketing digital & publicité en ligne', desc: 'Campagnes Google Ads, Meta Ads et TikTok Ads pilotées par la donnée : stratégie, création, diffusion et optimisation continue. Agence marketing digital à Paris.' },
-  'social-media': { title: 'Agence social media : contenus TikTok & Instagram', h1: 'Agence social media & création de contenus', desc: 'Stratégie social media, création visuelle et vidéos courtes pour TikTok et Instagram : des contenus qui renforcent votre image et créent l’engagement.' }
+  'social-media': { title: 'Agence social media : contenus TikTok & Instagram', h1: 'Agence social media & création de contenus', desc: 'Stratégie social media, création visuelle et vidéos courtes pour TikTok et Instagram : des contenus qui renforcent votre image et créent l’engagement.' },
+  'refonte-site-web': { title: 'Refonte de site web à Paris, sans perte de SEO', h1: 'Refonte de site web à Paris', desc: 'Refonte de site web à Paris : nouveau design, migration technique et plan de redirections pour moderniser votre site sans perdre votre référencement Google.' },
+  'maintenance-site-web': { title: 'Maintenance de site web : mises à jour & sécurité', h1: 'Maintenance de site web', desc: 'Maintenance de site web : mises à jour, sauvegardes, sécurité, corrections et évolutions à la demande. Un site à jour et disponible, suivi par une agence à Paris.' },
+  'creation-saas': { title: 'Création de SaaS : du MVP à la plateforme', h1: 'Création de SaaS sur mesure', desc: 'Création de SaaS sur mesure à Paris : MVP, plateforme multi-clients, abonnements et paiement en ligne. Du cadrage au lancement, avec une équipe dédiée. Devis sous 48 h.' }
 }
 
 
@@ -296,7 +365,7 @@ export const LOCAL_PAGES: LocalPage[] = [
       b('La proximité', 'Des échanges directs avec une équipe basée à Paris, en visio ou en rendez-vous.'),
       b('La connaissance du marché', 'Une compréhension fine des attentes des clients et de la concurrence en Île-de-France.'),
       b('Le SEO local', 'Une visibilité optimisée sur les recherches géolocalisées de vos futurs clients.'),
-      b('Une équipe complète', 'Six expertises réunies pour mener votre projet de bout en bout.')
+      b('Une équipe complète', 'Neuf expertises réunies pour mener votre projet de bout en bout.')
     ],
     refTitle: 'Quelques-unes de nos références', refs: ['yassir', 'kpmg', 'cushman-wakefield-veritas'],
     faq: [
