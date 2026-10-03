@@ -88,11 +88,11 @@ export default defineNuxtConfig({
       .map(path => [path, { headers: { 'cache-control': 'public, max-age=2592000, stale-while-revalidate=86400' } }])
   ),
   nitro: {
-    // Articles du blog accessibles côté serveur (sitemap, flux RSS)
+    // Articles du blog accessibles côté serveur (sitemap, llms.txt, flux RSS)
     serverAssets: [{ baseName: 'blog', dir: '../content/blog' }],
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/en', '/sitemap.xml', '/blog/rss.xml', '/en/blog/rss.xml'],
+      routes: ['/', '/en', '/sitemap.xml', '/llms.txt', '/blog/rss.xml', '/en/blog/rss.xml'],
       // /services → services.html (et non services/index.html) : URL sans slash final, servie par public/.htaccess
       autoSubfolderIndex: false
     }
