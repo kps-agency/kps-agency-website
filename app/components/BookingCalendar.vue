@@ -12,7 +12,8 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 18l6-6-6-6" /></svg>
           </button>
         </div>
-        <div class="bk__grid" role="grid" :aria-label="t.calendar">
+        <!-- role « group » : une grille ARIA exigerait des lignes et cellules ; ici, de simples boutons de jour -->
+        <div class="bk__grid" role="group" :aria-label="t.calendar">
           <span v-for="w in weekdays" :key="w" class="bk__wd" aria-hidden="true">{{ w }}</span>
           <template v-for="(c, i) in cells" :key="i">
             <span v-if="!c" class="bk__day bk__day--empty" />
@@ -161,11 +162,11 @@ const selectedDate = ref('')
 const selectedSlot = ref<Slot | null>(null)
 const today = parisDate()
 
-async function load() {
+async function load(fresh = false) {
   loading.value = true
   loadError.value = false
   try {
-    const res = await $fetch<{ days: DaySlots[] }>(`${api}/api/booking/slots`)
+    const res = await $fetch<{ days: DaySlots[] }>(`${api}/api/booking/slots`, fresh ? { query: { t: Date.now() } } : {}) // fresh : contourne le cache CDN de 60 s
     days.value = res.days
     if (!days.value.some(d => d.date === selectedDate.value)) {
       selectedDate.value = days.value[0]?.date ?? ''
@@ -266,7 +267,7 @@ async function book() {
     if (status === 409) {
       error.value = t.value.errTaken
       step.value = 'pick'
-      await load()
+      await load(true)
     } else if (status === 503) {
       error.value = `${t.value.errSetup} ${CONTACT.email}.`
     } else {
@@ -299,16 +300,16 @@ const icsHref = computed(() => {
 </script>
 
 <style scoped>
-.bk { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 32px; box-shadow: 0 30px 60px -40px rgba(0, 0, 0, .3); }
+.bk { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 32px; box-shadow: 0 30px 60px -40px rgba(0, 0, 0, .3); }
 .bk__pick { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; }
 .bk__month { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .bk__month-t { font-size: 20px; font-weight: 700; }
-.bk__nav { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line-3); border-radius: 99px; background: var(--surface); color: var(--ink); }
+.bk__nav { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line-3); border-radius: 999px; background: var(--surface); color: var(--ink); }
 .bk__nav:disabled { opacity: .35; cursor: not-allowed; }
 .bk__nav:not(:disabled):hover { background: var(--deep-hover); color: var(--white); border-color: var(--accent); }
 .bk__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
-.bk__wd { text-align: center; font-size: 12px; font-weight: 600; color: var(--muted-2); text-transform: uppercase; letter-spacing: .5px; padding-bottom: 6px; }
-.bk__day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border: none; border-radius: 12px; background: transparent; font-size: 15px; font-weight: 500; color: var(--muted-3); }
+.bk__wd { text-align: center; font-size: 13px; font-weight: 600; color: var(--muted-2); text-transform: uppercase; letter-spacing: .5px; padding-bottom: 6px; }
+.bk__day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border: none; border-radius: 12px; background: transparent; font-size: 16px; font-weight: 500; color: var(--muted-3); }
 .bk__day:disabled { cursor: default; }
 .bk__day.is-open { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
 .bk__day.is-open:hover { background: var(--accent-tint); }
@@ -321,7 +322,7 @@ const icsHref = computed(() => {
 .bk__muted { font-size: 14px; color: var(--muted-2); }
 .bk__slot-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; max-height: 340px; overflow-y: auto; padding: 2px; }
 .bk__slot { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 8px; border: 1px solid var(--line-3); border-radius: 12px; background: var(--surface); font-size: 16px; font-weight: 600; color: var(--ink); }
-.bk__slot small { font-size: 11px; font-weight: 500; color: var(--muted-2); }
+.bk__slot small { font-size: 13px; font-weight: 500; color: var(--muted-2); }
 .bk__slot:hover { border-color: var(--accent); color: var(--accent); }
 .bk__slot.is-selected { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .bk__slot.is-selected small { color: var(--accent-tint); }
@@ -330,18 +331,18 @@ const icsHref = computed(() => {
 .bk__skeleton { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
 .bk__skeleton i { height: 48px; border-radius: 12px; background: var(--line-soft); animation: bk-pulse 1.2s ease-in-out infinite; }
 @keyframes bk-pulse { 50% { opacity: .5; } }
-.bk__alert { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 20px; border-radius: 16px; background: var(--accent-soft); font-size: 15px; }
+.bk__alert { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 20px; border-radius: 16px; background: var(--accent-soft); font-size: 16px; }
 .bk__retry { padding: 0; border: none; background: none; color: var(--accent); font-weight: 600; text-decoration: underline; }
 
 .bk__form { display: flex; flex-direction: column; gap: 20px; }
 .bk__recap { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 16px; background: var(--accent-soft); }
 .bk__recap > div { display: flex; flex-direction: column; gap: 2px; }
-.bk__recap-k { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); }
-.bk__recap strong { font-size: 17px; }
+.bk__recap-k { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); }
+.bk__recap strong { font-size: 16px; }
 .bk__change { border: none; background: none; color: var(--accent); font-weight: 600; text-decoration: underline; padding: 0; }
 .bk__modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; border: none; margin: 0; padding: 0; }
 .bk__modes legend { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
-.bk__modes label { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid var(--line-3); border-radius: 14px; cursor: pointer; }
+.bk__modes label { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid var(--line-3); border-radius: 16px; cursor: pointer; }
 .bk__modes label.is-on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 .bk__modes input { accent-color: var(--accent); }
 .bk__modes span { display: flex; flex-direction: column; }
@@ -359,8 +360,8 @@ const icsHref = computed(() => {
 .bk__back { border: none; background: none; font-weight: 600; color: var(--muted); padding: 0; }
 
 .bk__done { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 24px 8px; }
-.bk__done-i { width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; border-radius: 99px; background: rgba(34, 197, 94, .14); }
-.bk__done-h { font-size: 30px; font-weight: 900; letter-spacing: -.6px; }
+.bk__done-i { width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: rgba(34, 197, 94, .14); }
+.bk__done-h { font-size: 32px; font-weight: 900; letter-spacing: -.6px; }
 .bk__done-when { font-size: 18px; font-weight: 600; }
 .bk__add { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 6px; }
 

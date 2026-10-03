@@ -64,7 +64,8 @@ const articlesFr: LegalArticle[] = [
     'Le site kps-agency.com contient un certain nombre de liens hypertextes vers d’autres sites. Cependant, KPS Agency n’a pas la possibilité de vérifier le contenu des sites ainsi visités et n’assumera en conséquence aucune responsabilité de ce fait.',
     { h: 'Cookies' },
     'La navigation sur le site est susceptible de provoquer l’installation de cookie(s) sur l’ordinateur de l’utilisateur. Un cookie est un fichier de petite taille, qui ne permet pas l’identification de l’utilisateur, mais qui enregistre des informations relatives à la navigation d’un ordinateur sur un site.',
-    'Le refus d’installation d’un cookie peut entraîner l’impossibilité d’accéder à certains services. L’utilisateur peut toutefois configurer son ordinateur pour refuser l’installation des cookies.'
+    'Le site utilise Google Analytics, un service de mesure d’audience fourni par Google, afin de connaître la fréquentation des pages et d’améliorer le site. Les cookies de mesure d’audience ne sont déposés qu’après l’accord de l’utilisateur, recueilli par le bandeau affiché lors de la première visite. Ce choix peut être modifié à tout moment grâce au lien « Gérer les cookies » présent en bas de chaque page.',
+    'Le refus de ces cookies n’empêche pas l’accès au site ni à ses services. L’utilisateur peut également configurer son navigateur pour refuser l’installation des cookies.'
   ] },
   { t: 'Droit applicable et attribution de juridiction', blocks: [
     'Tout litige en relation avec l’utilisation du site kps-agency.com est soumis au droit français. En dehors des cas où la loi ne le permet pas, il est fait attribution exclusive de juridiction aux tribunaux compétents.'

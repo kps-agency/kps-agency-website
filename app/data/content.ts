@@ -99,13 +99,12 @@ export const PROJECTS: Project[] = [
   p('dunstan', 'Web', 'Dunstan', 'Animaliers', D, R, '#FEF3C7', '#92400E', 'https://dunstan.se/'),
   p('galeries-live', 'ADS', 'Galeries LIVE', 'Campagne ADS Engagement', 'Stratégie ADS combinant reach organique et payante avec analyse des posts top-performing pour optimiser le ROI.', R, '#E4EFE9', '#14532D'),
   p('radiumhemmets-forskningsfonder', 'Web', 'Radiumhemmets Forskningsfonder', 'Recherche', D, R, '#FCE7F3', '#9D174D', 'https://rahfo.se/'),
-  p('founa-com-by-smg', 'ADS', 'Founa.com by SMG', 'Campagne ADS Acquisition', 'Campagne d’acquisition structurée avec dashboard analytics complet, suivi des KPIs et optimisation des performances.', R, '#E0F2FE', '#075985'),
+  p('quartz-conciergerie', 'Web', 'Quartz Conciergerie', 'Conciergerie Airbnb', D, R, '#F3EBDD', '#6B4E2E', 'https://quartzconciergerie.com/'),
+  p('founa-com-by-smg','ADS', 'Founa.com by SMG', 'Campagne ADS Acquisition', 'Campagne d’acquisition structurée avec dashboard analytics complet, suivi des KPIs et optimisation des performances.', R, '#E0F2FE', '#075985'),
   p('prostarseo', 'ADS', 'ProstarSEO', 'Campagne ADS Digital/SEO', 'Campagne d’acquisition digital avec analyse d’autorité, traffic organique et distribution géographique pour ciblage optimisé.', R, '#EDE7F6', '#4C1D95')
 ]
 
 export const CAT_LABEL: Record<ProjectCat, string> = { Web: 'Site web', ADS: 'ADS', Social: 'Social/Médias' }
-/** Vignette 800 px générée à côté de chaque visuel (cartes, listes) */
-export const thumb = (img: string) => img.replace(/\.webp$/, '-800.webp')
 
 /* ---------------- Services ---------------- */
 export interface Offer { n: string; t: string; d: string; tags: string[] }
@@ -116,6 +115,8 @@ export interface Service {
   offersTitle: string; offersSub: string; offers: Offer[]
   benTitle: string; benefits: Benefit[]; methTitle: string; steps: Step[]
   related: string[]; cta: string
+  /** Page d'atterrissage SEO : accessible par son URL et le sitemap, mais absente des menus et des listes de services */
+  landing?: boolean
 }
 
 const o = (n: string, t: string, d: string, tags: string[]): Offer => ({ n, t, d, tags })
@@ -322,6 +323,28 @@ export const SERVICES: Service[] = [
     methTitle: 'De l’idée au lancement.',
     steps: [s('1', 'Cadrage', 'Votre marché, vos utilisateurs et les fonctions vraiment indispensables à la première version.'), s('2', 'Conception', 'Parcours et maquettes de l’application : vous validez avant le développement.'), s('3', 'Développement', 'Construction par étapes, avec des démonstrations régulières.'), s('4', 'Lancement & évolution', 'Mise en ligne, suivi de l’usage et ajout de fonctionnalités au fil des retours.')],
     related: ['fibbl', 'powercell-group', 'cushman-wakefield-veritas'], cta: 'Un SaaS à lancer ?'
+  },
+  {
+    slug: 'agence-geo', key: 'geo', num: 'IA', crumb: 'Agence GEO', eyebrow: 'Agence GEO', landing: true,
+    h1: 'Soyez la marque que ChatGPT recommande.',
+    sub: 'Vos clients posent désormais leurs questions à ChatGPT, Gemini et Perplexity. Le GEO (Generative Engine Optimization) consiste à faire en sorte que ces IA citent votre entreprise dans leurs réponses.',
+    offersTitle: 'Du diagnostic à la citation.', offersSub: 'Le GEO prolonge le référencement naturel : on ne repart pas de zéro, on rend votre site lisible et citable par les IA.',
+    offers: [
+      o('01', 'Audit de visibilité IA', 'Nous interrogeons les principaux moteurs IA sur vos requêtes clés : êtes-vous cité, qui l’est à votre place, et pourquoi.', ['ChatGPT', 'Gemini', 'Perplexity']),
+      o('02', 'Contenus citables', 'Des réponses claires, structurées et sourcées aux questions de vos clients, que les IA peuvent reprendre telles quelles.', ['Questions-réponses', 'Chiffres sourcés', 'Structure']),
+      o('03', 'Socle technique', 'Données structurées, accès des robots IA, fichier llms.txt et pages rapides : votre site devient facile à lire pour une IA.', ['Données structurées', 'llms.txt', 'Robots IA']),
+      o('04', 'Notoriété de marque', 'Les IA citent les marques dont on parle ailleurs : avis, annuaires, articles et mentions cohérentes de votre entreprise.', ['Avis', 'Mentions', 'Cohérence'])
+    ],
+    benTitle: 'Le GEO ne remplace pas le SEO. Il le prolonge.',
+    benefits: [
+      b('Une nouvelle source de clients', 'Être cité dans une réponse d’IA, c’est être recommandé au moment précis où le client se décide.'),
+      b('Un travail qui sert deux fois', 'Les contenus et la technique qui plaisent aux IA améliorent aussi votre classement sur Google.'),
+      b('Une longueur d’avance', 'Peu d’entreprises s’en occupent encore : les premières citées s’installent durablement.'),
+      b('Des résultats suivis', 'Nous mesurons régulièrement votre présence dans les réponses des IA sur vos requêtes clés.')
+    ],
+    methTitle: 'Notre méthode GEO.',
+    steps: [s('1', 'Diagnostic', 'Vos requêtes clés testées sur les moteurs IA, et l’analyse des sources qu’ils citent.'), s('2', 'Plan d’action', 'Les pages à créer ou à réécrire, classées par impact.'), s('3', 'Production', 'Contenus, données structurées et corrections techniques.'), s('4', 'Suivi', 'Mesure régulière des citations et ajustements.')],
+    related: ['powercell-group', 'cushman-wakefield-veritas', 'fibbl'], cta: 'Envie d’être cité par les IA ?'
   }
 ]
 
@@ -335,6 +358,7 @@ export const SERVICE_SEO: Record<string, { title: string; h1: string; desc: stri
   'social-media': { title: 'Agence social media : contenus TikTok & Instagram', h1: 'Agence social media & création de contenus', desc: 'Stratégie social media, création visuelle et vidéos courtes pour TikTok et Instagram : des contenus qui renforcent votre image et créent l’engagement.' },
   'refonte-site-web': { title: 'Refonte de site web à Paris, sans perte de SEO', h1: 'Refonte de site web à Paris', desc: 'Refonte de site web à Paris : nouveau design, migration technique et plan de redirections pour moderniser votre site sans perdre votre référencement Google.' },
   'maintenance-site-web': { title: 'Maintenance de site web : mises à jour & sécurité', h1: 'Maintenance de site web', desc: 'Maintenance de site web : mises à jour, sauvegardes, sécurité, corrections et évolutions à la demande. Un site à jour et disponible, suivi par une agence à Paris.' },
+  'agence-geo': { title: 'Agence GEO : être cité par ChatGPT, Gemini, Perplexity', h1: 'Agence GEO à Paris', desc: 'Agence GEO à Paris : audit de visibilité IA, contenus citables et socle technique pour que ChatGPT, Gemini et Perplexity recommandent votre entreprise.' },
   'creation-saas': { title: 'Création de SaaS : du MVP à la plateforme', h1: 'Création de SaaS sur mesure', desc: 'Création de SaaS sur mesure à Paris : MVP, plateforme multi-clients, abonnements et paiement en ligne. Du cadrage au lancement, avec une équipe dédiée. Devis sous 48 h.' }
 }
 

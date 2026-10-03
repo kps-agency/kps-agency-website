@@ -13,7 +13,10 @@
 
     <section class="container">
       <figure class="visual" :style="{ background: project.bg }">
-        <img :src="project.img" :alt="project.alt" width="1600" height="900" fetchpriority="high">
+        <picture style="display: contents">
+          <source v-if="avif(project.img)" type="image/avif" :srcset="avif(project.img)">
+          <img :src="image(project.img)" :alt="project.alt" width="1600" height="900" fetchpriority="high">
+        </picture>
       </figure>
     </section>
 
@@ -89,6 +92,7 @@ const next = computed(() => {
 })
 
 const site = useRuntimeConfig().public.siteUrl as string
+const { image, avif, absolute } = useCloudImage()
 const metaDesc = computed(() => {
   const p = project.value!
   if (c.value.hasDesc && p.desc.length >= 110) return p.desc
@@ -114,7 +118,7 @@ const pageTitle = computed(() => {
 usePageSeo({
   title: () => pageTitle.value,
   description: metaDesc,
-  image: () => project.value!.img,
+  image: () => image(project.value!.img),
   noindex: () => !c.value.hasDesc,
   type: 'article'
 })
@@ -126,7 +130,7 @@ useHead({
       return JSON.stringify({
         '@context': 'https://schema.org', '@type': 'CreativeWork', '@id': `${url}#projet`,
         name: `${project.value!.client} — ${project.value!.label}`, description: metaDesc.value, url,
-        image: site + project.value!.img, inLanguage: en.value ? 'en' : 'fr-FR', genre: catLabel.value[project.value!.cat],
+        image: absolute(project.value!.img), inLanguage: en.value ? 'en' : 'fr-FR', genre: catLabel.value[project.value!.cat],
         creator: { '@id': `${site}/#organization` }, ...(project.value!.url ? { sameAs: project.value!.url } : {})
       })
     }
@@ -149,32 +153,32 @@ useHead({
 .kpi { display: flex; flex-direction: column; gap: 8px; padding: 36px; }
 .kpi__v { font-family: var(--font-display); font-size: 64px; font-weight: 900; letter-spacing: -2px; color: var(--accent); }
 .kpi__l { font-size: 16px; color: var(--muted); }
-.blocks { display: flex; flex-direction: column; gap: 64px; padding-top: 128px; padding-bottom: 96px; }
+.blocks { display: flex; flex-direction: column; gap: 64px; padding-top: var(--section-y); padding-bottom: var(--section-y); }
 .block { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; }
 .block__k { grid-column: span 4; padding-top: 10px; }
 .block__body { grid-column: span 8; display: flex; flex-direction: column; gap: 14px; }
-.block__t { font-size: 36px; letter-spacing: -1px; font-weight: 700; }
+.block__t { font-size: 32px; letter-spacing: -1px; font-weight: 700; }
 .block__d { font-size: 18px; line-height: 1.65; color: var(--muted); }
 .block__link { align-self: flex-start; font-size: 16px; font-weight: 600; color: var(--accent); }
 .block__link:hover { color: var(--accent-hover); text-decoration: underline; }
-.next-wrap { padding-bottom: 96px; }
+.next-wrap { padding-bottom: var(--section-y); }
 .next { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 48px 56px; border-radius: 28px; background: var(--deep); color: var(--white); }
 .next:hover { color: var(--white); background: var(--deep-hover); }
 .next__text { display: flex; flex-direction: column; gap: 8px; }
 .next__k { font-size: 14px; color: var(--dark-muted-2); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
-.next__t { font-family: var(--font-display); font-size: 44px; font-weight: 900; letter-spacing: -1.2px; }
-.next__arrow { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; flex-shrink: 0; border-radius: 99px; background: var(--accent); font-size: 26px; }
+.next__t { font-family: var(--font-display); font-size: 40px; font-weight: 900; letter-spacing: -1.2px; }
+.next__arrow { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; flex-shrink: 0; border-radius: 999px; background: var(--accent); font-size: 24px; }
 @media (max-width: 1180px) {
-  .head__h1 { font-size: 60px; letter-spacing: -2px; }
+  .head__h1 { font-size: 52px; letter-spacing: -2px; }
   .block__k { grid-column: 1 / -1; margin-bottom: 12px; }
   .block__body { grid-column: 1 / -1; }
 }
 @media (max-width: 720px) {
   .kpis { padding-top: 32px; }
   .kpis .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-  .kpi { padding: 16px 10px; gap: 4px; text-align: center; border-radius: 14px; }
-  .kpi__v { font-size: 26px; letter-spacing: -.6px; }
-  .kpi__l { font-size: 12px; }
+  .kpi { padding: 16px 10px; gap: 4px; text-align: center; border-radius: 16px; }
+  .kpi__v { font-size: 24px; letter-spacing: -.6px; }
+  .kpi__l { font-size: 13px; }
   .head__h1 { font-size: 40px; letter-spacing: -1.2px; }
   .visual { border-radius: 18px; }
   .blocks { padding-top: 64px; gap: 40px; }

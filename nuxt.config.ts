@@ -26,6 +26,10 @@ export default defineNuxtConfig({
     // et SUPABASE_SECRET_KEY (demandes enregistrées par le serveur, server/utils/supabase.ts)
     public: {
       siteUrl: 'https://kps-agency.com',
+      // Google Analytics 4 (chargé uniquement après consentement, jamais en local) ; vider NUXT_PUBLIC_GA_ID pour le désactiver
+      gaId: 'G-GD7FPT0E0N',
+      // Cloudinary : nom du cloud qui sert les images (vide = fichiers locaux de public/images) — voir app/composables/useCloudImage.ts
+      cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
       formEndpoint: '', // vide = API interne /api/contact (e-mail SMTP) ; sinon URL d'un service externe
       // URL de l'API de réservation si elle est hébergée ailleurs que le site statique (ex. https://kps-agency.vercel.app)
       bookingApi: ''
@@ -71,10 +75,18 @@ export default defineNuxtConfig({
         { rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
         { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/icon-32.png' },
         { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/icon-192.png' },
-        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        // Images servies par Cloudinary : connexion ouverte dès le chargement de la page
+        ...(process.env.CLOUDINARY_CLOUD_NAME ? [{ rel: 'preconnect', href: 'https://res.cloudinary.com' }] : [])
       ]
     }
   },
+  // Cache navigateur des fichiers de public/ (mêmes durées que public/.htaccess) ; /_nuxt/** est déjà versionné et mis en cache 1 an.
+  // Ces fichiers ne sont pas versionnés : renommer une image remplacée pour qu'elle soit visible tout de suite.
+  routeRules: Object.fromEntries(
+    ['/images/**', '/logo-kps.webp', '/logo-kps-150.webp', '/og-image.jpg', '/favicon.ico', '/icon-32.png', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png']
+      .map(path => [path, { headers: { 'cache-control': 'public, max-age=2592000, stale-while-revalidate=86400' } }])
+  ),
   nitro: {
     // Articles du blog accessibles côté serveur (sitemap, flux RSS)
     serverAssets: [{ baseName: 'blog', dir: '../content/blog' }],

@@ -27,11 +27,11 @@ const open = ref(0)
 .faq__q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 0; background: none; border: none; text-align: left; font-size: 20px; font-weight: 600; color: var(--ink); }
 .faq__label { display: flex; gap: 20px; }
 .faq__n { color: var(--muted-3); font-weight: 500; width: 28px; flex-shrink: 0; }
-.faq__sign { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: 99px; border: 1px solid var(--line-3); font-size: 20px; font-weight: 400; }
-.faq__a { padding: 0 60px 26px 0; font-size: 17px; line-height: 1.6; color: var(--muted); }
+.faq__sign { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: 999px; border: 1px solid var(--line-3); font-size: 20px; font-weight: 400; }
+.faq__a { padding: 0 60px 26px 0; font-size: 16px; line-height: 1.6; color: var(--muted); }
 .faq__a--numbered { padding-left: 48px; }
 @media (max-width: 720px) {
-  .faq__q { font-size: 17px; }
+  .faq__q { font-size: 16px; }
   .faq__a, .faq__a--numbered { padding: 0 0 22px; }
 }
 </style>

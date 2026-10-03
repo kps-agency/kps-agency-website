@@ -194,7 +194,8 @@ export const LEGAL_EN = {
       'kps-agency.com contains a number of links to other websites. KPS Agency cannot check the content of those websites and therefore accepts no responsibility for them.',
       { h: 'Cookies' },
       'Browsing the website may result in cookies being placed on the user’s device. A cookie is a small file that does not identify the user but records information about a device’s browsing on a website.',
-      'Refusing cookies may prevent access to some services. Users can, however, configure their device to refuse cookies.'
+      'The website uses Google Analytics, an audience measurement service provided by Google, to understand how pages are visited and to improve the website. Analytics cookies are only set after the user has given consent through the banner shown on the first visit. This choice can be changed at any time using the “Manage cookies” link at the bottom of every page.',
+      'Declining these cookies does not prevent access to the website or its services. Users can also configure their browser to refuse cookies.'
     ] },
     { t: 'Governing law and jurisdiction', blocks: [
       'Any dispute relating to the use of kps-agency.com is governed by French law. Except where the law provides otherwise, exclusive jurisdiction is given to the competent courts.'

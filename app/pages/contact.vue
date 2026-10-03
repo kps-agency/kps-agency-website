@@ -170,23 +170,23 @@ async function onNext() {
 </script>
 
 <style scoped>
-.contact { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding-top: 88px; padding-bottom: 112px; }
+.contact { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding-top: var(--section-y); padding-bottom: var(--section-y); }
 .contact__intro { grid-column: span 5; display: flex; flex-direction: column; gap: 28px; padding-right: 32px; }
 .contact__h1 { font-size: 68px; line-height: 1.02; letter-spacing: -2.2px; font-weight: 900; }
-.contact__lead { font-size: 19px; line-height: 1.55; color: var(--muted); }
+.contact__lead { font-size: 18px; line-height: 1.55; color: var(--muted); }
 .contact__info { margin: 16px 0 0; border-top: 1px solid var(--line-2); }
 .contact__info > div { display: flex; flex-direction: column; gap: 4px; padding: 20px 0; border-bottom: 1px solid var(--line-2); }
 .contact__info dt { font-size: 13px; color: var(--muted-2); }
-.contact__info dd { margin: 0; font-size: 19px; font-weight: 600; }
+.contact__info dd { margin: 0; font-size: 18px; font-weight: 600; }
 .wizard { grid-column: 7 / span 6; align-self: start; display: flex; flex-direction: column; gap: 28px; padding: 44px; background: var(--surface); border: 1px solid var(--line); border-radius: 28px; box-shadow: 0 30px 60px -40px rgba(0, 0, 0,.3); }
 .wizard__bars { display: flex; gap: 8px; }
-.wizard__bars i { flex-grow: 1; height: 6px; border-radius: 99px; background: var(--line); display: block; transition: background .2s; }
+.wizard__bars i { flex-grow: 1; height: 6px; border-radius: 999px; background: var(--line); display: block; transition: background .2s; }
 .wizard__bars i.is-on { background: var(--accent); }
 .wizard__step { font-size: 14px; font-weight: 600; color: var(--muted-2); margin-top: -8px; }
 .wizard__panel { display: flex; flex-direction: column; gap: 20px; border: none; margin: 0; padding: 0; min-width: 0; }
-.wizard__h { font-family: var(--font-display); font-size: 34px; letter-spacing: -.8px; font-weight: 700; padding: 0; }
+.wizard__h { font-family: var(--font-display); font-size: 32px; letter-spacing: -.8px; font-weight: 700; padding: 0; }
 .wizard__h--38 { font-size: 38px; }
-.wizard__hint { font-size: 15px; color: var(--muted); }
+.wizard__hint { font-size: 16px; color: var(--muted); }
 legend.wizard__h { margin-bottom: 12px; }
 .wizard__error { color: var(--red); font-size: 14px; font-weight: 500; }
 .svc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
@@ -201,14 +201,14 @@ legend.wizard__h { margin-bottom: 12px; }
 .chips button.is-on { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .field { display: flex; flex-direction: column; gap: 8px; font-size: 14px; font-weight: 600; }
-.field input, .field textarea { padding: 14px; border: 1px solid var(--line-2); border-radius: 12px; font-size: 15px; font-family: inherit; font-weight: 400; resize: none; color: var(--ink); }
+.field input, .field textarea { padding: 14px; border: 1px solid var(--line-2); border-radius: 12px; font-size: 16px; font-family: inherit; font-weight: 400; resize: none; color: var(--ink); }
 .consent { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--muted); line-height: 1.5; }
 .consent input { width: 18px; height: 18px; margin-top: 1px; flex-shrink: 0; }
 .wizard__done { align-items: flex-start; gap: 18px; padding: 24px 0; }
-.done__icon { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 99px; background: #E6F4EC; }
-.done__p { font-size: 17px; line-height: 1.6; color: var(--muted); }
+.done__icon { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 999px; background: #E6F4EC; }
+.done__p { font-size: 16px; line-height: 1.6; color: var(--muted); }
 .wizard__nav { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--line-soft); }
-.wizard__back { padding: 16px 8px; background: none; border: none; font-size: 15px; font-weight: 600; color: var(--ink); }
+.wizard__back { padding: 16px 8px; background: none; border: none; font-size: 16px; font-weight: 600; color: var(--ink); }
 .wizard__back:disabled { color: var(--line-3); cursor: default; }
 .wizard__next { font-size: 16px; padding: 16px 28px; border: none; }
 @media (max-width: 1180px) {

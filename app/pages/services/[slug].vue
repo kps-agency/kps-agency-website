@@ -4,7 +4,7 @@
     <section class="container hero">
       <Breadcrumb :items="[{ label: t.home, to: link.home() }, { label: t.crumb, to: link.services() }, { label: svc.crumb }]" class="hero__crumb" />
       <div class="hero__main">
-        <div class="hero__eyebrow"><span class="hero__num" aria-hidden="true">{{ svc.num }}</span><h1 class="eyebrow hero__kw">{{ seo.h1 }}</h1></div>
+        <div class="hero__eyebrow"><span class="hero__num" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path :d="serviceIconPath(svc.key)" /></svg></span><h1 class="eyebrow hero__kw">{{ seo.h1 }}</h1></div>
         <p class="hero__h1">{{ svc.h1 }}</p>
         <p class="lead hero__sub">{{ svc.sub }}</p>
         <div class="hero__ctas">
@@ -91,13 +91,14 @@
 </template>
 
 <script setup lang="ts">
+import { serviceIconPath } from '~/data/serviceIcons'
 import type { Project } from '~/data/content'
 
 const route = useRoute()
-const { en, link, services, projects, serviceFaq, serviceSeo, serviceSlug } = useSite()
+const { en, link, allServices, projects, serviceFaq, serviceSeo, serviceSlug } = useSite()
 
 // Le slug doit correspondre à la langue de l'URL (/services/creation-site-web ↔ /en/services/website-design)
-const svc = computed(() => services.value.find(s => serviceSlug(s.slug) === String(route.params.slug)))
+const svc = computed(() => allServices.value.find(s => serviceSlug(s.slug) === String(route.params.slug)))
 if (!svc.value) throw createError({ statusCode: 404, statusMessage: 'Page introuvable', fatal: true })
 useSetI18nParams()({ fr: { slug: svc.value.slug }, en: { slug: serviceSlug(svc.value.slug, 'en') } })
 
@@ -146,27 +147,27 @@ useHead({
 </script>
 
 <style scoped>
-.hero { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding-top: 40px; padding-bottom: 96px; }
+.hero { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding-top: 40px; padding-bottom: var(--section-y); }
 .hero__crumb { grid-column: 1 / -1; margin-bottom: 56px; }
 .hero__main { grid-column: span 7; display: flex; flex-direction: column; gap: 28px; }
 .hero__eyebrow { display: flex; align-items: center; gap: 12px; }
 .hero__kw { font-family: var(--font-body); }
-.hero__num { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: var(--accent); color: var(--on-accent); font-family: var(--font-display); font-size: 14px; letter-spacing: 0; }
+.hero__num { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 12px; background: var(--accent); color: var(--on-accent); font-family: var(--font-display); font-size: 14px; letter-spacing: 0; }
 .hero__h1 { font-family: var(--font-display); font-size: 72px; line-height: 1.02; letter-spacing: -2.4px; font-weight: 900; }
 .hero__sub { max-width: 640px; }
 .hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; }
 .hero__offers { grid-column: 9 / span 4; align-self: end; display: flex; flex-direction: column; gap: 10px; padding: 28px; }
 .hero__offers-title { font-size: 13px; font-weight: 600; color: var(--muted-2); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 6px; }
-.hero__offer { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line-soft); font-size: 17px; font-weight: 600; }
+.hero__offer { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line-soft); font-size: 16px; font-weight: 600; }
 .hero__offer span { color: var(--accent); }
 
 .sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; margin-bottom: 48px; }
 .sec-head__h { max-width: 760px; }
 .sec-head__p { max-width: 420px; }
 .offer { display: flex; flex-direction: column; gap: 16px; padding: 36px; min-height: 250px; background: var(--bg); border: 1px solid var(--line); border-radius: 20px; scroll-margin-top: 110px; }
-.offer__n { font-family: var(--font-display); font-size: 15px; font-weight: 900; color: var(--accent); }
-.offer__t { font-size: 30px; letter-spacing: -.6px; font-weight: 700; }
-.offer__d { font-size: 17px; line-height: 1.6; color: var(--muted); }
+.offer__n { font-family: var(--font-display); font-size: 16px; font-weight: 900; color: var(--accent); }
+.offer__t { font-size: 32px; letter-spacing: -.6px; font-weight: 700; }
+.offer__d { font-size: 16px; line-height: 1.6; color: var(--muted); }
 .offer__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
 .offer__tags span { font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); }
 
@@ -181,15 +182,15 @@ useHead({
 .meth-head { display: flex; flex-direction: column; gap: 16px; margin-bottom: 48px; }
 .msteps { list-style: none; margin: 0; padding: 0; }
 .mstep { display: flex; flex-direction: column; gap: 14px; padding: 32px 28px; min-height: 240px; background: var(--dark-2); border-radius: 20px; }
-.mstep__n { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 99px; background: var(--accent); font-weight: 600; }
+.mstep__n { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 999px; background: var(--accent); font-weight: 600; }
 .mstep h3 { font-size: 23px; font-weight: 700; }
-.mstep p { font-size: 15px; line-height: 1.6; color: var(--dark-muted); }
+.mstep p { font-size: 16px; line-height: 1.6; color: var(--dark-muted); }
 
 .rel-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
 .faq-wrap { border-bottom: none; }
 
 @media (max-width: 1180px) {
-  .hero__h1 { font-size: 56px; letter-spacing: -1.8px; }
+  .hero__h1 { font-size: 52px; letter-spacing: -1.8px; }
   .hero__main { grid-column: 1 / -1; }
   .hero__offers { grid-column: 1 / -1; margin-top: 48px; }
   .sec-head { flex-direction: column; align-items: flex-start; }

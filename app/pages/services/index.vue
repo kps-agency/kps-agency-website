@@ -9,7 +9,7 @@
     <section class="container list">
       <div class="grid grid-3 m-swipe">
         <NuxtLink v-for="(sv, i) in services" :key="sv.slug" :to="link.service(sv.slug)" class="item" :class="{ 'item--dark': i === 0 }">
-          <span class="item__num">{{ sv.num }}</span>
+          <span class="item__num"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="serviceIconPath(sv.key)" /></svg></span>
           <h2 class="item__t">{{ sv.crumb }}</h2>
           <p class="item__d">{{ sv.sub }}</p>
           <div class="item__pills"><span v-for="of in sv.offers" :key="of.n">{{ of.t }}</span></div>
@@ -22,6 +22,7 @@
 </template>
 
 <script setup lang="ts">
+import { serviceIconPath } from '~/data/serviceIcons'
 const { en, link, services, serviceSeo } = useSite()
 const t = useLocaleText({
   fr: {
@@ -56,19 +57,19 @@ useHead({
 .head .eyebrow { margin-top: 32px; }
 .head__h1 { font-size: 72px; line-height: 1.02; letter-spacing: -2.4px; font-weight: 900; max-width: 1100px; }
 .head__p { max-width: 760px; }
-.list { padding-bottom: 112px; }
+.list { padding-bottom: var(--section-y); }
 .item { display: flex; flex-direction: column; gap: 16px; padding: 32px; min-height: 360px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; color: var(--ink); transition: transform .2s ease; }
 .item:hover { transform: translateY(-3px); color: var(--ink); }
 .item--dark { background: var(--deep); color: var(--white); } .item--dark:hover { color: var(--white); }
-.item__num { display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 14px; background: var(--bg); font-family: var(--font-display); font-weight: 900; font-size: 18px; }
-.item--dark .item__num { background: var(--accent); }
+.item__num { display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 16px; background: var(--accent-soft); border: 1px solid var(--accent-tint); color: var(--accent-light); }
+.item--dark .item__num { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .item__t { font-size: 28px; letter-spacing: -.6px; font-weight: 700; }
 .item__d { font-size: 16px; line-height: 1.55; color: var(--muted); }
 .item--dark .item__d { color: var(--dark-muted); }
 .item__pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
 .item__pills span { font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--bg); }
 .item--dark .item__pills span { background: var(--dark-2); }
-.item__cta { font-size: 15px; font-weight: 600; }
+.item__cta { font-size: 16px; font-weight: 600; }
 @media (max-width: 1180px) { .head__h1 { font-size: 52px; letter-spacing: -1.6px; } }
 @media (max-width: 720px) { .head__h1 { font-size: 38px; letter-spacing: -1px; } .list { padding-bottom: 64px; } }
 </style>

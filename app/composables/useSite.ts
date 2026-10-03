@@ -15,7 +15,9 @@ export function useSite() {
   const lp = useLocalePath()
   const en = computed(() => locale.value === 'en')
 
-  const services = computed<Service[]>(() => SERVICES.map(s => (en.value ? { ...s, ...SERVICES_EN[s.slug]! } : s)))
+  // allServices inclut les pages d'atterrissage SEO (landing) ; services = uniquement les offres listées dans les menus
+  const allServices = computed<Service[]>(() => SERVICES.map(s => (en.value ? { ...s, ...SERVICES_EN[s.slug]! } : s)))
+  const services = computed<Service[]>(() => allServices.value.filter(s => !s.landing))
   const projects = computed<Project[]>(() => PROJECTS.map((p) => {
     if (!en.value) return p
     const t = PROJECT_TEXT_EN[p.slug]!
@@ -51,13 +53,13 @@ export function useSite() {
   const footerCols = computed(() => en.value
     ? [
         { title: 'Websites', links: [['Showcase website', link.service('creation-site-web', '#offre-01')], ['Blog', link.service('creation-site-web', '#offre-02')], ['Landing page', link.service('creation-site-web', '#offre-03')], ['E-commerce', link.service('creation-site-web', '#offre-04')], ['Website redesign', link.service('refonte-site-web')], ['Website maintenance', link.service('maintenance-site-web')]] },
-        { title: 'Apps & SEO', links: [['Business software', link.service('application-metier')], ['SaaS', link.service('creation-saas')], ['Mobile apps', link.service('application-mobile')], ['SEO & GEO', link.service('referencement-seo-geo')]] },
+        { title: 'Apps & SEO', links: [['Business software', link.service('application-metier')], ['SaaS', link.service('creation-saas')], ['Mobile apps', link.service('application-mobile')], ['SEO & GEO', link.service('referencement-seo-geo')], ['GEO agency', link.service('agence-geo')]] },
         { title: 'Marketing', links: [['Digital marketing & ads', link.service('marketing-digital-ads')], ['Social media & content', link.service('social-media')]] },
         { title: 'Agency', links: [['About us', link.about()], ['Our work', link.work()], ['Client reviews', link.reviews()], ['Blog', link.blog()], ['Book a call', link.booking()], ['Contact & quote', link.contact()]] }
       ]
     : [
         { title: 'Sites web', links: [['Site vitrine', link.service('creation-site-web', '#offre-01')], ['Blog', link.service('creation-site-web', '#offre-02')], ['Landing page', link.service('creation-site-web', '#offre-03')], ['E-commerce', link.service('creation-site-web', '#offre-04')], ['Refonte de site', link.service('refonte-site-web')], ['Maintenance de site', link.service('maintenance-site-web')]] },
-        { title: 'Apps & SEO', links: [['Application métier', link.service('application-metier')], ['SaaS', link.service('creation-saas')], ['Application mobile', link.service('application-mobile')], ['SEO & GEO', link.service('referencement-seo-geo')]] },
+        { title: 'Apps & SEO', links: [['Application métier', link.service('application-metier')], ['SaaS', link.service('creation-saas')], ['Application mobile', link.service('application-mobile')], ['SEO & GEO', link.service('referencement-seo-geo')], ['Agence GEO', link.service('agence-geo')]] },
         { title: 'Marketing', links: [['Marketing digital & ADS', link.service('marketing-digital-ads')], ['Social media & contenus', link.service('social-media')]] },
         { title: 'L’agence', links: [['À propos', link.about()], ['Réalisations', link.work()], ['Avis clients', link.reviews()], ['Blog', link.blog()], ['Réserver un appel', link.booking()], ['Contact & devis', link.contact()]] }
       ])
@@ -70,5 +72,5 @@ export function useSite() {
     [en.value ? 'Events' : 'Événementiel', link.project('tunisia-franchise-show')]
   ] as [string, string][])
 
-  return { en, locale, services, projects, localPages, serviceFaq, serviceSeo, catLabel, serviceSlug, localSlug, link, footerCols, footerLocal }
+  return { en, locale, services, allServices, projects, localPages, serviceFaq, serviceSeo, catLabel, serviceSlug, localSlug, link, footerCols, footerLocal }
 }

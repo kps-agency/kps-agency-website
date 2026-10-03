@@ -18,7 +18,7 @@
       </div>
       <div class="footer__bottom">
         <span>{{ t.rights }}</span>
-        <div class="footer__legal"><NuxtLink :to="link.terms()">{{ t.terms }}</NuxtLink><NuxtLink :to="link.legal()">{{ t.legal }}</NuxtLink><NuxtLink :to="link.legal('#article-7')">{{ t.privacy }}</NuxtLink></div>
+        <div class="footer__legal"><NuxtLink :to="link.terms()">{{ t.terms }}</NuxtLink><NuxtLink :to="link.legal()">{{ t.legal }}</NuxtLink><NuxtLink :to="link.legal('#article-7')">{{ t.privacy }}</NuxtLink><button type="button" class="footer__cookies" @click="resetConsent">{{ en ? 'Manage cookies' : 'Gérer les cookies' }}</button></div>
       </div>
     </div>
   </footer>
@@ -26,7 +26,8 @@
 
 <script setup lang="ts">
 import { CONTACT } from '~/data/content'
-const { link, footerCols, footerLocal } = useSite()
+const { en, link, footerCols, footerLocal } = useSite()
+const { reset: resetConsent } = useAnalyticsConsent()
 const t = useLocaleText({
   fr: { desc: 'Agence digitale basée à Paris : création de sites, applications sur mesure, référencement SEO & GEO et marketing digital pour les entreprises qui veulent grandir.', local: 'Agence digitale :', rights: '© 2026 KPS Agency. Tous droits réservés.', terms: 'Conditions Générales', legal: 'Mentions légales', privacy: 'Confidentialité' },
   en: { desc: 'Paris-based digital agency: website design, custom software, SEO & GEO and digital marketing for companies that want to grow.', local: 'Digital agency:', rights: '© 2026 KPS Agency. All rights reserved.', terms: 'Terms & conditions', legal: 'Legal notice', privacy: 'Privacy' }
@@ -38,25 +39,32 @@ const t = useLocaleText({
 .footer__inner { min-height: 500px; display: flex; flex-direction: column; gap: 44px; padding-top: 72px; padding-bottom: 36px; }
 .footer__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 32px; }
 .footer__brand { grid-column: span 2; display: flex; flex-direction: column; gap: 16px; padding-right: 40px; }
-.footer__desc { font-size: 15px; line-height: 1.6; color: var(--dark-muted-2); }
-.footer__contact { font-style: normal; font-size: 15px; line-height: 1.7; }
+.footer__desc { font-size: 16px; line-height: 1.6; color: var(--dark-muted-2); }
+.footer__contact { font-style: normal; font-size: 16px; line-height: 1.7; }
 .footer__contact a { color: var(--white); }
 .footer__col { display: flex; flex-direction: column; gap: 11px; font-size: 14px; }
 .footer__col a { color: var(--dark-muted-2); }
 .footer__col a:hover, .footer__legal a:hover, .footer__pill:hover { color: var(--white); }
-.footer__title { font-weight: 600; color: var(--white); font-size: 15px; margin-bottom: 4px; }
+.footer__title { font-weight: 600; color: var(--white); font-size: 16px; margin-bottom: 4px; }
 .footer__local { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; font-size: 13px; padding-top: 28px; border-top: 1px solid var(--dark-line); }
 .footer__local-title { color: var(--white); font-weight: 600; margin-right: 8px; }
 .footer__pill { color: var(--dark-muted-2); padding: 5px 10px; border: 1px solid var(--dark-line); border-radius: 999px; }
 .footer__bottom { display: flex; justify-content: space-between; gap: 16px; font-size: 13px; color: var(--dark-muted-3); margin-top: auto; }
 .footer__legal { display: flex; gap: 24px; }
-.footer__legal a { color: var(--dark-muted-3); }
+.footer__legal a, .footer__cookies { color: var(--dark-muted-3); }
+.footer__cookies { padding: 0; border: none; background: none; font: inherit; }
+.footer__cookies:hover { color: var(--white); }
 
 @media (max-width: 1180px) {
   .footer__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .footer__brand { grid-column: span 4; padding-right: 0; }
 }
 @media (max-width: 720px) {
+  /* Zones tactiles de 44 px */
+  .footer__col { gap: 0; }
+  .footer__col a, .footer__legal a, .footer__cookies { display: flex; align-items: center; min-height: 44px; }
+  .footer__pill { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 14px; }
+  .footer__legal { flex-wrap: wrap; gap: 4px 20px; }
   .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer__brand { grid-column: span 2; }
   .footer__bottom { flex-direction: column; }

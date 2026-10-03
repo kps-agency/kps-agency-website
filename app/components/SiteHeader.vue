@@ -40,6 +40,7 @@
 </template>
 
 <script setup lang="ts">
+import { ICON_PATHS, SERVICE_ICON } from '~/data/serviceIcons'
 import { blogArticle } from '~/data/blog'
 
 const route = useRoute()
@@ -47,16 +48,8 @@ const open = ref(false)
 watch(() => route.fullPath, () => { open.value = false })
 
 const NAV_ICONS = {
-  web: 'M3 5h18v14H3zM3 9h18M7 7h.01M10 7h.01',
-  app: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 16.5h7M16.5 13v7',
-  mobile: 'M7 2h10a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zM11 18h2',
-  seo: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4M8 13l2-2 2 1.5 2.5-3',
-  ads: 'M3 11v2a1 1 0 0 0 1 1h3l6 5V5L7 10H4a1 1 0 0 0-1 1zM17 8a5 5 0 0 1 0 8',
-  social: 'M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12zM9 11h.01M12 11h.01M15 11h.01',
+  ...ICON_PATHS,
   grid: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',
-  layers: 'M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5',
-  refresh: 'M3 12a9 9 0 0 1 15.5-6.3L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.3L3 16M3 21v-5h5',
-  wrench: 'M14.7 6.3a4 4 0 0 0-5.2 5.2L3 18l3 3 6.5-6.5a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.3-.6-.6-2.3z',
   energy: 'M13 2 4 14h7l-1 8 9-12h-7l1-8z',
   building: 'M4 21V5l8-3v19M12 21V8l8 3v10M3 21h18M8 8h.01M8 12h.01M8 16h.01M16 14h.01M16 17h.01',
   cloud: 'M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 9.5a4.3 4.3 0 0 1-.5 8.5z',
@@ -76,7 +69,6 @@ const t = useLocaleText({
   en: { navLabel: 'Main navigation', quote: 'Get a quote', call: 'Book a call', menu: 'Open menu' }
 })
 
-const ICON_BY_KEY: Record<string, NavLink['icon']> = { web: 'web', app: 'app', mobile: 'mobile', seo: 'seo', ads: 'ads', social: 'social', refonte: 'refresh', maintenance: 'wrench', saas: 'layers' }
 const SVC_DESC = {
   fr: { web: 'Vitrine, e-commerce, landing page', app: 'CRM, back-office, portail client', mobile: 'iOS & Android, de la maquette aux stores', seo: 'Google et moteurs IA', ads: 'Meta, Google & TikTok Ads', social: 'Stratégie, visuels, vidéo courte', refonte: 'Nouveau design, sans perte de SEO', maintenance: 'Mises à jour, sécurité, évolutions', saas: 'MVP, plateforme, abonnements' },
   en: { web: 'Showcase sites, e-commerce, landing pages', app: 'CRM, back office, client portals', mobile: 'iOS & Android, from mock-up to stores', seo: 'Google and AI search engines', ads: 'Meta, Google & TikTok Ads', social: 'Strategy, visuals, short-form video', refonte: 'New design, rankings preserved', maintenance: 'Updates, security, improvements', saas: 'MVP, platform, subscriptions' }
@@ -88,7 +80,7 @@ const navItems = computed<NavItem[]>(() => {
   const lang = en.value ? 'en' : 'fr'
   const svcLinks: NavLink[] = MENU_ORDER.map((slug) => {
     const sv = services.value.find(x => x.slug === slug)!
-    return { label: sv.crumb, desc: SVC_DESC[lang][sv.key]!, icon: ICON_BY_KEY[sv.key]!, to: link.service(slug) }
+    return { label: sv.crumb, desc: SVC_DESC[lang][sv.key]!, icon: SERVICE_ICON[sv.key] as NavLink['icon'], to: link.service(slug) }
   })
   return [
     { label: 'Services', to: link.services(), match: ['services', 'services-slug'], cols: 2, links: [...svcLinks, { label: en.value ? 'All our services' : 'Toutes nos expertises', desc: en.value ? 'Overview of what we do' : 'Vue d’ensemble des services', icon: 'grid', to: link.services() }] },
@@ -204,6 +196,8 @@ const blogSwitch = computed(() => {
 }
 /* Mobile : un seul bouton dans la barre, les deux dans le menu */
 @media (max-width: 680px) {
+  /* En-tête compact : il reste collé en haut de l'écran pendant le défilement */
+  .nav__inner { padding-block: 10px; }
   .nav__ctas .nav__call { display: none; }
   .nav__mobile-ctas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
   .nav__mobile-ctas .btn { justify-content: center; }

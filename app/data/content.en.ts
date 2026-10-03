@@ -15,7 +15,8 @@ export const SERVICE_SLUG_EN: Record<string, string> = {
   'social-media': 'social-media',
   'refonte-site-web': 'website-redesign',
   'maintenance-site-web': 'website-maintenance',
-  'creation-saas': 'saas-development'
+  'creation-saas': 'saas-development',
+  'agence-geo': 'geo-agency'
 }
 export const LOCAL_SLUG_EN: Record<string, string> = { paris: 'paris', energie: 'energy' }
 
@@ -219,6 +220,28 @@ export const SERVICES_EN: Record<string, Omit<Service, 'slug' | 'key' | 'num' | 
     methTitle: 'From idea to launch.',
     steps: [s('1', 'Scoping', 'Your market, your users and the features the first version truly needs.'), s('2', 'Design', 'User journeys and application mock-ups: you approve before development.'), s('3', 'Development', 'Built in stages, with regular demos.'), s('4', 'Launch & growth', 'Go-live, usage tracking and new features driven by feedback.')],
     cta: 'A SaaS to launch?'
+  },
+  'agence-geo': {
+    crumb: 'GEO agency', eyebrow: 'GEO agency',
+    h1: 'Be the brand ChatGPT recommends.',
+    sub: 'Your customers now ask ChatGPT, Gemini and Perplexity. GEO (Generative Engine Optimization) is about making sure these AI engines cite your company in their answers.',
+    offersTitle: 'From diagnosis to citation.', offersSub: 'GEO builds on SEO: we don’t start from scratch, we make your website readable and citable by AI.',
+    offers: [
+      o('01', 'AI visibility audit', 'We query the main AI engines on your key searches: are you cited, who is cited instead, and why.', ['ChatGPT', 'Gemini', 'Perplexity']),
+      o('02', 'Citable content', 'Clear, structured, sourced answers to your customers’ questions that AI engines can reuse as they are.', ['Q&A', 'Sourced figures', 'Structure']),
+      o('03', 'Technical foundations', 'Structured data, AI crawler access, an llms.txt file and fast pages: your website becomes easy for an AI to read.', ['Structured data', 'llms.txt', 'AI crawlers']),
+      o('04', 'Brand authority', 'AI engines cite brands that are talked about elsewhere: reviews, directories, articles and consistent mentions of your company.', ['Reviews', 'Mentions', 'Consistency'])
+    ],
+    benTitle: 'GEO doesn’t replace SEO. It extends it.',
+    benefits: [
+      b('A new source of customers', 'Being cited in an AI answer means being recommended at the exact moment the customer decides.'),
+      b('Work that pays twice', 'The content and technical work AI engines like also improves your Google rankings.'),
+      b('A head start', 'Few companies are working on this yet: those cited first tend to stay.'),
+      b('Tracked results', 'We regularly measure your presence in AI answers for your key searches.')
+    ],
+    methTitle: 'Our GEO method.',
+    steps: [s('1', 'Diagnosis', 'Your key searches tested on AI engines, and an analysis of the sources they cite.'), s('2', 'Action plan', 'The pages to create or rewrite, ranked by impact.'), s('3', 'Production', 'Content, structured data and technical fixes.'), s('4', 'Tracking', 'Regular measurement of citations, and adjustments.')],
+    cta: 'Want to be cited by AI?'
   }
 }
 
@@ -232,6 +255,7 @@ export const SERVICE_SEO_EN: Record<string, { title: string; h1: string; desc: s
   'social-media': { title: 'Social media agency: TikTok & Instagram content', h1: 'Social media & content agency', desc: 'Social media strategy, visual design and short-form video for TikTok and Instagram: content that strengthens your brand image and drives real engagement.' },
   'refonte-site-web': { title: 'Website redesign in Paris, without losing SEO', h1: 'Website redesign in Paris', desc: 'Website redesign in Paris: new design, technical migration and a redirect plan to modernise your website without losing your Google rankings. Free quote in 48 hours.' },
   'maintenance-site-web': { title: 'Website maintenance: updates & security', h1: 'Website maintenance', desc: 'Website maintenance: updates, backups, security, fixes and improvements on request. An up-to-date, available website looked after by a Paris-based agency.' },
+  'agence-geo': { title: 'GEO agency: get cited by ChatGPT, Gemini, Perplexity', h1: 'GEO agency in Paris', desc: 'GEO agency in Paris: AI visibility audit, citable content and technical foundations so ChatGPT, Gemini and Perplexity recommend your company.' },
   'creation-saas': { title: 'SaaS development: from MVP to platform', h1: 'Custom SaaS development', desc: 'Custom SaaS development in Paris: MVP, multi-tenant platform, subscriptions and online payment. From scoping to launch with a dedicated team. Free quote in 48 hours.' }
 }
 
@@ -309,6 +333,7 @@ export const PROJECT_TEXT_EN: Record<string, { label: string; desc?: string; met
   dunstan: { label: 'Pet products' },
   'galeries-live': { label: 'Engagement ad campaign', desc: 'Paid-ads strategy combining organic and paid reach, with analysis of top-performing posts to optimise ROI.' },
   'radiumhemmets-forskningsfonder': { label: 'Research' },
+  'quartz-conciergerie': { label: 'Airbnb concierge' },
   'founa-com-by-smg': { label: 'Acquisition ad campaign', desc: 'Structured acquisition campaign with a complete analytics dashboard, KPI tracking and performance optimisation.' },
   prostarseo: { label: 'Digital/SEO ad campaign', desc: 'Digital acquisition campaign with authority analysis, organic traffic and geographic distribution for optimised targeting.' }
 }

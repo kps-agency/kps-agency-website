@@ -10,7 +10,8 @@
     @focusout="focus = false"
   >
     <div ref="track" class="rc__track" aria-live="off" @scroll.passive="onScroll" @pointerdown="restart">
-      <figure
+      <!-- div (et non figure) : le rôle « group » n'est pas autorisé sur figure -->
+      <div
         v-for="(rv, i) in reviews"
         :key="rv.name"
         class="rc__slide review"
@@ -18,7 +19,7 @@
         aria-roledescription="avis"
         :aria-label="`${i + 1} ${t.of} ${reviews.length}`"
       >
-        <div class="review__stars" :aria-label="`${rv.rating} ${t.stars}`">
+        <div class="review__stars" role="img" :aria-label="`${rv.rating} ${t.stars}`">
           <svg v-for="n in rv.rating" :key="n" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path :d="STAR" /></svg>
         </div>
         <div class="review__body">
@@ -34,11 +35,11 @@
             @click="toggle(i)"
           >{{ expanded.has(i) ? t.less : t.more }}</button>
         </div>
-        <figcaption class="review__who">
+        <div class="review__who">
           <span class="review__ini">{{ rv.name.charAt(0).toUpperCase() }}</span>
           <span><strong>{{ rv.name }}</strong><span>{{ t.google }} · {{ month(rv.date) }}<template v-if="rv.translated"> · {{ t.translated }}</template><template v-else-if="en"> · {{ t.original }}</template></span></span>
-        </figcaption>
-      </figure>
+        </div>
+      </div>
     </div>
 
     <div class="rc__nav">
@@ -180,9 +181,9 @@ onBeforeUnmount(() => {
 .review { display: flex; flex-direction: column; gap: 20px; padding: 28px; border: 1px solid var(--line); border-radius: 20px; background: var(--bg); }
 .review__stars { display: flex; gap: 4px; color: #C27803; }
 .review__body { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
-.review__q { font-size: 17px; line-height: 1.55; }
+.review__q { font-size: 16px; line-height: 1.55; }
 .review__q.is-clamped { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden; min-height: calc(1.55em * 4); }
-.review__more { padding: 0; border: none; background: none; font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.review__more { min-height: 44px; padding: 0; border: none; background: none; font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .review__more:hover { color: var(--accent-hover); }
 .review__more.is-hidden { visibility: hidden; } /* garde la place : toutes les cartes fermées ont la même hauteur */
 .review__who { display: flex; align-items: center; gap: 12px; margin-top: auto; font-size: 14px; }
@@ -190,16 +191,16 @@ onBeforeUnmount(() => {
 .review__who > span:last-child > * { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .review__who strong { font-weight: 600; }
 .review__who span span { color: var(--muted-2); }
-.review__ini { flex: none; width: 44px; height: 44px; border-radius: 99px; background: var(--accent-tint); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--accent); }
+.review__ini { flex: none; width: 44px; height: 44px; border-radius: 999px; background: var(--accent-tint); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--accent); }
 
 .rc__nav { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .rc__dots { display: flex; flex-wrap: wrap; }
 /* Zone tactile de 24 px, point visuel de 8 px */
-.rc__dot { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; padding: 0 4px; border: none; background: none; }
-.rc__dot::before { content: ''; width: 8px; height: 8px; border-radius: 99px; background: var(--line-3); transition: width .25s, background .25s; }
+.rc__dot { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 44px; padding: 0 4px; border: none; background: none; }
+.rc__dot::before { content: ''; width: 8px; height: 8px; border-radius: 999px; background: var(--line-3); transition: width .25s, background .25s; }
 .rc__dot.is-on::before { width: 28px; background: var(--accent); }
 .rc__arrows { display: flex; gap: 8px; }
-.rc__btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--line-3); border-radius: 99px; background: var(--surface); color: var(--ink); transition: background .15s, color .15s, border-color .15s; }
+.rc__btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--line-3); border-radius: 999px; background: var(--surface); color: var(--ink); transition: background .15s, color .15s, border-color .15s; }
 .rc__btn:hover { background: var(--deep); border-color: var(--ink); color: var(--white); }
 
 @media (max-width: 1024px) { .rc__track { --per: 2; } }

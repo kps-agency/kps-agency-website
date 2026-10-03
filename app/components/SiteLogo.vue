@@ -1,6 +1,6 @@
 <template>
   <NuxtLink :to="link.home()" class="logo" :class="{ 'logo--light': light }" :aria-label="en ? 'KPS Agency — home' : 'KPS Agency — accueil'">
-    <img src="/logo-kps.webp" alt="KPS Agency" width="311" height="120" class="logo__img">
+    <img src="/logo-kps-150.webp" srcset="/logo-kps-150.webp 1x, /logo-kps.webp 2x" alt="KPS Agency" width="311" height="120" class="logo__img">
   </NuxtLink>
 </template>
 
@@ -16,5 +16,5 @@ const { en, link } = useSite()
 .logo--light .logo__img { filter: brightness(0) invert(1); }
 
 
-@media (max-width: 720px) { .logo__img { height: 46px; } }
+@media (max-width: 720px) { .logo { min-height: 44px; } .logo__img { height: 40px; } }
 </style>

@@ -17,7 +17,10 @@
         <article v-for="(a, i) in shown" :key="a.slug" class="post" :class="{ 'post--featured': i === 0 && sector === 'all' }">
           <NuxtLink :to="link.article(a.slug)" class="post__link">
             <div class="post__visual">
-              <img v-if="a.cover" :src="a.cover" :alt="a.coverAlt || ''" loading="lazy" decoding="async" width="1600" height="900">
+              <picture v-if="a.cover" style="display: contents">
+                <source v-if="avif(a.cover)" type="image/avif" :srcset="avif(a.cover)">
+                <img :src="image(a.cover)" :alt="a.coverAlt || ''" loading="lazy" decoding="async" width="1600" height="900">
+              </picture>
               <span v-else class="post__placeholder" aria-hidden="true">{{ sectorLabel(a.sector) }}</span>
             </div>
             <div class="post__body">
@@ -41,6 +44,7 @@ import { BLOG_SECTORS } from '#shared/blog'
 import { blogArticles } from '~/data/blog'
 
 const { en, locale, link } = useSite()
+const { image, avif } = useCloudImage()
 const t = useLocaleText({
   fr: {
     home: 'Accueil', h1: 'Conseils digitaux, secteur par secteur.',
@@ -84,7 +88,7 @@ useHead({
 .head { display: flex; flex-direction: column; gap: 20px; padding-top: 40px; padding-bottom: 48px; }
 .head__h1 { font-size: 72px; line-height: 1.02; letter-spacing: -2.4px; font-weight: 900; max-width: 980px; margin-top: 16px; }
 .head__lead { max-width: 760px; }
-.list { padding-bottom: 96px; }
+.list { padding-bottom: var(--section-y); }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; padding: 6px; margin-bottom: 32px; width: fit-content; max-width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; }
 .filters button { padding: 10px 18px; border: none; border-radius: 999px; font-size: 14px; font-weight: 600; background: transparent; color: var(--muted); white-space: nowrap; }
 .filters button.is-on { background: var(--deep); color: var(--white); }
@@ -95,22 +99,22 @@ useHead({
 .post__visual { aspect-ratio: 16 / 9; overflow: hidden; background: var(--accent-soft); }
 .post__visual img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .4s; }
 .post__link:hover .post__visual img { transform: scale(1.04); }
-.post__placeholder { display: flex; align-items: center; justify-content: center; height: 100%; font-family: var(--font-display); font-size: 26px; font-weight: 900; color: var(--accent); background: linear-gradient(135deg, var(--accent-soft), var(--accent-tint)); }
+.post__placeholder { display: flex; align-items: center; justify-content: center; height: 100%; font-family: var(--font-display); font-size: 24px; font-weight: 900; color: var(--accent); background: linear-gradient(135deg, var(--accent-soft), var(--accent-tint)); }
 .post__body { display: flex; flex-direction: column; gap: 10px; padding: 24px; flex-grow: 1; }
 .post__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: 13px; color: var(--muted-2); }
-.post__sector { padding: 4px 10px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
-.post__title { font-size: 22px; line-height: 1.25; letter-spacing: -.4px; font-weight: 700; }
-.post__desc { font-size: 15px; line-height: 1.55; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.post__sector { padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.post__title { font-size: 20px; line-height: 1.25; letter-spacing: -.4px; font-weight: 700; }
+.post__desc { font-size: 16px; line-height: 1.55; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .post__more { margin-top: auto; padding-top: 8px; font-size: 14px; font-weight: 600; color: var(--accent); }
 /* Article le plus récent mis en avant */
 .post--featured { grid-column: 1 / -1; }
 .post--featured .post__link { flex-direction: row; }
 .post--featured .post__visual { flex: 0 0 55%; aspect-ratio: auto; min-height: 340px; }
 .post--featured .post__body { padding: 40px; justify-content: center; }
-.post--featured .post__title { font-size: 34px; letter-spacing: -.8px; }
+.post--featured .post__title { font-size: 32px; letter-spacing: -.8px; }
 .empty { padding: 48px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--line-3); border-radius: 20px; }
 @media (max-width: 1180px) {
-  .head__h1 { font-size: 56px; letter-spacing: -1.8px; }
+  .head__h1 { font-size: 52px; letter-spacing: -1.8px; }
   .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .post--featured .post__link { flex-direction: column; }
   .post--featured .post__visual { flex: none; aspect-ratio: 16 / 9; min-height: 0; }

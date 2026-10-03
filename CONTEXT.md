@@ -40,7 +40,7 @@ Exception connue : la home v1 (retenue par le client) contient des promesses à 
 Formulations des pages internes aussi à valider : « Un devis détaillé, poste par poste », « Nous livrons vite », « Des sites simples à administrer », tag « A/B test » sur les landing pages, fourchettes de budget du formulaire de devis.
 Données réelles disponibles (issues du site actuel)
 Contact : contact@kps-agency.com
-Clients / projets Web : PowerCell Group (Énergie renouvelable), Fibbl (SaaS B2B), Coaching und Therapie Foscolo (Services professionnels), Cushman & Wakefield Veritas (Immobilier), Dunstan (Animaliers), Copenhagen Energy (Énergie), Radiumhemmets Forskningsfonder (Recherche).
+Clients / projets Web : PowerCell Group (Énergie renouvelable), Fibbl (SaaS B2B), Coaching und Therapie Foscolo (Services professionnels), Cushman & Wakefield Veritas (Immobilier), Dunstan (Animaliers), Copenhagen Energy (Énergie), Radiumhemmets Forskningsfonder (Recherche), Quartz Conciergerie (Conciergerie Airbnb).
 Social/Médias : KPMG (audit & analyse audience), ZAYN (308.8K couverture, 6.5K interactions), BR Finanzen, Campagnes Beauté & Santé, Laboratoire Jardins de Carthage.
 ADS : LORE & HEART, YASSIR (3.9M reach Facebook, 1.4M Instagram, 5M paid reach), groupado PRO (1.7M paid reach, 6.4M impressions), Galeries LIVE, Founa.com by SMG, Brasileia Cosmetics (1.8M views, 996K coverage), ProstarSEO, Tunisia Franchise Show (2.2M reach, 2.9K interactions).
 Textes repris : « Agence Créative Next-Gen », « Plus qu'une agence, votre co-pilote digital », ADN (Vision stratégique, Le Crew KPS, Croissance accélérée), workflow en 4 étapes (Le Choix, Le Brief, La Stratégie, Le Décollage), « Pourquoi choisir la Team KPS » (Rapide, Ciblé, Malin, Top Tier).

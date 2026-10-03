@@ -1,0 +1,101 @@
+#;Mot-clé;Famille;Intention;Difficulté estimée;Page cible;Action;Priorité
+1;agence création site internet paris;Création de site;Transactionnelle;Forte;/services/creation-site-web;Optimiser la page existante;P2
+2;création site internet pme paris;Création de site;Transactionnelle;Moyenne;/services/creation-site-web;Optimiser la page existante;P1
+3;création site internet tpe;Création de site;Transactionnelle;Moyenne;/services/creation-site-web;Optimiser la page existante;P1
+4;création site vitrine paris;Création de site;Transactionnelle;Moyenne;/services/creation-site-web#offre-01;Créer une page « Site vitrine »;P1
+5;création site vitrine pme;Création de site;Transactionnelle;Faible;/services/creation-site-web#offre-01;Créer une page « Site vitrine »;P1
+6;site internet sur mesure pme;Création de site;Transactionnelle;Faible;/services/creation-site-web;Optimiser la page existante;P1
+7;création site e-commerce paris;Création de site;Transactionnelle;Forte;/services/creation-site-web#offre-04;Créer une page « E-commerce »;P3
+8;agence création landing page;Création de site;Transactionnelle;Faible;/services/creation-site-web#offre-03;Créer une page « Landing page »;P2
+9;création site wordpress paris;Création de site;Transactionnelle;Moyenne;/services/creation-site-web;Ajouter une section WordPress;P2
+10;devis site internet gratuit;Création de site;Transactionnelle;Moyenne;/contact;Optimiser la page Contact;P2
+11;prix création site internet 2026;Création de site;Commerciale;Forte;/blog/prix-site-internet;Article à créer (guide des prix);P2
+12;combien coûte un site internet vitrine;Création de site;Commerciale;Moyenne;/blog/prix-site-internet;Article à créer (même guide);P1
+13;cahier des charges site internet exemple;Création de site;Informationnelle;Moyenne;/blog/cahier-des-charges-site-internet;Article à créer + modèle à télécharger;P2
+14;délai création site internet;Création de site;Informationnelle;Faible;/blog/prix-site-internet;Section du guide des prix;P3
+15;site internet pme par où commencer;Création de site;Informationnelle;Faible;/blog/site-internet-pme-guide;Article à créer;P3
+16;création site internet artisan paris;Création de site;Transactionnelle;Faible;/agence-digitale/artisans;Page secteur à créer;P2
+17;création site internet avocat paris;Création de site;Transactionnelle;Moyenne;/agence-digitale/avocats;Page secteur à créer;P3
+18;création site internet agence immobilière;Création de site;Transactionnelle;Faible;/agence-digitale/immobilier;Page secteur à créer;P2
+19;site internet entreprise énergie renouvelable;Création de site;Transactionnelle;Faible;/agence-digitale/energie;Optimiser la page existante;P1
+20;création site internet restaurant paris;Création de site;Transactionnelle;Moyenne;/agence-digitale/restaurants;Page secteur à créer;P3
+21;refonte site internet paris;Refonte;Transactionnelle;Moyenne;/services/refonte-site-web;Optimiser la page existante;P1
+22;agence refonte site web;Refonte;Transactionnelle;Moyenne;/services/refonte-site-web;Optimiser la page existante;P1
+23;refonte site internet prix;Refonte;Commerciale;Moyenne;/blog/prix-refonte-site-internet;Article à créer;P1
+24;refonte site wordpress;Refonte;Transactionnelle;Moyenne;/services/refonte-site-web;Ajouter une section WordPress;P2
+25;refonte site sans perdre son référencement;Refonte;Informationnelle;Faible;/blog/refonte-site-sans-perdre-seo;Article à créer;P1
+26;migration site redirections 301;Refonte;Informationnelle;Faible;/blog/refonte-site-sans-perdre-seo;Section de l'article;P2
+27;quand refaire son site internet;Refonte;Informationnelle;Faible;/blog/quand-refaire-son-site;Article à créer;P2
+28;refonte site e-commerce;Refonte;Transactionnelle;Moyenne;/services/refonte-site-web;Section de la page;P3
+29;cahier des charges refonte site internet;Refonte;Informationnelle;Moyenne;/blog/cahier-des-charges-site-internet;Section de l'article;P3
+30;changer de cms site internet;Refonte;Informationnelle;Faible;/services/refonte-site-web#offre-03;Section « Migration technique »;P3
+31;maintenance site internet paris;Maintenance;Transactionnelle;Faible;/services/maintenance-site-web;Optimiser la page existante;P1
+32;maintenance site wordpress;Maintenance;Transactionnelle;Moyenne;/services/maintenance-site-web;Optimiser la page existante;P1
+33;tarif maintenance site wordpress;Maintenance;Commerciale;Moyenne;/services/maintenance-site-web;Afficher des forfaits avec prix;P1
+34;contrat maintenance site internet;Maintenance;Commerciale;Faible;/services/maintenance-site-web;Section « Ce que couvre le contrat »;P1
+35;infogérance site web pme;Maintenance;Transactionnelle;Faible;/services/maintenance-site-web;Section de la page;P2
+36;site wordpress piraté que faire;Maintenance;Informationnelle;Moyenne;/blog/site-wordpress-pirate;Article à créer (urgence = leads);P2
+37;mise à jour wordpress sécurité;Maintenance;Informationnelle;Faible;/blog/securite-wordpress-pme;Article à créer;P3
+38;tierce maintenance applicative pme;Maintenance;Transactionnelle;Faible;/services/maintenance-site-web;Section de la page;P3
+39;développement application métier sur mesure;Application métier;Transactionnelle;Forte;/services/application-metier;Optimiser la page existante;P2
+40;agence application métier paris;Application métier;Transactionnelle;Moyenne;/services/application-metier;Optimiser la page existante;P1
+41;logiciel métier sur mesure pme;Application métier;Transactionnelle;Moyenne;/services/application-metier;Optimiser la page existante;P1
+42;crm sur mesure pme;Application métier;Transactionnelle;Faible;/services/application-metier#offre-01;Créer une page « CRM sur mesure »;P1
+43;création back-office sur mesure;Application métier;Transactionnelle;Faible;/services/application-metier;Section de la page;P2
+44;portail client sur mesure;Application métier;Transactionnelle;Faible;/services/application-metier;Section de la page;P2
+45;prix développement application métier;Application métier;Commerciale;Faible;/blog/prix-application-metier;Article à créer;P1
+46;remplacer excel par une application;Application métier;Informationnelle;Faible;/blog/remplacer-excel-application;Article à créer;P2
+47;automatisation processus pme;Application métier;Commerciale;Moyenne;/blog/automatiser-processus-pme;Article à créer;P2
+48;digitaliser les processus de son entreprise;Application métier;Informationnelle;Moyenne;/blog/automatiser-processus-pme;Section de l'article;P3
+49;création saas sur mesure;SaaS;Transactionnelle;Moyenne;/services/creation-saas;Optimiser la page existante;P1
+50;agence développement saas;SaaS;Transactionnelle;Moyenne;/services/creation-saas;Optimiser la page existante;P1
+51;développement mvp saas;SaaS;Transactionnelle;Faible;/services/creation-saas#offre-01;Section « MVP »;P1
+52;combien coûte un saas;SaaS;Commerciale;Moyenne;/blog/prix-saas-sur-mesure;Article à créer;P1
+53;créer un saas sans être développeur;SaaS;Informationnelle;Faible;/blog/creer-un-saas;Article à créer;P2
+54;agence mvp paris;SaaS;Transactionnelle;Faible;/services/creation-saas;Optimiser la page existante;P2
+55;développement plateforme multi-clients;SaaS;Transactionnelle;Faible;/services/creation-saas#offre-02;Section de la page;P3
+56;abonnement stripe saas;SaaS;Informationnelle;Faible;/blog/creer-un-saas;Section de l'article;P3
+57;développement application mobile paris;Application mobile;Transactionnelle;Forte;/services/application-mobile;Optimiser la page existante;P2
+58;agence application mobile pme;Application mobile;Transactionnelle;Moyenne;/services/application-mobile;Optimiser la page existante;P1
+59;création application mobile prix;Application mobile;Commerciale;Forte;/blog/prix-application-mobile;Article à créer;P2
+60;développement application flutter;Application mobile;Transactionnelle;Moyenne;/services/application-mobile;Section Flutter;P2
+61;agence react native;Application mobile;Transactionnelle;Moyenne;/services/application-mobile;Section React Native;P3
+62;combien coûte une application mobile;Application mobile;Informationnelle;Forte;/blog/prix-application-mobile;Même article;P2
+63;application mobile pour pme;Application mobile;Commerciale;Faible;/services/application-mobile;Optimiser la page existante;P2
+64;publier une application sur l'app store;Application mobile;Informationnelle;Moyenne;/blog/publier-application-stores;Article à créer;P3
+65;agence seo paris;SEO & GEO;Transactionnelle;Forte;/services/referencement-seo-geo;Optimiser la page existante;P3
+66;agence seo pme;SEO & GEO;Transactionnelle;Moyenne;/services/referencement-seo-geo;Optimiser la page existante;P1
+67;référencement local paris;SEO & GEO;Transactionnelle;Moyenne;/services/referencement-seo-geo;Section SEO local;P2
+68;audit seo site internet;SEO & GEO;Commerciale;Moyenne;/services/referencement-seo-geo;Offre « audit offert » mise en avant;P1
+69;consultant seo paris;SEO & GEO;Transactionnelle;Forte;/services/referencement-seo-geo;Optimiser la page existante;P3
+70;agence geo;SEO & GEO;Transactionnelle;Moyenne;/services/referencement-seo-geo;Créer une page « Agence GEO » dédiée;P1
+71;référencement chatgpt;SEO & GEO;Commerciale;Faible;/services/referencement-seo-geo;Page « Agence GEO »;P1
+72;comment apparaître dans chatgpt;SEO & GEO;Informationnelle;Faible;/blog/apparaitre-dans-chatgpt;Article à créer;P1
+73;generative engine optimization;SEO & GEO;Informationnelle;Moyenne;/blog/geo-definition;Article à créer;P2
+74;apparaître dans google ai overviews;SEO & GEO;Informationnelle;Faible;/blog/apparaitre-dans-chatgpt;Section de l'article;P2
+75;optimiser fiche google business profile;SEO & GEO;Informationnelle;Moyenne;/blog/google-business-profile-pme;Article à créer;P2
+76;prix référencement naturel pme;SEO & GEO;Commerciale;Moyenne;/blog/prix-seo-pme;Article à créer;P1
+77;seo local artisan;SEO & GEO;Informationnelle;Faible;/blog/seo-local-artisan;Article à créer;P3
+78;fichier llms.txt;SEO & GEO;Informationnelle;Faible;/blog/llms-txt;Article à créer;P3
+79;agence google ads paris;Publicité;Transactionnelle;Forte;/services/marketing-digital-ads;Optimiser la page existante;P3
+80;agence google ads pme;Publicité;Transactionnelle;Moyenne;/services/marketing-digital-ads;Optimiser la page existante;P1
+81;agence meta ads;Publicité;Transactionnelle;Moyenne;/services/marketing-digital-ads;Section Meta Ads;P2
+82;agence tiktok ads;Publicité;Transactionnelle;Moyenne;/services/marketing-digital-ads;Section TikTok Ads;P2
+83;gestion campagne google ads prix;Publicité;Commerciale;Moyenne;/blog/prix-gestion-google-ads;Article à créer;P1
+84;budget google ads pme;Publicité;Informationnelle;Moyenne;/blog/prix-gestion-google-ads;Section de l'article;P2
+85;agence sea paris;Publicité;Transactionnelle;Forte;/services/marketing-digital-ads;Optimiser la page existante;P3
+86;campagne facebook ads pme;Publicité;Commerciale;Moyenne;/services/marketing-digital-ads;Section Meta Ads;P2
+87;landing page google ads conversion;Publicité;Informationnelle;Faible;/blog/landing-page-google-ads;Article à créer;P3
+88;agence acquisition digitale pme;Publicité;Transactionnelle;Faible;/services/marketing-digital-ads;Optimiser la page existante;P1
+89;agence social media paris;Social media;Transactionnelle;Forte;/services/social-media;Optimiser la page existante;P3
+90;gestion réseaux sociaux pme prix;Social media;Commerciale;Moyenne;/blog/prix-gestion-reseaux-sociaux;Article à créer;P2
+91;community manager externalisé pme;Social media;Transactionnelle;Moyenne;/services/social-media;Section de la page;P2
+92;création contenu tiktok entreprise;Social media;Transactionnelle;Faible;/services/social-media#offre-03;Section « Vidéo courte »;P2
+93;agence création contenu instagram;Social media;Transactionnelle;Moyenne;/services/social-media;Optimiser la page existante;P2
+94;stratégie réseaux sociaux b2b;Social media;Informationnelle;Moyenne;/blog/strategie-reseaux-sociaux-b2b;Article à créer;P3
+95;agence digitale paris pme;Agence;Transactionnelle;Moyenne;/;Optimiser l'accueil;P1
+96;agence web paris;Agence;Transactionnelle;Forte;/agence-digitale/paris;Optimiser la page Paris;P3
+97;agence web et marketing digital paris;Agence;Transactionnelle;Moyenne;/agence-digitale/paris;Optimiser la page Paris;P2
+98;agence web ou freelance;Agence;Informationnelle;Faible;/blog/agence-ou-freelance;Article à créer (reprend le comparatif);P1
+99;agence web paris 8;Agence;Transactionnelle;Faible;/agence-digitale/paris;Mentionner Paris 8e et le quartier;P1
+100;kps agency avis;Marque;Navigationnelle;Faible;/agence#avis;Page Avis + fiche Google à jour;P1

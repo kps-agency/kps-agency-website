@@ -69,15 +69,15 @@ useHead({
 </script>
 
 <style scoped>
-.book { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: start; padding-top: 40px; padding-bottom: 112px; }
+.book { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: start; padding-top: 40px; padding-bottom: var(--section-y); }
 .book__intro { display: flex; flex-direction: column; gap: 22px; position: sticky; top: 110px; }
-.book__h1 { font-size: 56px; line-height: 1.02; letter-spacing: -1.8px; font-weight: 900; margin-top: 16px; }
+.book__h1 { font-size: 52px; line-height: 1.02; letter-spacing: -1.8px; font-weight: 900; margin-top: 16px; }
 .book__lead { font-size: 18px; }
 .book__facts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
 .book__facts li { display: flex; align-items: center; gap: 14px; font-size: 16px; color: var(--muted); }
 .book__facts strong { color: var(--ink); font-weight: 600; }
 .book__fi { flex: none; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; background: var(--accent-soft); color: var(--accent); }
-.book__alt { font-size: 15px; color: var(--muted-2); }
+.book__alt { font-size: 16px; color: var(--muted-2); }
 .book__alt a { color: var(--accent); font-weight: 600; }
 @media (max-width: 1100px) {
   .book { grid-template-columns: minmax(0, 1fr); gap: 32px; }

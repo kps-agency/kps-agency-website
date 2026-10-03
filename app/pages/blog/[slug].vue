@@ -13,7 +13,10 @@
     </header>
 
     <figure v-if="post.meta.cover" class="container art__cover">
-      <img :src="post.meta.cover" :alt="post.meta.coverAlt || post.meta.title" width="1600" height="900" fetchpriority="high">
+      <picture style="display: contents">
+        <source v-if="avif(post.meta.cover)" type="image/avif" :srcset="avif(post.meta.cover)">
+        <img :src="image(post.meta.cover)" :alt="post.meta.coverAlt || post.meta.title" width="1600" height="900" fetchpriority="high">
+      </picture>
     </figure>
 
     <div class="container art__layout">
@@ -87,8 +90,9 @@ const sectorLabel = (s: string) => BLOG_SECTORS[s]?.[en.value ? 'en' : 'fr'] ?? 
 const formatDate = (d: string) => new Intl.DateTimeFormat(en.value ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${d}T12:00:00Z`))
 
 const site = useRuntimeConfig().public.siteUrl as string
+const { image, avif, absolute } = useCloudImage()
 const m = post.value.meta
-usePageSeo({ title: m.seoTitle, description: m.description, image: m.cover, type: 'article' })
+usePageSeo({ title: m.seoTitle, description: m.description, image: m.cover && image(m.cover), type: 'article' })
 useSeoMeta({
   articlePublishedTime: `${m.date}T08:00:00+02:00`,
   articleModifiedTime: `${m.updated ?? m.date}T08:00:00+02:00`,
@@ -103,7 +107,7 @@ useHead({
       '@context': 'https://schema.org', '@type': 'BlogPosting', '@id': `${site}${link.article(m.slug)}#article`,
       headline: m.title, description: m.description, url: `${site}${link.article(m.slug)}`, mainEntityOfPage: `${site}${link.article(m.slug)}`,
       datePublished: m.date, dateModified: m.updated ?? m.date, inLanguage: lang.value === 'en' ? 'en-GB' : 'fr-FR',
-      ...(m.cover ? { image: `${site}${m.cover}` } : {}),
+      ...(m.cover ? { image: absolute(m.cover) } : {}),
       author: { '@type': 'Organization', name: m.author, url: `${site}/` },
       publisher: { '@id': `${site}/#organization` },
       articleSection: BLOG_SECTORS[m.sector]?.[lang.value] ?? m.sector, keywords: m.tags.join(', '),
@@ -119,15 +123,15 @@ useHead({
 .art__head, .art__cover, .art__layout { max-width: 1120px; }
 .art__head { display: flex; flex-direction: column; gap: 18px; padding-top: 40px; padding-bottom: 40px; }
 .art__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 24px; font-size: 14px; color: var(--muted-2); }
-.art__sector { padding: 5px 12px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
-.art__h1 { font-size: 56px; line-height: 1.05; letter-spacing: -1.8px; font-weight: 900; }
+.art__sector { padding: 5px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.art__h1 { font-size: 52px; line-height: 1.05; letter-spacing: -1.8px; font-weight: 900; }
 .art__lead { max-width: 820px; }
-.art__author { font-size: 15px; color: var(--muted); }
+.art__author { font-size: 16px; color: var(--muted); }
 .art__cover { margin-top: 0; margin-bottom: 56px; }
-.art__cover img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top center; border-radius: 24px; border: 1px solid var(--line); }
-.art__layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 64px; align-items: start; padding-bottom: 96px; }
+.art__cover img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top center; border-radius: 20px; border: 1px solid var(--line); }
+.art__layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 64px; align-items: start; padding-bottom: var(--section-y); }
 .art__toc { position: sticky; top: 112px; padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; }
-.art__toc-t { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted-2); margin-bottom: 10px; }
+.art__toc-t { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted-2); margin-bottom: 10px; }
 .art__toc ul { margin: 0; padding-left: 16px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.4; }
 .art__toc a { color: var(--muted); }
 .art__toc a:hover { color: var(--accent); }
@@ -138,7 +142,7 @@ useHead({
 .prose { font-size: 18px; line-height: 1.75; color: var(--ink); }
 .prose :deep(p) { margin: 0 0 1.1em; color: var(--muted); }
 .prose :deep(h2) { font-size: 32px; line-height: 1.2; letter-spacing: -.8px; font-weight: 900; margin: 1.8em 0 .6em; scroll-margin-top: 110px; }
-.prose :deep(h3) { font-size: 22px; line-height: 1.3; font-weight: 700; margin: 1.5em 0 .5em; scroll-margin-top: 110px; }
+.prose :deep(h3) { font-size: 20px; line-height: 1.3; font-weight: 700; margin: 1.5em 0 .5em; scroll-margin-top: 110px; }
 .prose :deep(h2:first-child) { margin-top: 0; }
 .prose :deep(strong) { color: var(--ink); font-weight: 700; }
 .prose :deep(a) { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
@@ -146,7 +150,7 @@ useHead({
 .prose :deep(ul), .prose :deep(ol) { margin: 0 0 1.2em; padding-left: 1.3em; color: var(--muted); }
 .prose :deep(li) { margin-bottom: .4em; }
 .prose :deep(li::marker) { color: var(--accent); }
-.prose :deep(blockquote) { margin: 1.5em 0; padding: 18px 24px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 14px 14px 0; font-size: 19px; }
+.prose :deep(blockquote) { margin: 1.5em 0; padding: 18px 24px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 14px 14px 0; font-size: 18px; }
 .prose :deep(blockquote p) { margin: 0; color: var(--ink); }
 .prose :deep(code) { padding: 2px 6px; border-radius: 6px; background: var(--surface-hover); font-size: .88em; }
 .prose :deep(img) { width: 100%; height: auto; border-radius: 16px; margin: 1em 0; }
@@ -154,33 +158,33 @@ useHead({
 .prose :deep(th), .prose :deep(td) { padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: left; }
 .prose :deep(hr) { border: none; border-top: 1px solid var(--line); margin: 2em 0; }
 
-.art__cta { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 32px; border-radius: 24px; background: var(--deep); color: var(--white); }
-.art__cta-k { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--accent-light); margin-bottom: 6px; }
-.art__cta-t { display: block; font-family: var(--font-display); font-size: 26px; letter-spacing: -.4px; }
-.art__cta p { margin-top: 8px; font-size: 15px; line-height: 1.55; color: var(--dark-muted); }
+.art__cta { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 32px; border-radius: 20px; background: var(--deep); color: var(--white); }
+.art__cta-k { display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--accent-light); margin-bottom: 6px; }
+.art__cta-t { display: block; font-family: var(--font-display); font-size: 24px; letter-spacing: -.4px; }
+.art__cta p { margin-top: 8px; font-size: 16px; line-height: 1.55; color: var(--dark-muted); }
 .art__cta-actions { display: flex; flex-direction: column; gap: 10px; flex: none; }
 .art__tags { display: flex; flex-wrap: wrap; gap: 8px; }
-.art__tags span { padding: 5px 12px; border-radius: 99px; border: 1px solid var(--line); font-size: 13px; color: var(--muted-2); }
+.art__tags span { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 13px; color: var(--muted-2); }
 
 .related { padding-block: 88px; }
 .related__h { margin-bottom: 32px; }
 .rel { display: flex; flex-direction: column; gap: 12px; padding: 28px; border: 1px solid var(--line); border-radius: 20px; background: var(--bg); color: var(--ink); transition: transform .2s, border-color .2s; }
 .rel:hover { color: var(--ink); transform: translateY(-3px); border-color: var(--accent-tint-2); }
-.rel__sector { align-self: flex-start; padding: 4px 10px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 600; }
+.rel__sector { align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 600; }
 .rel__t { font-size: 20px; line-height: 1.3; font-weight: 700; }
 .rel__meta { margin-top: auto; font-size: 13px; color: var(--muted-2); }
 
 @media (max-width: 1180px) {
   .art__layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .art__toc { position: static; }
-  .art__h1 { font-size: 44px; letter-spacing: -1.4px; }
+  .art__h1 { font-size: 40px; letter-spacing: -1.4px; }
 }
 @media (max-width: 720px) {
-  .art__h1 { font-size: 34px; letter-spacing: -1px; }
+  .art__h1 { font-size: 32px; letter-spacing: -1px; }
   .art__cover { margin-bottom: 32px; }
   .art__cover img { border-radius: 16px; }
-  .prose { font-size: 17px; }
-  .prose :deep(h2) { font-size: 26px; }
+  .prose { font-size: 16px; }
+  .prose :deep(h2) { font-size: 24px; }
   .art__cta { flex-direction: column; align-items: flex-start; padding: 24px; }
   .art__cta-actions { width: 100%; }
   .art__cta-actions .btn { justify-content: center; }

@@ -1,7 +1,7 @@
 {
   "source": "https://kps-agency.com/",
   "extractedAt": "2026-09-28",
-  "count": 20,
+  "count": 21,
   "projects": [
     {
       "slug": "kpmg",
@@ -330,6 +330,20 @@
         "remote": "https://horizons-cdn.hostinger.com/49b5f5f1-621a-48dc-b8c1-4db3ce4ae7cc/0f791c1cfaab249df2c4c644e64948d1.jpg",
         "local": "/images/realisations/tunisia-franchise-show.webp",
         "alt": "Réalisation Tunisia Franchise Show — Campagne ADS Événementielle"
+      }
+    },
+    {
+      "slug": "quartz-conciergerie",
+      "category": "Web",
+      "client": "Quartz Conciergerie",
+      "label": "Conciergerie Airbnb",
+      "description": null,
+      "metrics": [],
+      "externalUrl": "https://quartzconciergerie.com/",
+      "image": {
+        "remote": null,
+        "local": "/images/realisations/quartz-conciergerie.webp",
+        "alt": "Réalisation Quartz Conciergerie — Conciergerie Airbnb"
       }
     }
   ]

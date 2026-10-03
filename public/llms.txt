@@ -16,6 +16,7 @@
 - [Création de SaaS](https://kps-agency.com/services/creation-saas): MVP, plateforme multi-clients, abonnements et paiement en ligne
 - [Application mobile](https://kps-agency.com/services/application-mobile): applications iOS et Android, de la conception UX à la publication sur les stores
 - [Référencement SEO & GEO](https://kps-agency.com/services/referencement-seo-geo): SEO technique, contenus, SEO local et visibilité dans ChatGPT, Gemini et Perplexity
+- [Agence GEO](https://kps-agency.com/services/agence-geo): visibilité dans ChatGPT, Gemini et Perplexity, audit de citations IA, contenus citables, données structurées
 - [Marketing digital & ADS](https://kps-agency.com/services/marketing-digital-ads): campagnes Google Ads, Meta Ads et TikTok Ads pilotées par la donnée
 - [Social media & contenus](https://kps-agency.com/services/social-media): stratégie éditoriale, création visuelle et vidéos courtes pour TikTok et Instagram
 

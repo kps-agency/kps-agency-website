@@ -167,7 +167,7 @@ usePageSeo({ title: () => t.value.seoTitle, description: () => t.value.seoDesc, 
 .keys__item { display: flex; flex-direction: column; gap: 12px; padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; }
 .keys__i { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; background: var(--accent-soft); color: var(--accent); }
 .keys__t { font-size: 20px; font-weight: 700; letter-spacing: -.3px; }
-.keys__d { font-size: 15px; line-height: 1.55; color: var(--muted); }
+.keys__d { font-size: 16px; line-height: 1.55; color: var(--muted); }
 
 @media (max-width: 1180px) {
   .keys { grid-template-columns: repeat(2, minmax(0, 1fr)); }

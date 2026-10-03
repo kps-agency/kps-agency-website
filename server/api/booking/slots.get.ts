@@ -3,7 +3,9 @@ import { BOOKING, candidateSlots } from '#shared/booking'
 // Créneaux disponibles : règles (lun–sam, 10 h–17 h Paris, jours fériés, délai 2 h, 30 jours) moins les périodes occupées de l'agenda (kSuite ou Google).
 export default defineEventHandler(async (event) => {
   if (bookingCors(event)) return
-  setHeader(event, 'cache-control', 'no-store')
+  // Agenda interrogé au plus une fois par minute : réponse gardée 60 s par le CDN, jamais par le navigateur.
+  // Un créneau pris entre-temps est refusé à la réservation (409, book.ts revérifie l'agenda).
+  setHeader(event, 'cache-control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=120')
 
   const days = candidateSlots()
   const base = { timeZone: BOOKING.timeZone, duration: BOOKING.duration }
