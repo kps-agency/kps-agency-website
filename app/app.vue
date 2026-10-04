@@ -2,7 +2,7 @@
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
-  <CookieConsent />
+  <CookieConsent v-if="!$route.path.startsWith('/admin')" />
 </template>
 
 <script setup lang="ts">

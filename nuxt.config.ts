@@ -22,12 +22,19 @@ export default defineNuxtConfig({
     googleCalendarId: '',
     googleImpersonate: '',
     bookingAllowedOrigins: '',
-    // Supabase : variables SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY (articles lus au build, modules/cms.ts)
+    // Supabase : variables SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY (articles et réalisations lus au build, modules/cms.ts)
     // et SUPABASE_SECRET_KEY (demandes enregistrées par le serveur, server/utils/supabase.ts)
+    // Admin : Deploy Hook Vercel appelé par le bouton « Publier le site » (NUXT_VERCEL_DEPLOY_HOOK)
+    vercelDeployHook: '',
     public: {
+      // Admin (/admin) : connexion Supabase Auth depuis le navigateur ; la clé publishable est publique, les droits sont portés par la RLS
+      supabaseUrl: process.env.SUPABASE_URL || '',
+      supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY || '',
       siteUrl: 'https://kps-agency.com',
-      // Google Analytics 4 (chargé uniquement après consentement, jamais en local) ; vider NUXT_PUBLIC_GA_ID pour le désactiver
+      // Google Analytics 4 (chargé uniquement après consentement) ; vider NUXT_PUBLIC_GA_ID pour le désactiver
       gaId: 'G-GD7FPT0E0N',
+      // Mesure aussi sur localhost (en debug_mode, hors rapports) : NUXT_PUBLIC_GA_LOCAL=true dans .env
+      gaLocal: false,
       // Cloudinary : nom du cloud qui sert les images (vide = fichiers locaux de public/images) — voir app/composables/useCloudImage.ts
       cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
       formEndpoint: '', // vide = API interne /api/contact (e-mail SMTP) ; sinon URL d'un service externe
@@ -59,7 +66,8 @@ export default defineNuxtConfig({
       'mentions-legales': { fr: '/mentions-legales', en: '/legal-notice' },
       'rendez-vous': { fr: '/rendez-vous', en: '/book-a-call' },
       'blog/index': { fr: '/blog', en: '/blog' },
-      'blog/[slug]': { fr: '/blog/[slug]', en: '/blog/[slug]' }
+      'blog/[slug]': { fr: '/blog/[slug]', en: '/blog/[slug]' },
+      'admin': { en: false } // espace d'administration : une seule URL, non traduite
     },
     experimental: { strictSeo: true }
   },
@@ -83,10 +91,14 @@ export default defineNuxtConfig({
   },
   // Cache navigateur des fichiers de public/ (mêmes durées que public/.htaccess) ; /_nuxt/** est déjà versionné et mis en cache 1 an.
   // Ces fichiers ne sont pas versionnés : renommer une image remplacée pour qu'elle soit visible tout de suite.
-  routeRules: Object.fromEntries(
-    ['/images/**', '/logo-kps.webp', '/logo-kps-150.webp', '/og-image.jpg', '/favicon.ico', '/icon-32.png', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png']
-      .map(path => [path, { headers: { 'cache-control': 'public, max-age=2592000, stale-while-revalidate=86400' } }])
-  ),
+  routeRules: {
+    ...Object.fromEntries(
+      ['/images/**', '/logo-kps.webp', '/logo-kps-150.webp', '/og-image.jpg', '/favicon.ico', '/icon-32.png', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png']
+        .map(path => [path, { headers: { 'cache-control': 'public, max-age=2592000, stale-while-revalidate=86400' } }])
+    ),
+    // Espace d'administration : rendu dans le navigateur uniquement, jamais indexé
+    '/admin': { ssr: false, headers: { 'x-robots-tag': 'noindex, nofollow' } }
+  },
   nitro: {
     // Articles du blog accessibles côté serveur (sitemap, llms.txt, flux RSS)
     serverAssets: [{ baseName: 'blog', dir: '../content/blog' }],

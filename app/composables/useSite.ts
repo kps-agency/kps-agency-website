@@ -20,8 +20,9 @@ export function useSite() {
   const services = computed<Service[]>(() => allServices.value.filter(s => !s.landing))
   const projects = computed<Project[]>(() => PROJECTS.map((p) => {
     if (!en.value) return p
-    const t = PROJECT_TEXT_EN[p.slug]!
-    return { ...p, label: t.label, desc: t.desc ?? p.desc, metric: t.metric ?? p.metric, alt: `Project for ${p.client} — ${t.label}` }
+    const t = PROJECT_TEXT_EN[p.slug] ?? {}
+    const label = t.label ?? p.label
+    return { ...p, label, desc: t.desc ?? p.desc, metric: t.metric ?? p.metric, alt: `Project for ${p.client} — ${label}` }
   }))
   const localPages = computed<LocalPage[]>(() => LOCAL_PAGES.map(l => (en.value ? { ...l, ...LOCAL_PAGES_EN[l.slug]! } : l)))
   const serviceFaq = computed(() => (en.value ? SERVICE_FAQ_EN : SERVICE_FAQ))

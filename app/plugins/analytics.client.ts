@@ -1,23 +1,27 @@
-// Google Analytics 4 : le script n'est chargé qu'après acceptation du bandeau de cookies, et jamais en local.
+// Google Analytics 4 : le script n'est chargé qu'après acceptation du bandeau de cookies, et en local seulement si NUXT_PUBLIC_GA_LOCAL=true.
 // Les changements de page sont suivis automatiquement par GA4 (mesure améliorée, événements d'historique).
 declare global {
   interface Window { dataLayer: unknown[]; gtag: (...args: unknown[]) => void; __KPS_GA_FORCE__?: boolean }
 }
 
 export default defineNuxtPlugin(() => {
-  const id = useRuntimeConfig().public.gaId as string
+  const { gaId, gaLocal } = useRuntimeConfig().public
+  const id = gaId as string
   if (!id) return
   const { consent, load } = useAnalyticsConsent()
-  const local = ['localhost', '127.0.0.1'].includes(location.hostname) && !window.__KPS_GA_FORCE__
+  const local = ['localhost', '127.0.0.1'].includes(location.hostname)
+  // En local, la mesure reste coupée sauf si NUXT_PUBLIC_GA_LOCAL=true (ou window.__KPS_GA_FORCE__)
+  const blocked = local && !(gaLocal === true || gaLocal === 'true') && !window.__KPS_GA_FORCE__
   let started = false
 
   function start() {
-    if (started || local) return
+    if (started || blocked) return
     started = true
     window.dataLayer = window.dataLayer || []
     window.gtag = function gtag() { window.dataLayer.push(arguments) } // eslint-disable-line prefer-rest-params
     window.gtag('js', new Date())
-    window.gtag('config', id)
+    // debug_mode en local : les visites de test vont dans DebugView et restent hors des rapports GA4
+    window.gtag('config', id, local ? { debug_mode: true } : {})
     const s = document.createElement('script')
     s.async = true
     s.src = `https://www.googletagmanager.com/gtag/js?id=${id}`

@@ -1,4 +1,5 @@
 // English content — same shapes as content.ts (French is the source of truth for structure, slugs and media).
+import cms from '#cms'
 import type { Benefit, LocalPage, Offer, ProjectCat, Service, Step } from './content'
 
 const o = (n: string, t: string, d: string, tags: string[]): Offer => ({ n, t, d, tags })
@@ -314,7 +315,7 @@ export const LOCAL_PAGES_EN: Record<string, Omit<LocalPage, 'slug' | 'refs'>> = 
 export const CAT_LABEL_EN: Record<ProjectCat, string> = { Web: 'Website', ADS: 'Paid ads', Social: 'Social media' }
 
 /** Project texts, keyed by slug (client names, images and links come from content.ts) */
-export const PROJECT_TEXT_EN: Record<string, { label: string; desc?: string; metric?: string }> = {
+const LOCAL_PROJECT_TEXT_EN: Record<string, { label: string; desc?: string; metric?: string }> = {
   'powercell-group': { label: 'Renewable energy' },
   yassir: { label: 'Multi-platform ad campaign', desc: 'Integrated paid-ads strategy with massive reach (3.9M on Facebook, 1.4M on Instagram, 5M paid reach) and competitive benchmarking for continuous optimisation.', metric: '5M paid reach' },
   zayn: { label: 'Social media campaign', desc: 'Integrated campaign with premium product visuals, a multi-format content strategy and measurable results (308.8K reach, 6.5K interactions).', metric: '308.8K reach' },
@@ -337,3 +338,8 @@ export const PROJECT_TEXT_EN: Record<string, { label: string; desc?: string; met
   'founa-com-by-smg': { label: 'Acquisition ad campaign', desc: 'Structured acquisition campaign with a complete analytics dashboard, KPI tracking and performance optimisation.' },
   prostarseo: { label: 'Digital/SEO ad campaign', desc: 'Digital acquisition campaign with authority analysis, organic traffic and geographic distribution for optimised targeting.' }
 }
+
+/** Textes anglais des réalisations gérées dans l'admin (un champ vide reprend le français) */
+export const PROJECT_TEXT_EN: Record<string, { label?: string; desc?: string; metric?: string }> = cms?.projects?.length
+  ? Object.fromEntries(cms.projects.map(c => [c.slug, { label: c.en.label || undefined, desc: c.en.desc || undefined, metric: c.en.metric || undefined }]))
+  : LOCAL_PROJECT_TEXT_EN

@@ -1,5 +1,6 @@
 // Contenus du site — issus des maquettes validées sur le canevas KPS Agency.
 // Les valeurs entre crochets [ ... ] sont des emplacements à compléter.
+import cms from '#cms'
 
 export const CONTACT = {
   email: 'contact@kps-agency.com',
@@ -80,7 +81,7 @@ const IMG = '/images/realisations/'
 const p = (slug: string, cat: ProjectCat, client: string, label: string, desc: string, metric: string, bg: string, fg: string, url?: string): Project =>
   ({ slug, cat, client, label, desc, metric, bg, fg, img: `${IMG}${slug}.webp`, alt: `Réalisation ${client} — ${label}`, url })
 
-export const PROJECTS: Project[] = [
+const LOCAL_PROJECTS: Project[] = [
   p('powercell-group', 'Web', 'PowerCell Group', 'Énergie Renouvelable', D, R, '#DDE3FF', '#1A2A8A', 'https://powercellgroup.com/'),
   p('yassir', 'ADS', 'YASSIR', 'Campagne ADS Multi-plateforme', 'Stratégie ADS intégrée avec reach massif (3.9M Facebook, 1.4M Instagram, 5M paid reach) et benchmarking compétitif pour optimisation continue.', '5M paid reach', '#0E1726', '#FFFFFF'),
   p('zayn', 'Social', 'ZAYN', 'Campagne Social/Médias', 'Campagne intégrée avec visuels produits premium, stratégie de contenu multi-format et résultats mesurables (308.8K couverture, 6.5K interactions).', '308.8K couverture', '#F2E6D8', '#6B3E12'),
@@ -103,6 +104,11 @@ export const PROJECTS: Project[] = [
   p('founa-com-by-smg','ADS', 'Founa.com by SMG', 'Campagne ADS Acquisition', 'Campagne d’acquisition structurée avec dashboard analytics complet, suivi des KPIs et optimisation des performances.', R, '#E0F2FE', '#075985'),
   p('prostarseo', 'ADS', 'ProstarSEO', 'Campagne ADS Digital/SEO', 'Campagne d’acquisition digital avec analyse d’autorité, traffic organique et distribution géographique pour ciblage optimisé.', R, '#EDE7F6', '#4C1D95')
 ]
+
+// Réalisations gérées dans l'admin (table projects de Supabase, lue au build) : elles remplacent la liste ci-dessus dès que la table en contient
+export const PROJECTS: Project[] = cms?.projects?.length
+  ? cms.projects.map(c => ({ ...p(c.slug, c.cat, c.client, c.label, c.desc || D, c.metric || R, c.bg, c.fg, c.url), img: c.img }))
+  : LOCAL_PROJECTS
 
 export const CAT_LABEL: Record<ProjectCat, string> = { Web: 'Site web', ADS: 'ADS', Social: 'Social/Médias' }
 
