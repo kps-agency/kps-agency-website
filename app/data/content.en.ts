@@ -19,7 +19,7 @@ export const SERVICE_SLUG_EN: Record<string, string> = {
   'creation-saas': 'saas-development',
   'agence-geo': 'geo-agency'
 }
-export const LOCAL_SLUG_EN: Record<string, string> = { paris: 'paris', energie: 'energy' }
+export const LOCAL_SLUG_EN: Record<string, string> = { paris: 'paris', madagascar: 'madagascar', energie: 'energy' }
 
 const COMMON_STEPS = [
   s('1', 'Scoping', 'We analyse your market, competitors and goals to set clear priorities.'),
@@ -224,21 +224,21 @@ export const SERVICES_EN: Record<string, Omit<Service, 'slug' | 'key' | 'num' | 
   },
   'agence-geo': {
     crumb: 'GEO agency', eyebrow: 'GEO agency',
-    h1: 'Be the brand ChatGPT recommends.',
+    h1: 'Give AI tools good reasons to cite you.',
     sub: 'Your customers now ask ChatGPT, Gemini and Perplexity. GEO (Generative Engine Optimization) is about making sure these AI engines cite your company in their answers.',
     offersTitle: 'From diagnosis to citation.', offersSub: 'GEO builds on SEO: we don’t start from scratch, we make your website readable and citable by AI.',
     offers: [
       o('01', 'AI visibility audit', 'We query the main AI engines on your key searches: are you cited, who is cited instead, and why.', ['ChatGPT', 'Gemini', 'Perplexity']),
       o('02', 'Citable content', 'Clear, structured, sourced answers to your customers’ questions that AI engines can reuse as they are.', ['Q&A', 'Sourced figures', 'Structure']),
-      o('03', 'Technical foundations', 'Structured data, AI crawler access, an llms.txt file and fast pages: your website becomes easy for an AI to read.', ['Structured data', 'llms.txt', 'AI crawlers']),
+      o('03', 'Technical foundations', 'AI crawler access, structured data and fast pages: your website becomes easy for an AI to read. An llms.txt file can be added, with no guaranteed effect.', ['AI crawlers', 'Structured data', 'Speed']),
       o('04', 'Brand authority', 'AI engines cite brands that are talked about elsewhere: reviews, directories, articles and consistent mentions of your company.', ['Reviews', 'Mentions', 'Consistency'])
     ],
     benTitle: 'GEO doesn’t replace SEO. It extends it.',
     benefits: [
       b('A new source of customers', 'Being cited in an AI answer means being recommended at the exact moment the customer decides.'),
-      b('Work that pays twice', 'The content and technical work AI engines like also improves your Google rankings.'),
-      b('A head start', 'Few companies are working on this yet: those cited first tend to stay.'),
-      b('Tracked results', 'We regularly measure your presence in AI answers for your key searches.')
+      b('Work that counts twice', 'GEO rests on the same foundation as SEO: a readable site and useful content serve both.'),
+      b('No untenable promise', 'Nobody controls an AI’s answers: we do not guarantee a citation, we improve your chances of getting one.'),
+      b('Regular tracking', 'Each month we test your key queries on the main AI tools and send you the record.')
     ],
     methTitle: 'Our GEO method.',
     steps: [s('1', 'Diagnosis', 'Your key searches tested on AI engines, and an analysis of the sources they cite.'), s('2', 'Action plan', 'The pages to create or rewrite, ranked by impact.'), s('3', 'Production', 'Content, structured data and technical fixes.'), s('4', 'Tracking', 'Regular measurement of citations, and adjustments.')],
@@ -289,6 +289,27 @@ export const LOCAL_PAGES_EN: Record<string, Omit<LocalPage, 'slug' | 'refs'>> = 
       ['Do you also work outside Paris?', 'Yes. We work with companies across France and internationally, including in Switzerland, Sweden, Denmark and Tunisia. KPS also has an agency based in Madagascar, Akoraweb (akoraweb.com).']
     ],
     cta: 'A digital project in Paris?'
+  },
+  madagascar: {
+    crumbParent: 'Digital agency', crumb: 'Madagascar', eyebrow: 'Web agency in Madagascar',
+    title: 'Web agency in Madagascar: websites and applications', description: 'Web agency in Madagascar: website design, online stores with mobile money, applications and SEO, with our Akoraweb team on the ground.',
+    h1: 'Your web agency in Madagascar.',
+    sub: 'Website design, online stores, web applications and SEO: KPS supports companies in Madagascar and across Africa with Akoraweb, its agency based on the island.',
+    svcTitle: 'Our services for companies in Madagascar.', whyTitle: 'Why an agency with a team in Madagascar?',
+    why: [
+      b('A team on the ground', 'Akoraweb, KPS’s agency in Madagascar, knows local habits and works in the same time zone as you.'),
+      b('Built for mobile', 'Light websites that load fast on a phone and go easy on mobile data.'),
+      b('Mobile money', 'Online stores designed around MVola, Orange Money, Airtel Money and payment on delivery.'),
+      b('An international outlook', 'A contact in Paris for companies also targeting Europe or the diaspora.')
+    ],
+    refTitle: 'Some of our team’s work',
+    faq: [
+      ['Do you have a team in Madagascar?', 'Yes. KPS has an agency based in Madagascar, Akoraweb (akoraweb.com), which designs and builds projects for our clients on the island and across Africa.'],
+      ['Can you add mobile money to a website?', 'Yes. We design online stores that offer mobile money and payment on delivery. Automatic collection goes through a merchant account with the operator or through a payment aggregator.'],
+      ['Do we need a .mg domain name?', '.mg makes clear you are a Malagasy business; .com suits you if you also target customers abroad. In both cases, the domain name is registered in your name.'],
+      ['How does a remote project work?', 'We work by video call, phone or messaging, with a single point of contact and stages approved together.']
+    ],
+    cta: 'A digital project in Madagascar?'
   },
   energie: {
     crumbParent: 'Industries', crumb: 'Energy', eyebrow: 'Energy sector',

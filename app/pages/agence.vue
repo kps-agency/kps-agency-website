@@ -1,8 +1,9 @@
 <template>
   <div>
     <section class="container intro">
-      <div class="eyebrow">{{ t.eyebrow }}</div>
-      <h1 class="intro__h1">{{ t.h1 }}</h1>
+      <Breadcrumb :items="[{ label: en ? 'Home' : 'Accueil', to: link.home() }, { label: t.eyebrow }]" />
+      <h1 class="eyebrow">{{ t.h1seo }}</h1>
+      <p class="intro__h1 display">{{ t.h1 }}</p>
       <div class="intro__cols">
         <p class="intro__lead">{{ t.lead }}</p>
         <p class="intro__p">{{ t.intro }}</p>
@@ -76,7 +77,7 @@ const { en, link } = useSite()
 const t = useLocaleText({
   fr: {
     title: 'L’agence KPS : équipe digitale basée à Paris', desc: 'KPS Agency, agence digitale basée à Paris 8e : neuf expertises (web, apps, SEO & GEO, Ads, social media) réunies dans une même équipe pour faire grandir les PME.',
-    eyebrow: 'L’agence', h1: 'Plus qu’une agence, votre co-pilote digital.',
+    eyebrow: 'L’agence', h1seo: 'KPS Agency, agence digitale à Paris et à Madagascar', h1: 'Plus qu’une agence, votre co-pilote digital.',
     lead: 'Nous combinons créativité humaine et intelligence data pour construire des présences digitales qui font grandir les entreprises.',
     intro: 'Basée à Paris, KPS réunit au sein d’une même équipe neuf expertises complémentaires : création, refonte et maintenance de sites, applications métier, SaaS, applications mobiles, référencement SEO & GEO, marketing digital et social media. Une organisation pensée pour que stratégie, design, technologie et acquisition avancent dans la même direction.',
     akora: 'KPS dispose aussi d’une agence basée à Madagascar, Akoraweb, qui renforce nos équipes de conception et de développement :',
@@ -104,7 +105,7 @@ const t = useLocaleText({
   },
   en: {
     title: 'About KPS: a Paris-based digital team', desc: 'KPS Agency, a digital agency in Paris 8th: nine areas of expertise (web, apps, SEO & GEO, ads, social media) in one team, helping SMEs grow online.',
-    eyebrow: 'About us', h1: 'More than an agency, your digital co-pilot.',
+    eyebrow: 'About us', h1seo: 'KPS Agency, a digital agency in Paris and Madagascar', h1: 'More than an agency, your digital co-pilot.',
     lead: 'We combine human creativity and data intelligence to build digital presences that help companies grow.',
     intro: 'Based in Paris, KPS brings nine complementary areas of expertise together in one team: website design, redesign and maintenance, business software, SaaS, mobile apps, SEO & GEO, digital marketing and social media. An organisation designed so that strategy, design, technology and acquisition move in the same direction.',
     akora: 'KPS also has an agency based in Madagascar, Akoraweb, which strengthens our design and development teams:',
@@ -141,7 +142,7 @@ useHead({
       '@context': 'https://schema.org',
       '@graph': [
         organizationSchema(site, en.value ? 'en' : 'fr'),
-        { '@type': 'AboutPage', '@id': `${site}${link.about()}#webpage`, url: `${site}${link.about()}`, name: t.value.title, inLanguage: en.value ? 'en' : 'fr-FR', about: { '@id': `${site}/#organization` }, mainEntity: { '@id': `${site}/#organization` } }
+        { '@type': 'AboutPage', '@id': `${site}${link.about()}#webpage`, url: `${site}${link.about()}`, name: t.value.title, inLanguage: en.value ? 'en-GB' : 'fr-FR', about: { '@id': `${site}/#organization` }, mainEntity: { '@id': `${site}/#organization` } }
       ]
     })
   }]

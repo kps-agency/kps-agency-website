@@ -9,7 +9,7 @@
       </div>
       <h1 class="art__h1">{{ post.meta.title }}</h1>
       <p class="lead art__lead">{{ post.meta.description }}</p>
-      <p class="art__author">{{ t.by }} <strong>{{ post.meta.author }}</strong></p>
+      <p class="art__author">{{ t.by }} <strong>{{ post.meta.author }}</strong><template v-if="authorRole">, {{ authorRole }}</template></p>
     </header>
 
     <figure v-if="post.meta.cover" class="container art__cover">
@@ -62,6 +62,7 @@
 <script setup lang="ts">
 import { BLOG_SECTORS } from '#shared/blog'
 import { blogArticle, blogArticles, renderArticle } from '~/data/blog'
+import { AUTHORS } from '~/data/content'
 
 const route = useRoute()
 const { en, locale, link, services } = useSite()
@@ -75,6 +76,7 @@ const translated = post.value.meta.translation && blogArticle(other, post.value.
 useSetI18nParams()({ [lang.value]: { slug: post.value.meta.slug }, ...(translated ? { [other]: { slug: translated } } : {}) })
 
 const rendered = computed(() => renderArticle(post.value!.body))
+const authorRole = computed(() => AUTHORS[post.value!.meta.author]?.[en.value ? 'en' : 'fr'] ?? '')
 const service = computed(() => services.value.find(s => s.slug === post.value!.meta.service))
 // Articles liés : même secteur d'abord, puis les plus récents
 const related = computed(() => {
@@ -108,7 +110,10 @@ useHead({
       headline: m.title, description: m.description, url: `${site}${link.article(m.slug)}`, mainEntityOfPage: `${site}${link.article(m.slug)}`,
       datePublished: m.date, dateModified: m.updated ?? m.date, inLanguage: lang.value === 'en' ? 'en-GB' : 'fr-FR',
       ...(m.cover ? { image: absolute(m.cover) } : {}),
-      author: { '@type': 'Organization', name: m.author, url: `${site}/` },
+      // Auteur connu (AUTHORS) : une personne, avec sa fonction ; sinon l'équipe, c'est-à-dire l'organisation
+      author: authorRole.value
+        ? { '@type': 'Person', name: m.author, jobTitle: authorRole.value, worksFor: { '@id': `${site}/#organization` }, url: `${site}${link.about()}` }
+        : { '@type': 'Organization', '@id': `${site}/#organization`, name: m.author, url: `${site}/` },
       publisher: { '@id': `${site}/#organization` },
       articleSection: BLOG_SECTORS[m.sector]?.[lang.value] ?? m.sector, keywords: m.tags.join(', '),
       wordCount: post.value.body.split(/\s+/).filter(Boolean).length,

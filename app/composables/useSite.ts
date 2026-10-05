@@ -42,6 +42,8 @@ export function useSite() {
     contact: () => lp('contact'),
     booking: () => lp('rendez-vous'),
     blog: () => lp('blog'),
+    /** Page n du blog : la première reste /blog */
+    blogPage: (n: number) => (n <= 1 ? lp('blog') : lp({ name: 'blog-page-n', params: { n } })),
     article: (slug: string) => lp({ name: 'blog-slug', params: { slug } }),
     local: (frSlug: string) => lp({ name: 'agence-digitale-slug', params: { slug: localSlug(frSlug) } }),
     terms: () => lp('cgv'),
@@ -66,6 +68,7 @@ export function useSite() {
       ])
   const footerLocal = computed(() => [
     [en.value ? 'Paris' : 'Paris', link.local('paris')],
+    ['Madagascar', link.local('madagascar')],
     [en.value ? 'Energy' : 'Énergie', link.local('energie')],
     [en.value ? 'Real estate' : 'Immobilier', link.project('cushman-wakefield-veritas')],
     ['SaaS B2B', link.project('fibbl')],

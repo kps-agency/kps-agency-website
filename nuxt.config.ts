@@ -66,6 +66,7 @@ export default defineNuxtConfig({
       'mentions-legales': { fr: '/mentions-legales', en: '/legal-notice' },
       'rendez-vous': { fr: '/rendez-vous', en: '/book-a-call' },
       'blog/index': { fr: '/blog', en: '/blog' },
+      'blog/page/[n]': { fr: '/blog/page/[n]', en: '/blog/page/[n]' },
       'blog/[slug]': { fr: '/blog/[slug]', en: '/blog/[slug]' },
       'admin': { en: false } // espace d'administration : une seule URL, non traduite
     },
@@ -92,6 +93,8 @@ export default defineNuxtConfig({
   // Cache navigateur des fichiers de public/ (mêmes durées que public/.htaccess) ; /_nuxt/** est déjà versionné et mis en cache 1 an.
   // Ces fichiers ne sont pas versionnés : renommer une image remplacée pour qu'elle soit visible tout de suite.
   routeRules: {
+    // En-têtes de sécurité sur toutes les réponses (pas de CSP ici : à introduire d'abord en mode Report-Only)
+    '/**': { headers: { 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'x-frame-options': 'SAMEORIGIN', 'permissions-policy': 'camera=(), microphone=(), geolocation=()' } },
     ...Object.fromEntries(
       ['/images/**', '/logo-kps.webp', '/logo-kps-150.webp', '/og-image.jpg', '/favicon.ico', '/icon-32.png', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png']
         .map(path => [path, { headers: { 'cache-control': 'public, max-age=2592000, stale-while-revalidate=86400' } }])
@@ -100,6 +103,8 @@ export default defineNuxtConfig({
     '/admin': { ssr: false, headers: { 'x-robots-tag': 'noindex, nofollow' } }
   },
   nitro: {
+    // Le domaine technique kps-agency-website.vercel.app servait une copie du site : redirection permanente vers le domaine officiel
+    vercel: { config: { routes: [{ src: '/(.*)', has: [{ type: 'host', value: 'kps-agency-website.vercel.app' }], status: 308, headers: { Location: 'https://kps-agency.com/$1' } }] } },
     // Articles du blog accessibles côté serveur (sitemap, llms.txt, flux RSS)
     serverAssets: [{ baseName: 'blog', dir: '../content/blog' }],
     prerender: {

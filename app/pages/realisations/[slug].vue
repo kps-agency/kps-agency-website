@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ProjectCat } from '~/data/content'
+import { isCaseStudy, type ProjectCat } from '~/data/content'
 
 const route = useRoute()
 const { en, link, projects, services, catLabel } = useSite()
@@ -115,12 +115,12 @@ const pageTitle = computed(() => {
   return full.length <= 47 ? full : `${p.client} — ${catLabel.value[p.cat]}`
 })
 
-// Tant qu'une étude de cas n'est pas rédigée (description réelle), la page reste hors index mais ses liens sont suivis
+// Tant que la description n'est pas une vraie étude de cas (isCaseStudy), la page reste hors index mais ses liens sont suivis
 usePageSeo({
   title: () => pageTitle.value,
   description: metaDesc,
   image: () => image(project.value!.img),
-  noindex: () => !c.value.hasDesc,
+  noindex: () => !isCaseStudy(project.value!.desc),
   type: 'article'
 })
 useHead({
@@ -131,7 +131,7 @@ useHead({
       return JSON.stringify({
         '@context': 'https://schema.org', '@type': 'CreativeWork', '@id': `${url}#projet`,
         name: `${project.value!.client} — ${project.value!.label}`, description: metaDesc.value, url,
-        image: absolute(project.value!.img), inLanguage: en.value ? 'en' : 'fr-FR', genre: catLabel.value[project.value!.cat],
+        image: absolute(project.value!.img), inLanguage: en.value ? 'en-GB' : 'fr-FR', genre: catLabel.value[project.value!.cat],
         creator: { '@id': `${site}/#organization` }, ...(project.value!.url ? { sameAs: project.value!.url } : {})
       })
     }

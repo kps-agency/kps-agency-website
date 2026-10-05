@@ -1,12 +1,13 @@
 <template>
   <section class="container contact">
     <div class="contact__intro">
-      <div class="eyebrow">{{ t.eyebrow }}</div>
-      <h1 class="contact__h1">{{ t.h1 }}</h1>
+      <Breadcrumb :items="[{ label: en ? 'Home' : 'Accueil', to: link.home() }, { label: t.eyebrow }]" />
+      <h1 class="eyebrow">{{ t.h1seo }}</h1>
+      <p class="contact__h1 display">{{ t.h1 }}</p>
       <p class="contact__lead">{{ t.lead }}</p>
       <dl class="contact__info">
         <div><dt>{{ t.email }}</dt><dd><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></dd></div>
-        <div v-if="!CONTACT.phone.startsWith('[')"><dt>{{ t.phone }}</dt><dd>{{ CONTACT.phone }}</dd></div>
+        <div v-if="!CONTACT.phone.startsWith('[')"><dt>{{ t.phone }}</dt><dd><a :href="`tel:${CONTACT.phoneE164}`">{{ CONTACT.phone }}</a></dd></div>
         <div><dt>{{ t.address }}</dt><dd>{{ CONTACT.address }} Paris</dd></div>
       </dl>
     </div>
@@ -77,7 +78,7 @@ const { en, locale, link } = useSite()
 const t = useLocaleText({
   fr: {
     title: 'Contact & devis gratuit sous 48 h', desc: 'Contactez KPS Agency, agence digitale à Paris 8e : décrivez votre projet de site web, d’application, de SEO ou de publicité. Devis gratuit sous 48 h.',
-    eyebrow: 'Contact & devis', h1: 'Parlons de votre prochain projet.', lead: 'Décrivez-nous votre besoin en quelques étapes : nous revenons vers vous avec une recommandation claire et un devis personnalisé.',
+    eyebrow: 'Contact & devis', h1seo: 'Contacter KPS Agency et demander un devis', h1: 'Parlons de votre prochain projet.', lead: 'Décrivez-nous votre besoin en quelques étapes : nous revenons vers vous avec une recommandation claire et un devis personnalisé.',
     email: 'E-mail', phone: 'Téléphone', address: 'Adresse', step: 'Étape', of: 'sur', sentShort: 'Demande envoyée',
     s1: 'De quoi avez-vous besoin ?', s1hint: 'Plusieurs choix possibles.',
     services: [
@@ -98,7 +99,7 @@ const t = useLocaleText({
   },
   en: {
     title: 'Contact us: free quote within 48 hours', desc: 'Contact KPS Agency, a digital agency in Paris: tell us about your website, software, SEO or paid ads project and get a free quote within 48 hours.',
-    eyebrow: 'Contact & quote', h1: 'Let’s talk about your next project.', lead: 'Describe what you need in a few steps: we’ll come back to you with a clear recommendation and a tailored quote.',
+    eyebrow: 'Contact & quote', h1seo: 'Contact KPS Agency and request a quote', h1: 'Let’s talk about your next project.', lead: 'Describe what you need in a few steps: we’ll come back to you with a clear recommendation and a tailored quote.',
     email: 'Email', phone: 'Phone', address: 'Address', step: 'Step', of: 'of', sentShort: 'Request sent',
     s1: 'What do you need?', s1hint: 'You can select several options.',
     services: [
@@ -128,7 +129,7 @@ useHead({
       '@context': 'https://schema.org',
       '@graph': [
         organizationSchema(site, en.value ? 'en' : 'fr'),
-        { '@type': 'ContactPage', '@id': `${site}${link.contact()}#webpage`, url: `${site}${link.contact()}`, name: t.value.title, inLanguage: en.value ? 'en' : 'fr-FR', about: { '@id': `${site}/#organization` } }
+        { '@type': 'ContactPage', '@id': `${site}${link.contact()}#webpage`, url: `${site}${link.contact()}`, name: t.value.title, inLanguage: en.value ? 'en-GB' : 'fr-FR', about: { '@id': `${site}/#organization` } }
       ]
     })
   }]

@@ -4,7 +4,9 @@ import cms from '#cms'
 
 export const CONTACT = {
   email: 'contact@kps-agency.com',
-  phone: '[Téléphone]',
+  phone: '+33 6 66 31 63 98',
+  /** Même numéro au format international, pour les liens tel: et les données structurées */
+  phoneE164: '+33666316398',
   address: '59 rue de Ponthieu, 75008'
 }
 
@@ -21,6 +23,11 @@ export const COMPANY = {
 }
 const hasPhone = !CONTACT.phone.startsWith('[')
 
+/** Auteurs des articles du blog : fonction affichée sous la signature et dans les données structurées (clé = champ « author » de l'article) */
+export const AUTHORS: Record<string, { fr: string; en: string }> = {
+  'Phillipe Esnault': { fr: 'CEO de KPS Agency', en: 'CEO of KPS Agency' }
+}
+
 /** Entité ProfessionalService de référence, réutilisée par toutes les pages (même @id) */
 export const organizationSchema = (site: string, lang: 'fr' | 'en' = 'fr') => ({
   '@type': ['ProfessionalService', 'Organization'],
@@ -34,13 +41,16 @@ export const organizationSchema = (site: string, lang: 'fr' | 'en' = 'fr') => ({
     ? 'Paris-based digital agency: website design, custom software, SEO & GEO, paid advertising and social media for SMEs.'
     : 'Agence digitale à Paris : création de sites web, applications sur mesure, référencement SEO & GEO, publicité en ligne et social media pour les PME et TPE.',
   email: CONTACT.email,
-  contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', email: CONTACT.email, availableLanguage: ['French', 'English'], areaServed: 'FR' },
-  ...(hasPhone ? { telephone: CONTACT.phone } : {}),
+  contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', email: CONTACT.email, ...(hasPhone ? { telephone: CONTACT.phoneE164 } : {}), availableLanguage: ['French', 'English'], areaServed: 'FR' },
+  ...(hasPhone ? { telephone: CONTACT.phoneE164 } : {}),
   identifier: { '@type': 'PropertyValue', propertyID: 'SIRET', value: COMPANY.siret },
   address: { '@type': 'PostalAddress', streetAddress: COMPANY.street, postalCode: COMPANY.postalCode, addressLocality: COMPANY.city, addressRegion: 'Île-de-France', addressCountry: 'FR' },
   areaServed: [{ '@type': 'City', name: 'Paris' }, { '@type': 'AdministrativeArea', name: 'Île-de-France' }, { '@type': 'Country', name: 'France' }],
-  priceRange: 'Sur devis',
-  knowsAbout: ['Création de site web', 'E-commerce', 'Application métier', 'Application mobile', 'Référencement SEO', 'GEO (Generative Engine Optimization)', 'Google Ads', 'Meta Ads', 'Social media'],
+  knowsAbout: lang === 'en'
+    ? ['Website design', 'E-commerce', 'Custom business software', 'Mobile app development', 'SEO', 'GEO (Generative Engine Optimization)', 'Google Ads', 'Meta Ads', 'Social media']
+    : ['Création de site web', 'E-commerce', 'Application métier', 'Application mobile', 'Référencement SEO', 'GEO (Generative Engine Optimization)', 'Google Ads', 'Meta Ads', 'Social media'],
+  // Akoraweb, l'agence de KPS à Madagascar (son site déclare KPS Agency comme organisation parente)
+  subOrganization: { '@type': 'Organization', name: 'Akoraweb', url: 'https://www.akoraweb.com/' },
   ...(COMPANY.sameAs.length ? { sameAs: COMPANY.sameAs } : {})
 })
 
@@ -86,13 +96,13 @@ const LOCAL_PROJECTS: Project[] = [
   p('yassir', 'ADS', 'YASSIR', 'Campagne ADS Multi-plateforme', 'Stratégie ADS intégrée avec reach massif (3.9M Facebook, 1.4M Instagram, 5M paid reach) et benchmarking compétitif pour optimisation continue.', '5M paid reach', '#0E1726', '#FFFFFF'),
   p('zayn', 'Social', 'ZAYN', 'Campagne Social/Médias', 'Campagne intégrée avec visuels produits premium, stratégie de contenu multi-format et résultats mesurables (308.8K couverture, 6.5K interactions).', '308.8K couverture', '#F2E6D8', '#6B3E12'),
   p('cushman-wakefield-veritas', 'Web', 'Cushman & Wakefield Veritas', 'Immobilier', D, R, '#E4EFE9', '#14532D', 'https://cushwake.ge/'),
-  p('groupado-pro', 'ADS', 'groupado PRO', 'Campagne ADS Performance', 'Campagne d’acquisition avec focus sur ad trends, reach payante (1.7M) et impressions massives (6.4M) pour maximiser la visibilité.', '6.4M impressions', '#EDE7F6', '#4C1D95'),
+  p('groupado-pro', 'ADS', 'groupado PRO', 'Campagne ADS Performance', 'Campagne d’acquisition avec focus sur ad trends, portée payante (1.7M) et impressions massives (6.4M) pour maximiser la visibilité.', '6.4M impressions', '#EDE7F6', '#4C1D95'),
   p('kpmg', 'Social', 'KPMG', 'Audit & Analyse Audience', 'Rapport d’analyse audience détaillé avec insights sur la couverture organique vs payante, performance de contenu et engagement utilisateur.', R, '#E6ECF5', '#0B3A75'),
   p('fibbl', 'Web', 'Fibbl', 'SaaS B2B', D, R, '#FFF1E6', '#9A3412', 'https://fibbl.com/'),
   p('brasileia-cosmetics', 'ADS', 'Brasileia Cosmetics', 'Campagne ADS Beauté', 'Campagne produit beauté avec visuels premium, messaging ciblé et analytics détaillées (1.8M views, 996K coverage).', '1.8M views', '#FCE7F3', '#9D174D'),
-  p('br-finanzen', 'Social', 'BR Finanzen', 'Stratégie Financière Digital', 'Campagne de communication financière avec design premium, conseils d’épargne et branding cohérent pour services bancaires.', R, '#E0F2FE', '#075985'),
+  p('br-finanzen', 'Social', 'BR Finanzen', 'Stratégie financière digitale', 'Campagne de communication financière avec design premium, conseils d’épargne et branding cohérent pour services bancaires.', R, '#E0F2FE', '#075985'),
   p('copenhagen-energy', 'Web', 'Copenhagen Energy', 'Énergie', D, R, '#E0F2FE', '#075985', 'https://copenhagen-energy.com/'),
-  p('tunisia-franchise-show', 'ADS', 'Tunisia Franchise Show', 'Campagne ADS Événementielle', 'Campagne événementielle avec reach massif (2.2M), engagement ciblé (2.9K interactions) et traffic multi-plateforme.', '2.2M reach', '#FEF3C7', '#92400E'),
+  p('tunisia-franchise-show', 'ADS', 'Tunisia Franchise Show', 'Campagne ADS Événementielle', 'Campagne événementielle avec reach massif (2.2M), engagement ciblé (2.9K interactions) et trafic multi-plateforme.', '2.2M reach', '#FEF3C7', '#92400E'),
   p('campagnes-beaute-sante', 'Social', 'Campagnes Beauté & Santé', 'Multi-marques Beauté/Santé', 'Gestion de campagnes intégrées pour marques beauté et santé avec dashboards analytics, visuels produits et stratégie de contenu premium.', R, '#FCE7F3', '#9D174D'),
   p('foscolo', 'Web', 'Coaching und Therapie Foscolo', 'Services Professionnels', D, R, '#F5F5F4', '#44403C', 'https://www.foscolo.ch/'),
   p('lore-and-heart', 'ADS', 'LORE & HEART', 'Campagne ADS Social', 'Campagne d’acquisition sur Facebook et Instagram avec analyse détaillée de l’engagement, identification des posts performants et optimisation de la portée.', R, '#F5F5F4', '#44403C'),
@@ -102,7 +112,7 @@ const LOCAL_PROJECTS: Project[] = [
   p('radiumhemmets-forskningsfonder', 'Web', 'Radiumhemmets Forskningsfonder', 'Recherche', D, R, '#FCE7F3', '#9D174D', 'https://rahfo.se/'),
   p('quartz-conciergerie', 'Web', 'Quartz Conciergerie', 'Conciergerie Airbnb', D, R, '#F3EBDD', '#6B4E2E', 'https://quartzconciergerie.com/'),
   p('founa-com-by-smg','ADS', 'Founa.com by SMG', 'Campagne ADS Acquisition', 'Campagne d’acquisition structurée avec dashboard analytics complet, suivi des KPIs et optimisation des performances.', R, '#E0F2FE', '#075985'),
-  p('prostarseo', 'ADS', 'ProstarSEO', 'Campagne ADS Digital/SEO', 'Campagne d’acquisition digital avec analyse d’autorité, traffic organique et distribution géographique pour ciblage optimisé.', R, '#EDE7F6', '#4C1D95')
+  p('prostarseo', 'ADS', 'ProstarSEO', 'Campagne ADS Digital/SEO', 'Campagne d’acquisition digitale avec analyse d’autorité, trafic organique et distribution géographique pour ciblage optimisé.', R, '#EDE7F6', '#4C1D95')
 ]
 
 // Réalisations gérées dans l'admin (table projects de Supabase, lue au build) : elles remplacent la liste ci-dessus dès que la table en contient
@@ -111,6 +121,11 @@ export const PROJECTS: Project[] = cms?.projects?.length
   : LOCAL_PROJECTS
 
 export const CAT_LABEL: Record<ProjectCat, string> = { Web: 'Site web', ADS: 'ADS', Social: 'Social/Médias' }
+
+/** Une réalisation n'est indexée (et listée dans le sitemap) que si sa description est une vraie étude de cas :
+ *  contexte, travail réalisé, résultat. En dessous de ce seuil, la page reste consultable mais en noindex. */
+export const CASE_STUDY_MIN_CHARS = 400
+export const isCaseStudy = (desc: string) => !desc.startsWith('[') && desc.length >= CASE_STUDY_MIN_CHARS
 
 /* ---------------- Services ---------------- */
 export interface Offer { n: string; t: string; d: string; tags: string[] }
@@ -332,21 +347,21 @@ export const SERVICES: Service[] = [
   },
   {
     slug: 'agence-geo', key: 'geo', num: 'IA', crumb: 'Agence GEO', eyebrow: 'Agence GEO', landing: true,
-    h1: 'Soyez la marque que ChatGPT recommande.',
+    h1: 'Donnez aux IA de bonnes raisons de vous citer.',
     sub: 'Vos clients posent désormais leurs questions à ChatGPT, Gemini et Perplexity. Le GEO (Generative Engine Optimization) consiste à faire en sorte que ces IA citent votre entreprise dans leurs réponses.',
     offersTitle: 'Du diagnostic à la citation.', offersSub: 'Le GEO prolonge le référencement naturel : on ne repart pas de zéro, on rend votre site lisible et citable par les IA.',
     offers: [
       o('01', 'Audit de visibilité IA', 'Nous interrogeons les principaux moteurs IA sur vos requêtes clés : êtes-vous cité, qui l’est à votre place, et pourquoi.', ['ChatGPT', 'Gemini', 'Perplexity']),
       o('02', 'Contenus citables', 'Des réponses claires, structurées et sourcées aux questions de vos clients, que les IA peuvent reprendre telles quelles.', ['Questions-réponses', 'Chiffres sourcés', 'Structure']),
-      o('03', 'Socle technique', 'Données structurées, accès des robots IA, fichier llms.txt et pages rapides : votre site devient facile à lire pour une IA.', ['Données structurées', 'llms.txt', 'Robots IA']),
+      o('03', 'Socle technique', 'Accès des robots IA, données structurées et pages rapides : votre site devient facile à lire pour une IA. Un fichier llms.txt peut s’y ajouter, sans effet garanti.', ['Robots IA', 'Données structurées', 'Vitesse']),
       o('04', 'Notoriété de marque', 'Les IA citent les marques dont on parle ailleurs : avis, annuaires, articles et mentions cohérentes de votre entreprise.', ['Avis', 'Mentions', 'Cohérence'])
     ],
     benTitle: 'Le GEO ne remplace pas le SEO. Il le prolonge.',
     benefits: [
       b('Une nouvelle source de clients', 'Être cité dans une réponse d’IA, c’est être recommandé au moment précis où le client se décide.'),
-      b('Un travail qui sert deux fois', 'Les contenus et la technique qui plaisent aux IA améliorent aussi votre classement sur Google.'),
-      b('Une longueur d’avance', 'Peu d’entreprises s’en occupent encore : les premières citées s’installent durablement.'),
-      b('Des résultats suivis', 'Nous mesurons régulièrement votre présence dans les réponses des IA sur vos requêtes clés.')
+      b('Un travail qui sert deux fois', 'Le GEO repose sur le même socle que le référencement naturel : un site lisible et des contenus utiles servent les deux.'),
+      b('Sans promesse intenable', 'Personne ne contrôle les réponses d’une IA : nous ne garantissons pas une citation, nous augmentons vos chances d’en obtenir.'),
+      b('Un suivi régulier', 'Nous testons chaque mois vos requêtes clés sur les principales IA et vous remettons le relevé.')
     ],
     methTitle: 'Notre méthode GEO.',
     steps: [s('1', 'Diagnostic', 'Vos requêtes clés testées sur les moteurs IA, et l’analyse des sources qu’ils citent.'), s('2', 'Plan d’action', 'Les pages à créer ou à réécrire, classées par impact.'), s('3', 'Production', 'Contenus, données structurées et corrections techniques.'), s('4', 'Suivi', 'Mesure régulière des citations et ajustements.')],
@@ -404,6 +419,27 @@ export const LOCAL_PAGES: LocalPage[] = [
       ['Travaillez-vous aussi hors de Paris ?', 'Oui. Nous accompagnons des entreprises partout en France et à l’international, notamment en Suisse, en Suède, au Danemark et en Tunisie. KPS dispose aussi d’une agence basée à Madagascar, Akoraweb (akoraweb.com).']
     ],
     cta: 'Un projet digital à Paris ?'
+  },
+  {
+    slug: 'madagascar', crumbParent: 'Agence digitale', crumb: 'Madagascar', eyebrow: 'Agence web à Madagascar',
+    title: 'Agence web à Madagascar : sites et applications', description: 'Agence web à Madagascar : création de site internet, boutique en ligne avec paiement mobile, applications et référencement, avec notre équipe Akoraweb sur place.',
+    h1: 'Votre agence web à Madagascar.',
+    sub: 'Création de site internet, boutique en ligne, application web et référencement : KPS accompagne les entreprises de Madagascar et d’Afrique avec Akoraweb, son agence basée sur l’île.',
+    svcTitle: 'Nos expertises pour les entreprises de Madagascar.', whyTitle: 'Pourquoi une agence présente à Madagascar ?',
+    why: [
+      b('Une équipe sur place', 'Akoraweb, l’agence de KPS à Madagascar, connaît les usages locaux et travaille sur le même fuseau horaire que vous.'),
+      b('Pensé pour le mobile', 'Des sites légers, rapides à charger sur téléphone et sobres en données mobiles.'),
+      b('Le paiement mobile', 'Des boutiques en ligne conçues autour de MVola, Orange Money, Airtel Money et du paiement à la livraison.'),
+      b('Une ouverture internationale', 'Un interlocuteur à Paris pour les entreprises qui visent aussi l’Europe ou la diaspora.')
+    ],
+    refTitle: 'Quelques réalisations de notre équipe', refs: ['karoo', 'stackello', 'acoi-groupe'],
+    faq: [
+      ['Avez-vous une équipe à Madagascar ?', 'Oui. KPS dispose d’une agence basée à Madagascar, Akoraweb (akoraweb.com), qui conçoit et développe les projets de nos clients de l’île et du continent africain.'],
+      ['Pouvez-vous intégrer le paiement mobile à un site ?', 'Oui. Nous concevons des boutiques en ligne qui proposent le paiement mobile et le paiement à la livraison. L’encaissement automatique passe par un compte marchand auprès de l’opérateur ou par un agrégateur de paiement.'],
+      ['Faut-il un nom de domaine en .mg ?', 'Le .mg indique clairement une entreprise malgache ; le .com convient si vous visez aussi l’étranger. Dans les deux cas, le nom de domaine est enregistré à votre nom.'],
+      ['Comment se déroule un projet à distance ?', 'Les échanges se font en visioconférence, par téléphone ou par messagerie, avec un interlocuteur unique et des étapes validées ensemble.']
+    ],
+    cta: 'Un projet digital à Madagascar ?'
   },
   {
     slug: 'energie', crumbParent: 'Secteurs', crumb: 'Énergie', eyebrow: 'Secteur de l’énergie',

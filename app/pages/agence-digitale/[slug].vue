@@ -85,7 +85,7 @@ useHead({
         organizationSchema(site, en.value ? 'en' : 'fr'),
         {
           '@type': 'WebPage', '@id': `${site}${route.path}#webpage`, url: `${site}${route.path}`, name: page.value?.title, description: page.value?.description,
-          inLanguage: en.value ? 'en' : 'fr-FR', about: { '@id': `${site}/#organization` }, isPartOf: { '@id': `${site}/#website` }
+          inLanguage: en.value ? 'en-GB' : 'fr-FR', about: { '@id': `${site}/#organization` }, isPartOf: { '@id': `${site}/#website` }
         },
         {
           '@type': 'FAQPage', '@id': `${site}${route.path}#faq`,

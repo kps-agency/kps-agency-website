@@ -143,7 +143,7 @@ useHead({
     type: 'application/ld+json',
     innerHTML: () => {
       const url = `${site}${link.service(svc.value!.slug)}`
-      const lang = en.value ? 'en' : 'fr-FR'
+      const lang = en.value ? 'en-GB' : 'fr-FR'
       return JSON.stringify({
         '@context': 'https://schema.org',
         '@graph': [

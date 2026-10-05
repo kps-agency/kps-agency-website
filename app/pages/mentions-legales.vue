@@ -23,8 +23,9 @@ const articlesFr: LegalArticle[] = [
       ['Statut juridique', 'SAS au capital de 1 000 €'],
       ['Siège social', '59 rue de Ponthieu, 75008 Paris, France'],
       ['SIRET', '102 909 728 00010'],
-      ['RCS', 'Paris'],
-      ['Directeur de la publication', 'KPS Agency'],
+      ['RCS', 'Paris 102 909 728'],
+      ['Directeur de la publication', 'Phillipe Esnault'],
+      ['Téléphone', '+33 6 66 31 63 98'],
       mail
     ] }
   ] },
@@ -50,7 +51,7 @@ const articlesFr: LegalArticle[] = [
     'KPS Agency décline toute responsabilité quant aux éventuels dysfonctionnements pouvant survenir sur le site et entraîner une perte de données ou une indisponibilité de l’accès aux informations produites sur celui-ci.'
   ] },
   { t: 'Gestion des données personnelles (RGPD)', blocks: [
-    'L’Utilisateur est informé des réglementations concernant la communication marketing, la loi du 21 juin 2004 pour la confiance dans l’économie numérique, la loi Informatique et Libertés du 6 août 2004 ainsi que le Règlement général sur la protection des données (RGPD, n° 2016/679).',
+    'L’Utilisateur est informé des réglementations concernant la communication marketing, la loi du 21 juin 2004 pour la confiance dans l’économie numérique, la loi Informatique et Libertés du 6 janvier 1978 modifiée ainsi que le Règlement général sur la protection des données (RGPD, n° 2016/679).',
     'Pour les données personnelles collectées dans le cadre de la navigation de l’Utilisateur ou via nos formulaires, le responsable du traitement est KPS Agency.',
     'KPS Agency s’engage à respecter le cadre des dispositions légales en vigueur. Aucune information personnelle de l’utilisateur du site n’est publiée à son insu, échangée, transférée, cédée ou vendue sur un support quelconque à des tiers.'
   ] },

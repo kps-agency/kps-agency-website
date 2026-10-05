@@ -48,13 +48,13 @@ const t = useLocaleText({
   fr: {
     title: 'Ils nous ont fait confiance en France et à l’international',
     countriesLabel: 'Pays de nos clients',
-    countries: ['France', 'Suisse', 'Suède', 'Danemark', 'Géorgie', 'Tunisie'],
+    countries: ['France', 'Suisse', 'Suède', 'Danemark', 'Géorgie', 'Tunisie', 'Madagascar'],
     projects: 'réalisations en ligne', rating: 'sur Google', ratingCount: 'avis', expertise: 'expertises réunies', countriesStat: 'pays servis'
   },
   en: {
     title: 'Trusted by companies in France and internationally',
     countriesLabel: 'Our clients’ countries',
-    countries: ['France', 'Switzerland', 'Sweden', 'Denmark', 'Georgia', 'Tunisia'],
+    countries: ['France', 'Switzerland', 'Sweden', 'Denmark', 'Georgia', 'Tunisia', 'Madagascar'],
     projects: 'projects showcased', rating: 'on Google', ratingCount: 'reviews', expertise: 'areas of expertise', countriesStat: 'countries served'
   }
 })

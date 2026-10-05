@@ -154,7 +154,8 @@ export const LEGAL_EN = {
         ['Registered office', '59 rue de Ponthieu, 75008 Paris, France'],
         ['SIRET', '102 909 728 00010'],
         ['Trade register (RCS)', 'Paris'],
-        ['Publication director', 'KPS Agency'],
+        ['Publication director', 'Phillipe Esnault'],
+        ['Phone', '+33 6 66 31 63 98'],
         mail
       ] }
     ] },
@@ -180,7 +181,7 @@ export const LEGAL_EN = {
       'KPS Agency accepts no liability for any malfunction of the website that may result in data loss or unavailability of the information it provides.'
     ] },
     { t: 'Personal data (GDPR)', blocks: [
-      'Users are informed of the regulations on marketing communications, the French law of 21 June 2004 on confidence in the digital economy, the French Data Protection Act as amended on 6 August 2004, and the General Data Protection Regulation (GDPR, Regulation (EU) 2016/679).',
+      'Users are informed of the regulations on marketing communications, the French law of 21 June 2004 on confidence in the digital economy, the French Data Protection Act of 6 January 1978, as amended, and the General Data Protection Regulation (GDPR, Regulation (EU) 2016/679).',
       'KPS Agency is the data controller for personal data collected while users browse the website or through our forms.',
       'KPS Agency undertakes to comply with the applicable legal framework. No personal information about website users is published without their knowledge, exchanged, transferred, assigned or sold to third parties on any medium.'
     ] },

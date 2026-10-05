@@ -2,8 +2,8 @@
   <div>
     <section class="container head">
       <Breadcrumb :items="[{ label: t.home, to: link.home() }, { label: t.crumb }]" />
-      <div class="eyebrow">{{ t.crumb }}</div>
-      <h1 class="head__h1">{{ t.h1 }}</h1>
+      <h1 class="eyebrow">{{ t.h1seo }}</h1>
+      <p class="head__h1 display">{{ t.h1 }}</p>
       <p class="lead head__p">{{ t.lead }}</p>
     </section>
     <!-- Entrée par le besoin : oriente le visiteur qui ne connaît pas encore le nom de l'expertise -->
@@ -66,7 +66,7 @@ const proofs = computed(() => ['powercell-group', 'karoo', 'yassir'].map(slug =>
 const groups = computed(() => FAMILIES.map((slugs, i) => ({ ...t.value.families[i]!, items: slugs.map(byslug).filter(Boolean) as typeof services.value })))
 const t = useLocaleText({
   fr: {
-    home: 'Accueil', crumb: 'Expertises', h1: 'Neuf expertises. Une seule équipe. Un objectif : votre croissance.',
+    home: 'Accueil', crumb: 'Expertises', h1seo: 'Nos expertises : sites web, applications, SEO et publicité', h1: 'Neuf expertises. Une seule équipe. Un objectif : votre croissance.',
     lead: 'Chaque expertise se mobilise seule ou en synergie. C’est dans leur articulation — un site bien référencé, nourri par des campagnes rentables et des contenus engageants — que naît la performance durable.',
     more: 'Découvrir', faq: 'Nos conditions, en clair', proof: 'Ils nous ont fait confiance', allWork: 'Toutes les réalisations',
     needsTitle: 'Vous ne savez pas par où commencer ? Partez de votre besoin.',
@@ -87,7 +87,7 @@ const t = useLocaleText({
     title: 'Agence web & marketing digital : nos expertises', desc: 'Création, refonte et maintenance de sites, applications métier, SaaS et mobiles, SEO & GEO, publicité en ligne et social media : neuf expertises à Paris.'
   },
   en: {
-    home: 'Home', crumb: 'Services', h1: 'Nine areas of expertise. One team. One goal: your growth.',
+    home: 'Home', crumb: 'Services', h1seo: 'Our services: websites, applications, SEO and advertising', h1: 'Nine areas of expertise. One team. One goal: your growth.',
     lead: 'Each service works on its own or in synergy with the others. Lasting performance comes from how they fit together — a well-ranked website, fuelled by profitable campaigns and engaging content.',
     more: 'Discover', faq: 'How we work, in plain terms', proof: 'They trusted us', allWork: 'All our work',
     needsTitle: 'Not sure where to start? Begin with what you need.',
@@ -117,11 +117,11 @@ useHead({
       '@context': 'https://schema.org',
       '@graph': [
         {
-          '@type': 'CollectionPage', '@id': `${site}${link.services()}#webpage`, url: `${site}${link.services()}`, name: t.value.title, inLanguage: en.value ? 'en' : 'fr-FR',
+          '@type': 'CollectionPage', '@id': `${site}${link.services()}#webpage`, url: `${site}${link.services()}`, name: t.value.title, inLanguage: en.value ? 'en-GB' : 'fr-FR',
           mainEntity: { '@type': 'ItemList', itemListElement: services.value.map((sv, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site}${link.service(sv.slug)}`, name: serviceSeo.value[sv.slug]?.h1 ?? sv.crumb })) }
         },
         {
-          '@type': 'FAQPage', '@id': `${site}${link.services()}#faq`, inLanguage: en.value ? 'en' : 'fr-FR',
+          '@type': 'FAQPage', '@id': `${site}${link.services()}#faq`, inLanguage: en.value ? 'en-GB' : 'fr-FR',
           mainEntity: serviceFaq.value.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
         }
       ]

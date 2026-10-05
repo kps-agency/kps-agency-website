@@ -376,8 +376,8 @@ useHead({
         '@context': 'https://schema.org',
         '@graph': [
           organizationSchema(site, en.value ? 'en' : 'fr'),
-          { '@type': 'WebSite', '@id': `${site}/#website`, url: `${site}/`, name: 'KPS Agency', inLanguage: ['fr-FR', 'en'], publisher: { '@id': `${site}/#organization` } },
-          { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: t.value.seo.title, isPartOf: { '@id': `${site}/#website` }, about: { '@id': `${site}/#organization` }, inLanguage: en.value ? 'en' : 'fr-FR' }
+          { '@type': 'WebSite', '@id': `${site}/#website`, url: `${site}/`, name: 'KPS Agency', inLanguage: ['fr-FR', 'en-GB'], publisher: { '@id': `${site}/#organization` } },
+          { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: t.value.seo.title, isPartOf: { '@id': `${site}/#website` }, about: { '@id': `${site}/#organization` }, inLanguage: en.value ? 'en-GB' : 'fr-FR' }
         ]
       })
     }

@@ -98,6 +98,9 @@ input:not([type='checkbox']):not([type='radio']), textarea, select { background:
 
 /* ---------- Type ---------- */
 .eyebrow { font-size: 14px; font-weight: 700; color: var(--accent-light); text-transform: uppercase; letter-spacing: 1.5px; }
+/* h1 descriptif présenté comme un sur-titre ; le slogan qui suit garde l'apparence d'un grand titre (.display) */
+h1.eyebrow { font-family: var(--font-body); line-height: 1.4; }
+.display { font-family: var(--font-display); margin: 0; }
 .bg-dark .eyebrow { color: var(--accent-light); }
 .h1 { font-size: 76px; line-height: 1.05; letter-spacing: -2.5px; font-weight: 900; }
 .h2 { font-size: 52px; line-height: 1.08; letter-spacing: -1.6px; font-weight: 900; }

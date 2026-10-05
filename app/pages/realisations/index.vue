@@ -2,8 +2,9 @@
   <div>
     <section class="container head">
       <div class="head__title">
-        <div class="eyebrow">{{ t.eyebrow }}</div>
-        <h1 class="head__h1">{{ t.h1 }}</h1>
+        <Breadcrumb :items="[{ label: en ? 'Home' : 'Accueil', to: link.home() }, { label: t.eyebrow }]" />
+        <h1 class="eyebrow">{{ t.h1seo }}</h1>
+        <p class="head__h1 display">{{ t.h1 }}</p>
       </div>
       <p class="head__p">{{ t.lead }}</p>
     </section>
@@ -34,14 +35,14 @@
 const { en, link, projects } = useSite()
 const t = useLocaleText({
   fr: {
-    eyebrow: 'Réalisations', h1: 'Des projets concrets. Des résultats mesurables.', lead: 'Sites corporate, campagnes social media, dispositifs d’acquisition : découvrez comment nous accompagnons des marques en France et à l’international.',
+    eyebrow: 'Réalisations', h1seo: 'Nos réalisations : sites web et campagnes digitales', h1: 'Des projets concrets. Des résultats mesurables.', lead: 'Sites corporate, campagnes social media, dispositifs d’acquisition : découvrez comment nous accompagnons des marques en France et à l’international.',
     filterLabel: 'Filtrer les réalisations', filters: [{ id: 'all', label: 'Tous' }, { id: 'Web', label: 'Sites Web' }, { id: 'Social', label: 'Social/Médias' }, { id: 'ADS', label: 'ADS' }],
     projects: 'projets', ctaTitle: 'Votre projet sera notre prochaine référence.', ctaLabel: 'Parler de votre projet',
     stats: [{ v: '5M', l: 'paid reach · YASSIR' }, { v: '6.4M', l: 'impressions · groupado PRO' }, { v: '2.2M', l: 'reach · Tunisia Franchise Show' }, { v: '308.8K', l: 'couverture · ZAYN' }],
     title: 'Réalisations : sites web & campagnes digitales', desc: 'Sites corporate, campagnes Google & Meta Ads et social media : découvrez les projets de KPS Agency pour des marques en France et à l’international.'
   },
   en: {
-    eyebrow: 'Our work', h1: 'Real projects. Measurable results.', lead: 'Corporate websites, social media campaigns, acquisition set-ups: see how we support brands in France and internationally.',
+    eyebrow: 'Our work', h1seo: 'Our work: websites and digital campaigns', h1: 'Real projects. Measurable results.', lead: 'Corporate websites, social media campaigns, acquisition set-ups: see how we support brands in France and internationally.',
     filterLabel: 'Filter projects', filters: [{ id: 'all', label: 'All' }, { id: 'Web', label: 'Websites' }, { id: 'Social', label: 'Social media' }, { id: 'ADS', label: 'Paid ads' }],
     projects: 'projects', ctaTitle: 'Your project could be our next reference.', ctaLabel: 'Discuss your project',
     stats: [{ v: '5M', l: 'paid reach · YASSIR' }, { v: '6.4M', l: 'impressions · groupado PRO' }, { v: '2.2M', l: 'reach · Tunisia Franchise Show' }, { v: '308.8K', l: 'reach · ZAYN' }],
@@ -55,7 +56,7 @@ useHead({
     type: 'application/ld+json',
     innerHTML: () => JSON.stringify({
       '@context': 'https://schema.org',
-      '@type': 'CollectionPage', '@id': `${site}${link.work()}#webpage`, url: `${site}${link.work()}`, name: t.value.title, inLanguage: en.value ? 'en' : 'fr-FR',
+      '@type': 'CollectionPage', '@id': `${site}${link.work()}#webpage`, url: `${site}${link.work()}`, name: t.value.title, inLanguage: en.value ? 'en-GB' : 'fr-FR',
       mainEntity: { '@type': 'ItemList', numberOfItems: projects.value.length, itemListElement: projects.value.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site}${link.project(p.slug)}`, name: `${p.client} — ${p.label}` })) }
     })
   }]
