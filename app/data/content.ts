@@ -156,7 +156,7 @@ export const SERVICES: Service[] = [
       b('Cohérence de marque', 'Un design fidèle à votre identité, décliné avec rigueur sur chaque écran.')
     ],
     methTitle: 'De l’idée à la mise en ligne.', steps: COMMON_STEPS,
-    related: ['powercell-group', 'cushman-wakefield-veritas', 'fibbl'], cta: 'Un site à créer ou à refondre ?'
+    related: ['powercell-group', 'cushman-wakefield-veritas', 'acoi-groupe'], cta: 'Un site à créer ou à refondre ?'
   },
   {
     slug: 'application-metier', key: 'app', num: '02', crumb: 'Application métier', eyebrow: 'Application métier sur mesure',
@@ -176,7 +176,7 @@ export const SERVICES: Service[] = [
       b('Évolutivité', 'Une architecture qui grandit avec votre entreprise.'),
       b('Sécurité', 'Gestion des accès et protection de vos données au cœur de la conception.')
     ],
-    methTitle: 'Du besoin métier à l’outil déployé.', steps: COMMON_STEPS, related: [], cta: 'Un processus à digitaliser ?'
+    methTitle: 'Du besoin métier à l’outil déployé.', steps: COMMON_STEPS, related: ['karoo', 'stackello', 'fibbl'], cta: 'Un processus à digitaliser ?'
   },
   {
     slug: 'referencement-seo-geo', key: 'seo', num: '03', crumb: 'Référencement SEO & GEO', eyebrow: 'Référencement SEO & GEO',
@@ -198,7 +198,7 @@ export const SERVICES: Service[] = [
     ],
     methTitle: 'De l’audit à la croissance organique.',
     steps: [s('1', 'Audit', 'État des lieux technique, sémantique et concurrentiel.'), s('2', 'Stratégie', 'Priorisation des mots-clés et des chantiers à fort impact.'), s('3', 'Optimisation', 'Corrections techniques, contenus et maillage interne.'), s('4', 'Suivi', 'Mesure des positions et ajustements continus.')],
-    related: [], cta: 'Envie de gagner en visibilité ?'
+    related: ['prostarseo', 'powercell-group', 'cushman-wakefield-veritas'], cta: 'Envie de gagner en visibilité ?'
   },
   {
     slug: 'application-mobile', key: 'mobile', num: '04', crumb: 'Application mobile', eyebrow: 'Application mobile',
@@ -218,7 +218,7 @@ export const SERVICES: Service[] = [
       b('Performance', 'Une application rapide et stable, quel que soit l’appareil.'),
       b('Évolutivité', 'Une base technique pensée pour accueillir de nouvelles fonctionnalités.')
     ],
-    methTitle: 'De l’idée à l’App Store.', steps: COMMON_STEPS, related: [], cta: 'Un projet d’application ?'
+    methTitle: 'De l’idée à l’App Store.', steps: COMMON_STEPS, related: ['karoo', 'stackello', 'fibbl'], cta: 'Un projet d’application ?'
   },
   {
     slug: 'marketing-digital-ads', key: 'ads', num: '05', crumb: 'Marketing digital & ADS', eyebrow: 'Marketing digital & ADS',
@@ -262,7 +262,7 @@ export const SERVICES: Service[] = [
     ],
     methTitle: 'De la stratégie au contenu publié.',
     steps: [s('1', 'Le Choix', 'Définition de vos objectifs et des formats : visuel, vidéo ou les deux.'), s('2', 'Le Brief', 'Vous nous transmettez votre vision et vos assets.'), s('3', 'La Stratégie', 'Nous analysons, créons et optimisons.'), s('4', 'Le Décollage', 'Livraison des contenus prêts à publier.')],
-    related: ['zayn', 'kpmg', 'brasileia-cosmetics'], cta: 'Envie de faire rayonner votre marque ?'
+    related: ['zayn', 'kpmg', 'br-finanzen'], cta: 'Envie de faire rayonner votre marque ?'
   },
   {
     slug: 'refonte-site-web', key: 'refonte', num: '07', crumb: 'Refonte de site', eyebrow: 'Refonte de site web',
@@ -284,7 +284,7 @@ export const SERVICES: Service[] = [
     ],
     methTitle: 'De l’audit à la bascule.',
     steps: [s('1', 'Audit', 'Analyse de votre site actuel : contenus, performances, référencement et points de friction.'), s('2', 'Conception', 'Nouvelle arborescence et maquettes : vous validez avant toute production.'), s('3', 'Production', 'Développement, reprise des contenus et plan de redirections.'), s('4', 'Bascule & suivi', 'Mise en ligne sans coupure, puis contrôle du référencement dans les semaines qui suivent.')],
-    related: ['powercell-group', 'cushman-wakefield-veritas', 'dunstan'], cta: 'Un site à moderniser ?'
+    related: ['copenhagen-energy', 'dunstan', 'lbvs-avocats'], cta: 'Un site à moderniser ?'
   },
   {
     slug: 'maintenance-site-web', key: 'maintenance', num: '08', crumb: 'Maintenance de site', eyebrow: 'Maintenance de site web',
@@ -306,7 +306,7 @@ export const SERVICES: Service[] = [
     ],
     methTitle: 'Une prise en main simple.',
     steps: [s('1', 'État des lieux', 'Audit de votre site : versions, sécurité, sauvegardes et performances.'), s('2', 'Mise à niveau', 'Remise à jour et sécurisation du site avant de démarrer le suivi.'), s('3', 'Suivi régulier', 'Mises à jour, sauvegardes et surveillance tout au long de l’année.'), s('4', 'Interventions', 'Corrections et évolutions à la demande, avec un compte rendu.')],
-    related: ['fibbl', 'copenhagen-energy', 'radiumhemmets-forskningsfonder'], cta: 'Besoin d’un site toujours au point ?'
+    related: ['radiumhemmets-forskningsfonder', 'quartz-conciergerie', 'foscolo'], cta: 'Besoin d’un site toujours au point ?'
   },
   {
     slug: 'creation-saas', key: 'saas', num: '09', crumb: 'SaaS', eyebrow: 'Création de SaaS',
@@ -328,7 +328,7 @@ export const SERVICES: Service[] = [
     ],
     methTitle: 'De l’idée au lancement.',
     steps: [s('1', 'Cadrage', 'Votre marché, vos utilisateurs et les fonctions vraiment indispensables à la première version.'), s('2', 'Conception', 'Parcours et maquettes de l’application : vous validez avant le développement.'), s('3', 'Développement', 'Construction par étapes, avec des démonstrations régulières.'), s('4', 'Lancement & évolution', 'Mise en ligne, suivi de l’usage et ajout de fonctionnalités au fil des retours.')],
-    related: ['fibbl', 'powercell-group', 'cushman-wakefield-veritas'], cta: 'Un SaaS à lancer ?'
+    related: ['stackello', 'karoo', 'fibbl'], cta: 'Un SaaS à lancer ?'
   },
   {
     slug: 'agence-geo', key: 'geo', num: 'IA', crumb: 'Agence GEO', eyebrow: 'Agence GEO', landing: true,
@@ -350,7 +350,7 @@ export const SERVICES: Service[] = [
     ],
     methTitle: 'Notre méthode GEO.',
     steps: [s('1', 'Diagnostic', 'Vos requêtes clés testées sur les moteurs IA, et l’analyse des sources qu’ils citent.'), s('2', 'Plan d’action', 'Les pages à créer ou à réécrire, classées par impact.'), s('3', 'Production', 'Contenus, données structurées et corrections techniques.'), s('4', 'Suivi', 'Mesure régulière des citations et ajustements.')],
-    related: ['powercell-group', 'cushman-wakefield-veritas', 'fibbl'], cta: 'Envie d’être cité par les IA ?'
+    related: ['prostarseo', 'powercell-group', 'cushman-wakefield-veritas'], cta: 'Envie d’être cité par les IA ?'
   }
 ]
 

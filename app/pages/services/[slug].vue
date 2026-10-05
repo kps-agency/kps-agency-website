@@ -26,8 +26,8 @@
           <p class="text-18 sec-head__p">{{ svc.offersSub }}</p>
         </div>
         <div class="grid grid-2 m-swipe">
-          <article v-for="of in svc.offers" :id="`offre-${of.n}`" :key="of.n" class="offer">
-            <span class="offer__n">{{ of.n }}</span>
+          <article v-for="(of, i) in svc.offers" :id="`offre-${of.n}`" :key="of.n" class="offer">
+            <span class="offer__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="offerIconPath(svc.key, i)" /></svg></span>
             <h3 class="offer__t">{{ of.t }}</h3>
             <p class="offer__d">{{ of.d }}</p>
             <div class="offer__tags"><span v-for="t in of.tags" :key="t">{{ t }}</span></div>
@@ -78,6 +78,21 @@
       </div>
     </section>
 
+    <!-- GUIDES LIES : articles du blog rattachés à cette expertise -->
+    <section v-if="guides.length" class="container section guides">
+      <div class="rel-head">
+        <h2 class="h2 h2--52">{{ t.guides }}</h2>
+        <NuxtLink :to="link.blog()" class="btn btn--ghost btn--sm">{{ t.allGuides }}</NuxtLink>
+      </div>
+      <div class="grid grid-3 m-swipe">
+        <NuxtLink v-for="a in guides" :key="a.slug" :to="link.article(a.slug)" class="guide">
+          <h3 class="guide__t">{{ a.title }}</h3>
+          <p class="guide__d">{{ a.description }}</p>
+          <span class="guide__more">{{ t.read }} · {{ a.readingMinutes }} min →</span>
+        </NuxtLink>
+      </div>
+    </section>
+
     <!-- FAQ -->
     <section class="bg-white faq-wrap">
       <div class="container section--96 split">
@@ -91,9 +106,10 @@
 </template>
 
 <script setup lang="ts">
-import { serviceIconPath } from '~/data/serviceIcons'
+import { offerIconPath, serviceIconPath } from '~/data/serviceIcons'
 import type { Project } from '~/data/content'
 import { SERVICE_FAQS } from '~/data/serviceFaq'
+import { blogArticles } from '~/data/blog'
 
 const route = useRoute()
 const { en, link, allServices, projects, serviceFaq, serviceSeo, serviceSlug } = useSite()
@@ -106,8 +122,8 @@ useSetI18nParams()({ fr: { slug: svc.value.slug }, en: { slug: serviceSlug(svc.v
 const faq = computed(() => SERVICE_FAQS[svc.value!.slug]?.[en.value ? 'en' : 'fr'] ?? serviceFaq.value)
 
 const t = useLocaleText({
-  fr: { home: 'Accueil', crumb: 'Expertises', talk: 'Parler de votre projet', seeWork: 'Voir les réalisations', offers: 'Nos offres', approach: 'L’approche KPS', method: 'Méthode', trusted: 'Ils nous ont fait confiance', allWork: 'Toutes les réalisations', faq: 'Questions fréquentes', ctaText: 'Décrivez-nous votre besoin : nous revenons vers vous avec une recommandation claire et un devis personnalisé.' },
-  en: { home: 'Home', crumb: 'Services', talk: 'Discuss your project', seeWork: 'See our work', offers: 'What we offer', approach: 'The KPS approach', method: 'Method', trusted: 'They trusted us', allWork: 'All our work', faq: 'Frequently asked questions', ctaText: 'Tell us what you need: we’ll come back to you with a clear recommendation and a tailored quote.' }
+  fr: { home: 'Accueil', crumb: 'Expertises', talk: 'Parler de votre projet', seeWork: 'Voir les réalisations', offers: 'Nos offres', approach: 'L’approche KPS', method: 'Méthode', trusted: 'Ils nous ont fait confiance', allWork: 'Toutes les réalisations', faq: 'Questions fréquentes', guides: 'Nos guides sur le sujet', allGuides: 'Tous les articles', read: 'Lire', ctaText: 'Décrivez-nous votre besoin : nous revenons vers vous avec une recommandation claire et un devis personnalisé.' },
+  en: { home: 'Home', crumb: 'Services', talk: 'Discuss your project', seeWork: 'See our work', offers: 'What we offer', approach: 'The KPS approach', method: 'Method', trusted: 'They trusted us', allWork: 'All our work', faq: 'Frequently asked questions', guides: 'Our guides on the topic', allGuides: 'All articles', read: 'Read', ctaText: 'Tell us what you need: we’ll come back to you with a clear recommendation and a tailored quote.' }
 })
 
 // Projets liés au service ; à défaut, les réalisations les plus récentes (jamais de carte vide)
@@ -115,6 +131,9 @@ const related = computed(() => {
   const own = (svc.value?.related ?? []).map(slug => projects.value.find(p => p.slug === slug)).filter(Boolean) as Project[]
   return own.length ? own : projects.value.slice(0, 3)
 })
+
+// Trois articles les plus récents rattachés à l'expertise (champ « service » de l'article)
+const guides = computed(() => blogArticles(en.value ? 'en' : 'fr').filter(a => a.service === svc.value!.slug).slice(0, 3))
 
 const seo = computed(() => serviceSeo.value[svc.value!.slug]!)
 usePageSeo({ title: () => seo.value.title, description: () => seo.value.desc })
@@ -168,7 +187,7 @@ useHead({
 .sec-head__h { max-width: 760px; }
 .sec-head__p { max-width: 420px; }
 .offer { display: flex; flex-direction: column; gap: 16px; padding: 36px; min-height: 250px; background: var(--bg); border: 1px solid var(--line); border-radius: 20px; scroll-margin-top: 110px; }
-.offer__n { font-family: var(--font-display); font-size: 16px; font-weight: 900; color: var(--accent); }
+.offer__icon { display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 16px; background: var(--accent-soft); border: 1px solid var(--accent-tint); color: var(--accent-light); }
 .offer__t { font-size: 32px; letter-spacing: -.6px; font-weight: 700; }
 .offer__d { font-size: 16px; line-height: 1.6; color: var(--muted); }
 .offer__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
@@ -191,6 +210,12 @@ useHead({
 
 .rel-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
 .faq-wrap { border-bottom: none; }
+.guides { padding-top: 0; }
+.guide { display: flex; flex-direction: column; gap: 12px; padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; color: var(--ink); transition: transform .2s ease; }
+.guide:hover { transform: translateY(-3px); color: var(--ink); }
+.guide__t { font-size: 21px; line-height: 1.25; letter-spacing: -.3px; font-weight: 700; }
+.guide__d { font-size: 15px; line-height: 1.55; color: var(--muted); }
+.guide__more { margin-top: auto; font-size: 15px; font-weight: 600; color: var(--accent-light); }
 
 @media (max-width: 1180px) {
   .hero__h1 { font-size: 52px; letter-spacing: -1.8px; }
