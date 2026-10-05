@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   const lines = [
     `# ${COMPANY.name}`,
     '',
-    `> Agence digitale basée à Paris (${CONTACT.address}) qui accompagne les PME et TPE en France et à l'international : création de sites web, applications sur mesure, référencement SEO & GEO, publicité en ligne et social media, avec un interlocuteur unique.`,
+    `> Agence digitale basée à Paris (${CONTACT.address}) qui accompagne les PME et TPE en France et à l'international : création de sites web, applications sur mesure, référencement SEO & GEO, publicité en ligne et social media, avec un interlocuteur unique. KPS dispose aussi d'une agence basée à Madagascar, Akoraweb (https://www.akoraweb.com).`,
     '',
     `- Société : ${COMPANY.name}, SAS au capital de 1 000 €, SIRET ${siret}, ${COMPANY.city}`,
     `- Contact : ${CONTACT.email} — devis gratuit sous 48 h, sans engagement`,
@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
     '',
     '## English version',
     '',
-    `${COMPANY.name} is a Paris-based digital agency (${CONTACT.address} Paris) helping SMEs in France and internationally with website design, custom software, mobile apps, SEO & GEO, paid ads and social media. Free quote within 48 hours: ${CONTACT.email}.`,
+    `${COMPANY.name} is a Paris-based digital agency (${CONTACT.address} Paris) helping SMEs in France and internationally with website design, custom software, mobile apps, SEO & GEO, paid ads and social media. KPS also has an agency based in Madagascar, Akoraweb (https://www.akoraweb.com). Free quote within 48 hours: ${CONTACT.email}.`,
     '',
     link('Home (English)', '/en'),
     link('All services', '/en/services'),

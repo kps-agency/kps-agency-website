@@ -286,7 +286,7 @@ export const LOCAL_PAGES_EN: Record<string, Omit<LocalPage, 'slug' | 'refs'>> = 
     faq: [
       ['Do you work across the whole Île-de-France region?', 'Yes. We support companies in Paris and throughout the Île-de-France region, in person or by video call.'],
       ['Can we meet you at your office?', 'Yes, by appointment: our office is at 59 rue de Ponthieu, in Paris’s 8th arrondissement. Email us at contact@kps-agency.com to book a slot.'],
-      ['Do you also work outside Paris?', 'Yes. We work with companies across France and internationally, including in Switzerland, Sweden, Denmark and Tunisia.']
+      ['Do you also work outside Paris?', 'Yes. We work with companies across France and internationally, including in Switzerland, Sweden, Denmark and Tunisia. KPS also has an agency based in Madagascar, Akoraweb (akoraweb.com).']
     ],
     cta: 'A digital project in Paris?'
   },

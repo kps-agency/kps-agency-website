@@ -401,7 +401,7 @@ export const LOCAL_PAGES: LocalPage[] = [
     faq: [
       ['Intervenez-vous dans toute l’Île-de-France ?', 'Oui. Nous accompagnons les entreprises de Paris et de toute l’Île-de-France, en rendez-vous ou en visio.'],
       ['Peut-on vous rencontrer dans vos locaux ?', 'Oui, sur rendez-vous : nos bureaux se trouvent au 59 rue de Ponthieu, dans le 8e arrondissement de Paris. Écrivez-nous à contact@kps-agency.com pour convenir d’un créneau.'],
-      ['Travaillez-vous aussi hors de Paris ?', 'Oui. Nous accompagnons des entreprises partout en France et à l’international, notamment en Suisse, en Suède, au Danemark et en Tunisie.']
+      ['Travaillez-vous aussi hors de Paris ?', 'Oui. Nous accompagnons des entreprises partout en France et à l’international, notamment en Suisse, en Suède, au Danemark et en Tunisie. KPS dispose aussi d’une agence basée à Madagascar, Akoraweb (akoraweb.com).']
     ],
     cta: 'Un projet digital à Paris ?'
   },

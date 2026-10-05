@@ -7,6 +7,7 @@
         <p class="intro__lead">{{ t.lead }}</p>
         <p class="intro__p">{{ t.intro }}</p>
       </div>
+      <p class="intro__akora">{{ t.akora }} <a href="https://www.akoraweb.com" target="_blank" rel="noopener">akoraweb.com</a>.</p>
     </section>
 
     <section class="bg-white section--96">
@@ -78,6 +79,7 @@ const t = useLocaleText({
     eyebrow: 'L’agence', h1: 'Plus qu’une agence, votre co-pilote digital.',
     lead: 'Nous combinons créativité humaine et intelligence data pour construire des présences digitales qui font grandir les entreprises.',
     intro: 'Basée à Paris, KPS réunit au sein d’une même équipe neuf expertises complémentaires : création, refonte et maintenance de sites, applications métier, SaaS, applications mobiles, référencement SEO & GEO, marketing digital et social media. Une organisation pensée pour que stratégie, design, technologie et acquisition avancent dans la même direction.',
+    akora: 'KPS dispose aussi d’une agence basée à Madagascar, Akoraweb, qui renforce nos équipes de conception et de développement :',
     adnEyebrow: 'Notre ADN', adnH2: 'Trois convictions guident chacun de nos projets.',
     adn: [
       { n: '01', t: 'Vision stratégique', d: 'Nous ne nous contentons pas d’exécuter. Nous construisons une feuille de route précise pour vous aider à dominer votre marché.' },
@@ -105,6 +107,7 @@ const t = useLocaleText({
     eyebrow: 'About us', h1: 'More than an agency, your digital co-pilot.',
     lead: 'We combine human creativity and data intelligence to build digital presences that help companies grow.',
     intro: 'Based in Paris, KPS brings nine complementary areas of expertise together in one team: website design, redesign and maintenance, business software, SaaS, mobile apps, SEO & GEO, digital marketing and social media. An organisation designed so that strategy, design, technology and acquisition move in the same direction.',
+    akora: 'KPS also has an agency based in Madagascar, Akoraweb, which strengthens our design and development teams:',
     adnEyebrow: 'Our DNA', adnH2: 'Three convictions guide every project we take on.',
     adn: [
       { n: '01', t: 'Strategic vision', d: 'We don’t just execute. We build a precise roadmap to help you lead your market.' },
@@ -151,6 +154,8 @@ useHead({
 .intro__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; margin-top: 24px; }
 .intro__lead { font-size: 20px; line-height: 1.5; }
 .intro__p { font-size: 18px; line-height: 1.65; color: var(--muted); }
+.intro__akora { padding-top: 24px; border-top: 1px solid var(--line); font-size: 18px; line-height: 1.65; color: var(--muted); }
+.intro__akora a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .head { display: flex; flex-direction: column; gap: 16px; margin-bottom: 48px; }
 .head--row { flex-direction: row; justify-content: space-between; align-items: flex-end; gap: 48px; }
 .head__col { display: flex; flex-direction: column; gap: 16px; }

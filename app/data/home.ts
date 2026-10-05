@@ -112,7 +112,7 @@ const fr = {
       ['Puis-je modifier mon site moi-même ?', 'Oui. Nous livrons un site facile à administrer et nous vous formons à son utilisation.'],
       ['Suis-je propriétaire de mon site et de mes comptes publicitaires ?', 'Oui. Les créations vous appartiennent dès le paiement intégral, et le nom de domaine, les contenus et les comptes ADS sont à votre nom.'],
       ['Proposez-vous un suivi après la mise en ligne ?', 'Oui. 12 mois de maintenance technique sont inclus pour chaque site, e-commerce, application ou agent IA. Ensuite, un abonnement optionnel couvre les mises à jour de sécurité, le suivi des performances et l’optimisation SEO ou ADS.'],
-      ['Travaillez-vous uniquement à Paris ?', 'Nous sommes basés à Paris et accompagnons des entreprises partout en France et à l’international, en visio ou sur place.']
+      ['Travaillez-vous uniquement à Paris ?', 'Nous sommes basés à Paris et accompagnons des entreprises partout en France et à l’international, en visio ou sur place. KPS dispose aussi d’une agence à Madagascar, Akoraweb (akoraweb.com).']
     ] as [string, string][]
   },
   final: {
@@ -237,7 +237,7 @@ const en: typeof fr = {
       ['Can I update my website myself?', 'Yes. We deliver a website that is easy to manage and train you to use it.'],
       ['Do I own my website and ad accounts?', 'Yes. You own the deliverables once they are paid in full, and your domain name, content and ad accounts are in your name.'],
       ['Do you offer support after launch?', 'Yes. 12 months of technical maintenance are included for every website, online store, app or AI agent. After that, an optional subscription covers security updates, performance monitoring and SEO or ads optimisation.'],
-      ['Do you only work in Paris?', 'We are based in Paris and work with companies across France and internationally, by video call or in person.']
+      ['Do you only work in Paris?', 'We are based in Paris and work with companies across France and internationally, by video call or in person. KPS also has an agency in Madagascar, Akoraweb (akoraweb.com).']
     ]
   },
   final: {

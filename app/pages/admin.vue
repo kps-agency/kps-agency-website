@@ -125,7 +125,8 @@ const moving = ref(false)
 const publishing = ref(false)
 const published = ref(false)
 
-const nextPosition = computed(() => Math.max(0, ...projects.value.map(p => p.position)) + 10)
+// Une nouvelle réalisation se place en tête de liste (les plus récentes d'abord) ; les flèches permettent ensuite de la déplacer
+const nextPosition = computed(() => Math.min(10, ...projects.value.map(p => p.position)) - 10)
 const formatDate = (d: string) => new Date(`${d}T00:00:00`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
 const postStatus = (p: PostRow) => p.draft
   ? { label: 'Brouillon', cls: '' }
