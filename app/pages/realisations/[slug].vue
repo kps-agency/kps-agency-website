@@ -31,7 +31,7 @@
         <div class="eyebrow block__k">{{ b.k }}</div>
         <div class="block__body">
           <h2 class="block__t">{{ b.t }}</h2>
-          <p class="block__d">{{ b.d }}</p>
+          <p v-if="b.d" class="block__d">{{ b.d }}</p>
           <NuxtLink v-if="b.link" :to="b.link.to" class="block__link">{{ b.link.label }} →</NuxtLink>
         </div>
       </div>
@@ -81,7 +81,8 @@ const c = computed(() => {
     : en.value
       ? `Website project by KPS Agency for ${p.client}, a company in the ${p.label.toLowerCase()} sector${p.url ? ': see the live website' : ''}.`
       : `Réalisation web de KPS Agency pour ${p.client}, acteur du secteur ${p.label.toLowerCase()}${p.url ? ' : découvrez le site en ligne' : ''}.`
-  const blocks: Block[] = [{ k: t.value.expertise, t: svc.crumb, d: svc.sub, link: { to: link.service(svc.slug), label: `${t.value.discover} ${svc.crumb.toLowerCase()}` } }]
+  // Pas de texte de présentation du service ici : il est identique d'un projet à l'autre et figure déjà sur la page de l'expertise
+  const blocks: Block[] = [{ k: t.value.expertise, t: svc.crumb, d: '', link: { to: link.service(svc.slug), label: `${t.value.discover} ${svc.crumb.toLowerCase()}` } }]
   const kpis = (KPIS[p.slug] ?? []).map(k => ({ v: k.v, l: en.value ? k.en : k.fr }))
   return { sub, kpis, blocks, hasDesc }
 })

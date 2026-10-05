@@ -17,24 +17,31 @@
         </NuxtLink>
       </div>
     </section>
+    <!-- Conditions communes à toutes les prestations : affichées ici une seule fois -->
+    <section class="bg-white">
+      <div class="container section--96 faq">
+        <h2 class="h2 h2--48">{{ t.faq }}</h2>
+        <FaqList :items="serviceFaq" class="faq__list" />
+      </div>
+    </section>
     <CtaBand :title="t.ctaTitle" :text="t.ctaText" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { serviceIconPath } from '~/data/serviceIcons'
-const { en, link, services, serviceSeo } = useSite()
+const { en, link, services, serviceFaq, serviceSeo } = useSite()
 const t = useLocaleText({
   fr: {
     home: 'Accueil', crumb: 'Expertises', h1: 'Neuf expertises. Une seule équipe. Un objectif : votre croissance.',
     lead: 'Chaque expertise se mobilise seule ou en synergie. C’est dans leur articulation — un site bien référencé, nourri par des campagnes rentables et des contenus engageants — que naît la performance durable.',
-    more: 'Découvrir', ctaTitle: 'Un projet en tête ?', ctaText: 'Décrivez-nous votre besoin : nous revenons vers vous avec une recommandation claire et un devis personnalisé.',
+    more: 'Découvrir', faq: 'Nos conditions, en clair', ctaTitle: 'Un projet en tête ?', ctaText: 'Décrivez-nous votre besoin : nous revenons vers vous avec une recommandation claire et un devis personnalisé.',
     title: 'Agence web & marketing digital : nos expertises', desc: 'Création, refonte et maintenance de sites, applications métier, SaaS et mobiles, SEO & GEO, publicité en ligne et social media : neuf expertises à Paris.'
   },
   en: {
     home: 'Home', crumb: 'Services', h1: 'Nine areas of expertise. One team. One goal: your growth.',
     lead: 'Each service works on its own or in synergy with the others. Lasting performance comes from how they fit together — a well-ranked website, fuelled by profitable campaigns and engaging content.',
-    more: 'Discover', ctaTitle: 'Got a project in mind?', ctaText: 'Tell us what you need: we’ll come back to you with a clear recommendation and a tailored quote.',
+    more: 'Discover', faq: 'How we work, in plain terms', ctaTitle: 'Got a project in mind?', ctaText: 'Tell us what you need: we’ll come back to you with a clear recommendation and a tailored quote.',
     title: 'Web & digital marketing agency: our services', desc: 'Website design, redesign and maintenance, business software, SaaS and mobile apps, SEO & GEO, paid ads and social media: nine areas of expertise in Paris.'
   }
 })
@@ -45,8 +52,16 @@ useHead({
     type: 'application/ld+json',
     innerHTML: () => JSON.stringify({
       '@context': 'https://schema.org',
-      '@type': 'CollectionPage', '@id': `${site}${link.services()}#webpage`, url: `${site}${link.services()}`, name: t.value.title, inLanguage: en.value ? 'en' : 'fr-FR',
-      mainEntity: { '@type': 'ItemList', itemListElement: services.value.map((sv, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site}${link.service(sv.slug)}`, name: serviceSeo.value[sv.slug]?.h1 ?? sv.crumb })) }
+      '@graph': [
+        {
+          '@type': 'CollectionPage', '@id': `${site}${link.services()}#webpage`, url: `${site}${link.services()}`, name: t.value.title, inLanguage: en.value ? 'en' : 'fr-FR',
+          mainEntity: { '@type': 'ItemList', itemListElement: services.value.map((sv, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site}${link.service(sv.slug)}`, name: serviceSeo.value[sv.slug]?.h1 ?? sv.crumb })) }
+        },
+        {
+          '@type': 'FAQPage', '@id': `${site}${link.services()}#faq`, inLanguage: en.value ? 'en' : 'fr-FR',
+          mainEntity: serviceFaq.value.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+        }
+      ]
     })
   }]
 })
@@ -58,6 +73,8 @@ useHead({
 .head__h1 { font-size: 72px; line-height: 1.02; letter-spacing: -2.4px; font-weight: 900; max-width: 1100px; }
 .head__p { max-width: 760px; }
 .list { padding-bottom: var(--section-y); }
+.faq { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 64px; }
+.faq__list { grid-column: span 2; }
 .item { display: flex; flex-direction: column; gap: 16px; padding: 32px; min-height: 360px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; color: var(--ink); transition: transform .2s ease; }
 .item:hover { transform: translateY(-3px); color: var(--ink); }
 .item--dark { background: var(--deep); color: var(--white); } .item--dark:hover { color: var(--white); }
@@ -70,6 +87,6 @@ useHead({
 .item__pills span { font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--bg); }
 .item--dark .item__pills span { background: var(--dark-2); }
 .item__cta { font-size: 16px; font-weight: 600; }
-@media (max-width: 1180px) { .head__h1 { font-size: 52px; letter-spacing: -1.6px; } }
+@media (max-width: 1180px) { .head__h1 { font-size: 52px; letter-spacing: -1.6px; } .faq { grid-template-columns: minmax(0, 1fr); gap: 32px; } .faq__list { grid-column: auto; } }
 @media (max-width: 720px) { .head__h1 { font-size: 38px; letter-spacing: -1px; } .list { padding-bottom: 64px; } }
 </style>

@@ -82,7 +82,7 @@
     <section class="bg-white faq-wrap">
       <div class="container section--96 split">
         <h2 class="h2 h2--48">{{ t.faq }}</h2>
-        <FaqList :items="serviceFaq" class="split__body split__body--block" />
+        <FaqList :items="faq" class="split__body split__body--block" />
       </div>
     </section>
 
@@ -93,6 +93,7 @@
 <script setup lang="ts">
 import { serviceIconPath } from '~/data/serviceIcons'
 import type { Project } from '~/data/content'
+import { SERVICE_FAQS } from '~/data/serviceFaq'
 
 const route = useRoute()
 const { en, link, allServices, projects, serviceFaq, serviceSeo, serviceSlug } = useSite()
@@ -101,6 +102,8 @@ const { en, link, allServices, projects, serviceFaq, serviceSeo, serviceSlug } =
 const svc = computed(() => allServices.value.find(s => serviceSlug(s.slug) === String(route.params.slug)))
 if (!svc.value) throw createError({ statusCode: 404, statusMessage: 'Page introuvable', fatal: true })
 useSetI18nParams()({ fr: { slug: svc.value.slug }, en: { slug: serviceSlug(svc.value.slug, 'en') } })
+// Questions propres à l'expertise : chaque page a sa FAQ (les conditions communes sont sur /services)
+const faq = computed(() => SERVICE_FAQS[svc.value!.slug]?.[en.value ? 'en' : 'fr'] ?? serviceFaq.value)
 
 const t = useLocaleText({
   fr: { home: 'Accueil', crumb: 'Expertises', talk: 'Parler de votre projet', seeWork: 'Voir les réalisations', offers: 'Nos offres', approach: 'L’approche KPS', method: 'Méthode', trusted: 'Ils nous ont fait confiance', allWork: 'Toutes les réalisations', faq: 'Questions fréquentes', ctaText: 'Décrivez-nous votre besoin : nous revenons vers vous avec une recommandation claire et un devis personnalisé.' },
@@ -137,7 +140,7 @@ useHead({
           },
           {
             '@type': 'FAQPage', '@id': `${url}#faq`, inLanguage: lang,
-            mainEntity: serviceFaq.value.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+            mainEntity: faq.value.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
           }
         ]
       })

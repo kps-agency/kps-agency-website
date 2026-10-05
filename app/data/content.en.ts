@@ -261,7 +261,7 @@ export const SERVICE_SEO_EN: Record<string, { title: string; h1: string; desc: s
 }
 
 export const SERVICE_FAQ_EN: [string, string][] = [
-  ['How much does this service cost?', 'Every project is unique: its budget depends on complexity, technologies and requested deadlines. After a first conversation, we send you a detailed quote, valid for 30 days. Payment is made in two instalments: 50% on order and 50% on delivery.'],
+  ['How much do your services cost?', 'Every project is unique: its budget depends on complexity, technologies and requested deadlines. After a first conversation, we send you a detailed quote, valid for 30 days. Payment is made in two instalments: 50% on order and 50% on delivery.'],
   ['What are the timelines?', 'They depend on the nature and scope of the project, and on when we receive your content. An indicative schedule with sign-off milestones is set during scoping.'],
   ['How many revisions are included?', 'Two revision cycles are included in every service. Further requests are covered by an additional quote.'],
   ['What happens after delivery?', 'For websites, apps and AI agents, 12 months of technical maintenance are included. An ongoing support subscription can then take over. You own the deliverables once they are paid in full.'],
