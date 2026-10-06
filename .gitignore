@@ -13,3 +13,6 @@ dist
 
 # Fichiers temporaires de la CLI Supabase
 supabase/.temp
+
+# Rapports d'audit SEO générés en local
+kps-agency.com-audit/
