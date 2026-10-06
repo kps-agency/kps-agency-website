@@ -29,6 +29,15 @@
             <li v-for="x in t.hero.trust" :key="x"><IconCheck />{{ x }}</li>
           </ul>
           <HeroShowcase v-if="SHOW_HERO_SHOWCASE" class="hero__visual" />
+          <!-- Preuve par l'image : les trois derniers sites réalisés, liés à leur étude de cas (masqués sur mobile, où ils ne sont pas chargés) -->
+          <ul class="hero__shots" :aria-label="t.hero.shots">
+            <li v-for="pr in heroShots" :key="pr.slug" class="shot">
+              <NuxtLink :to="link.project(pr.slug)" class="shot__link">
+                <span class="shot__bar" aria-hidden="true"><i /><i /><i /><span>{{ pr.url!.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '') }}</span></span>
+                <img :src="thumb(pr.img)" :srcset="thumbSet(pr.img)" sizes="(max-width: 1180px) 30vw, 380px" :alt="`${t.hero.shotAlt} ${pr.client}`" loading="lazy" decoding="async" width="800" height="450">
+              </NuxtLink>
+            </li>
+          </ul>
         </section>
         <div class="hero__wave" aria-hidden="true"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" /></svg></div>
       </div>
@@ -46,15 +55,33 @@
             </div>
             <p class="text-18">{{ t.services.p }}</p>
           </div>
-          <div class="grid grid-3 svc-grid m-swipe">
-            <NuxtLink v-for="sv in t.services.items" :key="sv.num" :to="sv.slug ? link.service(sv.slug) : link.contact()" class="svc" :class="`svc--${sv.theme}`">
-              <div class="svc__top"><span class="svc__num"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="serviceIconPath(services.find(s => s.slug === sv.slug)?.key)" /></svg></span><span class="svc__tag">{{ sv.tag }}</span></div>
-              <h3 class="svc__title">{{ sv.title }}</h3>
-              <p class="svc__desc">{{ sv.desc }}</p>
-              <div class="svc__pills"><span v-for="i in sv.items" :key="i">{{ i }}</span></div>
-              <span class="svc__cta">{{ sv.cta }} <IconArrow :size="16" /></span>
-            </NuxtLink>
+          <!-- Une carte par famille d'expertises (SERVICE_FAMILIES), chaque expertise mène à sa page -->
+          <div class="grid grid-3 fams">
+            <article v-for="f in families" :key="f.key" class="fam">
+              <div class="fam__head">
+                <span class="fam__i"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="serviceIconPath(f.key)" /></svg></span>
+                <h3 class="fam__t">{{ f.title }}</h3>
+              </div>
+              <p class="fam__d">{{ f.text }}</p>
+              <ul class="fam__list">
+                <li v-for="sv in f.items" :key="sv.slug">
+                  <NuxtLink :to="link.service(sv.slug)" class="fam__link">
+                    <span class="fam__txt">
+                      <span class="fam__name">{{ sv.title }}</span>
+                      <span class="fam__desc">{{ sv.desc }}</span>
+                      <span v-if="svcFrom(sv.slug)" class="fam__from">{{ t.services.from }} <strong>{{ svcFrom(sv.slug) }}</strong></span>
+                    </span>
+                    <IconArrow :size="16" class="fam__a" />
+                  </NuxtLink>
+                </li>
+              </ul>
+            </article>
           </div>
+          <NuxtLink v-if="svcUnsure" :to="link.audit()" class="mini mini--soft">
+            <span class="mini__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="serviceIconPath(undefined)" /></svg></span>
+            <span class="mini__txt"><span class="mini__t">{{ svcUnsure.title }}</span><span class="mini__d">{{ svcUnsure.desc }}</span></span>
+            <span class="mini__cta">{{ svcUnsure.cta }} <IconArrow :size="16" /></span>
+          </NuxtLink>
           <!-- Argument de vente : une solution pour chaque budget -->
           <div class="budget">
             <div class="budget__text">
@@ -175,6 +202,7 @@
               </span>
             </a>
           </div>
+          <ClientQuotes />
           <ReviewCarousel :reviews="REVIEWS" />
         </div>
       </section>
@@ -199,28 +227,6 @@
         </div>
       </section>
 
-      <!-- TECHNOLOGIES -->
-      <section id="technologies" class="tech theme-light">
-        <div class="container">
-          <div class="center-head">
-            <div class="eyebrow">{{ t.tech.eyebrow }}</div>
-            <h2 class="h2 h2--plain tech__h">{{ t.tech.h2 }} <span class="text-gradient">{{ t.tech.hi }}</span></h2>
-            <p class="text-18">{{ t.tech.p }}</p>
-          </div>
-          <div class="tech__groups" :class="{ 'is-open': techOpen }">
-            <div v-for="g in TECH_GROUPS" :key="g.id" class="tech__group">
-              <h3 class="tech__label">{{ t.tech.groups[g.id] }}</h3>
-              <ul class="tech__list">
-                <li v-for="it in g.items" :key="it.name" class="tech__item" :style="{ '--hover': it.hover }">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path :d="it.path" /></svg>
-                  {{ it.name }}
-                </li>
-              </ul>
-            </div>
-          </div>
-          <button v-if="!techOpen" type="button" class="btn btn--ghost btn--sm tech__more" @click="techOpen = true">{{ t.tech.more }}</button>
-        </div>
-      </section>
 
       <!-- FAQ -->
       <section id="ressources" class="container section faq-sec">
@@ -265,7 +271,6 @@
               </fieldset>
               <label>{{ t.form.msg }}<textarea v-model="form.msg" rows="3" :placeholder="t.form.msgPh" /></label>
               <button type="submit" class="final__submit" :disabled="sending">{{ sending ? t.form.sending : t.form.submit }}</button>
-              <Transition name="ok"><p v-if="sent" class="final__ok" role="status"><IconCheck :size="18" />{{ t.form.sent }}</p></Transition>
               <span class="final__note">{{ t.form.note }}</span>
             </form>
           </div>
@@ -302,7 +307,7 @@
           <div class="hfoot__brand">
             <SiteLogo light />
             <p>{{ t.footer.desc }}</p>
-            <address>{{ CONTACT.address }} Paris<br><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></address>
+            <address>{{ CONTACT.address }} Paris<br><template v-if="!CONTACT.phone.startsWith('[')"><a :href="`tel:${CONTACT.phoneE164}`">{{ CONTACT.phone }}</a><template v-if="CONTACT.whatsapp"> · <a :href="CONTACT.whatsapp" target="_blank" rel="noopener">WhatsApp</a></template><br></template><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></address>
             <SocialLinks />
           </div>
           <div v-for="col in footerCols" :key="col.title" class="hfoot__col">
@@ -315,7 +320,7 @@
         </div>
         <div class="hfoot__bottom">
           <span>© 2026 KPS Agency · Paris, France</span>
-          <div><NuxtLink :to="link.legal()">{{ t.footer.legal }}</NuxtLink><NuxtLink :to="link.legal('#article-7')">{{ t.footer.privacy }}</NuxtLink><NuxtLink :to="link.terms()">{{ t.footer.terms }}</NuxtLink><button type="button" class="hfoot__cookies" @click="resetConsent">{{ en ? 'Manage cookies' : 'Gérer les cookies' }}</button></div>
+          <div><NuxtLink :to="link.legal()">{{ t.footer.legal }}</NuxtLink><NuxtLink :to="link.privacy()">{{ t.footer.privacy }}</NuxtLink><NuxtLink :to="link.terms()">{{ t.footer.terms }}</NuxtLink><button type="button" class="hfoot__cookies" @click="resetConsent">{{ en ? 'Manage cookies' : 'Gérer les cookies' }}</button></div>
         </div>
       </div>
     </footer>
@@ -323,9 +328,8 @@
 </template>
 
 <script setup lang="ts">
-import { CONTACT, REVIEWS, REVIEWS_AVG, GOOGLE_REVIEWS_URL, organizationSchema } from '~/data/content'
+import { CONTACT, REVIEWS, REVIEWS_AVG, GOOGLE_REVIEWS_URL, SERVICE_FAMILIES, organizationSchema } from '~/data/content'
 import { HOME } from '~/data/home'
-import { TECH_GROUPS } from '~/data/tech'
 import { serviceIconPath } from '~/data/serviceIcons'
 definePageMeta({ layout: false })
 
@@ -342,6 +346,17 @@ const BOOK_ICONS = [
   'M9 12l2 2 4-4M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z'
 ]
 const t = useLocaleText(HOME)
+// Services : les trois familles d'expertises, avec le titre et la phrase courte de chaque expertise (app/data/home.ts)
+const families = computed(() => SERVICE_FAMILIES.map(f => ({
+  key: f.key, title: f.title[en.value ? 'en' : 'fr'], text: f.text[en.value ? 'en' : 'fr'],
+  items: f.slugs.map(slug => t.value.services.items.find(i => i.slug === slug)).filter(i => !!i)
+})))
+// Entrée « Pas sûr de ce qu'il vous faut ? » : l'élément sans slug de la liste
+const svcUnsure = computed(() => t.value.services.items.find(i => !i.slug))
+// Prix d'appel d'une expertise (champ « from » de app/data/content.ts) : rien n'est affiché tant qu'il est vide
+const svcFrom = (slug: string) => services.value.find(s => s.slug === slug)?.from
+// Hero : les trois sites les plus récents qui ont une adresse en ligne
+const heroShots = computed(() => projects.value.filter(p => p.cat === 'Web' && p.url).slice(0, 3))
 // Animation des services dans le hero (onglets Site web, App métier, App mobile, SEO & GEO, Publicité, Social) : désactivée pour l'instant, remettre à true pour la réafficher
 const SHOW_HERO_SHOWCASE = false
 // Icônes (Lucide) et couleurs des sections reprises de la maquette kps-agency.com
@@ -406,8 +421,6 @@ const pfShown = computed(() => {
 })
 
 // Bloc final : onglet « devis » ou « appel » (les liens #rendez-vous ouvrent directement l'appel)
-// Technologies : sur mobile, seules deux familles sont affichées tant qu'on n'a pas déplié
-const techOpen = ref(false)
 const actionTab = ref(0)
 watch(() => route.hash, (h) => { if (h === '#rendez-vous') actionTab.value = 1; else if (h === '#contact') actionTab.value = 0 }, { immediate: true })
 
@@ -428,8 +441,6 @@ onBeforeUnmount(() => stickyObs?.disconnect())
 
 const need = ref(0)
 const form = reactive({ name: '', company: '', email: '', msg: '' })
-const sent = ref(false)
-let sentTimer: ReturnType<typeof setTimeout> | undefined
 const sending = ref(false)
 const config = useRuntimeConfig()
 async function submit() {
@@ -437,9 +448,9 @@ async function submit() {
   const endpoint = (config.public.formEndpoint as string) || `${(config.public.bookingApi as string || '').replace(/\/$/, '')}/api/contact`
   sending.value = true
   try { await $fetch(endpoint, { method: 'POST', body: { ...form, need: t.value.form.needs[need.value], locale: locale.value } })
-    // Succès : message de confirmation (8 s) et formulaire remis à zéro
-    Object.assign(form, { name: '', company: '', email: '', msg: '' }); need.value = 0
-    sent.value = true; clearTimeout(sentTimer); sentTimer = setTimeout(() => { sent.value = false }, 8000)
+    // Succès : conversion mesurée, puis page de remerciement (la même que pour le formulaire de /contact)
+    useTrack().lead('accueil', t.value.form.needs[need.value]!)
+    await navigateTo(link.thanks())
   }
   catch { await navigateTo(link.contact()) }
   finally { sending.value = false }
@@ -472,6 +483,14 @@ async function submit() {
 .hero__trust { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; font-size: 14px; color: var(--muted); }
 .hero__trust li { display: flex; align-items: center; gap: 8px; }
 .hero__visual { position: relative; width: 100%; max-width: 680px; margin-top: 40px; text-align: left; }
+.hero__shots { list-style: none; margin: 40px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; width: 100%; max-width: 1120px; align-items: end; }
+.shot:nth-child(2) { transform: translateY(-20px); }
+.shot__link { display: block; overflow: hidden; border: 1px solid rgba(255, 255, 255, .12); border-radius: 14px; background: #0B1121; box-shadow: 0 30px 60px -30px rgba(6, 182, 212, .45); transition: transform .3s ease, border-color .3s; }
+.shot__link:hover { transform: translateY(-4px); border-color: rgba(6, 182, 212, .5); }
+.shot__bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; border-bottom: 1px solid rgba(255, 255, 255, .08); background: rgba(255, 255, 255, .04); }
+.shot__bar i { width: 8px; height: 8px; border-radius: 999px; background: rgba(255, 255, 255, .22); }
+.shot__bar span { margin-left: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--muted-2); }
+.shot img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
 .hero__wave { position: absolute; left: 0; bottom: -1px; width: 100%; line-height: 0; transform: rotate(180deg); }
 .hero__wave svg { display: block; width: calc(100% + 1.3px); height: 60px; }
 .hero__wave path { fill: var(--bg); }
@@ -504,24 +523,34 @@ async function submit() {
 .center-head .text-18 { max-width: 620px; }
 
 /* Services */
-.svc { display: flex; flex-direction: column; gap: 18px; padding: 32px; min-height: 330px; border: 1px solid var(--line); border-radius: 20px; transition: transform .2s ease; }
-.svc:hover { transform: translateY(-3px); }
-.svc--dark { background: var(--deep); color: var(--white); } .svc--dark:hover { color: var(--white); }
-.svc--light { background: var(--bg); color: var(--ink); } .svc--light:hover { color: var(--ink); }
-.svc--soft { background: var(--accent-soft); color: var(--ink); } .svc--soft:hover { color: var(--ink); }
-.svc__top { display: flex; justify-content: space-between; align-items: center; }
-.svc__num { display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 16px; font-family: var(--font-display); font-weight: 900; font-size: 18px; background: var(--accent-soft); border: 1px solid var(--accent-tint); color: var(--accent-light); }
-.svc--dark .svc__num, .svc--soft .svc__num { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.svc__tag { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line-2); }
-.svc--dark .svc__tag { border-color: var(--dark-line-2); }
-.svc--soft .svc__tag { border-color: var(--accent-tint-2); }
-.svc__title { font-size: 28px; line-height: 1.15; letter-spacing: -.6px; font-weight: 700; }
-.svc__desc { font-size: 16px; line-height: 1.55; color: var(--muted); }
-.svc--dark .svc__desc { color: var(--dark-muted); }
-.svc__pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
-.svc__pills span { font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--surface); }
-.svc--dark .svc__pills span { background: var(--dark-2); }
-.svc__cta { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; }
+/* Familles d'expertises */
+.fam { display: flex; flex-direction: column; gap: 16px; padding: 32px; border: 1px solid var(--line); border-radius: 20px; background: var(--bg); color: var(--ink); }
+.fam__head { display: flex; align-items: center; gap: 16px; }
+.fam__i { flex: none; display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 16px; background: var(--accent); color: var(--on-accent); }
+.fam__t { font-size: 26px; line-height: 1.15; letter-spacing: -.6px; font-weight: 700; }
+.fam__d { font-size: 16px; line-height: 1.55; color: var(--muted); }
+.fam__list { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.fam__link { display: flex; align-items: center; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--line); color: var(--ink); }
+.fam__list li:last-child .fam__link { border-bottom: none; padding-bottom: 0; }
+.fam__txt { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+.fam__name { font-size: 17px; font-weight: 700; transition: color .2s; }
+.fam__desc { font-size: 14px; line-height: 1.45; color: var(--muted); }
+.fam__from { font-size: 13px; color: var(--muted); }
+.fam__from strong { color: var(--ink); }
+.fam__a { flex: none; color: var(--muted-2); transition: transform .2s, color .2s; }
+.fam__link:hover { color: var(--ink); }
+.fam__link:hover .fam__name, .fam__link:hover .fam__a { color: var(--accent); }
+.fam__link:hover .fam__a { transform: translateX(3px); }
+.fams + .mini { margin-top: 20px; }
+.mini__cta { flex: none; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; }
+.mini { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--bg); color: var(--ink); transition: transform .2s ease, border-color .2s; }
+.mini:hover { color: var(--ink); transform: translateY(-2px); border-color: var(--accent-tint-2); }
+.mini--soft { background: var(--accent-soft); border-color: var(--accent-tint-2); }
+.mini__i { flex: none; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: var(--accent-soft); border: 1px solid var(--accent-tint); color: var(--accent-light); }
+.mini--soft .mini__i { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.mini__txt { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.mini__t { font-size: 16px; font-weight: 700; }
+.mini__d { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; font-size: 13px; line-height: 1.4; color: var(--muted); }
 
 /* Argument « tous budgets » : encadré à liseré dégradé sous les services */
 .budget { display: flex; justify-content: space-between; align-items: center; gap: 40px; margin-top: 32px; padding: 36px 40px; border: 1px solid transparent; border-radius: 20px; background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(90deg, #6366F1, #06B6D4, #A855F7) border-box; box-shadow: 0 0 40px -18px rgba(6, 182, 212, .6); }
@@ -531,19 +560,6 @@ async function submit() {
 .budget__p { font-size: 16px; line-height: 1.55; color: var(--muted); }
 .budget .btn { flex: none; }
 
-/* Technologies : logos monochromes, couleur de la marque au survol */
-.tech { padding-block: var(--section-y); border-top: 1px solid var(--line); background: radial-gradient(50% 60% at 50% 0%, rgba(99, 102, 241, .12), transparent 70%), var(--bg); }
-.tech__h { max-width: 900px; }
-.tech__groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-.tech__group { display: flex; flex-direction: column; gap: 16px; padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; }
-.tech__group:first-child { grid-column: 1 / -1; }
-.tech__label { font-family: var(--font-body); font-size: 13px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted-2); }
-.tech__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
-.tech__item { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 12px; background: rgba(255, 255, 255, .03); border: 1px solid var(--line); font-size: 16px; font-weight: 600; color: var(--ink-hover); transition: border-color .3s, background .3s, transform .3s; }
-.tech__item svg { flex: none; color: var(--muted-2); transition: color .3s; }
-.tech__item:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--hover) 50%, transparent); background: color-mix(in srgb, var(--hover) 8%, transparent); }
-.tech__item:hover svg { color: var(--hover); }
-.tech__more { display: none; }
 
 /* Steps */
 .steps { list-style: none; margin: 0; padding: 0; }
@@ -670,9 +686,6 @@ async function submit() {
 .final__needs button.is-on { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .final__submit { min-height: 56px; padding: 16px; background: var(--grad-neon); color: var(--white); border: none; border-radius: 16px; box-shadow: var(--glow-neon); font-size: 16px; font-weight: 600; }
 .final__submit:disabled { opacity: .7; cursor: wait; }
-.final__ok { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 12px; background: rgba(34, 197, 94, .14); border: 1px solid rgba(34, 197, 94, .4); color: var(--green); font-size: 16px; font-weight: 600; }
-.ok-enter-active, .ok-leave-active { transition: opacity .4s ease, transform .4s ease; }
-.ok-enter-from, .ok-leave-to { opacity: 0; transform: translateY(-6px); }
 .final__submit:hover { background: var(--grad-neon-hover); }
 .final__note { font-size: 13px; color: var(--muted-2); text-align: center; }
 
@@ -702,6 +715,8 @@ async function submit() {
 @media (max-width: 1180px) {
   .hero__title { font-size: 52px; letter-spacing: -1.6px; }
   .why__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fams { grid-template-columns: minmax(0, 1fr); }
+  .hero__shots { gap: 16px; }
   .pf__h { font-size: 40px; }
   .pf__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .pf__card, .pf__card--half { grid-column: auto; }
@@ -720,9 +735,10 @@ async function submit() {
 @media (max-width: 720px) {
   .hero { gap: 14px; padding-top: 16px; padding-bottom: 96px; }
   .hero__ctas { gap: 10px; }
-  .tech__groups { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  .tech__group { padding: 20px; }
-  .tech__item { padding: 8px 12px; font-size: 14px; }
+  .hero__shots { display: none; }
+  .fam { padding: 24px; }
+  .fam__t { font-size: 22px; }
+  .mini__cta { display: none; }
   .budget { padding: 28px 22px; margin-top: 20px; }
   .budget__title { font-size: 24px; }
   .budget .btn { width: 100%; justify-content: center; white-space: normal; }
@@ -749,8 +765,6 @@ async function submit() {
   .hero__ctas .btn { padding: 20px 24px; font-size: 16px; }
   .why__grid.m-swipe { display: flex; margin-top: -8px !important; padding-block: 12px 28px !important; }
   .why__grid.m-swipe > * { flex-basis: 78%; box-shadow: 0 10px 20px -8px rgba(0, 0, 0, .12); }
-  .tech__groups:not(.is-open) .tech__group:nth-child(n + 3) { display: none; }
-  .tech__more { display: flex; margin: 16px auto 0; min-height: 44px; }
   .final__list, .final__p { display: none; }
   .final__text { gap: 16px; }
   .final__box { gap: 24px; }

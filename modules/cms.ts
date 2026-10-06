@@ -1,7 +1,14 @@
 import { addTemplate, addTypeTemplate, defineNuxtModule, useLogger } from 'nuxt/kit'
 import { createClient } from '@supabase/supabase-js'
 import { readingMinutes, type BlogLang } from '../shared/blog'
-import type { CmsData, CmsProject } from '../shared/cms'
+import type { CmsData, CmsProject, CmsStudy } from '../shared/cms'
+
+// Champs d'étude de cas d'une ligne de la table projects (suffixe '' = français, '_en' = anglais).
+// Colonnes absentes (migration 20261006 pas encore exécutée) : tout vaut '', le site s'affiche comme avant.
+const study = (p: Record<string, string | null>, sfx: '' | '_en'): CmsStudy => ({
+  context: p[`context${sfx}`] ?? '', work: p[`work${sfx}`] ?? '', results: p[`results${sfx}`] ?? '', kpis: p[`kpis${sfx}`] ?? '',
+  duration: p[`duration${sfx}`] ?? '', quote: p[`quote${sfx}`] ?? '', quoteRole: p[`quote_role${sfx}`] ?? ''
+})
 
 // Articles du blog et réalisations lus dans Supabase au démarrage du build (clé publishable, lecture des seuls contenus publiés).
 // Les pages restent prérendues (SEO) : après une modification dans Supabase, relancer le déploiement (voir supabase/README.md).
@@ -26,7 +33,8 @@ async function loadCms(url: string, key: string): Promise<CmsData> {
     projects: (projects.data ?? []).map((p): CmsProject => ({
       slug: p.slug, cat: p.cat, client: p.client, label: p.label, desc: p.description ?? '', metric: p.metric ?? '',
       bg: p.bg, fg: p.fg, img: p.img, url: p.url ?? undefined,
-      en: { label: p.label_en ?? '', desc: p.description_en ?? '', metric: p.metric_en ?? '' }
+      logo: p.logo ?? '', quoteAuthor: p.quote_author ?? '', quotePhoto: p.quote_photo ?? '', study: study(p, ''),
+      en: { label: p.label_en ?? '', desc: p.description_en ?? '', metric: p.metric_en ?? '', study: study(p, '_en') }
     }))
   }
 }

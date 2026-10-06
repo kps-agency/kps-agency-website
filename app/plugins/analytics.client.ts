@@ -28,6 +28,14 @@ export default defineNuxtPlugin(() => {
     document.head.appendChild(s)
   }
 
+  // Clics sur un téléphone, un e-mail ou WhatsApp, où qu'ils soient dans le site : événement contact_click (rien n'est envoyé sans consentement)
+  document.addEventListener('click', (e) => {
+    if (!started) return
+    const href = (e.target as Element | null)?.closest?.('a[href]')?.getAttribute('href') ?? ''
+    const method = href.startsWith('tel:') ? 'phone' : href.startsWith('mailto:') ? 'email' : href.startsWith('https://wa.me/') ? 'whatsapp' : ''
+    if (method) window.gtag('event', 'contact_click', { method, page: location.pathname })
+  }, { capture: true })
+
   onNuxtReady(() => {
     load()
     watch(consent, (v) => {

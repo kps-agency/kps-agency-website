@@ -1,4 +1,4 @@
-import { CAT_LABEL, LOCAL_PAGES, PROJECTS, SERVICES, SERVICE_FAQ, SERVICE_SEO, type LocalPage, type Project, type Service } from '~/data/content'
+import { CAT_LABEL, LOCAL_PAGES, PROJECTS, SERVICES, SERVICE_FAQ, SERVICE_SEO, authorSlug, toStudy, type LocalPage, type Project, type Service } from '~/data/content'
 import { CAT_LABEL_EN, LOCAL_PAGES_EN, LOCAL_SLUG_EN, PROJECT_TEXT_EN, SERVICES_EN, SERVICE_FAQ_EN, SERVICE_SEO_EN, SERVICE_SLUG_EN } from '~/data/content.en'
 
 export type Lang = 'fr' | 'en'
@@ -22,7 +22,7 @@ export function useSite() {
     if (!en.value) return p
     const t = PROJECT_TEXT_EN[p.slug] ?? {}
     const label = t.label ?? p.label
-    return { ...p, label, desc: t.desc ?? p.desc, metric: t.metric ?? p.metric, alt: `Project for ${p.client} — ${label}` }
+    return { ...p, label, desc: t.desc ?? p.desc, metric: t.metric ?? p.metric, alt: `Project for ${p.client} — ${label}`, study: p.study && t.study ? toStudy(t.study, p.study, p.study) : p.study }
   }))
   const localPages = computed<LocalPage[]>(() => LOCAL_PAGES.map(l => (en.value ? { ...l, ...LOCAL_PAGES_EN[l.slug]! } : l)))
   const serviceFaq = computed(() => (en.value ? SERVICE_FAQ_EN : SERVICE_FAQ))
@@ -48,6 +48,13 @@ export function useSite() {
     local: (frSlug: string) => lp({ name: 'agence-digitale-slug', params: { slug: localSlug(frSlug) } }),
     terms: () => lp('cgv'),
     legal: (hash = '') => lp({ name: 'mentions-legales', hash }),
+    privacy: () => lp('politique-de-confidentialite'),
+    /** Offre d'entrée : demande d'audit gratuit */
+    audit: () => lp('audit-gratuit'),
+    /** Page d'un auteur du blog (nom tel qu'il figure dans AUTHORS) */
+    author: (name: string) => lp({ name: 'blog-auteur-slug', params: { slug: authorSlug(name) } }),
+    /** Page de remerciement affichée après l'envoi d'une demande de devis */
+    thanks: () => lp('merci'),
     method: () => lp({ name: 'index', hash: '#methode' }),
     reviews: () => lp({ name: 'index', hash: '#avis' })
   }
@@ -56,24 +63,23 @@ export function useSite() {
   const footerCols = computed(() => en.value
     ? [
         { title: 'Websites', links: [['Showcase website', link.service('creation-site-web', '#offre-01')], ['Blog', link.service('creation-site-web', '#offre-02')], ['Landing page', link.service('creation-site-web', '#offre-03')], ['E-commerce', link.service('creation-site-web', '#offre-04')], ['Website redesign', link.service('refonte-site-web')], ['Website maintenance', link.service('maintenance-site-web')]] },
-        { title: 'Apps & SEO', links: [['Business software', link.service('application-metier')], ['SaaS', link.service('creation-saas')], ['Mobile apps', link.service('application-mobile')], ['SEO & GEO', link.service('referencement-seo-geo')], ['GEO agency', link.service('agence-geo')]] },
-        { title: 'Marketing', links: [['Digital marketing & ads', link.service('marketing-digital-ads')], ['Social media & content', link.service('social-media')]] },
-        { title: 'Agency', links: [['About us', link.about()], ['Our work', link.work()], ['Client reviews', link.reviews()], ['Blog', link.blog()], ['Book a call', link.booking()], ['Contact & quote', link.contact()]] }
+        { title: 'Applications & SaaS', links: [['Business software', link.service('application-metier')], ['SaaS', link.service('creation-saas')], ['Mobile apps', link.service('application-mobile')]] },
+        { title: 'Visibility & acquisition', links: [['SEO & GEO', link.service('referencement-seo-geo')], ['GEO agency', link.service('agence-geo')], ['Digital marketing & ads', link.service('marketing-digital-ads')], ['Social media & content', link.service('social-media')]] },
+        { title: 'Agency', links: [['About us', link.about()], ['Our work', link.work()], ['Client reviews', link.reviews()], ['Blog', link.blog()], ['Free audit', link.audit()], ['Book a call', link.booking()], ['Contact & quote', link.contact()]] }
       ]
     : [
         { title: 'Sites web', links: [['Site vitrine', link.service('creation-site-web', '#offre-01')], ['Blog', link.service('creation-site-web', '#offre-02')], ['Landing page', link.service('creation-site-web', '#offre-03')], ['E-commerce', link.service('creation-site-web', '#offre-04')], ['Refonte de site', link.service('refonte-site-web')], ['Maintenance de site', link.service('maintenance-site-web')]] },
-        { title: 'Apps & SEO', links: [['Application métier', link.service('application-metier')], ['SaaS', link.service('creation-saas')], ['Application mobile', link.service('application-mobile')], ['SEO & GEO', link.service('referencement-seo-geo')], ['Agence GEO', link.service('agence-geo')]] },
-        { title: 'Marketing', links: [['Marketing digital & ADS', link.service('marketing-digital-ads')], ['Social media & contenus', link.service('social-media')]] },
-        { title: 'L’agence', links: [['À propos', link.about()], ['Réalisations', link.work()], ['Avis clients', link.reviews()], ['Blog', link.blog()], ['Réserver un appel', link.booking()], ['Contact & devis', link.contact()]] }
+        { title: 'Applications & SaaS', links: [['Application métier', link.service('application-metier')], ['SaaS', link.service('creation-saas')], ['Application mobile', link.service('application-mobile')]] },
+        { title: 'Visibilité & acquisition', links: [['SEO & GEO', link.service('referencement-seo-geo')], ['Agence GEO', link.service('agence-geo')], ['Marketing digital & ADS', link.service('marketing-digital-ads')], ['Social media & contenus', link.service('social-media')]] },
+        { title: 'L’agence', links: [['À propos', link.about()], ['Réalisations', link.work()], ['Avis clients', link.reviews()], ['Blog', link.blog()], ['Audit gratuit', link.audit()], ['Réserver un appel', link.booking()], ['Contact & devis', link.contact()]] }
       ])
+  // Uniquement les pages d'atterrissage qui existent (LOCAL_PAGES) : pas de libellé de secteur menant à une simple fiche projet
   const footerLocal = computed(() => [
     [en.value ? 'Paris' : 'Paris', link.local('paris')],
     ['Madagascar', link.local('madagascar')],
     [en.value ? 'Energy' : 'Énergie', link.local('energie')],
-    [en.value ? 'Real estate' : 'Immobilier', link.project('cushman-wakefield-veritas')],
-    ['SaaS B2B', link.project('fibbl')],
-    [en.value ? 'Beauty & health' : 'Beauté & Santé', link.project('campagnes-beaute-sante')],
-    [en.value ? 'Events' : 'Événementiel', link.project('tunisia-franchise-show')]
+    [en.value ? 'Accounting & advisory' : 'Expertise comptable & conseil', link.local('expertise-comptable')],
+    [en.value ? 'Beauty & health' : 'Beauté & santé', link.local('beaute-sante')]
   ] as [string, string][])
 
   return { en, locale, services, allServices, projects, localPages, serviceFaq, serviceSeo, catLabel, serviceSlug, localSlug, link, footerCols, footerLocal }

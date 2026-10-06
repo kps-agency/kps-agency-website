@@ -12,7 +12,10 @@
       <div class="marquee__track">
         <ul v-for="copy in (reducedMotion ? 1 : 2)" :key="copy" class="marquee__list" :aria-hidden="copy === 2 ? 'true' : undefined">
           <li v-for="c in clients" :key="`${copy}-${c.slug}`">
-            <NuxtLink :to="link.project(c.slug)" class="client" :tabindex="copy === 2 ? -1 : undefined">
+            <NuxtLink v-if="c.logo" :to="link.project(c.slug)" class="client client--logo" :tabindex="copy === 2 ? -1 : undefined">
+              <img :src="small(c.logo)" :alt="c.client" class="client__logo" height="36" loading="lazy" decoding="async">
+            </NuxtLink>
+            <NuxtLink v-else :to="link.project(c.slug)" class="client" :tabindex="copy === 2 ? -1 : undefined">
               <span class="client__dot" :style="{ background: DOT[c.cat] }" aria-hidden="true" />
               <span class="client__txt">
                 <span class="client__name">{{ c.client }}</span>
@@ -31,13 +34,24 @@
         <dd class="stat__l">{{ s.l }}</dd>
       </div>
     </dl>
+
+    <!-- Gages de confiance (BADGES dans app/data/content.ts) : masqués tant que la liste est vide -->
+    <ul v-if="BADGES.length" class="badges" :aria-label="t.badgesLabel">
+      <li v-for="b in BADGES" :key="b.label">
+        <component :is="b.url ? 'a' : 'span'" :href="b.url" :target="b.url ? '_blank' : undefined" :rel="b.url ? 'noopener' : undefined" class="badge">
+          <img v-if="b.img" :src="b.img" :alt="b.label" height="32" loading="lazy" decoding="async">
+          <template v-else>{{ b.label }}</template>
+        </component>
+      </li>
+    </ul>
   </section>
 </template>
 
 <script setup lang="ts">
-import { REVIEWS, REVIEWS_AVG } from '~/data/content'
+import { BADGES, REVIEWS, REVIEWS_AVG } from '~/data/content'
 
 const { en, link, projects, services } = useSite()
+const { small } = useCloudImage()
 const titleId = useId()
 const DOT = { Web: 'var(--accent)', ADS: 'var(--accent-mid)', Social: 'var(--accent-light)' } as const
 
@@ -47,13 +61,13 @@ const clients = computed(() => projects.value.filter(p => p.slug !== 'campagnes-
 const t = useLocaleText({
   fr: {
     title: 'Ils nous ont fait confiance en France et à l’international',
-    countriesLabel: 'Pays de nos clients',
+    countriesLabel: 'Pays de nos clients', badgesLabel: 'Partenariats et certifications',
     countries: ['France', 'Suisse', 'Suède', 'Danemark', 'Géorgie', 'Tunisie', 'Madagascar'],
     projects: 'réalisations en ligne', rating: 'sur Google', ratingCount: 'avis', expertise: 'expertises réunies', countriesStat: 'pays servis'
   },
   en: {
     title: 'Trusted by companies in France and internationally',
-    countriesLabel: 'Our clients’ countries',
+    countriesLabel: 'Our clients’ countries', badgesLabel: 'Partnerships and certifications',
     countries: ['France', 'Switzerland', 'Sweden', 'Denmark', 'Georgia', 'Tunisia', 'Madagascar'],
     projects: 'projects showcased', rating: 'on Google', ratingCount: 'reviews', expertise: 'areas of expertise', countriesStat: 'countries served'
   }
@@ -85,6 +99,8 @@ onMounted(() => { reducedMotion.value = window.matchMedia('(prefers-reduced-moti
 .marquee__list { list-style: none; margin: 0; padding: 0 12px 0 0; display: flex; gap: 12px; }
 .client { display: flex; align-items: center; gap: 12px; padding: 14px 20px 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); white-space: nowrap; transition: border-color .2s, box-shadow .2s, transform .2s; }
 .client:hover { color: var(--ink); border-color: var(--accent-tint-2); box-shadow: 0 14px 28px -20px rgba(6, 182, 212, .55); transform: translateY(-2px); }
+.client--logo { padding: 14px 24px; }
+.client__logo { display: block; width: auto; height: 36px; max-width: 160px; object-fit: contain; }
 .client__dot { flex: none; width: 10px; height: 10px; border-radius: 999px; }
 .client__txt { display: flex; flex-direction: column; gap: 1px; }
 .client__name { font-family: var(--font-display); font-size: 18px; font-weight: 900; letter-spacing: -.3px; line-height: 1.15; }
@@ -105,6 +121,12 @@ onMounted(() => { reducedMotion.value = window.matchMedia('(prefers-reduced-moti
 .stat__v { font-family: var(--font-display); font-size: 32px; font-weight: 900; letter-spacing: -.8px; color: var(--ink); line-height: 1.1; }
 .stat__star { margin-left: 4px; font-size: 20px; color: #C27803; vertical-align: 3px; }
 .stat__l { font-size: 13px; color: var(--muted-2); }
+
+/* Gages de confiance */
+.badges { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 16px; }
+.badge { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); font-size: 14px; font-weight: 600; color: var(--ink); }
+.badge img { display: block; width: auto; height: 32px; }
+a.badge:hover { color: var(--ink); border-color: var(--accent-tint-2); }
 
 @media (prefers-reduced-motion: reduce) {
   .marquee__track { animation: none; }

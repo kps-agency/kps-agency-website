@@ -11,6 +11,8 @@
       <p class="intro__akora">{{ t.akora }} <a href="https://www.akoraweb.com" target="_blank" rel="noopener">akoraweb.com</a>.</p>
     </section>
 
+    <TeamSection />
+
     <section class="bg-white section--96">
       <div class="container">
         <div class="head">
@@ -63,6 +65,7 @@
     <section class="container section">
       <div class="eyebrow">{{ t.reviewsEyebrow }}</div>
       <h2 class="h2 h2--52 team__h">{{ t.reviewsH2 }}</h2>
+      <ClientQuotes />
       <ReviewCarousel :reviews="REVIEWS" />
     </section>
 

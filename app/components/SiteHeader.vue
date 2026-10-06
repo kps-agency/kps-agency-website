@@ -9,7 +9,18 @@
               {{ item.label }}
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
             </NuxtLink>
-            <div class="nav__panel" :class="{ 'nav__panel--2': item.cols === 2 }">
+            <div class="nav__panel" :class="{ 'nav__panel--groups': item.groups }">
+              <!-- Menu Services : une colonne par famille d'expertises -->
+              <div v-for="g in item.groups" :key="g.title" class="nav__group">
+                <span class="nav__group-t">{{ g.title }}</span>
+                <NuxtLink v-for="l in g.links" :key="l.label" :to="l.to" class="nav__sub" @click="open = false">
+                  <span class="nav__sub-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="NAV_ICONS[l.icon]" /></svg></span>
+                  <span class="nav__sub-txt">
+                    <span class="nav__sub-t">{{ l.label }}</span>
+                    <span class="nav__sub-d">{{ l.desc }}</span>
+                  </span>
+                </NuxtLink>
+              </div>
               <NuxtLink v-for="l in item.links" :key="l.label" :to="l.to" class="nav__sub" @click="open = false">
                 <span class="nav__sub-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="NAV_ICONS[l.icon]" /></svg></span>
                 <span class="nav__sub-txt">
@@ -27,6 +38,10 @@
           <NuxtLink :to="link.contact()" class="btn btn--primary btn--sm" @click="open = false">{{ t.quote }}</NuxtLink>
         </div>
       </nav>
+      <a v-if="!CONTACT.phone.startsWith('[')" :href="`tel:${CONTACT.phoneE164}`" class="nav__tel" :aria-label="`${t.phone} ${CONTACT.phone}`">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="ICON_PHONE" /></svg>
+        <span>{{ CONTACT.phone }}</span>
+      </a>
       <div class="nav__ctas">
         <NuxtLink :to="link.booking()" class="nav__call">{{ t.call }}</NuxtLink>
         <NuxtLink :to="link.contact()" class="nav__quote">{{ t.quote }}</NuxtLink>
@@ -41,49 +56,50 @@
 
 <script setup lang="ts">
 import { ICON_PATHS, SERVICE_ICON } from '~/data/serviceIcons'
+import { CONTACT, SERVICE_FAMILIES } from '~/data/content'
 import { blogArticle } from '~/data/blog'
 
 const route = useRoute()
 const open = ref(false)
 watch(() => route.fullPath, () => { open.value = false })
 
+const ICON_PHONE = 'M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z'
 const NAV_ICONS = {
   ...ICON_PATHS,
   grid: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',
   energy: 'M13 2 4 14h7l-1 8 9-12h-7l1-8z',
-  building: 'M4 21V5l8-3v19M12 21V8l8 3v10M3 21h18M8 8h.01M8 12h.01M8 16h.01M16 14h.01M16 17h.01',
-  cloud: 'M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 9.5a4.3 4.3 0 0 1-.5 8.5z',
   heart: 'M12 20s-7-4.4-9-8.6C1.6 8.3 3.5 5 6.7 5c2 0 3.3 1 4.3 2.4h2C14 6 15.3 5 17.3 5c3.2 0 5.1 3.3 3.7 6.4C19 15.6 12 20 12 20z',
-  finance: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
-  event: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M9 15l2 2 4-4'
+  finance: 'M4 20V10M10 20V4M16 20v-7M22 20H2'
 }
 
 interface NavLink { label: string; desc: string; icon: keyof typeof NAV_ICONS; to: string }
-interface NavItem { label: string; to: string; match?: string[]; links?: NavLink[]; cols?: 2 }
+interface NavItem { label: string; to: string; match?: string[]; links?: NavLink[]; groups?: { title: string; links: NavLink[] }[] }
 
 const { en, link, services } = useSite()
 const getRouteBaseName = useRouteBaseName()
 
 const t = useLocaleText({
-  fr: { navLabel: 'Navigation principale', quote: 'Demander un devis', call: 'Réserver un appel', menu: 'Ouvrir le menu' },
-  en: { navLabel: 'Main navigation', quote: 'Get a quote', call: 'Book a call', menu: 'Open menu' }
+  fr: { navLabel: 'Navigation principale', quote: 'Demander un devis', call: 'Réserver un appel', menu: 'Ouvrir le menu', phone: 'Appeler le' },
+  en: { navLabel: 'Main navigation', quote: 'Get a quote', call: 'Book a call', menu: 'Open menu', phone: 'Call' }
 })
 
 const SVC_DESC = {
   fr: { web: 'Vitrine, e-commerce, landing page', app: 'CRM, back-office, portail client', mobile: 'iOS & Android, de la maquette aux stores', seo: 'Google et moteurs IA', ads: 'Meta, Google & TikTok Ads', social: 'Stratégie, visuels, vidéo courte', refonte: 'Nouveau design, sans perte de SEO', maintenance: 'Mises à jour, sécurité, évolutions', saas: 'MVP, plateforme, abonnements' },
   en: { web: 'Showcase sites, e-commerce, landing pages', app: 'CRM, back office, client portals', mobile: 'iOS & Android, from mock-up to stores', seo: 'Google and AI search engines', ads: 'Meta, Google & TikTok Ads', social: 'Strategy, visuals, short-form video', refonte: 'New design, rankings preserved', maintenance: 'Updates, security, improvements', saas: 'MVP, platform, subscriptions' }
 } as Record<'fr' | 'en', Record<string, string>>
-// Ordre du menu : sites (création, refonte, maintenance), apps, SaaS, mobile, SEO, ADS, social
-const MENU_ORDER = ['creation-site-web', 'refonte-site-web', 'maintenance-site-web', 'application-metier', 'creation-saas', 'application-mobile', 'referencement-seo-geo', 'marketing-digital-ads', 'social-media']
 
 const navItems = computed<NavItem[]>(() => {
   const lang = en.value ? 'en' : 'fr'
-  const svcLinks: NavLink[] = MENU_ORDER.map((slug) => {
-    const sv = services.value.find(x => x.slug === slug)!
-    return { label: sv.crumb, desc: SVC_DESC[lang][sv.key]!, icon: SERVICE_ICON[sv.key] as NavLink['icon'], to: link.service(slug) }
-  })
+  // Menu Services : les trois familles d'expertises (SERVICE_FAMILIES), dans le même ordre que sur le reste du site
+  const svcGroups = SERVICE_FAMILIES.map(f => ({
+    title: f.title[lang],
+    links: f.slugs.map((slug): NavLink => {
+      const sv = services.value.find(x => x.slug === slug)!
+      return { label: sv.crumb, desc: SVC_DESC[lang][sv.key]!, icon: SERVICE_ICON[sv.key] as NavLink['icon'], to: link.service(slug) }
+    })
+  }))
   return [
-    { label: 'Services', to: link.services(), match: ['services', 'services-slug'], cols: 2, links: [...svcLinks, { label: en.value ? 'All our services' : 'Toutes nos expertises', desc: en.value ? 'Overview of what we do' : 'Vue d’ensemble des services', icon: 'grid', to: link.services() }] },
+    { label: 'Services', to: link.services(), match: ['services', 'services-slug'], groups: svcGroups, links: [{ label: en.value ? 'All our services' : 'Toutes nos expertises', desc: en.value ? 'Overview of what we do' : 'Vue d’ensemble des services', icon: 'grid', to: link.services() }] },
     {
       label: en.value ? 'Our work' : 'Nos réalisations', to: link.work(), match: ['realisations', 'realisations-slug'],
       links: [
@@ -95,14 +111,12 @@ const navItems = computed<NavItem[]>(() => {
     },
     { label: en.value ? 'Method' : 'Méthode', to: link.method() },
     {
+      // Chaque entrée mène à une page secteur existante (LOCAL_PAGES)
       label: en.value ? 'Industries' : 'Secteurs', to: link.local('energie'), match: ['agence-digitale-slug'],
       links: [
         { label: en.value ? 'Energy' : 'Énergie', desc: 'PowerCell Group, Copenhagen Energy', icon: 'energy', to: link.local('energie') },
-        { label: en.value ? 'Real estate' : 'Immobilier', desc: 'Cushman & Wakefield Veritas', icon: 'building', to: link.project('cushman-wakefield-veritas') },
-        { label: 'SaaS B2B', desc: 'Fibbl', icon: 'cloud', to: link.project('fibbl') },
-        { label: en.value ? 'Beauty & health' : 'Beauté & Santé', desc: 'Brasileia, Jardins de Carthage', icon: 'heart', to: link.project('campagnes-beaute-sante') },
-        { label: en.value ? 'Finance & consulting' : 'Finance & Conseil', desc: 'KPMG, BR Finanzen', icon: 'finance', to: link.project('kpmg') },
-        { label: en.value ? 'Events' : 'Événementiel', desc: 'Tunisia Franchise Show, Galeries LIVE', icon: 'event', to: link.project('tunisia-franchise-show') }
+        { label: en.value ? 'Accounting & advisory' : 'Expertise comptable & conseil', desc: 'ACOI Groupe, 2R Consolidation, Expert PME', icon: 'finance', to: link.local('expertise-comptable') },
+        { label: en.value ? 'Beauty & health' : 'Beauté & santé', desc: 'Brasileia Cosmetics, Jardins de Carthage', icon: 'heart', to: link.local('beaute-sante') }
       ]
     },
     { label: 'Blog', to: link.blog(), match: ['blog', 'blog-slug'] },
@@ -135,9 +149,11 @@ const blogSwitch = computed(() => {
 .nav__item { position: relative; }
 .nav__item::after { content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 18px; }
 .nav__panel { position: absolute; top: calc(100% + 18px); left: -20px; z-index: 60; min-width: 320px; padding: 10px; display: grid; gap: 2px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 24px 48px -24px rgba(0, 0, 0,.3); opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .18s, transform .18s, visibility .18s; }
-/* Menu Services : deux colonnes, le lien « Toutes nos expertises » occupe toute la largeur en bas */
-.nav__panel--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 620px; column-gap: 6px; }
-.nav__panel--2 .nav__sub:last-child { grid-column: 1 / -1; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--line); border-radius: 0 0 10px 10px; }
+/* Menu Services : une colonne par famille, le lien « Toutes nos expertises » occupe toute la largeur en bas */
+.nav__panel--groups { grid-template-columns: repeat(3, minmax(0, 1fr)); width: 900px; column-gap: 10px; }
+.nav__group { display: grid; align-content: start; gap: 2px; }
+.nav__group-t { padding: 8px 14px 6px; font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted-2); }
+.nav__panel--groups > .nav__sub { grid-column: 1 / -1; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--line); border-radius: 0 0 10px 10px; }
 .nav__item:hover .nav__panel, .nav__item:focus-within .nav__panel { opacity: 1; visibility: visible; transform: none; }
 .nav__item:hover .nav__dd svg, .nav__item:focus-within .nav__dd svg { transform: rotate(180deg); }
 .nav__sub { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-radius: 10px; }
@@ -148,6 +164,11 @@ const blogSwitch = computed(() => {
 .nav__sub-t { font-size: 15px; font-weight: 600; color: var(--ink); }
 .nav__sub-d { font-size: 13px; font-weight: 400; color: var(--muted); }
 .nav__ctas { display: flex; flex: none; gap: 12px; align-items: center; }
+/* Téléphone cliquable : icône seule (zone tactile de 44 px), sur tablette et mobile, là où l'on appelle d'un geste.
+   Sur ordinateur, la barre est occupée par les menus : le numéro figure dans les pieds de page et sur la page Contact. */
+.nav__tel { display: none; flex: none; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid rgba(255, 255, 255, .1); border-radius: 12px; background: rgba(255, 255, 255, .05); color: var(--accent-light); transition: background .15s; }
+.nav__tel:hover { color: var(--accent-light); background: rgba(255, 255, 255, .1); }
+.nav__tel span { display: none; }
 /* SwitchLocalePathLink rend un fragment : le style passe par le conteneur + :deep(a) */
 /* Bascule de langue FR | EN, comme sur kps-agency.com : la langue active est en cyan lumineux */
 .nav__lang { display: inline-flex; align-items: center; gap: 4px; padding-left: 16px; margin-left: 4px; border-left: 1px solid var(--line-2); }
@@ -175,18 +196,23 @@ const blogSwitch = computed(() => {
   .nav__call, .nav__quote { font-size: 14px; padding: 10px 15px; }
   .nav :deep(.logo__img) { height: 50px; }
 }
+/* Petits écrans d'ordinateur : les six menus et les deux boutons ne tiennent pas ensemble, seul « Demander un devis » reste dans la barre */
+@media (min-width: 1181px) and (max-width: 1420px) {
+  .nav__ctas .nav__call { display: none; }
+}
 /* Tablette : les liens passent dans le menu, les deux boutons restent dans la barre */
 @media (max-width: 1180px) {
   .nav__burger { display: inline-flex; }
-  .nav__ctas { margin-left: auto; }
+  .nav__tel { display: inline-flex; margin-left: auto; }
   .nav__ctas .nav__lang { display: none; }
   .nav__links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 0; padding: 12px var(--gutter) 24px; background: var(--bg); border-bottom: 1px solid var(--line); max-height: calc(100vh - 90px); overflow-y: auto; font-size: 15px; }
   .nav__links.is-open { display: flex; }
   .nav__link, .nav__dd { padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
   .nav__dd { display: flex; }
   .nav__item::after { display: none; }
-  .nav__panel--2 { grid-template-columns: minmax(0, 1fr); width: auto; }
-  .nav__panel--2 .nav__sub:last-child { margin-top: 0; padding-top: 8px; border-top: none; }
+  .nav__panel--groups { grid-template-columns: minmax(0, 1fr); width: auto; }
+  .nav__panel--groups > .nav__sub { margin-top: 0; padding-top: 8px; border-top: none; }
+  .nav__group-t { padding: 10px 0 2px; }
   .nav__panel { position: static; min-width: 0; padding: 4px 0 8px 12px; background: none; border: none; box-shadow: none; opacity: 1; visibility: visible; transform: none; }
   .nav__sub { padding: 8px 0; gap: 12px; }
   .nav__sub-i { width: 30px; height: 30px; border-radius: 8px; }

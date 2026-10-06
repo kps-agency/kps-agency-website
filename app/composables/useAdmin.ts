@@ -12,6 +12,11 @@ export interface ProjectRow {
   id?: string; slug: string; cat: 'Web' | 'ADS' | 'Social'; client: string; label: string; description: string | null; metric: string | null
   bg: string; fg: string; img: string; url: string | null
   label_en: string | null; description_en: string | null; metric_en: string | null; position: number; published: boolean
+  // Étude de cas (migration 20261006000000_kps_case_studies.sql) : absents tant que la migration n'est pas exécutée
+  logo?: string | null; context?: string | null; work?: string | null; results?: string | null; kpis?: string | null; duration?: string | null
+  quote?: string | null; quote_author?: string | null; quote_role?: string | null; quote_photo?: string | null
+  context_en?: string | null; work_en?: string | null; results_en?: string | null; kpis_en?: string | null; duration_en?: string | null
+  quote_en?: string | null; quote_role_en?: string | null
 }
 
 const PENDING_KEY = 'kps-admin-pending'

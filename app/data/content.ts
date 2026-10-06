@@ -1,12 +1,15 @@
 // Contenus du site — issus des maquettes validées sur le canevas KPS Agency.
 // Les valeurs entre crochets [ ... ] sont des emplacements à compléter.
 import cms from '#cms'
+import type { CmsStudy } from '../../shared/cms'
 
 export const CONTACT = {
   email: 'contact@kps-agency.com',
   phone: '+33 6 66 31 63 98',
   /** Même numéro au format international, pour les liens tel: et les données structurées */
   phoneE164: '+33666316398',
+  /** Lien WhatsApp (https://wa.me/ + numéro sans le « + »). Laisser vide si ce numéro n'a pas de compte WhatsApp : le lien n'est alors affiché nulle part. */
+  whatsapp: 'https://wa.me/33666316398',
   address: '59 rue de Ponthieu, 75008'
 }
 
@@ -32,10 +35,55 @@ export const COMPANY = {
 }
 const hasPhone = !CONTACT.phone.startsWith('[')
 
+/** Équipe présentée sur la page L'agence. Seuls le nom et la fonction sont obligatoires.
+ *  photo : fichier carré déposé dans public/images/equipe/ (ex. '/images/equipe/prenom-nom.webp') ; sans photo, les initiales sont affichées. */
+export interface TeamMember { name: string; role: { fr: string; en: string }; bio?: { fr: string; en: string }; photo?: string; linkedin?: string }
+/** Bloc « L'équipe » de la page L'agence : masqué tant que les photos et les bios ne sont pas validées. Passer à true pour l'afficher. */
+export const SHOW_TEAM = false
+export const TEAM: TeamMember[] = [
+  {
+    name: 'Phillipe Esnault', role: { fr: 'Fondateur & CEO', en: 'Founder & CEO' },
+    bio: {
+      fr: 'Phillipe a fondé KPS Agency et en fixe le cap. Il suit les projets des clients, du premier échange jusqu’à la mise en ligne.',
+      en: 'Phillipe founded KPS Agency and sets its direction. He follows client projects from the first conversation through to launch.'
+    }
+  },
+  {
+    name: 'Babacar Senghor', role: { fr: 'Référent technique', en: 'Technical lead' },
+    bio: {
+      fr: 'Babacar choisit les technologies de chaque projet et veille à la qualité du code, à la performance et à la sécurité de ce que nous livrons.',
+      en: 'Babacar chooses the technologies for each project and looks after the code quality, performance and security of what we deliver.'
+    }
+  },
+  {
+    name: 'Raphael', role: { fr: 'Développeur senior full-stack', en: 'Senior full-stack developer' },
+    bio: {
+      fr: 'Raphael développe les sites et les applications de nos clients, de l’interface jusqu’au serveur et à la base de données.',
+      en: 'Raphael builds our clients’ websites and applications, from the interface through to the server and the database.'
+    }
+  },
+  {
+    name: 'Fatima Sall', role: { fr: 'Responsable marketing digital', en: 'Digital marketing manager' },
+    bio: {
+      fr: 'Fatima conçoit et pilote les campagnes d’acquisition et les contenus de nos clients, puis en mesure les résultats pour les améliorer.',
+      en: 'Fatima plans and runs our clients’ acquisition campaigns and content, then measures the results to improve them.'
+    }
+  }
+]
+
+/** Gages de confiance affichés sous les chiffres clés de l'accueil : partenariats, certifications, profils d'annuaires.
+ *  N'ajouter que ce que l'agence détient réellement. Liste vide = rien n'est affiché.
+ *  Ex. { label: 'Google Partner', url: 'https://www.google.com/partners/agency?id=…' } */
+export interface Badge { label: string; url?: string; img?: string }
+export const BADGES: Badge[] = []
+
 /** Auteurs des articles du blog : fonction affichée sous la signature et dans les données structurées (clé = champ « author » de l'article) */
 export const AUTHORS: Record<string, { fr: string; en: string }> = {
-  'Phillipe Esnault': { fr: 'CEO de KPS Agency', en: 'CEO of KPS Agency' }
+  'Phillipe Esnault': { fr: 'Fondateur & CEO de KPS Agency', en: 'Founder & CEO of KPS Agency' }
 }
+
+/** Adresse de la page d'un auteur : /blog/auteur/<prenom-nom> */
+export const authorSlug = (name: string) => name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 
 /** Entité ProfessionalService de référence, réutilisée par toutes les pages (même @id) */
 export const organizationSchema = (site: string, lang: 'fr' | 'en' = 'fr') => ({
@@ -91,7 +139,30 @@ export interface Project {
   img: string
   alt: string
   url?: string
+  /** Logo du client (bandeau « Ils nous ont fait confiance ») ; sans logo, le nom est affiché en texte */
+  logo?: string
+  /** Étude de cas structurée, saisie dans l'admin ; absente pour les réalisations de la liste locale */
+  study?: ProjectStudy
 }
+
+export interface Kpi { v: string; l: string }
+export interface ProjectStudy {
+  /** Contexte et enjeu du client, travail réalisé, résultats obtenus : texte libre, un paragraphe par ligne */
+  context: string; work: string; results: string
+  kpis: Kpi[]
+  /** Durée du projet (ex. « 6 semaines ») */
+  duration: string
+  /** Témoignage du client : affiché seulement s'il a un texte et un auteur */
+  quote: string; quoteAuthor: string; quoteRole: string; quotePhoto: string
+}
+/** « 5M | paid reach » → { v: '5M', l: 'paid reach' } ; une ligne par chiffre, quatre au plus */
+export const parseKpis = (s: string): Kpi[] => s.split('\n').map(l => l.split('|').map(x => x.trim())).filter(x => x[0] && x[1]).map(x => ({ v: x[0]!, l: x[1]! })).slice(0, 4)
+/** Étude de cas dans une langue ; un champ vide reprend celui de la langue de repli (le français) */
+export const toStudy = (s: CmsStudy, who: { quoteAuthor: string; quotePhoto: string }, fb?: ProjectStudy): ProjectStudy => ({
+  context: s.context || fb?.context || '', work: s.work || fb?.work || '', results: s.results || fb?.results || '',
+  kpis: s.kpis ? parseKpis(s.kpis) : fb?.kpis ?? [], duration: s.duration || fb?.duration || '',
+  quote: s.quote || fb?.quote || '', quoteRole: s.quoteRole || fb?.quoteRole || '', quoteAuthor: who.quoteAuthor, quotePhoto: who.quotePhoto
+})
 
 const R = '[Résultat]'
 const D = '[Description du projet]'
@@ -126,15 +197,20 @@ const LOCAL_PROJECTS: Project[] = [
 
 // Réalisations gérées dans l'admin (table projects de Supabase, lue au build) : elles remplacent la liste ci-dessus dès que la table en contient
 export const PROJECTS: Project[] = cms?.projects?.length
-  ? cms.projects.map(c => ({ ...p(c.slug, c.cat, c.client, c.label, c.desc || D, c.metric || R, c.bg, c.fg, c.url), img: c.img }))
+  ? cms.projects.map(c => ({ ...p(c.slug, c.cat, c.client, c.label, c.desc || D, c.metric || R, c.bg, c.fg, c.url), img: c.img, logo: c.logo || undefined, study: toStudy(c.study, c) }))
   : LOCAL_PROJECTS
 
 export const CAT_LABEL: Record<ProjectCat, string> = { Web: 'Site web', ADS: 'ADS', Social: 'Social/Médias' }
 
-/** Une réalisation n'est indexée (et listée dans le sitemap) que si sa description est une vraie étude de cas :
- *  contexte, travail réalisé, résultat. En dessous de ce seuil, la page reste consultable mais en noindex. */
+/** Une réalisation n'est indexée (et listée dans le sitemap) que si c'est une vraie étude de cas :
+ *  présentation, contexte, travail réalisé et résultats totalisent au moins ce nombre de caractères.
+ *  En dessous de ce seuil, la page reste consultable mais en noindex. */
 export const CASE_STUDY_MIN_CHARS = 400
-export const isCaseStudy = (desc: string) => !desc.startsWith('[') && desc.length >= CASE_STUDY_MIN_CHARS
+export const isCaseStudy = (p: Pick<Project, 'desc' | 'study'>) =>
+  [p.desc.startsWith('[') ? '' : p.desc, p.study?.context, p.study?.work, p.study?.results].join('').length >= CASE_STUDY_MIN_CHARS
+
+/** Témoignages clients : les réalisations dont l'étude de cas porte une citation signée */
+export const hasQuote = (p: Project) => !!(p.study?.quote && p.study.quoteAuthor)
 
 /* ---------------- Services ---------------- */
 export interface Offer { n: string; t: string; d: string; tags: string[] }
@@ -147,6 +223,8 @@ export interface Service {
   related: string[]; cta: string
   /** Page d'atterrissage SEO : accessible par son URL et le sitemap, mais absente des menus et des listes de services */
   landing?: boolean
+  /** Prix d'appel affiché « À partir de … » sur l'accueil et la page de l'expertise (ex. '1 500 € HT'). Vide = rien n'est affiché. */
+  from?: string
 }
 
 const o = (n: string, t: string, d: string, tags: string[]): Offer => ({ n, t, d, tags })
@@ -200,7 +278,7 @@ export const SERVICES: Service[] = [
       b('Évolutivité', 'Une architecture qui grandit avec votre entreprise.'),
       b('Sécurité', 'Gestion des accès et protection de vos données au cœur de la conception.')
     ],
-    methTitle: 'Du besoin métier à l’outil déployé.', steps: COMMON_STEPS, related: ['karoo', 'stackello', 'fibbl'], cta: 'Un processus à digitaliser ?'
+    methTitle: 'Du besoin métier à l’outil déployé.', steps: COMMON_STEPS, related: ['karoo', 'stackello'], cta: 'Un processus à digitaliser ?'
   },
   {
     slug: 'referencement-seo-geo', key: 'seo', num: '03', crumb: 'Référencement SEO & GEO', eyebrow: 'Référencement SEO & GEO',
@@ -242,7 +320,7 @@ export const SERVICES: Service[] = [
       b('Performance', 'Une application rapide et stable, quel que soit l’appareil.'),
       b('Évolutivité', 'Une base technique pensée pour accueillir de nouvelles fonctionnalités.')
     ],
-    methTitle: 'De l’idée à l’App Store.', steps: COMMON_STEPS, related: ['karoo', 'stackello', 'fibbl'], cta: 'Un projet d’application ?'
+    methTitle: 'De l’idée à l’App Store.', steps: COMMON_STEPS, related: ['karoo', 'stackello'], cta: 'Un projet d’application ?'
   },
   {
     slug: 'marketing-digital-ads', key: 'ads', num: '05', crumb: 'Marketing digital & ADS', eyebrow: 'Marketing digital & ADS',
@@ -352,7 +430,7 @@ export const SERVICES: Service[] = [
     ],
     methTitle: 'De l’idée au lancement.',
     steps: [s('1', 'Cadrage', 'Votre marché, vos utilisateurs et les fonctions vraiment indispensables à la première version.'), s('2', 'Conception', 'Parcours et maquettes de l’application : vous validez avant le développement.'), s('3', 'Développement', 'Construction par étapes, avec des démonstrations régulières.'), s('4', 'Lancement & évolution', 'Mise en ligne, suivi de l’usage et ajout de fonctionnalités au fil des retours.')],
-    related: ['stackello', 'karoo', 'fibbl'], cta: 'Un SaaS à lancer ?'
+    related: ['stackello', 'karoo'], cta: 'Un SaaS à lancer ?'
   },
   {
     slug: 'agence-geo', key: 'geo', num: 'IA', crumb: 'Agence GEO', eyebrow: 'Agence GEO', landing: true,
@@ -375,6 +453,27 @@ export const SERVICES: Service[] = [
     methTitle: 'Notre méthode GEO.',
     steps: [s('1', 'Diagnostic', 'Vos requêtes clés testées sur les moteurs IA, et l’analyse des sources qu’ils citent.'), s('2', 'Plan d’action', 'Les pages à créer ou à réécrire, classées par impact.'), s('3', 'Production', 'Contenus, données structurées et corrections techniques.'), s('4', 'Suivi', 'Mesure régulière des citations et ajustements.')],
     related: ['prostarseo', 'powercell-group', 'cushman-wakefield-veritas'], cta: 'Envie d’être cité par les IA ?'
+  }
+]
+
+/** Les trois familles d'expertises : même regroupement et même ordre partout (accueil, menu, page Services, pied de page, formulaire de contact).
+ *  key = clé de la première expertise de la famille, dont l'icône représente la famille. */
+export interface ServiceFamily { key: string; slugs: string[]; title: { fr: string; en: string }; text: { fr: string; en: string } }
+export const SERVICE_FAMILIES: ServiceFamily[] = [
+  {
+    key: 'web', slugs: ['creation-site-web', 'refonte-site-web', 'maintenance-site-web'],
+    title: { fr: 'Sites web', en: 'Websites' },
+    text: { fr: 'Créer votre site, le refaire quand il a vieilli, et le garder rapide et sûr dans la durée.', en: 'Build your site, redesign it when it has aged, and keep it fast and secure over time.' }
+  },
+  {
+    key: 'app', slugs: ['application-metier', 'creation-saas', 'application-mobile'],
+    title: { fr: 'Applications & SaaS', en: 'Applications & SaaS' },
+    text: { fr: 'Des outils sur mesure pour vos équipes, vos clients ou un nouveau produit à commercialiser.', en: 'Custom tools for your team, your customers or a new product to bring to market.' }
+  },
+  {
+    key: 'seo', slugs: ['referencement-seo-geo', 'marketing-digital-ads', 'social-media'],
+    title: { fr: 'Visibilité & acquisition', en: 'Visibility & acquisition' },
+    text: { fr: 'Être trouvé sur Google et dans les IA, puis transformer cette audience en demandes.', en: 'Get found on Google and in AI tools, then turn that audience into enquiries.' }
   }
 ]
 
@@ -469,5 +568,45 @@ export const LOCAL_PAGES: LocalPage[] = [
       ['Accompagnez-vous aussi la communication financière ?', 'Oui. Nous avons notamment mené une campagne de communication financière pour BR Finanzen, avec un design premium et un branding cohérent.']
     ],
     cta: 'Un projet dans l’énergie ?'
+  },
+  {
+    slug: 'expertise-comptable', crumbParent: 'Secteurs', crumb: 'Expertise comptable & conseil', eyebrow: 'Cabinets comptables et de conseil',
+    title: 'Agence web pour experts-comptables et conseil', description: 'Agence web pour cabinets d’expertise comptable, d’audit et de conseil : sites vitrines, landing pages et référencement qui amènent le dirigeant jusqu’au rendez-vous.',
+    h1: 'Le digital au service des cabinets comptables et de conseil.',
+    sub: 'Site vitrine, landing page, référencement : nous aidons les cabinets d’expertise comptable, d’audit et de conseil à présenter clairement leurs missions et à transformer leurs visiteurs en rendez-vous.',
+    svcTitle: 'Nos expertises pour les cabinets comptables et de conseil.', whyTitle: 'Un métier de confiance, un site qui la mérite.',
+    why: [
+      b('Inspirer confiance', 'Un dirigeant confie ses comptes à un cabinet qu’il juge sérieux dès la première visite : le site en est la première preuve.'),
+      b('Rendre l’offre lisible', 'Missions comptables, conseil, audit, social : chaque visiteur doit trouver en quelques secondes ce qui le concerne.'),
+      b('Mener au rendez-vous', 'Des parcours pensés pour conduire le visiteur vers la prise de contact ou de rendez-vous, sans détour.'),
+      b('Être trouvé localement', 'Un référencement sur les recherches de vos futurs clients, dans les villes où le cabinet est implanté.')
+    ],
+    refTitle: 'Nos références dans le chiffre et le conseil', refs: ['acoi-groupe', '2r-consolidation', 'expert-pme'],
+    faq: [
+      ['Avez-vous déjà travaillé pour des cabinets comptables ou de conseil ?', 'Oui. Nous avons réalisé le site du Groupe ACOI, cabinet d’expertise comptable, de conseil et d’audit présent à Versailles et à La Réunion, celui de 2R Consolidation, cabinet spécialisé en consolidation des comptes, et la landing page d’Expert PME, cabinet de conseil aux dirigeants de TPE et PME.'],
+      ['Le site peut-il donner accès à un espace client ?', 'Oui. Le site du Groupe ACOI, par exemple, donne accès à un espace réservé aux clients et au service de facturation électronique du cabinet.'],
+      ['Faut-il un site complet ou une simple landing page ?', 'Cela dépend de votre objectif. Un site vitrine présente l’ensemble du cabinet ; une landing page sert une offre précise, comme celle d’Expert PME, construite autour de la prise de contact. Nous vous conseillons après un premier échange.']
+    ],
+    cta: 'Un projet pour votre cabinet ?'
+  },
+  {
+    slug: 'beaute-sante', crumbParent: 'Secteurs', crumb: 'Beauté & santé', eyebrow: 'Marques de beauté et de santé',
+    title: 'Agence digitale beauté & santé : social media et ADS', description: 'Agence digitale pour les marques de beauté et de santé : contenus social media, campagnes publicitaires et boutiques en ligne, avec des résultats mesurés.',
+    h1: 'Le digital au service des marques de beauté et de santé.',
+    sub: 'Contenus social media, campagnes publicitaires, boutique en ligne : nous aidons les marques de beauté et de santé à soigner leur image et à toucher leur public sur les réseaux.',
+    svcTitle: 'Nos expertises pour les marques de beauté et de santé.', whyTitle: 'Dans ces secteurs, l’image fait la différence.',
+    why: [
+      b('Une image soignée', 'Des visuels produits de qualité, fidèles à l’identité de la marque sur chaque publication.'),
+      b('Des contenus réguliers', 'Une ligne éditoriale et des formats pensés pour TikTok et Instagram, là où se trouve votre public.'),
+      b('Des campagnes mesurées', 'Portée, vues, interactions : chaque campagne est suivie par des tableaux de bord partagés avec vous.'),
+      b('Une identité cohérente', 'Le même univers de marque sur le site, les réseaux sociaux et la publicité.')
+    ],
+    refTitle: 'Nos références en beauté et santé', refs: ['brasileia-cosmetics', 'jardins-de-carthage', 'campagnes-beaute-sante'],
+    faq: [
+      ['Avez-vous des références en beauté et en santé ?', 'Oui. Nous avons mené une campagne produit pour Brasileia Cosmetics (1,8 million de vues, 996 000 personnes touchées) et une campagne de communication santé pour le Laboratoire Jardins de Carthage, ainsi que des campagnes pour plusieurs marques de beauté et de santé.'],
+      ['Gérez-vous à la fois les réseaux sociaux et la publicité ?', 'Oui. Contenus et campagnes sont conçus ensemble : les visuels produits servent les publications comme les annonces, et les résultats sont suivis dans les mêmes tableaux de bord.'],
+      ['Créez-vous aussi des boutiques en ligne ?', 'Oui. Nous avons par exemple réalisé la boutique Shopify de la marque Maison SKL.']
+    ],
+    cta: 'Un projet pour votre marque ?'
   }
 ]

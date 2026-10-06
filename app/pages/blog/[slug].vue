@@ -9,7 +9,7 @@
       </div>
       <h1 class="art__h1">{{ post.meta.title }}</h1>
       <p class="lead art__lead">{{ post.meta.description }}</p>
-      <p class="art__author">{{ t.by }} <strong>{{ post.meta.author }}</strong><template v-if="authorRole">, {{ authorRole }}</template></p>
+      <p class="art__author">{{ t.by }} <NuxtLink v-if="authorRole" :to="link.author(post.meta.author)" class="art__author-link"><strong>{{ post.meta.author }}</strong></NuxtLink><strong v-else>{{ post.meta.author }}</strong><template v-if="authorRole">, {{ authorRole }}</template></p>
     </header>
 
     <figure v-if="post.meta.cover" class="container art__cover">
@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import { BLOG_SECTORS } from '#shared/blog'
 import { blogArticle, blogArticles, renderArticle } from '~/data/blog'
-import { AUTHORS } from '~/data/content'
+import { AUTHORS, authorSlug } from '~/data/content'
 
 const route = useRoute()
 const { en, locale, link, services } = useSite()
@@ -112,7 +112,7 @@ useHead({
       ...(m.cover ? { image: absolute(m.cover) } : {}),
       // Auteur connu (AUTHORS) : une personne, avec sa fonction ; sinon l'équipe, c'est-à-dire l'organisation
       author: authorRole.value
-        ? { '@type': 'Person', name: m.author, jobTitle: authorRole.value, worksFor: { '@id': `${site}/#organization` }, url: `${site}${link.about()}` }
+        ? { '@type': 'Person', '@id': `${site}/blog/auteur/${authorSlug(m.author)}#person`, name: m.author, jobTitle: authorRole.value, worksFor: { '@id': `${site}/#organization` }, url: `${site}${link.author(m.author)}` }
         : { '@type': 'Organization', '@id': `${site}/#organization`, name: m.author, url: `${site}/` },
       publisher: { '@id': `${site}/#organization` },
       articleSection: BLOG_SECTORS[m.sector]?.[lang.value] ?? m.sector, keywords: m.tags.join(', '),
@@ -132,6 +132,8 @@ useHead({
 .art__h1 { font-size: 52px; line-height: 1.05; letter-spacing: -1.8px; font-weight: 900; }
 .art__lead { max-width: 820px; }
 .art__author { font-size: 16px; color: var(--muted); }
+.art__author-link { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.art__author-link:hover { color: var(--accent); }
 .art__cover { margin-top: 0; margin-bottom: 56px; }
 .art__cover img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top center; border-radius: 20px; border: 1px solid var(--line); }
 .art__layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 64px; align-items: start; padding-bottom: var(--section-y); }

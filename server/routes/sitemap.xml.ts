@@ -1,4 +1,4 @@
-import { PROJECTS, SERVICES, LOCAL_PAGES, isCaseStudy } from '../../app/data/content'
+import { AUTHORS, PROJECTS, SERVICES, LOCAL_PAGES, authorSlug, isCaseStudy } from '../../app/data/content'
 import { LOCAL_SLUG_EN, SERVICE_SLUG_EN } from '../../app/data/content.en'
 
 // Sitemap bilingue des seules pages indexables (les pages en noindex en sont exclues).
@@ -15,10 +15,12 @@ export default defineEventHandler(async (event) => {
     ...LOCAL_PAGES.map(l => [`/agence-digitale/${l.slug}`, `/en/digital-agency/${LOCAL_SLUG_EN[l.slug]}`] as [string, string]),
     ['/realisations', '/en/work'],
     // Même règle que la page projet : indexée seulement si c'est une vraie étude de cas
-    ...PROJECTS.filter(p => isCaseStudy(p.desc)).map(p => [`/realisations/${p.slug}`, `/en/work/${p.slug}`] as [string, string]),
+    ...PROJECTS.filter(isCaseStudy).map(p => [`/realisations/${p.slug}`, `/en/work/${p.slug}`] as [string, string]),
     ['/agence', '/en/about'],
     ['/rendez-vous', '/en/book-a-call'],
+    ['/audit-gratuit', '/en/free-audit'],
     ['/blog', '/en/blog'],
+    ...Object.keys(AUTHORS).map(n => [`/blog/auteur/${authorSlug(n)}`, `/en/blog/author/${authorSlug(n)}`] as [string, string]),
     ['/contact', '/en/contact']
   ]
 

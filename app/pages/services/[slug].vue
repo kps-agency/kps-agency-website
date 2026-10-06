@@ -11,6 +11,7 @@
           <NuxtLink :to="link.contact()" class="btn btn--primary">{{ t.talk }} →</NuxtLink>
           <NuxtLink :to="link.work()" class="btn btn--ghost">{{ t.seeWork }}</NuxtLink>
         </div>
+        <p v-if="svc.from" class="hero__from">{{ t.from }} <strong>{{ svc.from }}</strong></p>
       </div>
       <div class="hero__offers card">
         <div class="hero__offers-title">{{ t.offers }}</div>
@@ -122,8 +123,8 @@ useSetI18nParams()({ fr: { slug: svc.value.slug }, en: { slug: serviceSlug(svc.v
 const faq = computed(() => SERVICE_FAQS[svc.value!.slug]?.[en.value ? 'en' : 'fr'] ?? serviceFaq.value)
 
 const t = useLocaleText({
-  fr: { home: 'Accueil', crumb: 'Expertises', talk: 'Parler de votre projet', seeWork: 'Voir les réalisations', offers: 'Nos offres', approach: 'L’approche KPS', method: 'Méthode', trusted: 'Ils nous ont fait confiance', allWork: 'Toutes les réalisations', faq: 'Questions fréquentes', guides: 'Nos guides sur le sujet', allGuides: 'Tous les articles', read: 'Lire', ctaText: 'Décrivez-nous votre besoin : nous revenons vers vous avec une recommandation claire et un devis personnalisé.' },
-  en: { home: 'Home', crumb: 'Services', talk: 'Discuss your project', seeWork: 'See our work', offers: 'What we offer', approach: 'The KPS approach', method: 'Method', trusted: 'They trusted us', allWork: 'All our work', faq: 'Frequently asked questions', guides: 'Our guides on the topic', allGuides: 'All articles', read: 'Read', ctaText: 'Tell us what you need: we’ll come back to you with a clear recommendation and a tailored quote.' }
+  fr: { home: 'Accueil', crumb: 'Expertises', talk: 'Parler de votre projet', from: 'À partir de', seeWork: 'Voir les réalisations', offers: 'Nos offres', approach: 'L’approche KPS', method: 'Méthode', trusted: 'Ils nous ont fait confiance', allWork: 'Toutes les réalisations', faq: 'Questions fréquentes', guides: 'Nos guides sur le sujet', allGuides: 'Tous les articles', read: 'Lire', ctaText: 'Décrivez-nous votre besoin : nous revenons vers vous avec une recommandation claire et un devis personnalisé.' },
+  en: { home: 'Home', crumb: 'Services', talk: 'Discuss your project', from: 'From', seeWork: 'See our work', offers: 'What we offer', approach: 'The KPS approach', method: 'Method', trusted: 'They trusted us', allWork: 'All our work', faq: 'Frequently asked questions', guides: 'Our guides on the topic', allGuides: 'All articles', read: 'Read', ctaText: 'Tell us what you need: we’ll come back to you with a clear recommendation and a tailored quote.' }
 })
 
 // Projets liés au service ; à défaut, les réalisations les plus récentes (jamais de carte vide)
@@ -169,6 +170,8 @@ useHead({
 </script>
 
 <style scoped>
+.hero__from { font-size: 16px; color: var(--muted); }
+.hero__from strong { font-size: 20px; color: var(--ink); }
 .hero { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding-top: 40px; padding-bottom: var(--section-y); }
 .hero__crumb { grid-column: 1 / -1; margin-bottom: 56px; }
 .hero__main { grid-column: span 7; display: flex; flex-direction: column; gap: 28px; }

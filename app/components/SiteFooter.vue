@@ -5,7 +5,7 @@
         <div class="footer__brand">
           <SiteLogo light />
           <p class="footer__desc">{{ t.desc }}</p>
-          <address class="footer__contact">{{ CONTACT.address }} Paris<br><template v-if="!CONTACT.phone.startsWith('[')"><a :href="`tel:${CONTACT.phoneE164}`">{{ CONTACT.phone }}</a><br></template><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></address>
+          <address class="footer__contact">{{ CONTACT.address }} Paris<br><template v-if="!CONTACT.phone.startsWith('[')"><a :href="`tel:${CONTACT.phoneE164}`">{{ CONTACT.phone }}</a><template v-if="CONTACT.whatsapp"> · <a :href="CONTACT.whatsapp" target="_blank" rel="noopener">WhatsApp</a></template><br></template><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></address>
           <SocialLinks />
         </div>
         <div v-for="c in footerCols" :key="c.title" class="footer__col">
@@ -19,7 +19,7 @@
       </div>
       <div class="footer__bottom">
         <span>{{ t.rights }}</span>
-        <div class="footer__legal"><NuxtLink :to="link.terms()">{{ t.terms }}</NuxtLink><NuxtLink :to="link.legal()">{{ t.legal }}</NuxtLink><NuxtLink :to="link.legal('#article-7')">{{ t.privacy }}</NuxtLink><button type="button" class="footer__cookies" @click="resetConsent">{{ en ? 'Manage cookies' : 'Gérer les cookies' }}</button></div>
+        <div class="footer__legal"><NuxtLink :to="link.terms()">{{ t.terms }}</NuxtLink><NuxtLink :to="link.legal()">{{ t.legal }}</NuxtLink><NuxtLink :to="link.privacy()">{{ t.privacy }}</NuxtLink><button type="button" class="footer__cookies" @click="resetConsent">{{ en ? 'Manage cookies' : 'Gérer les cookies' }}</button></div>
       </div>
     </div>
   </footer>

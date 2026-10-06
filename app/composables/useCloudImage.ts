@@ -19,11 +19,13 @@ export function useCloudImage() {
   const thumbSet = (path: string) => CARD_WIDTHS
     .map(w => `${hosted(path) ? cld(path, w) : path.replace(/\.webp$/, `-${w}.webp`)} ${w}w`)
     .concat(`${image(path)} 1600w`).join(', ')
+  /** Petit visuel sans déclinaison locale (logo client, portrait) : 400 px via Cloudinary, fichier tel quel sinon */
+  const small = (path: string) => (hosted(path) ? cld(path, 400) : path)
   /** Variantes AVIF pour <source type="image/avif"> (f_auto ne le sert pas de lui-même) ; vide hors Cloudinary */
   const avif = (path: string) => (hosted(path) ? cld(path, 1600, 'f_avif') : '')
   const avifSet = (path: string) => (hosted(path) ? [...CARD_WIDTHS, 1600].map(w => `${cld(path, w, 'f_avif')} ${w}w`).join(', ') : '')
   /** URL absolue (données structurées, partage) */
   const absolute = (path: string) => { const u = image(path); return u.startsWith('http') ? u : siteUrl + u }
 
-  return { image, thumb, thumbSet, avif, avifSet, absolute }
+  return { image, thumb, small, thumbSet, avif, avifSet, absolute }
 }

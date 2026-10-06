@@ -207,3 +207,69 @@ export const LEGAL_EN = {
     ] }
   ] as LegalArticle[]
 }
+
+export const PRIVACY_EN = {
+  title: 'Privacy policy',
+  eyebrow: 'Personal data',
+  lead: 'What data we collect on kps-agency.com, why, for how long, and how to exercise your rights.',
+  footnote: 'Last updated: 6 October 2026. This English version is provided for convenience; in the event of any discrepancy, the French version prevails.',
+  seoTitle: 'Privacy policy',
+  seoDesc: 'KPS Agency privacy policy: data collected through our forms, purposes, retention periods, recipients, cookies and how to exercise your GDPR rights.',
+  articles: [
+    { t: 'Data controller', blocks: [
+      'The personal data collected on kps-agency.com is processed by KPS Agency, acting as data controller.',
+      { kv: [['Company', 'KPS Agency SAS'], ['Registered office', '59 rue de Ponthieu, 75008 Paris, France'], ['SIRET', '102 909 728 00010'], mail] }
+    ] },
+    { t: 'Data we collect', blocks: [
+      'We only collect the data you choose to send us:',
+      [
+        'Contact and quote form: name, company, email address, phone number, current website, services of interest, indicative budget, timeline and your message.',
+        'Call booking: name, email address, phone number, company, chosen time slot, call type (video or phone), time zone and your message.',
+        'Direct exchanges: the information you share with us by email, phone or WhatsApp.',
+        'Audience measurement, only if you accept it: pages viewed, traffic source, device type and approximate location.'
+      ],
+      'Only your name and email address are required to process a request. We do not collect any sensitive data.'
+    ] },
+    { t: 'Why we use it and on what legal basis', blocks: [
+      [
+        'Replying to your request, preparing a quote and organising a call: steps taken at your request prior to entering into a contract (Article 6.1.b GDPR).',
+        'Following up on our business relationship with you: our legitimate interest in managing our client and prospect relations (Article 6.1.f GDPR).',
+        'Measuring website traffic: your consent, collected through the cookie banner (Article 6.1.a GDPR).'
+      ],
+      'Your data is never sold or rented, and is not used for automated decision-making.'
+    ] },
+    { t: 'Who receives your data', blocks: [
+      'Your data is intended for the KPS Agency team. It is hosted or carried by the following technical providers, acting on our behalf:',
+      { kv: [
+        ['Website hosting', 'Vercel Inc.', 'https://vercel.com'],
+        ['Database (requests and bookings)', 'Supabase Inc.', 'https://supabase.com'],
+        ['Email', 'Hostinger International Ltd.', 'https://www.hostinger.com'],
+        ['Calendar and video calls', 'Infomaniak Network SA (kSuite, kMeet)', 'https://www.infomaniak.com'],
+        ['Audience measurement', 'Google Ireland Ltd. (Google Analytics 4)', 'https://policies.google.com/privacy']
+      ] },
+      'Some of these providers are established outside the European Union or may process data there. Where this is the case, transfers are governed by the safeguards provided for by the GDPR (adequacy decision or the European Commission’s standard contractual clauses).'
+    ] },
+    { t: 'How long we keep it', blocks: [
+      [
+        'Contact requests, quotes and bookings: three years from our last contact with you, if you do not become a client.',
+        'Client data: for the duration of the contractual relationship, then for the statutory retention periods (accounting and tax obligations).',
+        'Audience measurement: analytics cookies are kept for a maximum of 13 months.'
+      ]
+    ] },
+    { t: 'Cookies', blocks: [
+      'The website works without cookies. Google Analytics audience measurement cookies are only set once you have accepted them in the banner shown on your first visit. If you refuse, nothing is loaded.',
+      'Your choice is stored in your browser and can be changed at any time using the “Manage cookies” link at the bottom of every page.'
+    ] },
+    { t: 'Your rights', blocks: [
+      'Under the GDPR and the French Data Protection Act, you have the following rights over your data:',
+      ['right of access, rectification and erasure;', 'right to restrict or object to processing;', 'right to data portability;', 'right to withdraw your consent at any time;', 'right to give instructions on what happens to your data after your death.'],
+      'To exercise them, write to us. We will reply within one month:',
+      { kv: [mail] },
+      'If you believe your rights have not been respected, you can lodge a complaint with the French data protection authority (CNIL):',
+      { kv: [['CNIL', 'www.cnil.fr', 'https://www.cnil.fr']] }
+    ] },
+    { t: 'Security', blocks: [
+      'Exchanges with the website are encrypted (HTTPS). Access to the requests we receive is restricted to authorised members of the KPS Agency team.'
+    ] }
+  ] as LegalArticle[]
+}

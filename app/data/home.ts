@@ -10,13 +10,13 @@ const fr = {
   sticky: { quote: 'Devis gratuit', call: 'Réserver un appel' },
   methodCta: { quote: 'Demander un devis gratuit', call: 'Réserver un appel' },
   hero: {
-    badge: 'Agence digitale à Paris pour PME & TPE', title: 'Votre croissance digitale, gérée de A à Z.',
-    lead: 'Site web, application sur mesure, référencement Google & IA, publicité en ligne : une seule équipe pour vous rendre visible, attirer des clients et les convertir.',
-    cta: 'Demander un devis gratuit', cta2: 'Voir nos réalisations', trust: ['Réponse sous 48 h', 'Interlocuteur dédié', 'Sans engagement']
+    badge: 'Agence digitale à Paris pour PME & TPE', title: 'Votre entreprise visible sur Google, citée par les IA.',
+    lead: 'Site web, référencement, publicité en ligne et applications sur mesure : une seule équipe à Paris pour vous faire trouver, attirer des clients et les convertir.',
+    cta: 'Demander un devis gratuit', cta2: 'Voir nos réalisations', shots: 'Quelques sites que nous avons réalisés', shotAlt: 'Site réalisé pour', trust: ['Réponse sous 48 h', 'Interlocuteur dédié', 'Sans engagement']
   },
   services: {
     budget: { tag: 'Tous budgets', title: 'Quel que soit votre budget,', hi: 'nous avons une solution à votre mesure.', p: 'Site vitrine, refonte, application ou campagne : nous adaptons le périmètre à vos moyens et vous remettons un devis clair, gratuit et sans engagement.', cta: 'Demander un devis gratuit' },
-    eyebrow: 'Nos services', h2: 'Tout ce qu’il faut pour exister et *vendre en ligne.*', p: 'Choisissez un service ou combinez-les. Chaque projet est piloté par un chef de projet unique, du brief au lancement.',
+    from: 'À partir de', eyebrow: 'Nos services', h2: 'Tout ce qu’il faut pour exister et *vendre en ligne.*', p: 'Trois familles d’expertises, à mobiliser seules ou ensemble. Chaque projet est piloté par un chef de projet unique, du brief au lancement.',
     items: [
       { num: '01', slug: 'creation-site-web', tag: 'Le plus demandé', title: 'Création de site web', desc: 'Des sites rapides, beaux et pensés pour convertir vos visiteurs en clients.', items: ['Site vitrine', 'E-commerce', 'Landing page', 'Blog'], cta: 'Découvrir', theme: 'dark' },
       { num: '02', slug: 'application-metier', tag: 'Sur mesure', title: 'Application métier', desc: 'Automatisez vos process avec un outil taillé pour votre activité : CRM, back-office, portail client.', items: ['CRM', 'Back-office', 'Portail client', 'SaaS'], cta: 'Découvrir', theme: 'light' },
@@ -26,17 +26,18 @@ const fr = {
       { num: '06', slug: 'refonte-site-web', tag: 'Modernisation', title: 'Refonte de site', desc: 'Un site daté ou lent ? On le modernise sans perdre votre référencement.', items: ['Nouveau design', 'Migration', 'Redirections SEO'], cta: 'Découvrir', theme: 'light' },
       { num: '07', slug: 'maintenance-site-web', tag: 'Au quotidien', title: 'Maintenance de site', desc: 'Mises à jour, sauvegardes et sécurité : votre site reste rapide et disponible.', items: ['Mises à jour', 'Sauvegardes', 'Sécurité', 'Évolutions'], cta: 'Découvrir', theme: 'light' },
       { num: '08', slug: 'creation-saas', tag: 'Produit', title: 'SaaS', desc: 'Votre logiciel en ligne par abonnement, du premier prototype à la plateforme complète.', items: ['MVP', 'Plateforme', 'Abonnements', 'Paiement'], cta: 'Découvrir', theme: 'light' },
+      { num: '09', slug: 'social-media', tag: 'Contenus', title: 'Social media & contenus', desc: 'Des visuels et des vidéos courtes qui renforcent votre image sur TikTok et Instagram.', items: ['Stratégie', 'Visuels', 'Vidéo courte'], cta: 'Découvrir', theme: 'light' },
       { num: '?', slug: '', tag: 'Gratuit', title: 'Pas sûr de ce qu’il vous faut ?', desc: 'On analyse votre présence en ligne et on vous dit exactement par où commencer.', items: ['Audit offert', '30 min', 'Sans engagement'], cta: 'Demander mon audit', theme: 'soft' }
     ]
   },
   // Sections reprises de la maquette kps-agency.com
   whyTeam: {
-    h2: 'Pourquoi choisir la Team', hi: 'KPS', suffix: ' ?', p: 'Parce que dans la jungle digitale, il vaut mieux être bien accompagné.',
+    h2: 'Pourquoi choisir', hi: 'KPS', suffix: ' ?', p: 'Une seule équipe pour votre site, votre référencement et vos campagnes : ce qui change concrètement pour vous.',
     items: [
-      { title: 'Vision Stratégique', desc: 'Nous ne faisons pas que produire. Nous construisons une feuille de route précise pour vous faire gagner des parts de marché.', stat: 'Stratégie' },
-      { title: 'Le Crew KPS', desc: 'Une équipe de passionnés, experts du web et de l’acquisition, qui devient l’extension directe de votre marque.', stat: 'Équipe dédiée' },
-      { title: 'Vitesse Supersonique', desc: 'Le digital n’attend pas. Nous livrons vite, sans sacrifier la qualité, pour que vous gardiez une longueur d’avance.', stat: 'Rapide' },
-      { title: 'Qualité Premium', desc: 'L’image de votre marque est sacrée. Chaque livrable est pensé, relu et optimisé avant de vous être remis.', stat: 'Top Tier' }
+      { title: 'Une vision d’ensemble', desc: 'Site, référencement, publicité et contenus sont conçus ensemble. Chaque action sert les autres, au lieu de s’additionner sans cohérence.', stat: 'Stratégie' },
+      { title: 'Un interlocuteur unique', desc: 'Un chef de projet suit votre dossier du brief à la mise en ligne. Vous savez toujours à qui parler et où en est le projet.', stat: 'Équipe dédiée' },
+      { title: 'Des décisions fondées sur la donnée', desc: 'Audits, analyse d’audience, suivi des résultats : nos recommandations s’appuient sur des chiffres que nous partageons avec vous.', stat: 'Mesure' },
+      { title: 'Vous restez propriétaire', desc: 'Le site, le nom de domaine, les contenus et les comptes publicitaires sont à votre nom. Vous gardez la main sur tout.', stat: 'Transparence' }
     ]
   },
   // Réalisations présentées en trois blocs, comme sur la maquette kps-agency.com
@@ -84,7 +85,6 @@ const fr = {
     rows: [
       { label: 'Tous les services digitaux au même endroit', cells: [['y', ''], ['n', ''], ['y', ''], ['n', 'Plusieurs profils']] as Cell[] },
       { label: 'Interlocuteur unique et dédié', cells: [['y', ''], ['y', ''], ['n', 'Commercial + équipe'], ['y', '']] as Cell[] },
-      { label: 'Délai de démarrage', cells: [['y', 'Sous 1 semaine'], ['-', 'Variable'], ['n', '3 à 6 semaines'], ['n', '2 à 3 mois']] as Cell[] },
       { label: 'Continuité si absence', cells: [['y', 'Équipe'], ['n', ''], ['y', ''], ['n', '']] as Cell[] },
       { label: 'Coût adapté aux PME', cells: [['y', 'Sur devis'], ['y', ''], ['n', 'Élevé'], ['n', 'Salaire + charges']] as Cell[] },
       { label: 'Vous restez propriétaire de tout', cells: [['y', ''], ['-', 'Selon contrat'], ['-', 'Selon contrat'], ['y', '']] as Cell[] }
@@ -122,7 +122,7 @@ const fr = {
   form: {
     name: 'Nom', namePh: 'Jean Dupont', company: 'Entreprise', companyPh: 'Votre société', email: 'E-mail professionnel', emailPh: 'vous@entreprise.fr',
     need: 'Votre besoin', needs: ['Site web', 'Application', 'SEO / GEO', 'App mobile', 'Publicité'], msg: 'Votre projet en quelques mots', msgPh: 'Objectifs, délais, budget indicatif…',
-    submit: 'Demander un devis gratuit', sending: 'Envoi…', sent: 'Merci ! Votre demande est bien envoyée, nous revenons vers vous sous 48 h.', note: 'Vos données restent confidentielles. Réponse sous 48 h ouvrées.'
+    submit: 'Demander un devis gratuit', sending: 'Envoi…', note: 'Vos données restent confidentielles. Réponse sous 48 h ouvrées.'
   },
   footer: { desc: 'Agence digitale à Paris : création de sites, applications sur mesure, SEO & GEO, publicité en ligne pour les PME et TPE.', local: 'Agence digitale :', legal: 'Mentions légales', privacy: 'Confidentialité', terms: 'CGV' }
 }
@@ -135,13 +135,13 @@ const en: typeof fr = {
   sticky: { quote: 'Free quote', call: 'Book a call' },
   methodCta: { quote: 'Get a free quote', call: 'Book a call' },
   hero: {
-    badge: 'Digital agency in Paris for SMEs', title: 'Your digital growth, handled end to end.',
-    lead: 'Websites, custom software, Google & AI search optimisation, paid ads: one team to make you visible, attract customers and convert them.',
-    cta: 'Get a free quote', cta2: 'See our work', trust: ['Reply within 48 hours', 'Dedicated contact', 'No commitment']
+    badge: 'Digital agency in Paris for SMEs', title: 'Your business visible on Google, cited by AI.',
+    lead: 'Websites, search optimisation, paid ads and custom software: one Paris-based team to get you found, attract customers and convert them.',
+    cta: 'Get a free quote', cta2: 'See our work', shots: 'Some of the websites we have built', shotAlt: 'Website built for', trust: ['Reply within 48 hours', 'Dedicated contact', 'No commitment']
   },
   services: {
     budget: { tag: 'Every budget', title: 'Whatever your budget,', hi: 'we have a solution that fits.', p: 'Showcase site, redesign, application or campaign: we adapt the scope to your means and give you a clear, free quote with no commitment.', cta: 'Get a free quote' },
-    eyebrow: 'Our services', h2: 'Everything you need to exist and *sell online.*', p: 'Choose one service or combine them. Every project is run by a single project manager, from brief to launch.',
+    from: 'From', eyebrow: 'Our services', h2: 'Everything you need to exist and *sell online.*', p: 'Three families of expertise, used alone or together. Every project is run by a single project manager, from brief to launch.',
     items: [
       { num: '01', slug: 'creation-site-web', tag: 'Most popular', title: 'Website design', desc: 'Fast, beautiful websites designed to turn your visitors into customers.', items: ['Showcase site', 'E-commerce', 'Landing page', 'Blog'], cta: 'Discover', theme: 'dark' },
       { num: '02', slug: 'application-metier', tag: 'Tailor-made', title: 'Business software', desc: 'Automate your processes with a tool built for your business: CRM, back office, client portal.', items: ['CRM', 'Back office', 'Client portal', 'SaaS'], cta: 'Discover', theme: 'light' },
@@ -151,17 +151,18 @@ const en: typeof fr = {
       { num: '06', slug: 'refonte-site-web', tag: 'Modernisation', title: 'Website redesign', desc: 'A dated or slow website? We modernise it without losing your rankings.', items: ['New design', 'Migration', 'SEO redirects'], cta: 'Discover', theme: 'light' },
       { num: '07', slug: 'maintenance-site-web', tag: 'Day to day', title: 'Website maintenance', desc: 'Updates, backups and security: your website stays fast and available.', items: ['Updates', 'Backups', 'Security', 'Improvements'], cta: 'Discover', theme: 'light' },
       { num: '08', slug: 'creation-saas', tag: 'Product', title: 'SaaS', desc: 'Your subscription software online, from the first prototype to the full platform.', items: ['MVP', 'Platform', 'Subscriptions', 'Payment'], cta: 'Discover', theme: 'light' },
+      { num: '09', slug: 'social-media', tag: 'Content', title: 'Social media & content', desc: 'Visuals and short-form videos that strengthen your image on TikTok and Instagram.', items: ['Strategy', 'Visuals', 'Short video'], cta: 'Discover', theme: 'light' },
       { num: '?', slug: '', tag: 'Free', title: 'Not sure what you need?', desc: 'We review your online presence and tell you exactly where to start.', items: ['Free audit', '30 min', 'No commitment'], cta: 'Request my audit', theme: 'soft' }
     ]
   },
   // Sections taken from the kps-agency.com design
   whyTeam: {
-    h2: 'Why choose Team', hi: 'KPS', suffix: '?', p: 'Because in the digital jungle, it’s better to have good company.',
+    h2: 'Why choose', hi: 'KPS', suffix: '?', p: 'One team for your website, your search visibility and your campaigns: what that changes for you in practice.',
     items: [
-      { title: 'Strategic Vision', desc: 'We don’t just produce. We build a precise roadmap to help you win market share.', stat: 'Strategy' },
-      { title: 'The KPS Crew', desc: 'A passionate team of web and acquisition experts who become a direct extension of your brand.', stat: 'Dedicated team' },
-      { title: 'Supersonic Speed', desc: 'Digital doesn’t wait. We deliver fast, without cutting corners, so you stay one step ahead.', stat: 'Fast' },
-      { title: 'Premium Quality', desc: 'Your brand image is sacred. Every deliverable is thought through, reviewed and optimised before it reaches you.', stat: 'Top Tier' }
+      { title: 'The full picture', desc: 'Website, search, advertising and content are designed together. Each action supports the others instead of piling up without coherence.', stat: 'Strategy' },
+      { title: 'A single point of contact', desc: 'One project manager follows your project from brief to launch. You always know who to talk to and where things stand.', stat: 'Dedicated team' },
+      { title: 'Data-driven decisions', desc: 'Audits, audience analysis, results tracking: our recommendations are backed by numbers we share with you.', stat: 'Measurement' },
+      { title: 'You stay the owner', desc: 'The website, domain name, content and ad accounts are in your name. You stay in control of everything.', stat: 'Transparency' }
     ]
   },
   // Work shown in three blocks, as in the kps-agency.com design
@@ -209,7 +210,6 @@ const en: typeof fr = {
     rows: [
       { label: 'All digital services in one place', cells: [['y', ''], ['n', ''], ['y', ''], ['n', 'Several profiles']] },
       { label: 'Single, dedicated contact', cells: [['y', ''], ['y', ''], ['n', 'Sales rep + team'], ['y', '']] },
-      { label: 'Time to start', cells: [['y', 'Within 1 week'], ['-', 'Varies'], ['n', '3 to 6 weeks'], ['n', '2 to 3 months']] },
       { label: 'Continuity during absences', cells: [['y', 'Team'], ['n', ''], ['y', ''], ['n', '']] },
       { label: 'Pricing suited to SMEs', cells: [['y', 'On quote'], ['y', ''], ['n', 'High'], ['n', 'Salary + overheads']] },
       { label: 'You own everything', cells: [['y', ''], ['-', 'Depends on contract'], ['-', 'Depends on contract'], ['y', '']] }
@@ -247,7 +247,7 @@ const en: typeof fr = {
   form: {
     name: 'Name', namePh: 'Jane Smith', company: 'Company', companyPh: 'Your company', email: 'Business email', emailPh: 'you@company.com',
     need: 'What you need', needs: ['Website', 'Software', 'SEO / GEO', 'Mobile app', 'Paid ads'], msg: 'Your project in a few words', msgPh: 'Goals, timeline, indicative budget…',
-    submit: 'Get a free quote', sending: 'Sending…', sent: 'Thank you! Your request has been sent, we will reply within 48 hours.', note: 'Your data stays confidential. Reply within 48 business hours.'
+    submit: 'Get a free quote', sending: 'Sending…', note: 'Your data stays confidential. Reply within 48 business hours.'
   },
   footer: { desc: 'Paris digital agency: websites, custom software, SEO & GEO and paid ads for SMEs.', local: 'Digital agency:', legal: 'Legal notice', privacy: 'Privacy', terms: 'Terms' }
 }

@@ -1,5 +1,6 @@
 // English content — same shapes as content.ts (French is the source of truth for structure, slugs and media).
 import cms from '#cms'
+import type { CmsStudy } from '../../shared/cms'
 import type { Benefit, LocalPage, Offer, ProjectCat, Service, Step } from './content'
 
 const o = (n: string, t: string, d: string, tags: string[]): Offer => ({ n, t, d, tags })
@@ -19,7 +20,7 @@ export const SERVICE_SLUG_EN: Record<string, string> = {
   'creation-saas': 'saas-development',
   'agence-geo': 'geo-agency'
 }
-export const LOCAL_SLUG_EN: Record<string, string> = { paris: 'paris', madagascar: 'madagascar', energie: 'energy' }
+export const LOCAL_SLUG_EN: Record<string, string> = { paris: 'paris', madagascar: 'madagascar', energie: 'energy', 'expertise-comptable': 'accounting-firms', 'beaute-sante': 'beauty-health' }
 
 const COMMON_STEPS = [
   s('1', 'Scoping', 'We analyse your market, competitors and goals to set clear priorities.'),
@@ -330,6 +331,46 @@ export const LOCAL_PAGES_EN: Record<string, Omit<LocalPage, 'slug' | 'refs'>> = 
       ['Do you also handle financial communication?', 'Yes. We ran a financial communication campaign for BR Finanzen, with premium design and consistent branding.']
     ],
     cta: 'An energy-sector project?'
+  },
+  'expertise-comptable': {
+    crumbParent: 'Industries', crumb: 'Accounting & advisory', eyebrow: 'Accounting and advisory firms',
+    title: 'Web agency for accounting and advisory firms', description: 'Web agency for accounting, audit and advisory firms: showcase websites, landing pages and SEO that lead business owners all the way to an appointment.',
+    h1: 'Digital expertise for accounting and advisory firms.',
+    sub: 'Showcase websites, landing pages, SEO: we help accounting, audit and advisory firms present their services clearly and turn visitors into appointments.',
+    svcTitle: 'Our services for accounting and advisory firms.', whyTitle: 'A profession built on trust deserves a website to match.',
+    why: [
+      b('Inspire confidence', 'A business owner entrusts their accounts to a firm they judge to be serious from the first visit: the website is the first proof.'),
+      b('Make the offer clear', 'Accounting, advisory, audit, payroll: each visitor should find what concerns them within seconds.'),
+      b('Lead to an appointment', 'Journeys designed to take the visitor straight to getting in touch or booking an appointment.'),
+      b('Be found locally', 'Rankings on your future clients’ searches, in the cities where the firm is based.')
+    ],
+    refTitle: 'Our references in accounting and advisory',
+    faq: [
+      ['Have you worked for accounting or advisory firms before?', 'Yes. We built the website of Groupe ACOI, an accounting, advisory and audit firm based in Versailles and on Réunion Island, the website of 2R Consolidation, a firm specialising in consolidated accounts, and the landing page of Expert PME, an advisory firm for owners of small and medium-sized businesses.'],
+      ['Can the website give access to a client area?', 'Yes. The Groupe ACOI website, for example, gives access to a private client area and to the firm’s e-invoicing service.'],
+      ['Do we need a full website or just a landing page?', 'It depends on your goal. A showcase website presents the whole firm; a landing page serves one specific offer, like the one for Expert PME, built around getting in touch. We advise you after an initial conversation.']
+    ],
+    cta: 'A project for your firm?'
+  },
+  'beaute-sante': {
+    crumbParent: 'Industries', crumb: 'Beauty & health', eyebrow: 'Beauty and health brands',
+    title: 'Digital agency for beauty & health brands', description: 'Digital agency for beauty and health brands: social media content, advertising campaigns and online stores, with measured results.',
+    h1: 'Digital expertise for beauty and health brands.',
+    sub: 'Social media content, advertising campaigns, online stores: we help beauty and health brands look after their image and reach their audience on social networks.',
+    svcTitle: 'Our services for beauty and health brands.', whyTitle: 'In these sectors, image makes the difference.',
+    why: [
+      b('A polished image', 'Quality product visuals, true to the brand’s identity in every post.'),
+      b('Regular content', 'An editorial line and formats designed for TikTok and Instagram, where your audience is.'),
+      b('Measured campaigns', 'Reach, views, interactions: every campaign is tracked in dashboards shared with you.'),
+      b('A consistent identity', 'The same brand universe on the website, social networks and advertising.')
+    ],
+    refTitle: 'Our references in beauty and health',
+    faq: [
+      ['Do you have references in beauty and health?', 'Yes. We ran a product campaign for Brasileia Cosmetics (1.8 million views, 996,000 people reached) and a health communication campaign for Laboratoire Jardins de Carthage, as well as campaigns for several beauty and health brands.'],
+      ['Do you handle both social media and advertising?', 'Yes. Content and campaigns are designed together: product visuals serve posts as well as ads, and results are tracked in the same dashboards.'],
+      ['Do you also build online stores?', 'Yes. For example, we built the Shopify store of the brand Maison SKL.']
+    ],
+    cta: 'A project for your brand?'
   }
 }
 
@@ -361,6 +402,6 @@ const LOCAL_PROJECT_TEXT_EN: Record<string, { label: string; desc?: string; metr
 }
 
 /** Textes anglais des réalisations gérées dans l'admin (un champ vide reprend le français) */
-export const PROJECT_TEXT_EN: Record<string, { label?: string; desc?: string; metric?: string }> = cms?.projects?.length
-  ? Object.fromEntries(cms.projects.map(c => [c.slug, { label: c.en.label || undefined, desc: c.en.desc || undefined, metric: c.en.metric || undefined }]))
+export const PROJECT_TEXT_EN: Record<string, { label?: string; desc?: string; metric?: string; study?: CmsStudy }> = cms?.projects?.length
+  ? Object.fromEntries(cms.projects.map(c => [c.slug, { label: c.en.label || undefined, desc: c.en.desc || undefined, metric: c.en.metric || undefined, study: c.en.study }]))
   : LOCAL_PROJECT_TEXT_EN

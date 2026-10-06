@@ -30,6 +30,8 @@
       </div>
     </section>
 
+    <TechStack />
+
     <section class="container proof">
       <div class="proof__head">
         <h2 class="h2 h2--48">{{ t.proof }}</h2>
@@ -53,17 +55,13 @@
 
 <script setup lang="ts">
 import { serviceIconPath } from '~/data/serviceIcons'
+import { SERVICE_FAMILIES } from '~/data/content'
 const { en, link, services, projects, serviceFaq, serviceSeo } = useSite()
 const byslug = (slug: string) => services.value.find(sv => sv.slug === slug)
-// Les neuf expertises regroupées en trois familles (slugs FR)
-const FAMILIES = [
-  ['creation-site-web', 'refonte-site-web', 'maintenance-site-web'],
-  ['application-metier', 'creation-saas', 'application-mobile'],
-  ['referencement-seo-geo', 'marketing-digital-ads', 'social-media']
-]
+// Les neuf expertises regroupées en trois familles (SERVICE_FAMILIES, source unique du regroupement)
 // Une réalisation par famille, dans le même ordre : site web, application, campagne d'acquisition
 const proofs = computed(() => ['powercell-group', 'karoo', 'yassir'].map(slug => projects.value.find(p => p.slug === slug)).filter(Boolean) as typeof projects.value)
-const groups = computed(() => FAMILIES.map((slugs, i) => ({ ...t.value.families[i]!, items: slugs.map(byslug).filter(Boolean) as typeof services.value })))
+const groups = computed(() => SERVICE_FAMILIES.map(f => ({ title: f.title[en.value ? 'en' : 'fr'], text: f.text[en.value ? 'en' : 'fr'], items: f.slugs.map(byslug).filter(Boolean) as typeof services.value })))
 const t = useLocaleText({
   fr: {
     home: 'Accueil', crumb: 'Expertises', h1seo: 'Nos expertises : sites web, applications, SEO et publicité', h1: 'Neuf expertises. Une seule équipe. Un objectif : votre croissance.',
@@ -77,11 +75,6 @@ const t = useLocaleText({
       { q: 'J’ai besoin de demandes rapidement', slug: 'marketing-digital-ads' },
       { q: 'Mes équipes perdent du temps dans des fichiers Excel', slug: 'application-metier' },
       { q: 'J’ai une idée de produit en ligne à lancer', slug: 'creation-saas' }
-    ],
-    families: [
-      { title: 'Sites web', text: 'Créer votre site, le refaire quand il a vieilli, et le garder rapide et sûr dans la durée.' },
-      { title: 'Applications & SaaS', text: 'Des outils sur mesure pour vos équipes, vos clients ou un nouveau produit à commercialiser.' },
-      { title: 'Visibilité & acquisition', text: 'Être trouvé sur Google et dans les IA, puis transformer cette audience en demandes.' }
     ],
     ctaTitle: 'Un projet en tête ?', ctaText: 'Décrivez-nous votre besoin : nous revenons vers vous avec une recommandation claire et un devis personnalisé.',
     title: 'Agence web & marketing digital : nos expertises', desc: 'Création, refonte et maintenance de sites, applications métier, SaaS et mobiles, SEO & GEO, publicité en ligne et social media : neuf expertises à Paris.'
@@ -98,11 +91,6 @@ const t = useLocaleText({
       { q: 'I need enquiries quickly', slug: 'marketing-digital-ads' },
       { q: 'My team wastes time in Excel files', slug: 'application-metier' },
       { q: 'I have an online product idea to launch', slug: 'creation-saas' }
-    ],
-    families: [
-      { title: 'Websites', text: 'Build your site, redesign it when it has aged, and keep it fast and secure over time.' },
-      { title: 'Applications & SaaS', text: 'Custom tools for your team, your customers or a new product to bring to market.' },
-      { title: 'Visibility & acquisition', text: 'Get found on Google and in AI tools, then turn that audience into enquiries.' }
     ],
     ctaTitle: 'Got a project in mind?', ctaText: 'Tell us what you need: we’ll come back to you with a clear recommendation and a tailored quote.',
     title: 'Web & digital marketing agency: our services', desc: 'Website design, redesign and maintenance, business software, SaaS and mobile apps, SEO & GEO, paid ads and social media: nine areas of expertise in Paris.'
@@ -145,7 +133,7 @@ useHead({
 .fam { padding-bottom: 80px; }
 .fam__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; margin-bottom: 32px; }
 .fam__p { max-width: 460px; font-size: 16px; line-height: 1.55; color: var(--muted); }
-.proof { padding-bottom: var(--section-y); }
+.proof { padding-top: var(--section-y); padding-bottom: var(--section-y); }
 .proof__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
 .terms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 64px; }
 .terms__list { grid-column: span 2; }

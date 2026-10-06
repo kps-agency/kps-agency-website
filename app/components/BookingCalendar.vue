@@ -91,7 +91,7 @@
       <label class="bk__full">{{ t.message }}<textarea v-model="form.message" rows="3" :placeholder="t.messagePh" /></label>
       <!-- Champ piège : invisible pour les humains -->
       <label class="bk__hp" aria-hidden="true">Website<input v-model="form.website" type="text" tabindex="-1" autocomplete="off"></label>
-      <label class="bk__consent"><input v-model="form.consent" type="checkbox"><span>{{ t.consent }} <NuxtLink :to="link.legal('#article-7')" target="_blank">{{ t.privacy }}</NuxtLink>.</span></label>
+      <label class="bk__consent"><input v-model="form.consent" type="checkbox"><span>{{ t.consent }} <NuxtLink :to="link.privacy()" target="_blank">{{ t.privacy }}</NuxtLink>.</span></label>
 
       <p v-if="error" class="bk__error" role="alert">{{ error }}</p>
       <div class="bk__actions">
@@ -262,6 +262,7 @@ async function book() {
     })
     result.value = res
     step.value = 'done'
+    useTrack().booking(form.mode)
   } catch (e: unknown) {
     const status = (e as { statusCode?: number })?.statusCode
     if (status === 409) {

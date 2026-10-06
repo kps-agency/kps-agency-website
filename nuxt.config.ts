@@ -1,4 +1,22 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+// Politique de sécurité du contenu, en mode rapport : rien n'est bloqué, les écarts s'affichent dans la console du navigateur.
+// Une fois la console propre sur les pages clés (accueil, contact, rendez-vous, blog, admin), renommer l'en-tête en
+// 'content-security-policy' pour l'appliquer. 'unsafe-inline' reste nécessaire : Nuxt insère des scripts et des styles dans la page.
+// API de réservation hébergée ailleurs que le site (NUXT_PUBLIC_BOOKING_API) : son origine est autorisée pour les appels du navigateur
+const BOOKING_ORIGIN = (process.env.NUXT_PUBLIC_BOOKING_API || '').match(/^https:\/\/[^/]+/)?.[0] ?? ''
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob: https://res.cloudinary.com https://www.googletagmanager.com https://*.google-analytics.com",
+  "font-src 'self' data:",
+  `connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.supabase.co https://api.cloudinary.com ${BOOKING_ORIGIN}`.trim(),
+  "frame-ancestors 'self'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'"
+].join('; ')
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-09-01',
   devtools: { enabled: false },
@@ -64,6 +82,10 @@ export default defineNuxtConfig({
       'agence-digitale/[slug]': { fr: '/agence-digitale/[slug]', en: '/digital-agency/[slug]' },
       'cgv': { fr: '/cgv', en: '/terms' },
       'mentions-legales': { fr: '/mentions-legales', en: '/legal-notice' },
+      'politique-de-confidentialite': { fr: '/politique-de-confidentialite', en: '/privacy-policy' },
+      'merci': { fr: '/merci', en: '/thank-you' },
+      'audit-gratuit': { fr: '/audit-gratuit', en: '/free-audit' },
+      'blog/auteur/[slug]': { fr: '/blog/auteur/[slug]', en: '/blog/author/[slug]' },
       'rendez-vous': { fr: '/rendez-vous', en: '/book-a-call' },
       'blog/index': { fr: '/blog', en: '/blog' },
       'blog/page/[n]': { fr: '/blog/page/[n]', en: '/blog/page/[n]' },
@@ -93,8 +115,8 @@ export default defineNuxtConfig({
   // Cache navigateur des fichiers de public/ (mêmes durées que public/.htaccess) ; /_nuxt/** est déjà versionné et mis en cache 1 an.
   // Ces fichiers ne sont pas versionnés : renommer une image remplacée pour qu'elle soit visible tout de suite.
   routeRules: {
-    // En-têtes de sécurité sur toutes les réponses (pas de CSP ici : à introduire d'abord en mode Report-Only)
-    '/**': { headers: { 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'x-frame-options': 'SAMEORIGIN', 'permissions-policy': 'camera=(), microphone=(), geolocation=()' } },
+    // En-têtes de sécurité sur toutes les réponses ; la CSP est en mode rapport (voir la constante CSP en haut du fichier)
+    '/**': { headers: { 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'x-frame-options': 'SAMEORIGIN', 'permissions-policy': 'camera=(), microphone=(), geolocation=()', 'content-security-policy-report-only': CSP } },
     ...Object.fromEntries(
       ['/images/**', '/logo-kps.webp', '/logo-kps-150.webp', '/og-image.jpg', '/favicon.ico', '/icon-32.png', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png']
         .map(path => [path, { headers: { 'cache-control': 'public, max-age=2592000, stale-while-revalidate=86400' } }])
@@ -109,7 +131,8 @@ export default defineNuxtConfig({
     serverAssets: [{ baseName: 'blog', dir: '../content/blog' }],
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/en', '/sitemap.xml', '/llms.txt', '/blog/rss.xml', '/en/blog/rss.xml'],
+      // /merci n'est lié depuis aucune page (on y arrive après l'envoi du formulaire) : à prérendre explicitement
+      routes: ['/', '/en', '/merci', '/en/thank-you', '/sitemap.xml', '/llms.txt', '/blog/rss.xml', '/en/blog/rss.xml'],
       // /services → services.html (et non services/index.html) : URL sans slash final, servie par public/.htaccess
       autoSubfolderIndex: false
     }

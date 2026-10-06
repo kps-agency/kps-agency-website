@@ -5,6 +5,7 @@
       <div class="head__tags">
         <span class="head__tag head__tag--dark">{{ catLabel[project.cat] }}</span>
         <span class="head__tag">{{ project.label }}</span>
+        <span v-if="study?.duration" class="head__tag">{{ t.duration }} {{ study.duration }}</span>
       </div>
       <h1 class="head__h1">{{ project.client }} — {{ project.label }}</h1>
       <p class="lead head__sub">{{ c.sub }}</p>
@@ -21,7 +22,7 @@
     </section>
 
     <section v-if="c.kpis.length" class="container kpis">
-      <div class="grid grid-3">
+      <div class="grid" :class="c.kpis.length === 4 ? 'grid-4' : 'grid-3'">
         <div v-for="k in c.kpis" :key="k.l" class="card kpi"><span class="kpi__v">{{ k.v }}</span><span class="kpi__l">{{ k.l }}</span></div>
       </div>
     </section>
@@ -31,11 +32,24 @@
         <div class="eyebrow block__k">{{ b.k }}</div>
         <div class="block__body">
           <h2 class="block__t">{{ b.t }}</h2>
-          <p v-if="b.d" class="block__d">{{ b.d }}</p>
+          <p v-for="(para, i) in b.paras" :key="i" class="block__d">{{ para }}</p>
           <NuxtLink v-if="b.link" :to="b.link.to" class="block__link">{{ b.link.label }} →</NuxtLink>
         </div>
       </div>
     </section>
+
+    <!-- Témoignage du client : seulement avec une citation et un auteur -->
+    <section v-if="hasQuote(project)" class="container quote-wrap">
+      <figure class="quote">
+        <blockquote class="quote__q">« {{ study!.quote }} »</blockquote>
+        <figcaption class="quote__who">
+          <img v-if="study!.quotePhoto" :src="small(study!.quotePhoto)" alt="" class="quote__photo" width="56" height="56" loading="lazy" decoding="async">
+          <span><strong>{{ study!.quoteAuthor }}</strong><span>{{ [study!.quoteRole, project.client].filter(Boolean).join(' · ') }}</span></span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <CtaBand :title="t.ctaTitle" :label="t.ctaLabel" />
 
     <section class="container next-wrap">
       <NuxtLink :to="link.project(next.slug)" class="next">
@@ -47,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { isCaseStudy, type ProjectCat } from '~/data/content'
+import { hasQuote, isCaseStudy, type ProjectCat } from '~/data/content'
 
 const route = useRoute()
 const { en, link, projects, services, catLabel } = useSite()
@@ -55,11 +69,13 @@ const project = computed(() => projects.value.find(p => p.slug === String(route.
 if (!project.value) throw createError({ statusCode: 404, statusMessage: 'Projet introuvable', fatal: true })
 
 const t = useLocaleText({
-  fr: { home: 'Accueil', work: 'Réalisations', visit: 'Voir le site', next: 'Projet suivant', expertise: 'Expertise mobilisée', discover: 'Découvrir notre offre' },
-  en: { home: 'Home', work: 'Our work', visit: 'Visit', next: 'Next project', expertise: 'Expertise involved', discover: 'Discover our service:' }
+  fr: { home: 'Accueil', work: 'Réalisations', visit: 'Voir le site', next: 'Projet suivant', expertise: 'Expertise mobilisée', discover: 'Découvrir notre offre', duration: 'Durée :', context: 'Le contexte', contextT: 'Le point de départ', workK: 'Notre intervention', workT: 'Ce que nous avons fait', results: 'Les résultats', resultsT: 'Ce qui a changé', ctaTitle: 'Un projet similaire ?', ctaLabel: 'Parler de votre projet' },
+  en: { home: 'Home', work: 'Our work', visit: 'Visit', next: 'Next project', expertise: 'Expertise involved', discover: 'Discover our service:', duration: 'Duration:', context: 'The context', contextT: 'The starting point', workK: 'Our work', workT: 'What we did', results: 'The results', resultsT: 'What changed', ctaTitle: 'A similar project?', ctaLabel: 'Discuss your project' }
 })
 
-// Indicateurs publiés sur kps-agency.com
+const study = computed(() => project.value!.study)
+
+// Indicateurs publiés sur kps-agency.com : utilisés tant que l'étude de cas n'a pas ses propres chiffres clés (admin)
 const KPIS: Record<string, { v: string; fr: string; en: string }[]> = {
   yassir: [{ v: '5M', fr: 'paid reach', en: 'paid reach' }, { v: '3.9M', fr: 'reach Facebook', en: 'Facebook reach' }, { v: '1.4M', fr: 'reach Instagram', en: 'Instagram reach' }],
   zayn: [{ v: '308.8K', fr: 'couverture', en: 'reach' }, { v: '6.5K', fr: 'interactions', en: 'interactions' }],
@@ -71,7 +87,8 @@ const KPIS: Record<string, { v: string; fr: string; en: string }[]> = {
 // Service mobilisé selon le type de projet : maillage interne vers la page d'expertise
 const SERVICE_BY_CAT: Record<ProjectCat, string> = { Web: 'web', ADS: 'ads', Social: 'social' }
 
-interface Block { k: string; t: string; d: string; link?: { to: string; label: string } }
+interface Block { k: string; t: string; paras: string[]; link?: { to: string; label: string } }
+const paras = (text = '') => text.split(/\n+/).map(x => x.trim()).filter(Boolean)
 const c = computed(() => {
   const p = project.value!
   const svc = services.value.find(s => s.key === SERVICE_BY_CAT[p.cat])!
@@ -82,8 +99,14 @@ const c = computed(() => {
       ? `Website project by KPS Agency for ${p.client}, a company in the ${p.label.toLowerCase()} sector${p.url ? ': see the live website' : ''}.`
       : `Réalisation web de KPS Agency pour ${p.client}, acteur du secteur ${p.label.toLowerCase()}${p.url ? ' : découvrez le site en ligne' : ''}.`
   // Pas de texte de présentation du service ici : il est identique d'un projet à l'autre et figure déjà sur la page de l'expertise
-  const blocks: Block[] = [{ k: t.value.expertise, t: svc.crumb, d: '', link: { to: link.service(svc.slug), label: `${t.value.discover} ${svc.crumb.toLowerCase()}` } }]
-  const kpis = (KPIS[p.slug] ?? []).map(k => ({ v: k.v, l: en.value ? k.en : k.fr }))
+  // Étude de cas : seuls les volets renseignés dans l'admin sont affichés, puis l'expertise mobilisée
+  const blocks: Block[] = [
+    { k: t.value.context, t: t.value.contextT, paras: paras(p.study?.context) },
+    { k: t.value.workK, t: t.value.workT, paras: paras(p.study?.work) },
+    { k: t.value.results, t: t.value.resultsT, paras: paras(p.study?.results) }
+  ].filter(b => b.paras.length)
+  blocks.push({ k: t.value.expertise, t: svc.crumb, paras: [], link: { to: link.service(svc.slug), label: `${t.value.discover} ${svc.crumb.toLowerCase()}` } })
+  const kpis = p.study?.kpis.length ? p.study.kpis : (KPIS[p.slug] ?? []).map(k => ({ v: k.v, l: en.value ? k.en : k.fr }))
   return { sub, kpis, blocks, hasDesc }
 })
 
@@ -93,7 +116,7 @@ const next = computed(() => {
 })
 
 const site = useRuntimeConfig().public.siteUrl as string
-const { image, avif, absolute } = useCloudImage()
+const { image, avif, small, absolute } = useCloudImage()
 const metaDesc = computed(() => {
   const p = project.value!
   if (c.value.hasDesc && p.desc.length >= 110) return p.desc
@@ -120,7 +143,7 @@ usePageSeo({
   title: () => pageTitle.value,
   description: metaDesc,
   image: () => image(project.value!.img),
-  noindex: () => !isCaseStudy(project.value!.desc),
+  noindex: () => !isCaseStudy(project.value!),
   type: 'article'
 })
 useHead({
@@ -162,7 +185,14 @@ useHead({
 .block__d { font-size: 18px; line-height: 1.65; color: var(--muted); }
 .block__link { align-self: flex-start; font-size: 16px; font-weight: 600; color: var(--accent); }
 .block__link:hover { color: var(--accent-hover); text-decoration: underline; }
-.next-wrap { padding-bottom: var(--section-y); }
+.quote-wrap { padding-bottom: var(--section-y); }
+.quote { display: flex; flex-direction: column; gap: 28px; margin: 0; padding: 56px; border-radius: 28px; background: var(--surface); border: 1px solid var(--line); }
+.quote__q { margin: 0; max-width: 900px; font-family: var(--font-display); font-size: 32px; line-height: 1.3; letter-spacing: -.6px; font-weight: 700; }
+.quote__who { display: flex; align-items: center; gap: 16px; }
+.quote__who > span { display: flex; flex-direction: column; gap: 2px; font-size: 16px; color: var(--muted); }
+.quote__who strong { color: var(--ink); }
+.quote__photo { flex: none; width: 56px; height: 56px; border-radius: 999px; object-fit: cover; }
+.next-wrap { padding-top: var(--section-y); padding-bottom: var(--section-y); }
 .next { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 48px 56px; border-radius: 28px; background: var(--deep); color: var(--white); }
 .next:hover { color: var(--white); background: var(--deep-hover); }
 .next__text { display: flex; flex-direction: column; gap: 8px; }
@@ -184,6 +214,8 @@ useHead({
   .visual { border-radius: 18px; }
   .blocks { padding-top: 64px; gap: 40px; }
   .block__t { font-size: 28px; }
+  .quote { padding: 28px 24px; border-radius: 18px; }
+  .quote__q { font-size: 22px; }
   .next { padding: 32px 24px; }
   .next__t { font-size: 28px; }
 }

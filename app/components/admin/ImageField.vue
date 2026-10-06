@@ -10,7 +10,7 @@
         <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" :disabled="busy || !name" @change="onFile">
       </label>
       <button v-if="model && removable" type="button" class="adm-btn adm-btn--sm adm-btn--danger" @click="model = null; preview = ''">Retirer</button>
-      <p class="adm-note">{{ name ? 'Format 16:9 conseillé, 1600 px de large. JPG, PNG, WebP ou AVIF, 10 Mo maximum.' : 'Renseignez d’abord le slug.' }}</p>
+      <p class="adm-note">{{ name ? (hint ?? 'Format 16:9 conseillé, 1600 px de large. JPG, PNG, WebP ou AVIF, 10 Mo maximum.') : 'Renseignez d’abord le slug.' }}</p>
       <p v-if="error" class="adm-error" role="alert">{{ error }}</p>
     </div>
   </div>
@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 // Image envoyée sur Cloudinary sous kps/<dossier>/<nom> ; la valeur enregistrée est le chemin /images/<dossier>/<nom>.webp
-const props = defineProps<{ folder: 'blog' | 'realisations'; name: string; removable?: boolean }>()
+const props = defineProps<{ folder: 'blog' | 'realisations'; name: string; removable?: boolean; /** Conseil de format affiché sous le bouton */ hint?: string }>()
 const model = defineModel<string | null>()
 const { uploadImage } = useAdmin()
 const { image } = useCloudImage()

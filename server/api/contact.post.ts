@@ -4,6 +4,8 @@ interface ContactBody {
   services?: string[]; budget?: string; timing?: string; message?: string; consent?: boolean
   // Formulaire court de l'accueil
   need?: string; msg?: string
+  // Demande d'audit gratuit (/audit-gratuit)
+  source?: string
   hp?: string // champ piège anti-spam (jamais rempli par un humain)
 }
 
@@ -45,7 +47,7 @@ export default defineEventHandler(async (event) => {
   const [saved, mailed] = await Promise.allSettled([
     db
       ? db.from('leads').insert({
-          locale, source: fromContactPage ? 'contact' : 'accueil',
+          locale, source: fromContactPage ? 'contact' : body?.source === 'audit' ? 'audit' : 'accueil',
           services: fromContactPage ? body!.services!.slice(0, 10).map(s => clean(s, 20)).filter(s => s in SERVICES) : (needs ? [needs] : []),
           budget: budget || null, timing: timing || null, message: message || null, name, company: company || null, email,
           phone: phone || null, website: website || null, consent_at: body?.consent === true ? new Date().toISOString() : null

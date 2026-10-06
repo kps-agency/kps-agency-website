@@ -3,7 +3,7 @@
     <div v-if="ready && consent === null" class="cc" role="dialog" aria-live="polite" :aria-label="t.title">
       <div class="cc__text">
         <strong class="cc__title">{{ t.title }}</strong>
-        <p>{{ t.text }} <NuxtLink :to="link.legal('#article-7')">{{ t.more }}</NuxtLink></p>
+        <p>{{ t.text }} <NuxtLink :to="link.privacy()">{{ t.more }}</NuxtLink></p>
       </div>
       <div class="cc__actions">
         <button type="button" class="btn btn--ghost btn--sm" @click="refuse">{{ t.refuse }}</button>
