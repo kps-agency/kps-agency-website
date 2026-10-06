@@ -10,6 +10,15 @@ export const CONTACT = {
   address: '59 rue de Ponthieu, 75008'
 }
 
+/** Pages officielles sur les réseaux sociaux : coller l'adresse complète de chaque page. Un réseau laissé vide n'est affiché nulle part.
+ *  Ces adresses alimentent les icônes du pied de page et les données structurées (schema sameAs). */
+export const SOCIAL = {
+  linkedin: 'https://www.linkedin.com/company/kps-agency-paris',
+  facebook: 'https://www.facebook.com/profile.php?id=61594798874482',
+  instagram: 'https://www.instagram.com/kps.agency.ia'
+}
+export const SOCIAL_LINKS = (Object.entries(SOCIAL) as [keyof typeof SOCIAL, string][]).filter(([, url]) => url.startsWith('https://'))
+
 /* ---------------- Identité légale & données structurées ---------------- */
 export const COMPANY = {
   name: 'KPS Agency',
@@ -18,8 +27,8 @@ export const COMPANY = {
   street: '59 rue de Ponthieu',
   postalCode: '75008',
   city: 'Paris',
-  // Profils officiels (Google Business Profile, LinkedIn, Instagram…) : à compléter pour relier la marque (schema sameAs)
-  sameAs: [] as string[]
+  // Profils officiels reliés à la marque (schema sameAs) : réseaux sociaux de SOCIAL, plus d'autres profils à ajouter ici (fiche Google…)
+  sameAs: [...SOCIAL_LINKS.map(([, url]) => url)] as string[]
 }
 const hasPhone = !CONTACT.phone.startsWith('[')
 

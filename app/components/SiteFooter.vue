@@ -6,6 +6,7 @@
           <SiteLogo light />
           <p class="footer__desc">{{ t.desc }}</p>
           <address class="footer__contact">{{ CONTACT.address }} Paris<br><template v-if="!CONTACT.phone.startsWith('[')"><a :href="`tel:${CONTACT.phoneE164}`">{{ CONTACT.phone }}</a><br></template><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></address>
+          <SocialLinks />
         </div>
         <div v-for="c in footerCols" :key="c.title" class="footer__col">
           <div class="footer__title">{{ c.title }}</div>

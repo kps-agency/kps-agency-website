@@ -303,6 +303,7 @@
             <SiteLogo light />
             <p>{{ t.footer.desc }}</p>
             <address>{{ CONTACT.address }} Paris<br><a :href="`mailto:${CONTACT.email}`">{{ CONTACT.email }}</a></address>
+            <SocialLinks />
           </div>
           <div v-for="col in footerCols" :key="col.title" class="hfoot__col">
             <div class="hfoot__title">{{ col.title }}</div>
@@ -384,7 +385,7 @@ useHead({
   }]
 })
 
-// Réalisations : 6 projets par onglet ; « Tous » alterne Web, Social et ADS
+// Réalisations : les 6 dernières par onglet
 const ICON_EXTERNAL = '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>'
 const PF_ICONS: Record<string, string> = {
   social: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>',
@@ -393,14 +394,16 @@ const PF_ICONS: Record<string, string> = {
 }
 const CAT_TAB: Record<string, string> = { Web: 'web', Social: 'social', ADS: 'ads' }
 const PF_TABS = ['all', 'web', 'social', 'ads'] as const
-const PF_SLUGS: Record<string, string[]> = {
-  all: ['powercell-group', 'zayn', 'yassir', 'cushman-wakefield-veritas', 'kpmg', 'groupado-pro'],
-  web: ['powercell-group', 'fibbl', 'foscolo', 'cushman-wakefield-veritas', 'dunstan', 'copenhagen-energy'],
-  social: ['kpmg', 'zayn', 'br-finanzen', 'campagnes-beaute-sante', 'jardins-de-carthage'],
-  ads: ['yassir', 'groupado-pro', 'lore-and-heart', 'galeries-live', 'brasileia-cosmetics', 'tunisia-franchise-show']
-}
+const PF_COUNT = 6
 const pfTab = ref<string>('all')
-const pfShown = computed(() => PF_SLUGS[pfTab.value]!.map(slug => projects.value.find(x => x.slug === slug)!).filter(Boolean))
+// Même ordre que l'admin et que /realisations : les dernières réalisations en premier dans chaque catégorie.
+// « Tous » mélange les catégories : la plus récente de chacune, puis la suivante de chacune, etc.
+const pfShown = computed(() => {
+  const byTab = (tab: string) => projects.value.filter(x => CAT_TAB[x.cat] === tab)
+  if (pfTab.value !== 'all') return byTab(pfTab.value).slice(0, PF_COUNT)
+  const lists = PF_TABS.filter(tab => tab !== 'all').map(byTab)
+  return Array.from({ length: PF_COUNT }, (_, rank) => lists.flatMap(list => list.slice(rank, rank + 1))).flat().slice(0, PF_COUNT)
+})
 
 // Bloc final : onglet « devis » ou « appel » (les liens #rendez-vous ouvrent directement l'appel)
 // Technologies : sur mobile, seules deux familles sont affichées tant qu'on n'a pas déplié
@@ -584,7 +587,7 @@ async function submit() {
 .pf__body { display: flex; flex-direction: column; flex: 1; padding: 32px; background: linear-gradient(180deg, rgba(15, 23, 42, .4), rgba(15, 23, 42, .8)); }
 .pf__title { margin-bottom: 12px; font-family: var(--font-body); font-size: 24px; line-height: 1.25; font-weight: 700; transition: color .3s; }
 .pf__card:hover .pf__title { color: var(--accent-light); }
-.pf__desc { font-size: 16px; line-height: 1.625; color: var(--muted-2); }
+.pf__desc { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; font-size: 16px; line-height: 1.625; color: var(--muted-2); }
 .pf__more { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 24px; font-size: 14px; font-weight: 500; letter-spacing: .35px; text-transform: uppercase; color: var(--muted-2); transition: color .3s; }
 .pf__more i { display: flex; align-items: center; justify-content: center; flex: none; width: 40px; height: 40px; border-radius: 999px; background: rgba(30, 41, 59, .8); border: 1px solid #334155; transition: background .3s, border-color .3s, transform .3s; }
 .pf__card:hover .pf__more { color: #67E8F9; }
