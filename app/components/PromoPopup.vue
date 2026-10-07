@@ -82,8 +82,9 @@ const t = useLocaleText({
   }
 })
 
-// Le site est figé au build : la période de la promotion est évaluée dans le navigateur, au moment de l'affichage
-const promo = computed(() => currentPromo(cms?.promos, new Date().toISOString().slice(0, 10)))
+// Le site est figé au build : la période de la promotion est évaluée dans le navigateur, au moment de l'affichage.
+// Jour du visiteur (et non le jour UTC, en retard d'une à deux heures sur Paris) : une promotion qui commence le 8 est visible le 8 dès minuit.
+const promo = computed(() => currentPromo(cms?.promos, localDay(new Date())))
 const title = computed(() => (en.value && promo.value?.textEn) || promo.value?.text)
 const details = computed(() => (en.value && promo.value?.detailsEn) || promo.value?.details)
 const cta = computed(() => (en.value && promo.value?.ctaLabelEn) || promo.value?.ctaLabel)
