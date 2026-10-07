@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <PromoBar />
+    <PromoPopup />
     <SiteHeader />
     <main id="contenu">
       <slot />

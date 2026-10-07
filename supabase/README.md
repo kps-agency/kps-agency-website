@@ -6,7 +6,8 @@
 | Réalisations | `projects` | Lue **au build** (`modules/cms.ts`) : dès que la table contient une réalisation, elle **remplace** la liste de `app/data/content.ts` |
 | Comptes autorisés sur `/admin` | `admins` | Lue à chaque connexion à l'admin et par les routes `/api/admin` |
 | Expertises (textes modifiés) | `services` | Lue **au build** : les textes enregistrés s'appliquent **par-dessus** ceux de `app/data/content.ts` |
-| Promotions (bandeau du site) | `promos` | Lue **au build** ; la période d'affichage est recalculée dans le navigateur |
+| Promotions (fenêtre du site) | `promos` | Lue **au build** ; la période d'affichage est recalculée dans le navigateur |
+| Adresses laissées dans la fenêtre de promotion | `promo_signups` | Écrite à l'exécution par `POST /api/promo` (migration `20261008000000_kps_promo_popup.sql`) |
 | Avis clients | `reviews` | Lue **au build** : dès que la table contient un avis, elle **remplace** la liste de `app/data/content.ts` |
 | Mesures de performance | `perf_snapshots` | Écrite par l'admin à chaque mesure PageSpeed (rubrique Performances) |
 | Demandes de contact / devis | `leads` | Écrite à l'exécution par `POST /api/contact` (page Contact et formulaire de l'accueil) |

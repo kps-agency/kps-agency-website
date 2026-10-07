@@ -47,7 +47,7 @@ async function loadCms(url: string, key: string): Promise<CmsData> {
       en: { label: p.label_en ?? '', desc: p.description_en ?? '', metric: p.metric_en ?? '', study: study(p, '_en') }
     })),
     promos: (promos.data ?? []).map(p => ({
-      text: p.text, textEn: p.text_en ?? '', ctaLabel: p.cta_label ?? '', ctaLabelEn: p.cta_label_en ?? '', ctaUrl: p.cta_url ?? '',
+      id: p.id, text: p.text, textEn: p.text_en ?? '', details: p.details ?? '', detailsEn: p.details_en ?? '', ctaLabel: p.cta_label ?? '', ctaLabelEn: p.cta_label_en ?? '', ctaUrl: p.cta_url ?? '',
       startsOn: p.starts_on ?? '', endsOn: p.ends_on ?? ''
     })),
     reviews: (reviews.data ?? []).map(r => ({ name: r.name, date: r.month, text: r.text, rating: r.rating, truncated: r.truncated, translated: r.translated })),

@@ -15,8 +15,8 @@ export interface CmsProject {
   study: CmsStudy
   en: { label: string; desc: string; metric: string; study: CmsStudy }
 }
-/** Promotion affichée en bandeau (table promos) ; dates AAAA-MM-JJ, '' = sans limite */
-export interface CmsPromo { text: string; textEn: string; ctaLabel: string; ctaLabelEn: string; ctaUrl: string; startsOn: string; endsOn: string }
+/** Promotion affichée en fenêtre (table promos, composant PromoPopup) ; text = titre de l'offre, details = présentation ; dates AAAA-MM-JJ, '' = sans limite */
+export interface CmsPromo { id: string; text: string; textEn: string; details: string; detailsEn: string; ctaLabel: string; ctaLabelEn: string; ctaUrl: string; startsOn: string; endsOn: string }
 /** Avis client (table reviews) ; date AAAA-MM */
 export interface CmsReview { name: string; date: string; text: string; rating: number; truncated: boolean; translated: boolean }
 /** Textes d'une expertise modifiés dans l'admin (table services), dans une langue : seuls les champs présents remplacent ceux du code */

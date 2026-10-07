@@ -47,7 +47,7 @@ export const adminError = (e: unknown) => {
   const err = e as { code?: string; message?: string; statusMessage?: string; data?: { statusMessage?: string } }
   if (err?.code === '23505') return 'Ce slug est déjà utilisé.'
   // Table ou colonne absente : la migration du tableau de bord n'a pas encore été exécutée
-  if (['PGRST205', 'PGRST204', '42P01', '42703'].includes(err?.code ?? '')) return 'Base de données à mettre à jour : exécutez supabase/migrations/20261007000000_kps_dashboard.sql dans Supabase.'
+  if (['PGRST205', 'PGRST204', '42P01', '42703'].includes(err?.code ?? '')) return 'Base de données à mettre à jour : exécutez dans Supabase les migrations de supabase/migrations qui ne l’ont pas encore été.'
   if (err?.code === '42501') return 'Votre compte n’a pas le droit de modifier ce contenu.'
   return err?.data?.statusMessage || err?.statusMessage || err?.message || 'Une erreur est survenue.'
 }

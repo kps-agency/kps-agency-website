@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <PromoBar />
+    <PromoPopup />
     <!-- TOP BAR -->
     <div class="topbar" role="region" :aria-label="en ? 'Key information' : 'Informations clés'">
       <template v-for="(b, i) in t.topbar" :key="b"><span v-if="i" class="topbar__dot">·</span><span>{{ b }}</span></template>
