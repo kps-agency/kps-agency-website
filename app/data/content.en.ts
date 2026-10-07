@@ -1,7 +1,7 @@
 // English content — same shapes as content.ts (French is the source of truth for structure, slugs and media).
 import cms from '#cms'
-import type { CmsStudy } from '../../shared/cms'
-import type { Benefit, LocalPage, Offer, ProjectCat, Service, Step } from './content'
+import { splitServiceText, type CmsStudy } from '#shared/cms'
+import { toStudy, type Benefit, type LocalPage, type Offer, type Project, type ProjectCat, type Service, type Step } from './content'
 
 const o = (n: string, t: string, d: string, tags: string[]): Offer => ({ n, t, d, tags })
 const s = (n: string, t: string, d: string): Step => ({ n, t, d })
@@ -30,7 +30,7 @@ const COMMON_STEPS = [
 ]
 
 /** Service texts, keyed by French slug (slug, key, num and related projects come from content.ts) */
-export const SERVICES_EN: Record<string, Omit<Service, 'slug' | 'key' | 'num' | 'related'>> = {
+const LOCAL_SERVICES_EN: Record<string, Omit<Service, 'slug' | 'key' | 'num' | 'related'>> = {
   'creation-site-web': {
     crumb: 'Website design', eyebrow: 'Website design',
     h1: 'Websites that work for your growth.',
@@ -247,8 +247,13 @@ export const SERVICES_EN: Record<string, Omit<Service, 'slug' | 'key' | 'num' | 
   }
 }
 
+// Texts edited in the admin (Supabase services table, read at build time) are applied on top of the list above
+export const SERVICES_EN: Record<string, Omit<Service, 'slug' | 'key' | 'num' | 'related'>> = Object.fromEntries(
+  Object.entries(LOCAL_SERVICES_EN).map(([slug, sv]) => [slug, { ...sv, ...splitServiceText(cms?.services?.[slug]?.en).text }])
+)
+
 /** SEO tags for services (title ≤ 60 chars incl. brand, description 120–160 chars) */
-export const SERVICE_SEO_EN: Record<string, { title: string; h1: string; desc: string }> = {
+const LOCAL_SERVICE_SEO_EN: Record<string, { title: string; h1: string; desc: string }> = {
   'creation-site-web': { title: 'Website design agency in Paris', h1: 'Website design agency in Paris', desc: 'Website design agency in Paris: fast showcase websites, online stores and landing pages, optimised for Google and built to convert. Free quote within 48 hours.' },
   'application-metier': { title: 'Custom business software development', h1: 'Custom business software', desc: 'Custom business software development: CRM, back office, client portals and automation tailored to your processes. Paris-based team, free quote in 48 hours.' },
   'application-mobile': { title: 'iOS & Android mobile app development', h1: 'iOS & Android mobile app development', desc: 'Design and development of iOS and Android mobile apps, from UX mock-ups to App Store and Google Play release. Paris-based agency, free quote within 48 hours.' },
@@ -260,6 +265,9 @@ export const SERVICE_SEO_EN: Record<string, { title: string; h1: string; desc: s
   'agence-geo': { title: 'GEO agency: get cited by ChatGPT, Gemini, Perplexity', h1: 'GEO agency in Paris', desc: 'GEO agency in Paris: AI visibility audit, citable content and technical foundations so ChatGPT, Gemini and Perplexity recommend your company.' },
   'creation-saas': { title: 'SaaS development: from MVP to platform', h1: 'Custom SaaS development', desc: 'Custom SaaS development in Paris: MVP, multi-tenant platform, subscriptions and online payment. From scoping to launch with a dedicated team. Free quote in 48 hours.' }
 }
+export const SERVICE_SEO_EN: Record<string, { title: string; h1: string; desc: string }> = Object.fromEntries(
+  Object.entries(LOCAL_SERVICE_SEO_EN).map(([slug, seo]) => [slug, { ...seo, ...splitServiceText(cms?.services?.[slug]?.en).seo }])
+)
 
 export const SERVICE_FAQ_EN: [string, string][] = [
   ['How much do your services cost?', 'Every project is unique: its budget depends on complexity, technologies and requested deadlines. After a first conversation, we send you a detailed quote, valid for 30 days. Payment is made in two instalments: 50% on order and 50% on delivery.'],
@@ -405,3 +413,10 @@ const LOCAL_PROJECT_TEXT_EN: Record<string, { label: string; desc?: string; metr
 export const PROJECT_TEXT_EN: Record<string, { label?: string; desc?: string; metric?: string; study?: CmsStudy }> = cms?.projects?.length
   ? Object.fromEntries(cms.projects.map(c => [c.slug, { label: c.en.label || undefined, desc: c.en.desc || undefined, metric: c.en.metric || undefined, study: c.en.study }]))
   : LOCAL_PROJECT_TEXT_EN
+
+/** Réalisation en anglais : un champ non traduit reprend le français */
+export const projectEn = (p: Project): Project => {
+  const t = PROJECT_TEXT_EN[p.slug] ?? {}
+  const label = t.label ?? p.label
+  return { ...p, label, desc: t.desc ?? p.desc, metric: t.metric ?? p.metric, alt: `Project for ${p.client} — ${label}`, study: p.study && t.study ? toStudy(t.study, p.study, p.study) : p.study }
+}

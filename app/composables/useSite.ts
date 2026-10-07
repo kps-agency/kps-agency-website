@@ -1,5 +1,5 @@
-import { CAT_LABEL, LOCAL_PAGES, PROJECTS, SERVICES, SERVICE_FAQ, SERVICE_SEO, authorSlug, toStudy, type LocalPage, type Project, type Service } from '~/data/content'
-import { CAT_LABEL_EN, LOCAL_PAGES_EN, LOCAL_SLUG_EN, PROJECT_TEXT_EN, SERVICES_EN, SERVICE_FAQ_EN, SERVICE_SEO_EN, SERVICE_SLUG_EN } from '~/data/content.en'
+import { CAT_LABEL, LOCAL_PAGES, PROJECTS, SERVICES, SERVICE_FAQ, SERVICE_SEO, authorSlug, type LocalPage, type Project, type Service } from '~/data/content'
+import { CAT_LABEL_EN, LOCAL_PAGES_EN, LOCAL_SLUG_EN, SERVICES_EN, SERVICE_FAQ_EN, SERVICE_SEO_EN, SERVICE_SLUG_EN, projectEn } from '~/data/content.en'
 
 export type Lang = 'fr' | 'en'
 
@@ -18,12 +18,7 @@ export function useSite() {
   // allServices inclut les pages d'atterrissage SEO (landing) ; services = uniquement les offres listées dans les menus
   const allServices = computed<Service[]>(() => SERVICES.map(s => (en.value ? { ...s, ...SERVICES_EN[s.slug]! } : s)))
   const services = computed<Service[]>(() => allServices.value.filter(s => !s.landing))
-  const projects = computed<Project[]>(() => PROJECTS.map((p) => {
-    if (!en.value) return p
-    const t = PROJECT_TEXT_EN[p.slug] ?? {}
-    const label = t.label ?? p.label
-    return { ...p, label, desc: t.desc ?? p.desc, metric: t.metric ?? p.metric, alt: `Project for ${p.client} — ${label}`, study: p.study && t.study ? toStudy(t.study, p.study, p.study) : p.study }
-  }))
+  const projects = computed<Project[]>(() => (en.value ? PROJECTS.map(projectEn) : PROJECTS))
   const localPages = computed<LocalPage[]>(() => LOCAL_PAGES.map(l => (en.value ? { ...l, ...LOCAL_PAGES_EN[l.slug]! } : l)))
   const serviceFaq = computed(() => (en.value ? SERVICE_FAQ_EN : SERVICE_FAQ))
   const serviceSeo = computed(() => (en.value ? SERVICE_SEO_EN : SERVICE_SEO))

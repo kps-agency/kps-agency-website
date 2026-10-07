@@ -1,7 +1,7 @@
 import { addTemplate, addTypeTemplate, defineNuxtModule, useLogger } from 'nuxt/kit'
 import { createClient } from '@supabase/supabase-js'
 import { readingMinutes, type BlogLang } from '../shared/blog'
-import type { CmsData, CmsProject, CmsStudy } from '../shared/cms'
+import type { CmsData, CmsProject, CmsServiceText, CmsStudy } from '../shared/cms'
 
 // Champs d'étude de cas d'une ligne de la table projects (suffixe '' = français, '_en' = anglais).
 // Colonnes absentes (migration 20261006 pas encore exécutée) : tout vaut '', le site s'affiche comme avant.
@@ -9,6 +9,9 @@ const study = (p: Record<string, string | null>, sfx: '' | '_en'): CmsStudy => (
   context: p[`context${sfx}`] ?? '', work: p[`work${sfx}`] ?? '', results: p[`results${sfx}`] ?? '', kpis: p[`kpis${sfx}`] ?? '',
   duration: p[`duration${sfx}`] ?? '', quote: p[`quote${sfx}`] ?? '', quoteRole: p[`quote_role${sfx}`] ?? ''
 })
+
+// Codes d'erreur d'une table absente (migration pas encore exécutée)
+const MISSING = ['PGRST205', '42P01']
 
 // Articles du blog et réalisations lus dans Supabase au démarrage du build (clé publishable, lecture des seuls contenus publiés).
 // Les pages restent prérendues (SEO) : après une modification dans Supabase, relancer le déploiement (voir supabase/README.md).
@@ -18,7 +21,14 @@ async function loadCms(url: string, key: string): Promise<CmsData> {
   if (posts.error) throw new Error(`Supabase : ${posts.error.message}`)
   // Table projects absente (migration de l'admin pas encore exécutée) : on garde la liste de app/data/content.ts
   const projects = await db.from('projects').select('*').order('position').order('created_at')
-  if (projects.error && !['PGRST205', '42P01'].includes(projects.error.code)) throw new Error(`Supabase : ${projects.error.message}`)
+  if (projects.error && !MISSING.includes(projects.error.code)) throw new Error(`Supabase : ${projects.error.message}`)
+  // Tables du tableau de bord (migration 20261007) : absentes = le site garde les contenus du code
+  const [promos, reviews, services] = await Promise.all([
+    db.from('promos').select('*').order('position').order('created_at'),
+    db.from('reviews').select('*').order('position').order('created_at'),
+    db.from('services').select('*')
+  ])
+  for (const r of [promos, reviews, services]) if (r.error && !MISSING.includes(r.error.code)) throw new Error(`Supabase : ${r.error.message}`)
 
   return {
     posts: posts.data!.map(a => ({
@@ -35,7 +45,13 @@ async function loadCms(url: string, key: string): Promise<CmsData> {
       bg: p.bg, fg: p.fg, img: p.img, url: p.url ?? undefined,
       logo: p.logo ?? '', quoteAuthor: p.quote_author ?? '', quotePhoto: p.quote_photo ?? '', study: study(p, ''),
       en: { label: p.label_en ?? '', desc: p.description_en ?? '', metric: p.metric_en ?? '', study: study(p, '_en') }
-    }))
+    })),
+    promos: (promos.data ?? []).map(p => ({
+      text: p.text, textEn: p.text_en ?? '', ctaLabel: p.cta_label ?? '', ctaLabelEn: p.cta_label_en ?? '', ctaUrl: p.cta_url ?? '',
+      startsOn: p.starts_on ?? '', endsOn: p.ends_on ?? ''
+    })),
+    reviews: (reviews.data ?? []).map(r => ({ name: r.name, date: r.month, text: r.text, rating: r.rating, truncated: r.truncated, translated: r.translated })),
+    services: Object.fromEntries((services.data ?? []).map(s => [s.slug, { fr: (s.fr ?? {}) as CmsServiceText, en: (s.en ?? {}) as CmsServiceText }]))
   }
 }
 

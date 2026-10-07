@@ -5,6 +5,10 @@
 | Articles du blog | `blog_posts` | Lue **au build** (`modules/cms.ts`), **en plus** des fichiers `content/blog/*.md` (même langue + slug : l'article Supabase remplace le fichier) |
 | Réalisations | `projects` | Lue **au build** (`modules/cms.ts`) : dès que la table contient une réalisation, elle **remplace** la liste de `app/data/content.ts` |
 | Comptes autorisés sur `/admin` | `admins` | Lue à chaque connexion à l'admin et par les routes `/api/admin` |
+| Expertises (textes modifiés) | `services` | Lue **au build** : les textes enregistrés s'appliquent **par-dessus** ceux de `app/data/content.ts` |
+| Promotions (bandeau du site) | `promos` | Lue **au build** ; la période d'affichage est recalculée dans le navigateur |
+| Avis clients | `reviews` | Lue **au build** : dès que la table contient un avis, elle **remplace** la liste de `app/data/content.ts` |
+| Mesures de performance | `perf_snapshots` | Écrite par l'admin à chaque mesure PageSpeed (rubrique Performances) |
 | Demandes de contact / devis | `leads` | Écrite à l'exécution par `POST /api/contact` (page Contact et formulaire de l'accueil) |
 | Demandes d'appel | `bookings` | Écrite à l'exécution par `POST /api/booking/book` |
 
@@ -35,6 +39,21 @@ Articles et réalisations se gèrent sur `https://kps-agency.com/admin` : connex
 5. Renseigner aussi dans Vercel `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` et `CLOUDINARY_API_SECRET` : les images envoyées depuis l'admin vont sur Cloudinary (`kps/blog/…`, `kps/realisations/…`).
 
 Le site est figé au build : une modification enregistrée dans l'admin n'apparaît en ligne qu'après « Publier le site » (deux à trois minutes). En local, redémarrer `npm run dev`.
+
+## Tableau de bord complet
+
+`migrations/20261007000000_kps_dashboard.sql` ajoute ce dont le tableau de bord a besoin : rôles (`admin` gère aussi les comptes, `editor` uniquement les contenus et les demandes), lecture et suivi des demandes et des rendez-vous par les comptes de `admins`, tables `promos`, `reviews`, `services` et `perf_snapshots`. Tant qu'elle n'est pas exécutée, les rubriques concernées affichent « Base de données à mettre à jour » et le site reste inchangé.
+
+| Rubrique | Source | À configurer |
+| --- | --- | --- |
+| Vue d'ensemble, Demandes, Rendez-vous | Tables `leads` et `bookings` | La migration ci-dessus |
+| Articles, Réalisations, Expertises, Promotions, Avis clients | Tables Supabase, mises en ligne par « Publier le site » | La migration ci-dessus |
+| Audience | Google Analytics 4 (Data API) | `NUXT_GA_PROPERTY_ID` + compte de service Google |
+| Référencement | Search Console + contrôle des balises des contenus | `NUXT_GSC_SITE_URL` + compte de service Google (le contrôle des contenus fonctionne sans) |
+| Performances | PageSpeed Insights, disponibilité des pages, déploiements Vercel | Facultatif : `NUXT_PUBLIC_PAGESPEED_API_KEY`, `NUXT_VERCEL_TOKEN`, `NUXT_VERCEL_PROJECT_ID` |
+| Utilisateurs | Table `admins` + Supabase Auth, via `/api/admin/users` (rôle `admin`) | `SUPABASE_SECRET_KEY` |
+
+Le détail des variables figure dans `.env.example`. La rubrique Réglages de l'admin indique lesquelles manquent.
 
 ## Publier un article sans l'admin
 

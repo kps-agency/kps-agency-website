@@ -12,7 +12,7 @@ const fr = {
   hero: {
     badge: 'Agence digitale à Paris pour PME & TPE', title: 'Votre entreprise visible sur Google, citée par les IA.',
     lead: 'Site web, référencement, publicité en ligne et applications sur mesure : une seule équipe à Paris pour vous faire trouver, attirer des clients et les convertir.',
-    cta: 'Demander un devis gratuit', cta2: 'Voir nos réalisations', shots: 'Quelques sites que nous avons réalisés', shotAlt: 'Site réalisé pour', trust: ['Réponse sous 48 h', 'Interlocuteur dédié', 'Sans engagement']
+    cta: 'Demander un devis gratuit', cta2: 'Voir nos réalisations', trust: ['Réponse sous 48 h', 'Interlocuteur dédié', 'Sans engagement']
   },
   services: {
     budget: { tag: 'Tous budgets', title: 'Quel que soit votre budget,', hi: 'nous avons une solution à votre mesure.', p: 'Site vitrine, refonte, application ou campagne : nous adaptons le périmètre à vos moyens et vous remettons un devis clair, gratuit et sans engagement.', cta: 'Demander un devis gratuit' },
@@ -137,7 +137,7 @@ const en: typeof fr = {
   hero: {
     badge: 'Digital agency in Paris for SMEs', title: 'Your business visible on Google, cited by AI.',
     lead: 'Websites, search optimisation, paid ads and custom software: one Paris-based team to get you found, attract customers and convert them.',
-    cta: 'Get a free quote', cta2: 'See our work', shots: 'Some of the websites we have built', shotAlt: 'Website built for', trust: ['Reply within 48 hours', 'Dedicated contact', 'No commitment']
+    cta: 'Get a free quote', cta2: 'See our work', trust: ['Reply within 48 hours', 'Dedicated contact', 'No commitment']
   },
   services: {
     budget: { tag: 'Every budget', title: 'Whatever your budget,', hi: 'we have a solution that fits.', p: 'Showcase site, redesign, application or campaign: we adapt the scope to your means and give you a clear, free quote with no commitment.', cta: 'Get a free quote' },

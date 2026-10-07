@@ -133,8 +133,8 @@ const related = computed(() => {
   return own.length ? own : projects.value.slice(0, 3)
 })
 
-// Trois articles les plus récents rattachés à l'expertise (champ « service » de l'article)
-const guides = computed(() => blogArticles(en.value ? 'en' : 'fr').filter(a => a.service === svc.value!.slug).slice(0, 3))
+// Six articles les plus récents rattachés à l'expertise (champ « service » de l'article)
+const guides = computed(() => blogArticles(en.value ? 'en' : 'fr').filter(a => a.service === svc.value!.slug).slice(0, 6))
 
 const seo = computed(() => serviceSeo.value[svc.value!.slug]!)
 usePageSeo({ title: () => seo.value.title, description: () => seo.value.desc })

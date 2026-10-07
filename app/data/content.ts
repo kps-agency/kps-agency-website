@@ -1,7 +1,7 @@
 // Contenus du site — issus des maquettes validées sur le canevas KPS Agency.
 // Les valeurs entre crochets [ ... ] sont des emplacements à compléter.
 import cms from '#cms'
-import type { CmsStudy } from '../../shared/cms'
+import { splitServiceText, type CmsStudy } from '#shared/cms'
 
 export const CONTACT = {
   email: 'contact@kps-agency.com',
@@ -114,7 +114,7 @@ export const organizationSchema = (site: string, lang: 'fr' | 'en' = 'fr') => ({
 /* ---------------- Avis Google (copiés depuis la fiche Google, textes verbatim) ---------------- */
 export interface Review { name: string; /** AAAA-MM */ date: string; text: string; rating: number; truncated?: boolean; translated?: boolean }
 export const GOOGLE_REVIEWS_URL = 'https://www.google.com/maps/search/?api=1&query=KPS+Agency+59+rue+de+Ponthieu+75008+Paris'
-export const REVIEWS: Review[] = [
+const LOCAL_REVIEWS: Review[] = [
   { name: 'Amine', date: '2026-09', rating: 5, text: 'Intervention rapide et extrêmement efficace sur mon site WordPress. En quelques jours, mon score de performance a grimpé à 81/100 et tout mon référencement local est enfin en place (fiche Google, pages villes, données structurées). Le prestataire est d’une grande honnêteté intellectuelle, fournit des rapports précis et respecte scrupuleusement les délais.' },
   { name: 'Sofia Jacobs', date: '2026-04', rating: 5, text: 'Super content du rendu du site, process clair, suivi régulier et pas de mauvaises surprises. Le projet a été livré dans les délais et conforme à nos attentes. Je recommande' },
   { name: 'ali Khan', date: '2026-08', rating: 5, text: 'Équipe professionnelle ! Ils m’ont fait mon site pour mon restaurant au top ! Prix super accessible, je vous le conseille' },
@@ -124,6 +124,8 @@ export const REVIEWS: Review[] = [
   { name: 'NeedyMindSet', date: '2026-05', rating: 5, text: 'Très pro et réactif – Site web parfait, bon accompagnement. Je recommande.' },
   { name: 'Malaine Kougbeadjo', date: '2026-04', rating: 5, text: 'super agence de marketing dynamique et réactive! Je recommande!' }
 ]
+// Avis gérés dans l'admin (table reviews de Supabase, lue au build) : ils remplacent la liste ci-dessus dès que la table en contient
+export const REVIEWS: Review[] = cms?.reviews?.length ? cms.reviews : LOCAL_REVIEWS
 export const REVIEWS_AVG = REVIEWS.reduce((s, r) => s + r.rating, 0) / REVIEWS.length
 
 export type ProjectCat = 'Web' | 'Social' | 'ADS'
@@ -238,7 +240,7 @@ const COMMON_STEPS = [
   s('4', 'Lancement & suivi', 'Mise en ligne, mesure des performances et optimisation continue.')
 ]
 
-export const SERVICES: Service[] = [
+const LOCAL_SERVICES: Service[] = [
   {
     slug: 'creation-site-web', key: 'web', num: '01', crumb: 'Création de site web', eyebrow: 'Création de site web',
     h1: 'Des sites qui travaillent pour votre croissance.',
@@ -456,6 +458,9 @@ export const SERVICES: Service[] = [
   }
 ]
 
+// Textes modifiés dans l'admin (table services de Supabase, lue au build) : appliqués par-dessus la liste ci-dessus
+export const SERVICES: Service[] = LOCAL_SERVICES.map(sv => ({ ...sv, ...splitServiceText(cms?.services?.[sv.slug]?.fr).text }))
+
 /** Les trois familles d'expertises : même regroupement et même ordre partout (accueil, menu, page Services, pied de page, formulaire de contact).
  *  key = clé de la première expertise de la famille, dont l'icône représente la famille. */
 export interface ServiceFamily { key: string; slugs: string[]; title: { fr: string; en: string }; text: { fr: string; en: string } }
@@ -478,7 +483,7 @@ export const SERVICE_FAMILIES: ServiceFamily[] = [
 ]
 
 /** Balises SEO des services : titre ciblé (≤ 60 car. avec la marque) et description 120–160 car. */
-export const SERVICE_SEO: Record<string, { title: string; h1: string; desc: string }> = {
+const LOCAL_SERVICE_SEO: Record<string, { title: string; h1: string; desc: string }> = {
   'creation-site-web': { title: 'Création de site web à Paris : vitrine & e-commerce', h1: 'Création de site web à Paris', desc: 'Agence de création de site web à Paris : sites vitrines, e-commerce et landing pages rapides, optimisés pour Google et pensés pour convertir. Devis sous 48 h.' },
   'application-metier': { title: 'Développement d’application métier sur mesure', h1: 'Application métier sur mesure', desc: 'Développement d’applications métier sur mesure à Paris : CRM, back-office, portail client et automatisations adaptés à vos processus. Devis gratuit sous 48 h.' },
   'application-mobile': { title: 'Création d’application mobile iOS & Android', h1: 'Création d’application mobile iOS & Android', desc: 'Conception et développement d’applications mobiles iOS et Android, de la maquette UX à la publication sur les stores. Agence basée à Paris, devis sous 48 h.' },
@@ -490,7 +495,9 @@ export const SERVICE_SEO: Record<string, { title: string; h1: string; desc: stri
   'agence-geo': { title: 'Agence GEO : être cité par ChatGPT, Gemini, Perplexity', h1: 'Agence GEO à Paris', desc: 'Agence GEO à Paris : audit de visibilité IA, contenus citables et socle technique pour que ChatGPT, Gemini et Perplexity recommandent votre entreprise.' },
   'creation-saas': { title: 'Création de SaaS : du MVP à la plateforme', h1: 'Création de SaaS sur mesure', desc: 'Création de SaaS sur mesure à Paris : MVP, plateforme multi-clients, abonnements et paiement en ligne. Du cadrage au lancement, avec une équipe dédiée. Devis sous 48 h.' }
 }
-
+export const SERVICE_SEO: Record<string, { title: string; h1: string; desc: string }> = Object.fromEntries(
+  Object.entries(LOCAL_SERVICE_SEO).map(([slug, seo]) => [slug, { ...seo, ...splitServiceText(cms?.services?.[slug]?.fr).seo }])
+)
 
 export const SERVICE_FAQ: [string, string][] = [
   ['Combien coûtent vos prestations ?', 'Chaque projet est unique : son budget dépend de la complexité, des technologies et des délais demandés. Après un premier échange, nous vous remettons un devis détaillé, valable 30 jours. Le paiement se fait en deux temps : 50 % à la commande, 50 % à la livraison.'],

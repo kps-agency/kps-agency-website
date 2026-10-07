@@ -16,3 +16,6 @@ supabase/.temp
 
 # Rapports d'audit SEO générés en local
 kps-agency.com-audit/
+
+# Clés de comptes de service Google (jamais dans le dépôt)
+.claude/*.json

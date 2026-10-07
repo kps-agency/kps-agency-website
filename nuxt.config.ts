@@ -10,7 +10,7 @@ const CSP = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://res.cloudinary.com https://www.googletagmanager.com https://*.google-analytics.com",
   "font-src 'self' data:",
-  `connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.supabase.co https://api.cloudinary.com ${BOOKING_ORIGIN}`.trim(),
+  `connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.supabase.co https://api.cloudinary.com https://www.googleapis.com ${BOOKING_ORIGIN}`.trim(),
   "frame-ancestors 'self'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -44,6 +44,12 @@ export default defineNuxtConfig({
     // et SUPABASE_SECRET_KEY (demandes enregistrées par le serveur, server/utils/supabase.ts)
     // Admin : Deploy Hook Vercel appelé par le bouton « Publier le site » (NUXT_VERCEL_DEPLOY_HOOK)
     vercelDeployHook: '',
+    // Tableau de bord : suivi des déploiements (API Vercel), audience (Google Analytics 4) et référencement (Search Console)
+    vercelToken: '',
+    vercelProjectId: '',
+    vercelTeamId: '',
+    gaPropertyId: '', // identifiant numérique de la propriété GA4 (pas l'identifiant de mesure G-…)
+    gscSiteUrl: '', // propriété Search Console : « sc-domain:kps-agency.com » ou « https://kps-agency.com/ »
     public: {
       // Admin (/admin) : connexion Supabase Auth depuis le navigateur ; la clé publishable est publique, les droits sont portés par la RLS
       supabaseUrl: process.env.SUPABASE_URL || '',
@@ -55,6 +61,9 @@ export default defineNuxtConfig({
       gaLocal: false,
       // Cloudinary : nom du cloud qui sert les images (vide = fichiers locaux de public/images) — voir app/composables/useCloudImage.ts
       cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
+      // Clé de l'API PageSpeed Insights (facultative : sans elle, les mesures de l'admin partagent un quota public limité).
+      // Visible dans le navigateur : la restreindre au domaine du site et à cette API dans Google Cloud.
+      pagespeedApiKey: '',
       formEndpoint: '', // vide = API interne /api/contact (e-mail SMTP) ; sinon URL d'un service externe
       // URL de l'API de réservation si elle est hébergée ailleurs que le site statique (ex. https://kps-agency.vercel.app)
       bookingApi: ''

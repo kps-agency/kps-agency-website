@@ -1,5 +1,6 @@
 <template>
   <div class="layout">
+    <PromoBar />
     <SiteHeader />
     <main id="contenu">
       <slot />

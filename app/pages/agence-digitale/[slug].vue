@@ -41,6 +41,18 @@
       </div>
     </section>
 
+    <!-- GUIDES DU SECTEUR : articles du blog dont le champ « sector » est le slug de la page -->
+    <section v-if="guides.length" class="container section guides">
+      <h2 class="h2 h2--52 guides-h">{{ t.guides }}</h2>
+      <div class="grid grid-3 m-swipe">
+        <NuxtLink v-for="a in guides" :key="a.slug" :to="link.article(a.slug)" class="guide">
+          <h3 class="guide__t">{{ a.title }}</h3>
+          <p class="guide__d">{{ a.description }}</p>
+          <span class="guide__more">{{ t.read }} · {{ a.readingMinutes }} min →</span>
+        </NuxtLink>
+      </div>
+    </section>
+
     <section class="container section split">
       <h2 class="h2 h2--48">{{ t.faq }}</h2>
       <FaqList :items="page.faq" class="split__faq" />
@@ -53,6 +65,7 @@
 <script setup lang="ts">
 import { serviceIconPath } from '~/data/serviceIcons'
 import { organizationSchema, type Project } from '~/data/content'
+import { blogArticles } from '~/data/blog'
 
 const route = useRoute()
 const { en, link, services, projects, localPages, localSlug } = useSite()
@@ -60,15 +73,16 @@ const { en, link, services, projects, localPages, localSlug } = useSite()
 const page = computed(() => localPages.value.find(l => localSlug(l.slug) === String(route.params.slug)))
 if (!page.value) throw createError({ statusCode: 404, statusMessage: 'Page introuvable', fatal: true })
 useSetI18nParams()({ fr: { slug: page.value.slug }, en: { slug: localSlug(page.value.slug, 'en') } })
+const guides = computed(() => blogArticles(en.value ? 'en' : 'fr').filter(a => a.sector === page.value!.slug).slice(0, 3))
 const refs = computed(() => (page.value?.refs ?? []).map(slug => projects.value.find(p => p.slug === slug)).filter(Boolean) as Project[])
 
 const t = useLocaleText({
   fr: {
-    home: 'Accueil', talk: 'Parler de votre projet', seeWork: 'Voir les réalisations', more: 'En savoir plus', faq: 'Questions fréquentes',
+    home: 'Accueil', talk: 'Parler de votre projet', seeWork: 'Voir les réalisations', more: 'En savoir plus', faq: 'Questions fréquentes', guides: 'Nos guides pour votre secteur', read: 'Lire',
     short: { web: 'Vitrine, blog, landing page, e-commerce.', app: 'Des outils sur mesure pour vos équipes.', seo: 'Visibilité sur Google et les IA génératives.', mobile: 'iOS et Android, de l’UX aux stores.', ads: 'Des campagnes pilotées par la donnée.', social: 'Visuel, vidéo et stratégie éditoriale.', refonte: 'Un site modernisé, sans perte de référencement.', maintenance: 'Mises à jour, sécurité et évolutions.', saas: 'Votre logiciel en ligne, du MVP à la plateforme.' } as Record<string, string>
   },
   en: {
-    home: 'Home', talk: 'Discuss your project', seeWork: 'See our work', more: 'Learn more', faq: 'Frequently asked questions',
+    home: 'Home', talk: 'Discuss your project', seeWork: 'See our work', more: 'Learn more', faq: 'Frequently asked questions', guides: 'Our guides for your sector', read: 'Read',
     short: { web: 'Showcase sites, blogs, landing pages, e-commerce.', app: 'Tailor-made tools for your teams.', seo: 'Visibility on Google and generative AI.', mobile: 'iOS and Android, from UX to the stores.', ads: 'Data-driven campaigns.', social: 'Visuals, video and editorial strategy.', refonte: 'A modernised website, rankings preserved.', maintenance: 'Updates, security and improvements.', saas: 'Your online software, from MVP to platform.' } as Record<string, string>
   }
 })
@@ -117,6 +131,13 @@ useHead({
 .benefit h3 { font-size: 24px; font-weight: 700; }
 .benefit p { font-size: 16px; line-height: 1.6; color: var(--muted); }
 .refs-h { margin-bottom: 40px; }
+.guides { padding-bottom: 0; }
+.guides-h { margin-bottom: 40px; }
+.guide { display: flex; flex-direction: column; gap: 12px; padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; color: var(--ink); transition: transform .2s ease; }
+.guide:hover { transform: translateY(-3px); color: var(--ink); }
+.guide__t { font-size: 21px; line-height: 1.25; letter-spacing: -.3px; font-weight: 700; }
+.guide__d { font-size: 15px; line-height: 1.55; color: var(--muted); }
+.guide__more { margin-top: auto; font-size: 15px; font-weight: 600; color: var(--accent-light); }
 @media (max-width: 1180px) {
   .hero__h1 { font-size: 52px; letter-spacing: -2px; }
   .split { grid-template-columns: minmax(0, 1fr); gap: 40px; }

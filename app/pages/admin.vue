@@ -2,7 +2,8 @@
   <!-- Supabase non configuré / chargement / connexion -->
   <div v-if="!configured || !ready || !email || !allowed" class="gate">
     <div class="adm-card gate__card">
-      <h1>KPS Agency · Administration</h1>
+      <SiteLogo />
+      <h1>Tableau de bord</h1>
       <p v-if="!configured" class="adm-note">Supabase n’est pas configuré : renseignez SUPABASE_URL et SUPABASE_PUBLISHABLE_KEY (voir supabase/README.md).</p>
       <p v-else-if="!ready" class="adm-note">Chargement…</p>
       <template v-else-if="email">
@@ -18,131 +19,127 @@
     </div>
   </div>
 
-  <div v-else class="dash">
-    <header class="dash__top">
-      <strong class="dash__brand">KPS Agency · Administration</strong>
-      <nav class="dash__tabs" aria-label="Rubriques">
-        <button type="button" :class="{ 'is-on': tab === 'posts' }" @click="go('posts')">Articles</button>
-        <button type="button" :class="{ 'is-on': tab === 'projects' }" @click="go('projects')">Réalisations</button>
-      </nav>
-      <div class="dash__user">
-        <span class="adm-note">{{ email }}</span>
-        <a href="/" target="_blank" rel="noopener" class="adm-btn adm-btn--sm">Voir le site</a>
-        <button type="button" class="adm-btn adm-btn--sm" @click="signOut">Déconnexion</button>
+  <div v-else class="dash" :class="{ 'is-menu-open': menuOpen }">
+    <aside id="adm-menu" class="side">
+      <div class="side__brand">
+        <SiteLogo />
+        <span>Tableau de bord</span>
       </div>
-    </header>
+      <nav class="side__nav" aria-label="Rubriques">
+        <div v-for="group in menu" :key="group.title" class="side__group">
+          <p>{{ group.title }}</p>
+          <button v-for="item in group.items" :key="item.id" type="button" :class="{ 'is-on': section === item.id }" :aria-current="section === item.id ? 'page' : undefined" @click="go(item.id)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="item.icon" /></svg>
+            <span>{{ item.label }}</span>
+            <span v-if="item.id === 'leads' && newLeads" class="side__count" :aria-label="`${newLeads} nouvelles demandes`">{{ newLeads }}</span>
+          </button>
+        </div>
+      </nav>
+      <div class="side__user">
+        <span class="side__mail" :title="email">{{ email }}</span>
+        <span class="adm-note">{{ role === 'admin' ? 'Administrateur' : 'Éditeur' }}</span>
+        <div class="side__links">
+          <a href="/" target="_blank" rel="noopener" class="adm-btn adm-btn--sm">Voir le site</a>
+          <button type="button" class="adm-btn adm-btn--sm" @click="signOut">Déconnexion</button>
+        </div>
+      </div>
+    </aside>
+    <button type="button" class="dash__veil" aria-label="Fermer le menu" tabindex="-1" @click="menuOpen = false" />
 
-    <!-- Le site est figé au build : les modifications enregistrées attendent une publication -->
-    <div class="dash__publish" :class="{ 'is-pending': pending }">
-      <p>{{ published ? 'Publication lancée : le site sera à jour dans deux à trois minutes.' : pending ? 'Des modifications enregistrées ne sont pas encore en ligne.' : 'Les modifications sont mises en ligne quand vous publiez le site.' }}</p>
-      <button type="button" class="adm-btn" :class="{ 'adm-btn--primary': pending }" :disabled="publishing" @click="publishSite">{{ publishing ? 'Publication…' : 'Publier le site' }}</button>
+    <div class="dash__body">
+      <!-- Le site est figé au build : les modifications enregistrées attendent une publication -->
+      <header class="top" :class="{ 'is-pending': pending }">
+        <button type="button" class="adm-btn adm-btn--sm top__burger" :aria-expanded="menuOpen" aria-controls="adm-menu" @click="menuOpen = !menuOpen">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+          Menu
+        </button>
+        <p role="status">{{ published ? 'Publication lancée : le site sera à jour dans deux à trois minutes.' : pending ? 'Des modifications enregistrées ne sont pas encore en ligne.' : 'Le site en ligne est à jour avec vos contenus.' }}</p>
+        <button type="button" class="adm-btn" :class="{ 'adm-btn--primary': pending }" :disabled="publishing" @click="publishSite">{{ publishing ? 'Publication…' : 'Publier le site' }}</button>
+      </header>
+      <p v-if="error" class="adm-error dash__error" role="alert">{{ error }}</p>
+
+      <main class="dash__main">
+        <component :is="current" :key="section" />
+      </main>
     </div>
-    <p v-if="error" class="adm-error dash__error" role="alert">{{ error }}</p>
-
-    <main class="dash__main">
-      <!-- Articles -->
-      <template v-if="tab === 'posts'">
-        <AdminPostForm v-if="editing" :key="editPost?.id ?? 'new'" class="adm-card" :post="editPost" :posts="posts" @close="editing = false" @saved="saved" />
-        <template v-else>
-          <div class="list__head">
-            <h1>Articles <small>{{ posts.length }}</small></h1>
-            <button type="button" class="adm-btn adm-btn--primary" @click="edit(null)">Nouvel article</button>
-          </div>
-          <p v-if="loading" class="adm-note">Chargement…</p>
-          <p v-else-if="!posts.length" class="adm-note">Aucun article pour l’instant.</p>
-          <ul v-else class="list">
-            <li v-for="p in posts" :key="p.id" class="row">
-              <div class="row__main">
-                <button type="button" class="row__title" @click="edit(p)">{{ p.title }}</button>
-                <span class="adm-note">{{ p.lang.toUpperCase() }} · {{ formatDate(p.date) }} · /{{ p.lang === 'en' ? 'en/' : '' }}blog/{{ p.slug }}</span>
-              </div>
-              <span class="adm-badge" :class="postStatus(p).cls">{{ postStatus(p).label }}</span>
-              <div class="row__actions">
-                <button type="button" class="adm-btn adm-btn--sm" @click="edit(p)">Modifier</button>
-                <button type="button" class="adm-btn adm-btn--sm adm-btn--danger" @click="removePost(p)">Supprimer</button>
-              </div>
-            </li>
-          </ul>
-        </template>
-      </template>
-
-      <!-- Réalisations -->
-      <template v-else>
-        <AdminProjectForm v-if="editing" :key="editProject?.id ?? 'new'" class="adm-card" :project="editProject" :next-position="nextPosition" @close="editing = false" @saved="saved" />
-        <template v-else>
-          <div class="list__head">
-            <h1>Réalisations <small>{{ projects.length }}</small></h1>
-            <button type="button" class="adm-btn adm-btn--primary" @click="edit(null)">Nouvelle réalisation</button>
-          </div>
-          <p v-if="loading" class="adm-note">Chargement…</p>
-          <p v-else-if="!projects.length" class="adm-note">Aucune réalisation en base : le site affiche la liste d’origine. Ajoutez-en une pour la remplacer.</p>
-          <ul v-else class="list">
-            <li v-for="(p, i) in projects" :key="p.id" class="row">
-              <img class="row__thumb" :src="thumb(p.img)" alt="" loading="lazy" width="96" height="54" :style="{ background: p.bg }">
-              <div class="row__main">
-                <button type="button" class="row__title" @click="edit(p)">{{ p.client }}</button>
-                <span class="adm-note">{{ CAT_LABEL[p.cat] }} · {{ p.label }}{{ p.metric ? ` · ${p.metric}` : '' }}</span>
-              </div>
-              <span v-if="!p.description" class="adm-badge">Sans étude de cas</span>
-              <span class="adm-badge" :class="{ 'adm-badge--on': p.published }">{{ p.published ? 'Visible' : 'Masquée' }}</span>
-              <div class="row__actions">
-                <button type="button" class="adm-btn adm-btn--sm" :disabled="i === 0 || moving" :aria-label="`Monter ${p.client}`" @click="move(i, -1)">↑</button>
-                <button type="button" class="adm-btn adm-btn--sm" :disabled="i === projects.length - 1 || moving" :aria-label="`Descendre ${p.client}`" @click="move(i, 1)">↓</button>
-                <button type="button" class="adm-btn adm-btn--sm" @click="edit(p)">Modifier</button>
-                <button type="button" class="adm-btn adm-btn--sm adm-btn--danger" @click="removeProject(p)">Supprimer</button>
-              </div>
-            </li>
-          </ul>
-        </template>
-      </template>
-    </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import { CAT_LABEL } from '~/data/content'
+import {
+  AdminSectionAudience, AdminSectionBookings, AdminSectionLeads, AdminSectionOverview, AdminSectionPerformance, AdminSectionPosts, AdminSectionProjects,
+  AdminSectionPromos, AdminSectionReviews, AdminSectionSeo, AdminSectionServices, AdminSectionSettings, AdminSectionUsers
+} from '#components'
 
-// Espace d'administration : articles du blog et réalisations, enregistrés dans Supabase puis mis en ligne par une publication (déploiement).
+// Tableau de bord du site : contenus et demandes enregistrés dans Supabase, mesures d'audience, de référencement et de performance.
+// Une seule adresse (/admin) : la rubrique affichée est portée par le paramètre ?s=… pour que les liens et le bouton Retour fonctionnent.
 definePageMeta({ layout: 'admin' })
-useSeoMeta({ title: 'Administration', robots: 'noindex, nofollow' })
+useSeoMeta({ title: 'Tableau de bord', robots: 'noindex, nofollow' })
 
-const { configured, db, ready, email, allowed, pending, refresh, signIn, signOut, setPending, publish } = useAdmin()
-const { thumb } = useCloudImage()
+const { configured, db, ready, email, allowed, pending, role, refresh, signIn, signOut, publish } = useAdmin()
+const route = useRoute()
+const router = useRouter()
+
+const SECTIONS = {
+  overview: AdminSectionOverview, leads: AdminSectionLeads, bookings: AdminSectionBookings,
+  posts: AdminSectionPosts, projects: AdminSectionProjects, services: AdminSectionServices, promos: AdminSectionPromos, reviews: AdminSectionReviews,
+  audience: AdminSectionAudience, seo: AdminSectionSeo, performance: AdminSectionPerformance,
+  users: AdminSectionUsers, settings: AdminSectionSettings
+}
+type SectionId = keyof typeof SECTIONS
+
+// Icônes au trait (24 × 24), dessinées pour ce menu
+const I = {
+  overview: 'M4 5h7v8H4zM13 5h7v5h-7zM13 12h7v7h-7zM4 15h7v4H4z',
+  leads: 'M4 6h16v12H4zM4 7l8 6 8-6',
+  bookings: 'M5 6h14v14H5zM5 10h14M9 4v4M15 4v4',
+  posts: 'M6 4h9l4 4v12H6zM14 4v5h5M9 13h6M9 17h6',
+  projects: 'M4 6h16v13H4zM4 15l5-5 4 4 3-3 4 4',
+  services: 'M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5',
+  promos: 'M4 12V5h7l9 9-7 7zM8.5 8.5h.01',
+  reviews: 'M12 4l2.5 5.2 5.5.8-4 4 1 5.6-5-2.7-5 2.7 1-5.6-4-4 5.5-.8z',
+  audience: 'M4 19V5M4 19h16M8 15l4-5 3 3 4-6',
+  seo: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4',
+  performance: 'M5 17a8 8 0 1 1 14 0M12 13l4-5',
+  users: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 4.5a3.5 3.5 0 0 1 0 6.5M18 14.5c1.8.9 3 2.9 3 5.5',
+  settings: 'M5 7h9M18 7h1M5 17h1M10 17h9M16 5v4M8 15v4'
+}
+const menu = computed(() => [
+  { title: 'Pilotage', items: [{ id: 'overview', label: 'Vue d’ensemble' }] },
+  { title: 'Activité commerciale', items: [{ id: 'leads', label: 'Demandes' }, { id: 'bookings', label: 'Rendez-vous' }] },
+  { title: 'Contenus du site', items: [{ id: 'posts', label: 'Articles' }, { id: 'projects', label: 'Réalisations' }, { id: 'services', label: 'Expertises' }, { id: 'promos', label: 'Promotions' }, { id: 'reviews', label: 'Avis clients' }] },
+  { title: 'Suivi', items: [{ id: 'audience', label: 'Audience' }, { id: 'seo', label: 'Référencement' }, { id: 'performance', label: 'Performances' }] },
+  { title: 'Administration', items: [...(role.value === 'admin' ? [{ id: 'users', label: 'Utilisateurs' }] : []), { id: 'settings', label: 'Réglages' }] }
+].map(g => ({ ...g, items: g.items.map(i => ({ ...i, id: i.id as SectionId, icon: I[i.id as SectionId] })) })))
+
+const section = computed<SectionId>(() => {
+  const s = String(route.query.s ?? '')
+  return s in SECTIONS && (s !== 'users' || role.value === 'admin') ? s as SectionId : 'overview'
+})
+const current = computed(() => SECTIONS[section.value])
 
 const mail = ref('')
 const password = ref('')
 const busy = ref(false)
 const error = ref('')
-
-const tab = ref<'posts' | 'projects'>('posts')
-const posts = ref<PostRow[]>([])
-const projects = ref<ProjectRow[]>([])
-const loading = ref(false)
-const editing = ref(false)
-const editPost = ref<PostRow | null>(null)
-const editProject = ref<ProjectRow | null>(null)
-const moving = ref(false)
+const menuOpen = ref(false)
 const publishing = ref(false)
 const published = ref(false)
+const newLeads = ref(0)
 
-// Une nouvelle réalisation se place en tête de liste (les plus récentes d'abord) ; les flèches permettent ensuite de la déplacer
-const nextPosition = computed(() => Math.min(10, ...projects.value.map(p => p.position)) - 10)
-const formatDate = (d: string) => new Date(`${d}T00:00:00`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
-const postStatus = (p: PostRow) => p.draft
-  ? { label: 'Brouillon', cls: '' }
-  : p.date > new Date().toISOString().slice(0, 10) ? { label: 'Programmé', cls: 'adm-badge--wait' } : { label: 'Publié', cls: 'adm-badge--on' }
+function go(id: string) {
+  menuOpen.value = false
+  router.push({ query: id === 'overview' ? {} : { s: id } })
+  window.scrollTo({ top: 0 })
+}
 
-async function load() {
-  loading.value = true
-  error.value = ''
-  const [a, b] = await Promise.all([
-    db().from('blog_posts').select('*').order('date', { ascending: false }).order('created_at', { ascending: false }),
-    db().from('projects').select('*').order('position').order('created_at')
-  ])
-  loading.value = false
-  if (a.error || b.error) { error.value = adminError(a.error || b.error); return }
-  posts.value = a.data as PostRow[]
-  projects.value = b.data as ProjectRow[]
+// Les rubriques renvoient vers une autre rubrique avec useAdminGo()
+provide(ADMIN_GO, go)
+
+/** Nombre de demandes non traitées, affiché dans le menu */
+async function countNewLeads() {
+  const { count } = await db().from('leads').select('id', { count: 'exact', head: true }).eq('status', 'new')
+  newLeads.value = count ?? 0
 }
 
 async function login() {
@@ -156,55 +153,6 @@ async function login() {
   } finally {
     busy.value = false
   }
-}
-
-function go(next: 'posts' | 'projects') {
-  tab.value = next
-  editing.value = false
-}
-
-function edit(item: PostRow | ProjectRow | null) {
-  if (tab.value === 'posts') editPost.value = item as PostRow | null
-  else editProject.value = item as ProjectRow | null
-  editing.value = true
-  window.scrollTo({ top: 0 })
-}
-
-async function saved() {
-  editing.value = false
-  published.value = false
-  await load()
-}
-
-async function removePost(p: PostRow) {
-  if (!confirm(`Supprimer définitivement l’article « ${p.title} » ?`)) return
-  const { error: err } = await db().from('blog_posts').delete().eq('id', p.id!)
-  if (err) { error.value = adminError(err); return }
-  setPending(true)
-  await saved()
-}
-
-async function removeProject(p: ProjectRow) {
-  if (!confirm(`Supprimer définitivement la réalisation « ${p.client} » ?`)) return
-  const { error: err } = await db().from('projects').delete().eq('id', p.id!)
-  if (err) { error.value = adminError(err); return }
-  setPending(true)
-  await saved()
-}
-
-/** Monte ou descend une réalisation, puis renumérote les positions qui ont changé */
-async function move(index: number, delta: -1 | 1) {
-  const list = [...projects.value]
-  const [item] = list.splice(index, 1)
-  list.splice(index + delta, 0, item!)
-  moving.value = true
-  const changed = list.map((p, i) => ({ id: p.id!, position: (i + 1) * 10, was: p.position })).filter(p => p.position !== p.was)
-  const results = await Promise.all(changed.map(p => db().from('projects').update({ position: p.position }).eq('id', p.id)))
-  moving.value = false
-  const failed = results.find(r => r.error)
-  if (failed) error.value = adminError(failed.error)
-  else setPending(true)
-  await saved()
 }
 
 async function publishSite() {
@@ -224,7 +172,10 @@ onMounted(async () => {
   if (!configured) return
   await refresh()
 })
-watch(allowed, (ok) => { if (ok) load() }, { immediate: true })
+watch(allowed, (ok) => { if (ok) countNewLeads() }, { immediate: true })
+// Le compteur du menu suit le traitement des demandes ; un nouvel enregistrement efface le message « Publication lancée »
+watch(section, () => { if (allowed.value) countNewLeads() })
+watch(pending, (p) => { if (p) published.value = false })
 </script>
 
 <style scoped>
@@ -232,35 +183,41 @@ watch(allowed, (ok) => { if (ok) load() }, { immediate: true })
 .gate__card { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 20px; }
 .gate__form { display: flex; flex-direction: column; gap: 16px; }
 
-.dash__top { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; padding: 14px 32px; border-bottom: 1px solid var(--line); background: var(--band); }
-.dash__brand { font-family: var(--font-display); font-weight: 900; font-size: 17px; }
-.dash__tabs { display: flex; gap: 4px; }
-.dash__tabs button { padding: 8px 14px; border: 0; border-radius: var(--r-sm); background: none; color: var(--muted); font: inherit; font-weight: 600; cursor: pointer; }
-.dash__tabs button:hover { color: var(--ink); }
-.dash__tabs button.is-on { background: var(--accent-soft); color: var(--accent-light); }
-.dash__user { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dash { --side: 264px; display: grid; grid-template-columns: var(--side) minmax(0, 1fr); min-height: 100vh; }
+.side { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; background: var(--band); border-right: 1px solid var(--line); }
+.side__brand { display: flex; flex-direction: column; gap: 6px; padding: 20px 20px 16px; border-bottom: 1px solid var(--line); }
+.side__brand span { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--accent-light); }
+.side__nav { flex: 1; overflow-y: auto; padding: 8px 12px 16px; }
+.side__group p { margin: 16px 0 6px; padding: 0 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted-3); }
+.side__group button { width: 100%; display: flex; align-items: center; gap: 12px; padding: 9px 10px; border: 0; border-radius: var(--r-sm); background: none; color: var(--muted); font: inherit; font-size: 14px; font-weight: 600; text-align: left; cursor: pointer; }
+.side__group button:hover { background: var(--surface-hover); color: var(--ink); }
+.side__group button.is-on { background: var(--accent-soft); color: var(--accent-light); box-shadow: inset 2px 0 0 var(--accent); }
+.side__group button svg { flex-shrink: 0; }
+.side__group button span:nth-of-type(1) { flex: 1; }
+.side__count { min-width: 22px; padding: 2px 7px; border-radius: var(--r-pill); background: var(--grad-neon); color: var(--white); font-size: 12px; font-weight: 700; text-align: center; }
+.side__user { display: flex; flex-direction: column; gap: 4px; padding: 16px 20px; border-top: 1px solid var(--line); }
+.side__mail { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.side__links { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.dash__veil { display: none; }
 
-.dash__publish { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 12px 32px; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--muted-2); }
-.dash__publish p { margin: 0; }
-.dash__publish.is-pending { background: var(--accent-soft); color: var(--ink); }
+.dash__body { min-width: 0; display: flex; flex-direction: column; }
+.top { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 32px; border-bottom: 1px solid var(--line); background: var(--bg); font-size: 14px; color: var(--muted-2); }
+.top p { margin: 0; flex: 1; }
+/* Teinte d'accent posée sur le fond opaque : la barre reste lisible quand le contenu défile dessous */
+.top.is-pending { background: linear-gradient(var(--accent-soft), var(--accent-soft)), var(--bg); color: var(--ink); }
+.top__burger { display: none; }
 .dash__error { padding: 12px 32px 0; }
-.dash__main { max-width: 1100px; margin: 0 auto; padding: 32px; }
+.dash__main { width: 100%; max-width: 1280px; margin: 0 auto; padding: 32px; }
 
-.list__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
-.list__head small { font-size: 15px; font-weight: 600; color: var(--muted-2); margin-left: 6px; }
-.list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); overflow: hidden; }
-.row { display: flex; align-items: center; gap: 14px; padding: 14px 18px; flex-wrap: wrap; }
-.row + .row { border-top: 1px solid var(--line); }
-.row__thumb { width: 96px; height: 54px; object-fit: cover; object-position: top center; border-radius: 6px; flex-shrink: 0; }
-.row__main { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 4px; overflow-wrap: anywhere; }
-.row__title { padding: 0; border: 0; background: none; color: var(--ink); font: inherit; font-weight: 700; font-size: 16px; text-align: left; cursor: pointer; }
-.row__title:hover { color: var(--accent-light); }
-.row__actions { display: flex; gap: 6px; flex-wrap: wrap; }
-
-@media (max-width: 720px) {
-  .dash__top, .dash__publish { padding-inline: 16px; }
+@media (max-width: 1000px) {
+  .dash { grid-template-columns: minmax(0, 1fr); }
+  .side { position: fixed; z-index: 40; left: 0; width: min(var(--side), 86vw); transform: translateX(-100%); visibility: hidden; transition: transform .2s ease, visibility .2s; }
+  .is-menu-open .side { transform: none; visibility: visible; }
+  .is-menu-open .dash__veil { display: block; position: fixed; inset: 0; z-index: 30; border: 0; background: rgba(2, 6, 23, .7); }
+  .top__burger { display: inline-flex; }
+  .top { padding-inline: 16px; flex-wrap: wrap; }
   .dash__error { padding-inline: 16px; }
   .dash__main { padding: 20px 16px; }
-  .dash__user { margin-left: 0; }
 }
+@media (prefers-reduced-motion: reduce) { .side { transition: none; } }
 </style>

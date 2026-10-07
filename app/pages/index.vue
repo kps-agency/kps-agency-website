@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <PromoBar />
     <!-- TOP BAR -->
     <div class="topbar" role="region" :aria-label="en ? 'Key information' : 'Informations clés'">
       <template v-for="(b, i) in t.topbar" :key="b"><span v-if="i" class="topbar__dot">·</span><span>{{ b }}</span></template>
@@ -29,15 +30,6 @@
             <li v-for="x in t.hero.trust" :key="x"><IconCheck />{{ x }}</li>
           </ul>
           <HeroShowcase v-if="SHOW_HERO_SHOWCASE" class="hero__visual" />
-          <!-- Preuve par l'image : les trois derniers sites réalisés, liés à leur étude de cas (masqués sur mobile, où ils ne sont pas chargés) -->
-          <ul class="hero__shots" :aria-label="t.hero.shots">
-            <li v-for="pr in heroShots" :key="pr.slug" class="shot">
-              <NuxtLink :to="link.project(pr.slug)" class="shot__link">
-                <span class="shot__bar" aria-hidden="true"><i /><i /><i /><span>{{ pr.url!.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '') }}</span></span>
-                <img :src="thumb(pr.img)" :srcset="thumbSet(pr.img)" sizes="(max-width: 1180px) 30vw, 380px" :alt="`${t.hero.shotAlt} ${pr.client}`" loading="lazy" decoding="async" width="800" height="450">
-              </NuxtLink>
-            </li>
-          </ul>
         </section>
         <div class="hero__wave" aria-hidden="true"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" /></svg></div>
       </div>
@@ -355,8 +347,6 @@ const families = computed(() => SERVICE_FAMILIES.map(f => ({
 const svcUnsure = computed(() => t.value.services.items.find(i => !i.slug))
 // Prix d'appel d'une expertise (champ « from » de app/data/content.ts) : rien n'est affiché tant qu'il est vide
 const svcFrom = (slug: string) => services.value.find(s => s.slug === slug)?.from
-// Hero : les trois sites les plus récents qui ont une adresse en ligne
-const heroShots = computed(() => projects.value.filter(p => p.cat === 'Web' && p.url).slice(0, 3))
 // Animation des services dans le hero (onglets Site web, App métier, App mobile, SEO & GEO, Publicité, Social) : désactivée pour l'instant, remettre à true pour la réafficher
 const SHOW_HERO_SHOWCASE = false
 // Icônes (Lucide) et couleurs des sections reprises de la maquette kps-agency.com
@@ -483,14 +473,6 @@ async function submit() {
 .hero__trust { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; font-size: 14px; color: var(--muted); }
 .hero__trust li { display: flex; align-items: center; gap: 8px; }
 .hero__visual { position: relative; width: 100%; max-width: 680px; margin-top: 40px; text-align: left; }
-.hero__shots { list-style: none; margin: 40px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; width: 100%; max-width: 1120px; align-items: end; }
-.shot:nth-child(2) { transform: translateY(-20px); }
-.shot__link { display: block; overflow: hidden; border: 1px solid rgba(255, 255, 255, .12); border-radius: 14px; background: #0B1121; box-shadow: 0 30px 60px -30px rgba(6, 182, 212, .45); transition: transform .3s ease, border-color .3s; }
-.shot__link:hover { transform: translateY(-4px); border-color: rgba(6, 182, 212, .5); }
-.shot__bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; border-bottom: 1px solid rgba(255, 255, 255, .08); background: rgba(255, 255, 255, .04); }
-.shot__bar i { width: 8px; height: 8px; border-radius: 999px; background: rgba(255, 255, 255, .22); }
-.shot__bar span { margin-left: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--muted-2); }
-.shot img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
 .hero__wave { position: absolute; left: 0; bottom: -1px; width: 100%; line-height: 0; transform: rotate(180deg); }
 .hero__wave svg { display: block; width: calc(100% + 1.3px); height: 60px; }
 .hero__wave path { fill: var(--bg); }
@@ -716,7 +698,6 @@ async function submit() {
   .hero__title { font-size: 52px; letter-spacing: -1.6px; }
   .why__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fams { grid-template-columns: minmax(0, 1fr); }
-  .hero__shots { gap: 16px; }
   .pf__h { font-size: 40px; }
   .pf__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .pf__card, .pf__card--half { grid-column: auto; }
@@ -735,7 +716,6 @@ async function submit() {
 @media (max-width: 720px) {
   .hero { gap: 14px; padding-top: 16px; padding-bottom: 96px; }
   .hero__ctas { gap: 10px; }
-  .hero__shots { display: none; }
   .fam { padding: 24px; }
   .fam__t { font-size: 22px; }
   .mini__cta { display: none; }

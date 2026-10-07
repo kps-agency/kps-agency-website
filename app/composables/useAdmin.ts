@@ -19,6 +19,23 @@ export interface ProjectRow {
   quote_en?: string | null; quote_role_en?: string | null
 }
 
+/** Demande de contact / devis (table leads) */
+export interface LeadRow {
+  id: string; created_at: string; locale: string; source: string; services: string[]; budget: string | null; timing: string | null
+  message: string | null; name: string; company: string | null; email: string; phone: string | null; website: string | null
+  status: 'new' | 'contacted' | 'quoted' | 'won' | 'lost' | 'spam'; notes?: string | null
+}
+
+/** Demande d'appel (table bookings) */
+export interface BookingRow {
+  id: string; created_at: string; start_at: string; end_at: string; name: string; email: string; phone: string | null; company: string | null
+  mode: 'visio' | 'phone'; message: string | null; meet_link: string | null; status: 'booked' | 'done' | 'no_show' | 'cancelled'
+}
+
+export type AdminRole = 'admin' | 'editor'
+/** Services externes configurés sur le serveur (route /api/admin/status) */
+export interface AdminIntegrations { deployHook: boolean; vercel: boolean; analytics: boolean; searchConsole: boolean; cloudinary: boolean; mail: boolean; calendar: boolean }
+
 const PENDING_KEY = 'kps-admin-pending'
 let client: SupabaseClient | undefined
 
@@ -29,9 +46,15 @@ export const adminSlug = (s: string) => s.toLowerCase().normalize('NFD').replace
 export const adminError = (e: unknown) => {
   const err = e as { code?: string; message?: string; statusMessage?: string; data?: { statusMessage?: string } }
   if (err?.code === '23505') return 'Ce slug est déjà utilisé.'
+  // Table ou colonne absente : la migration du tableau de bord n'a pas encore été exécutée
+  if (['PGRST205', 'PGRST204', '42P01', '42703'].includes(err?.code ?? '')) return 'Base de données à mettre à jour : exécutez supabase/migrations/20261007000000_kps_dashboard.sql dans Supabase.'
   if (err?.code === '42501') return 'Votre compte n’a pas le droit de modifier ce contenu.'
   return err?.data?.statusMessage || err?.statusMessage || err?.message || 'Une erreur est survenue.'
 }
+
+/** Navigation entre les rubriques du tableau de bord (fournie par app/pages/admin.vue) */
+export const ADMIN_GO: InjectionKey<(section: string) => void> = Symbol('admin-go')
+export const useAdminGo = () => inject(ADMIN_GO, () => {})
 
 // Espace d'administration (/admin) : connexion Supabase Auth dans le navigateur. Les droits d'écriture sont portés par la base
 // (RLS : comptes présents dans la table admins) ; la clé secrète reste sur le serveur (routes /api/admin).
@@ -45,6 +68,10 @@ export function useAdmin() {
   const allowed = useState('admin-allowed', () => false)
   /** Des modifications enregistrées ne sont pas encore en ligne (le site est figé au build) */
   const pending = useState('admin-pending', () => false)
+  /** Rôle du compte : seul « admin » gère les utilisateurs (contrôlé par le serveur, ici pour l'affichage) */
+  const role = useState<AdminRole>('admin-role', () => 'editor')
+  /** null tant que le serveur n'a pas répondu (ou s'il n'a pas la clé secrète Supabase) */
+  const integrations = useState<AdminIntegrations | null>('admin-integrations', () => null)
 
   async function refresh() {
     const { data } = await db().auth.getSession()
@@ -54,6 +81,11 @@ export function useAdmin() {
     if (user) {
       const { data: row } = await db().from('admins').select('user_id').eq('user_id', user.id).maybeSingle()
       allowed.value = !!row
+    }
+    if (allowed.value) {
+      const status = await api<{ role: AdminRole; integrations: AdminIntegrations }>('status').catch(() => null)
+      role.value = status?.role ?? 'editor'
+      integrations.value = status?.integrations ?? null
     }
     pending.value = localStorage.getItem(PENDING_KEY) === '1'
     ready.value = true
@@ -97,5 +129,5 @@ export function useAdmin() {
     setPending(false)
   }
 
-  return { configured, db, ready, email, allowed, pending, refresh, signIn, signOut, setPending, uploadImage, publish }
+  return { configured, db, ready, email, allowed, pending, role, integrations, refresh, signIn, signOut, setPending, api, uploadImage, publish }
 }

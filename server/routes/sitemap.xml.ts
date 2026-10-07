@@ -1,5 +1,5 @@
 import { AUTHORS, PROJECTS, SERVICES, LOCAL_PAGES, authorSlug, isCaseStudy } from '../../app/data/content'
-import { LOCAL_SLUG_EN, SERVICE_SLUG_EN } from '../../app/data/content.en'
+import { LOCAL_SLUG_EN, SERVICE_SLUG_EN, projectEn } from '../../app/data/content.en'
 
 // Sitemap bilingue des seules pages indexables (les pages en noindex en sont exclues).
 // Chaque URL déclare ses alternatives fr / en / x-default (hreflang). Prérendu en fichier statique.
@@ -14,8 +14,6 @@ export default defineEventHandler(async (event) => {
     ...SERVICES.map(s => [`/services/${s.slug}`, `/en/services/${SERVICE_SLUG_EN[s.slug]}`] as [string, string]),
     ...LOCAL_PAGES.map(l => [`/agence-digitale/${l.slug}`, `/en/digital-agency/${LOCAL_SLUG_EN[l.slug]}`] as [string, string]),
     ['/realisations', '/en/work'],
-    // Même règle que la page projet : indexée seulement si c'est une vraie étude de cas
-    ...PROJECTS.filter(isCaseStudy).map(p => [`/realisations/${p.slug}`, `/en/work/${p.slug}`] as [string, string]),
     ['/agence', '/en/about'],
     ['/rendez-vous', '/en/book-a-call'],
     ['/audit-gratuit', '/en/free-audit'],
@@ -27,11 +25,18 @@ export default defineEventHandler(async (event) => {
   const url = (loc: string, fr: string, en: string) => [
     '  <url>',
     `    <loc>${site}${loc}</loc>`,
-    `    <xhtml:link rel="alternate" hreflang="fr-FR" href="${site}${fr}"/>`,
-    `    <xhtml:link rel="alternate" hreflang="en" href="${site}${en}"/>`,
-    `    <xhtml:link rel="alternate" hreflang="x-default" href="${site}${fr}"/>`,
+    ...(fr ? [`    <xhtml:link rel="alternate" hreflang="fr-FR" href="${site}${fr}"/>`] : []),
+    ...(en ? [`    <xhtml:link rel="alternate" hreflang="en" href="${site}${en}"/>`] : []),
+    ...(fr && en ? [`    <xhtml:link rel="alternate" hreflang="x-default" href="${site}${fr}"/>`] : []),
     '  </url>'
   ].join('\n')
+
+  // Même règle que la page projet, évaluée dans chaque langue : une version en noindex n'est ni listée ni déclarée en alternative
+  const projectUrls = PROJECTS.flatMap((p) => {
+    const fr = isCaseStudy(p) ? `/realisations/${p.slug}` : ''
+    const en = isCaseStudy(projectEn(p)) ? `/en/work/${p.slug}` : ''
+    return [fr, en].filter(Boolean).map(loc => url(loc, fr, en))
+  })
 
   // Articles : hreflang seulement si la traduction existe ; lastmod = date de mise à jour
   const articles = await serverArticles()
@@ -52,7 +57,7 @@ export default defineEventHandler(async (event) => {
     ].join('\n')
   })
 
-  const body = [...pages.flatMap(([fr, en]) => [url(fr, fr, en), url(en, fr, en)]), ...articleUrls].join('\n')
+  const body = [...pages.flatMap(([fr, en]) => [url(fr, fr, en), url(en, fr, en)]), ...projectUrls, ...articleUrls].join('\n')
 
   setHeader(event, 'content-type', 'application/xml; charset=utf-8')
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${body}\n</urlset>\n`
