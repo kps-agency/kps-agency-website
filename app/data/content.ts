@@ -455,6 +455,28 @@ const LOCAL_SERVICES: Service[] = [
     methTitle: 'Notre méthode GEO.',
     steps: [s('1', 'Diagnostic', 'Vos requêtes clés testées sur les moteurs IA, et l’analyse des sources qu’ils citent.'), s('2', 'Plan d’action', 'Les pages à créer ou à réécrire, classées par impact.'), s('3', 'Production', 'Contenus, données structurées et corrections techniques.'), s('4', 'Suivi', 'Mesure régulière des citations et ajustements.')],
     related: ['prostarseo', 'powercell-group', 'cushman-wakefield-veritas'], cta: 'Envie d’être cité par les IA ?'
+  },
+  {
+    slug: 'agence-seo-madagascar', key: 'seo', num: 'MG', crumb: 'Agence SEO Madagascar', eyebrow: 'Agence SEO à Madagascar', landing: true,
+    h1: 'Faites trouver votre entreprise sur Google, à Madagascar et au-delà.',
+    sub: 'Référencement naturel pour les entreprises malgaches : audit, optimisation technique, contenus et référencement local à Antananarivo et dans les régions, avec Akoraweb, notre équipe basée sur l’île.',
+    offersTitle: 'Un référencement pensé pour le marché malgache.', offersSub: 'Des internautes surtout sur mobile, une clientèle locale, la diaspora et l’international : chaque cible demande son travail.',
+    offers: [
+      o('01', 'Audit SEO', 'Un état des lieux de votre site : ce que Google en voit, ce qui le freine et les recherches sur lesquelles vos concurrents apparaissent à votre place.', ['Technique', 'Mots-clés', 'Concurrence']),
+      o('02', 'SEO technique & vitesse mobile', 'Des pages légères et rapides sur téléphone, correctement indexées et balisées : la base pour être classé, surtout avec une connexion mobile.', ['Vitesse', 'Indexation', 'Balisage']),
+      o('03', 'Référencement local', 'Fiche Google Business Profile, avis clients et pages par ville pour apparaître sur les recherches locales et sur Google Maps.', ['Google Maps', 'Avis', 'Antananarivo']),
+      o('04', 'Contenus en français, malgache et anglais', 'Des pages et des articles qui répondent aux questions de vos clients, dans la langue de chaque cible : marché local, diaspora ou clientèle étrangère.', ['Rédaction', 'Multilingue', 'Maillage'])
+    ],
+    benTitle: 'Une équipe sur l’île, une méthode éprouvée à Paris.',
+    benefits: [
+      b('Une équipe sur place', 'Akoraweb, l’agence de KPS à Madagascar, connaît le marché local et travaille sur votre fuseau horaire.'),
+      b('Pensé pour le mobile', 'À Madagascar, la recherche se fait d’abord sur téléphone : nous optimisons en priorité la version mobile de votre site.'),
+      b('Visible aussi depuis l’étranger', 'Tourisme, export, diaspora : nous travaillons votre visibilité dans les pays et les langues de vos clients.'),
+      b('Sans promesse intenable', 'Personne ne peut garantir une première place sur Google. Nous nous engageons sur le travail réalisé et sur un suivi transparent.')
+    ],
+    methTitle: 'Notre méthode SEO.',
+    steps: [s('1', 'Audit', 'Analyse du site, des recherches de vos clients et de vos concurrents.'), s('2', 'Plan d’action', 'Les corrections et les contenus à produire, classés par impact.'), s('3', 'Optimisation', 'Corrections techniques, pages, contenus et fiche Google.'), s('4', 'Suivi', 'Positions, trafic et demandes reçues, dans un rapport régulier.')],
+    related: ['acoi-groupe', 'karoo', 'stackello'], cta: 'Un site à faire remonter sur Google ?'
   }
 ]
 
@@ -493,6 +515,7 @@ const LOCAL_SERVICE_SEO: Record<string, { title: string; h1: string; desc: strin
   'refonte-site-web': { title: 'Refonte de site web à Paris, sans perte de SEO', h1: 'Refonte de site web à Paris', desc: 'Refonte de site web à Paris : nouveau design, migration technique et plan de redirections pour moderniser votre site sans perdre votre référencement Google.' },
   'maintenance-site-web': { title: 'Maintenance de site web : mises à jour & sécurité', h1: 'Maintenance de site web', desc: 'Maintenance de site web : mises à jour, sauvegardes, sécurité, corrections et évolutions à la demande. Un site à jour et disponible, suivi par une agence à Paris.' },
   'agence-geo': { title: 'Agence GEO : être cité par ChatGPT, Gemini, Perplexity', h1: 'Agence GEO à Paris', desc: 'Agence GEO à Paris : audit de visibilité IA, contenus citables et socle technique pour que ChatGPT, Gemini et Perplexity recommandent votre entreprise.' },
+  'agence-seo-madagascar': { title: 'Agence SEO à Madagascar : référencement Google', h1: 'Agence SEO à Madagascar', desc: 'Agence SEO à Madagascar : audit, SEO technique, référencement local à Antananarivo et contenus pour faire remonter votre site sur Google, avec une équipe sur place.' },
   'creation-saas': { title: 'Création de SaaS : du MVP à la plateforme', h1: 'Création de SaaS sur mesure', desc: 'Création de SaaS sur mesure à Paris : MVP, plateforme multi-clients, abonnements et paiement en ligne. Du cadrage au lancement, avec une équipe dédiée. Devis sous 48 h.' }
 }
 export const SERVICE_SEO: Record<string, { title: string; h1: string; desc: string }> = Object.fromEntries(

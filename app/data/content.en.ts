@@ -18,7 +18,8 @@ export const SERVICE_SLUG_EN: Record<string, string> = {
   'refonte-site-web': 'website-redesign',
   'maintenance-site-web': 'website-maintenance',
   'creation-saas': 'saas-development',
-  'agence-geo': 'geo-agency'
+  'agence-geo': 'geo-agency',
+  'agence-seo-madagascar': 'seo-agency-madagascar'
 }
 export const LOCAL_SLUG_EN: Record<string, string> = { paris: 'paris', madagascar: 'madagascar', energie: 'energy', 'expertise-comptable': 'accounting-firms', 'beaute-sante': 'beauty-health' }
 
@@ -244,6 +245,28 @@ const LOCAL_SERVICES_EN: Record<string, Omit<Service, 'slug' | 'key' | 'num' | '
     methTitle: 'Our GEO method.',
     steps: [s('1', 'Diagnosis', 'Your key searches tested on AI engines, and an analysis of the sources they cite.'), s('2', 'Action plan', 'The pages to create or rewrite, ranked by impact.'), s('3', 'Production', 'Content, structured data and technical fixes.'), s('4', 'Tracking', 'Regular measurement of citations, and adjustments.')],
     cta: 'Want to be cited by AI?'
+  },
+  'agence-seo-madagascar': {
+    crumb: 'SEO agency Madagascar', eyebrow: 'SEO agency in Madagascar',
+    h1: 'Get your business found on Google, in Madagascar and beyond.',
+    sub: 'Search engine optimisation for Malagasy businesses: audit, technical SEO, content and local SEO in Antananarivo and the regions, with Akoraweb, our team based on the island.',
+    offersTitle: 'SEO built for the Malagasy market.', offersSub: 'Mostly mobile users, local customers, the diaspora and international buyers: each audience needs its own work.',
+    offers: [
+      o('01', 'SEO audit', 'A full review of your website: what Google sees, what holds it back and the searches where competitors show up instead of you.', ['Technical', 'Keywords', 'Competitors']),
+      o('02', 'Technical SEO & mobile speed', 'Light pages that load fast on a phone, properly indexed and marked up: the basis for ranking, especially on a mobile connection.', ['Speed', 'Indexing', 'Markup']),
+      o('03', 'Local SEO', 'Google Business Profile, customer reviews and city pages to appear in local searches and on Google Maps.', ['Google Maps', 'Reviews', 'Antananarivo']),
+      o('04', 'Content in French, Malagasy and English', 'Pages and articles that answer your customers’ questions in the language of each audience: local market, diaspora or foreign clients.', ['Copywriting', 'Multilingual', 'Internal links'])
+    ],
+    benTitle: 'A team on the island, a method proven in Paris.',
+    benefits: [
+      b('A team on site', 'Akoraweb, KPS’s agency in Madagascar, knows the local market and works in your time zone.'),
+      b('Built for mobile', 'In Madagascar, people search on their phone first: we optimise the mobile version of your website as a priority.'),
+      b('Visible from abroad too', 'Tourism, export, diaspora: we work on your visibility in your customers’ countries and languages.'),
+      b('No untenable promise', 'Nobody can guarantee a first place on Google. We commit to the work delivered and to transparent reporting.')
+    ],
+    methTitle: 'Our SEO method.',
+    steps: [s('1', 'Audit', 'Analysis of your website, your customers’ searches and your competitors.'), s('2', 'Action plan', 'The fixes and content to produce, ranked by impact.'), s('3', 'Optimisation', 'Technical fixes, pages, content and Google profile.'), s('4', 'Tracking', 'Rankings, traffic and enquiries received, in a regular report.')],
+    cta: 'A website to move up on Google?'
   }
 }
 
@@ -262,6 +285,7 @@ const LOCAL_SERVICE_SEO_EN: Record<string, { title: string; h1: string; desc: st
   'social-media': { title: 'Social media agency: TikTok & Instagram content', h1: 'Social media & content agency', desc: 'Social media strategy, visual design and short-form video for TikTok and Instagram: content that strengthens your brand image and drives real engagement.' },
   'refonte-site-web': { title: 'Website redesign in Paris, without losing SEO', h1: 'Website redesign in Paris', desc: 'Website redesign in Paris: new design, technical migration and a redirect plan to modernise your website without losing your Google rankings. Free quote in 48 hours.' },
   'maintenance-site-web': { title: 'Website maintenance: updates & security', h1: 'Website maintenance', desc: 'Website maintenance: updates, backups, security, fixes and improvements on request. An up-to-date, available website looked after by a Paris-based agency.' },
+  'agence-seo-madagascar': { title: 'SEO agency in Madagascar: rank on Google', h1: 'SEO agency in Madagascar', desc: 'SEO agency in Madagascar: audit, technical SEO, local SEO in Antananarivo and content to move your website up on Google, with a team on site.' },
   'agence-geo': { title: 'GEO agency: get cited by ChatGPT, Gemini, Perplexity', h1: 'GEO agency in Paris', desc: 'GEO agency in Paris: AI visibility audit, citable content and technical foundations so ChatGPT, Gemini and Perplexity recommend your company.' },
   'creation-saas': { title: 'SaaS development: from MVP to platform', h1: 'Custom SaaS development', desc: 'Custom SaaS development in Paris: MVP, multi-tenant platform, subscriptions and online payment. From scoping to launch with a dedicated team. Free quote in 48 hours.' }
 }

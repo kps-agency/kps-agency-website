@@ -22,6 +22,8 @@
             <span class="svc__more">{{ t.more }} →</span>
           </NuxtLink>
         </div>
+        <!-- Page dédiée au référencement sur ce marché -->
+        <p v-if="page.slug === 'madagascar'" class="svc-also">{{ en ? 'Looking for search visibility first?' : 'Votre priorité est d’être trouvé sur Google ?' }} <NuxtLink :to="link.service('agence-seo-madagascar')">{{ en ? 'See our SEO agency in Madagascar' : 'Découvrez notre agence SEO à Madagascar' }} →</NuxtLink></p>
       </div>
     </section>
 
@@ -118,6 +120,8 @@ useHead({
 .hero__sub { max-width: 760px; }
 .hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; }
 .svc-h { max-width: 900px; margin-bottom: 40px; }
+.svc-also { margin-top: 28px; font-size: 17px; color: var(--muted); }
+.svc-also a { color: var(--accent-light); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .svc { display: flex; flex-direction: column; gap: 12px; padding: 28px; min-height: 200px; background: var(--bg); border: 1px solid var(--line); border-radius: 20px; color: var(--ink); transition: transform .2s ease; }
 .svc:hover { color: var(--ink); transform: translateY(-3px); }
 .svc__n { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: var(--accent-soft); border: 1px solid var(--accent-tint); color: var(--accent-light); }

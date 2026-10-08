@@ -129,6 +129,22 @@ export const SERVICE_FAQS: Record<string, { fr: Faq; en: Faq }> = {
       ['Can the product evolve after launch?', 'Yes. The foundation is designed to take new features, an API and connections with your customers’ tools.']
     ]
   },
+  'agence-seo-madagascar': {
+    fr: [
+      ['Combien de temps faut-il pour apparaître sur Google ?', 'Les premières évolutions se voient en général après quelques semaines pour les corrections techniques, et après plusieurs mois pour les recherches concurrentielles. Le délai dépend de l’état du site et de la concurrence sur vos mots-clés.'],
+      ['Pouvez-vous garantir la première place sur Google ?', 'Non, et personne ne le peut honnêtement : le classement dépend de Google et de vos concurrents. Nous nous engageons sur les actions réalisées et vous montrons l’évolution de vos positions.'],
+      ['Travaillez-vous avec des entreprises partout à Madagascar ?', 'Oui. Notre équipe Akoraweb est basée sur l’île et accompagne des entreprises d’Antananarivo comme des régions ; les échanges se font sur place, en visioconférence ou par téléphone.'],
+      ['Mon site doit-il être en malgache, en français ou en anglais ?', 'Cela dépend de vos clients : le français et le malgache pour le marché local, l’anglais ou d’autres langues pour le tourisme et l’export. Nous définissons les langues utiles lors de l’audit.'],
+      ['Faut-il refaire mon site pour le référencer ?', 'Pas toujours. L’audit indique si des corrections suffisent ou si une refonte est préférable, par exemple quand le site est trop lent sur mobile.']
+    ],
+    en: [
+      ['How long does it take to appear on Google?', 'The first changes usually show after a few weeks for technical fixes, and after several months for competitive searches. Timing depends on the state of the website and on competition for your keywords.'],
+      ['Can you guarantee first place on Google?', 'No, and nobody honestly can: rankings depend on Google and on your competitors. We commit to the work delivered and show you how your positions evolve.'],
+      ['Do you work with businesses all over Madagascar?', 'Yes. Our Akoraweb team is based on the island and supports businesses in Antananarivo and in the regions; we meet on site, by video call or by phone.'],
+      ['Should my website be in Malagasy, French or English?', 'It depends on your customers: French and Malagasy for the local market, English or other languages for tourism and export. We define the useful languages during the audit.'],
+      ['Do I need to rebuild my website to rank?', 'Not always. The audit shows whether fixes are enough or whether a redesign is preferable, for instance when the site is too slow on mobile.']
+    ]
+  },
   'agence-geo': {
     fr: [
       ['Pouvez-vous garantir que ChatGPT citera notre entreprise ?', 'Non. Les réponses des IA changent selon la formulation, l’utilisateur et les mises à jour des modèles. Nous augmentons vos chances d’être cité et mesurons l’évolution dans le temps.'],
