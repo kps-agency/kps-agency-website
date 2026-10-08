@@ -75,13 +75,14 @@ const LOCAL_SERVICES_EN: Record<string, Omit<Service, 'slug' | 'key' | 'num' | '
   'referencement-seo-geo': {
     crumb: 'SEO & GEO', eyebrow: 'SEO & GEO',
     h1: 'Get found on Google. Get cited by AI.',
-    sub: 'Your customers search on Google, but also ask ChatGPT, Gemini or Perplexity. We optimise your visibility on both fronts to capture qualified, lasting demand.',
+    sub: 'As an SEO agency in Paris, we move your website up on Google, locally and nationwide, and make it citable by ChatGPT, Gemini and Perplexity. The goal: qualified, lasting demand.',
     offersTitle: 'Visibility that builds over time.', offersSub: 'SEO builds a lasting asset; GEO prepares your brand for new ways of searching.',
     offers: [
       o('01', 'Audit & strategy', 'A technical, semantic and competitive review to prioritise high-impact actions.', ['Technical audit', 'Keywords', 'Competition']),
       o('02', 'Technical SEO', 'Speed, indexing, structure, structured data: the essential foundations of your visibility.', ['Indexing', 'Performance', 'Markup']),
-      o('03', 'Optimised content', 'Pages and articles that precisely answer your customers’ questions and search engines’ expectations.', ['Copywriting', 'Internal linking', 'Local SEO']),
-      o('04', 'GEO', 'Make your brand visible and cited in the answers of generative AI.', ['ChatGPT', 'Gemini', 'Perplexity'])
+      o('03', 'Optimised content', 'Pages and articles that precisely answer your customers’ questions and search engines’ expectations.', ['Copywriting', 'Internal linking', 'Keywords']),
+      o('04', 'Local SEO in Paris', 'Google Business Profile, customer reviews, city or district pages and structured data: to appear on Google Maps and in “near me” searches.', ['Google Maps', 'Reviews', 'Paris & Île-de-France']),
+      o('05', 'GEO', 'Make your brand visible and cited in the answers of generative AI.', ['ChatGPT', 'Gemini', 'Perplexity'])
     ],
     benTitle: 'Traffic that doesn’t stop when the budget does.',
     benefits: [
@@ -254,8 +255,8 @@ const LOCAL_SERVICES_EN: Record<string, Omit<Service, 'slug' | 'key' | 'num' | '
     offers: [
       o('01', 'SEO audit', 'A full review of your website: what Google sees, what holds it back and the searches where competitors show up instead of you.', ['Technical', 'Keywords', 'Competitors']),
       o('02', 'Technical SEO & mobile speed', 'Light pages that load fast on a phone, properly indexed and marked up: the basis for ranking, especially on a mobile connection.', ['Speed', 'Indexing', 'Markup']),
-      o('03', 'Local SEO', 'Google Business Profile, customer reviews and city pages to appear in local searches and on Google Maps.', ['Google Maps', 'Reviews', 'Antananarivo']),
-      o('04', 'Content in French, Malagasy and English', 'Pages and articles that answer your customers’ questions in the language of each audience: local market, diaspora or foreign clients.', ['Copywriting', 'Multilingual', 'Internal links'])
+      o('03', 'Content in French, Malagasy and English', 'Pages and articles that answer your customers’ questions in the language of each audience: local market, diaspora or foreign clients.', ['Copywriting', 'Multilingual', 'Internal links']),
+      o('04', 'Local SEO', 'Google Business Profile, customer reviews and city pages to appear in local searches and on Google Maps.', ['Google Maps', 'Reviews', 'Antananarivo'])
     ],
     benTitle: 'A team on the island, a method proven in Paris.',
     benefits: [
@@ -280,7 +281,7 @@ const LOCAL_SERVICE_SEO_EN: Record<string, { title: string; h1: string; desc: st
   'creation-site-web': { title: 'Website design agency in Paris', h1: 'Website design agency in Paris', desc: 'Website design agency in Paris: fast showcase websites, online stores and landing pages, optimised for Google and built to convert. Free quote within 48 hours.' },
   'application-metier': { title: 'Custom business software development', h1: 'Custom business software', desc: 'Custom business software development: CRM, back office, client portals and automation tailored to your processes. Paris-based team, free quote in 48 hours.' },
   'application-mobile': { title: 'iOS & Android mobile app development', h1: 'iOS & Android mobile app development', desc: 'Design and development of iOS and Android mobile apps, from UX mock-ups to App Store and Google Play release. Paris-based agency, free quote within 48 hours.' },
-  'referencement-seo-geo': { title: 'SEO & GEO agency in Paris: Google and AI', h1: 'SEO & GEO agency in Paris', desc: 'SEO and GEO agency in Paris: audits, technical SEO, content and visibility in ChatGPT, Gemini and Perplexity to capture qualified, long-term search demand.' },
+  'referencement-seo-geo': { title: 'SEO agency in Paris: organic search & GEO', h1: 'SEO agency in Paris: organic search & GEO', desc: 'SEO agency in Paris: audits, technical and local SEO, content and GEO to be found on Google and cited by ChatGPT. Free audit of your website.' },
   'marketing-digital-ads': { title: 'Google Ads, Meta Ads & TikTok Ads agency', h1: 'Digital marketing & paid ads agency', desc: 'Data-driven Google Ads, Meta Ads and TikTok Ads campaigns: strategy, creative, delivery and continuous optimisation by a digital marketing agency in Paris.' },
   'social-media': { title: 'Social media agency: TikTok & Instagram content', h1: 'Social media & content agency', desc: 'Social media strategy, visual design and short-form video for TikTok and Instagram: content that strengthens your brand image and drives real engagement.' },
   'refonte-site-web': { title: 'Website redesign in Paris, without losing SEO', h1: 'Website redesign in Paris', desc: 'Website redesign in Paris: new design, technical migration and a redirect plan to modernise your website without losing your Google rankings. Free quote in 48 hours.' },

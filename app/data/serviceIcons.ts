@@ -55,7 +55,7 @@ export const serviceIconPath = (key?: string) => ICON_PATHS[(key && SERVICE_ICON
 export const OFFER_ICONS: Record<string, (keyof typeof ICON_PATHS)[]> = {
   web: ['store', 'pen', 'target', 'cart'],
   app: ['users', 'sliders', 'portal', 'zap'],
-  seo: ['clipboard', 'gauge', 'file', 'spark'],
+  seo: ['clipboard', 'gauge', 'file', 'target', 'spark'],
   mobile: ['layout', 'mobile', 'devices', 'rocket'],
   ads: ['target', 'image', 'share', 'chart'],
   social: ['calendar', 'image', 'video', 'users'],

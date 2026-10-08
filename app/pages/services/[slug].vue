@@ -70,6 +70,12 @@
 
     <!-- REALISATIONS LIEES -->
     <section class="container section">
+      <!-- Avis Google en rapport avec cette expertise (SERVICE_REVIEW), repris tel quel -->
+      <figure v-if="review" class="proof">
+        <span class="proof__stars" role="img" :aria-label="`${review.rating} / 5`">{{ '★'.repeat(review.rating) }}</span>
+        <blockquote class="proof__q">« {{ review.text }} »</blockquote>
+        <figcaption class="proof__who"><strong>{{ review.name }}</strong> · <a :href="GOOGLE_REVIEWS_URL" target="_blank" rel="noopener">{{ en ? 'Google review' : 'Avis Google' }}</a></figcaption>
+      </figure>
       <div class="rel-head">
         <h2 class="h2 h2--52">{{ t.trusted }}</h2>
         <NuxtLink :to="link.work()" class="btn btn--ghost btn--sm">{{ t.allWork }}</NuxtLink>
@@ -108,7 +114,7 @@
 
 <script setup lang="ts">
 import { offerIconPath, serviceIconPath } from '~/data/serviceIcons'
-import type { Project } from '~/data/content'
+import { GOOGLE_REVIEWS_URL, REVIEWS, SERVICE_REVIEW, type Project } from '~/data/content'
 import { SERVICE_FAQS } from '~/data/serviceFaq'
 import { blogArticles } from '~/data/blog'
 
@@ -134,6 +140,8 @@ const related = computed(() => {
 })
 
 // Six articles les plus récents rattachés à l'expertise (champ « service » de l'article)
+// Les avis sont en français : rien sur la version anglaise
+const review = computed(() => (en.value ? undefined : REVIEWS.find(r => r.name === SERVICE_REVIEW[svc.value!.slug])))
 const guides = computed(() => blogArticles(en.value ? 'en' : 'fr').filter(a => a.service === svc.value!.slug).slice(0, 6))
 
 const seo = computed(() => serviceSeo.value[svc.value!.slug]!)
@@ -211,6 +219,14 @@ useHead({
 .mstep h3 { font-size: 23px; font-weight: 700; }
 .mstep p { font-size: 16px; line-height: 1.6; color: var(--dark-muted); }
 
+/* Nombre impair d'offres : la dernière occupe toute la largeur au lieu de laisser une case vide */
+.grid-2 > .offer:last-child:nth-child(odd) { grid-column: 1 / -1; min-height: 0; }
+.proof { display: flex; flex-direction: column; gap: 14px; max-width: 900px; margin-bottom: 64px; padding: 32px 36px; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 0 20px 20px 0; background: var(--surface); }
+.proof__stars { color: #FBBF24; letter-spacing: 3px; font-size: 18px; }
+.proof__q { font-size: 20px; line-height: 1.6; color: var(--ink); }
+.proof__who { font-size: 15px; color: var(--muted-2); }
+.proof__who strong { color: var(--ink); }
+.proof__who a { text-decoration: underline; text-underline-offset: 3px; }
 .rel-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
 .faq-wrap { border-bottom: none; }
 .guides { padding-top: 0; }

@@ -211,6 +211,9 @@ export const CASE_STUDY_MIN_CHARS = 400
 export const isCaseStudy = (p: Pick<Project, 'desc' | 'study'>) =>
   [p.desc.startsWith('[') ? '' : p.desc, p.study?.context, p.study?.work, p.study?.results].join('').length >= CASE_STUDY_MIN_CHARS
 
+/** Avis Google mis en avant sur la page d'une expertise (nom de l'auteur tel qu'il figure dans REVIEWS) : rien n'est affiché si l'avis n'existe plus */
+export const SERVICE_REVIEW: Record<string, string> = { 'referencement-seo-geo': 'Amine' }
+
 /** Témoignages clients : les réalisations dont l'étude de cas porte une citation signée */
 export const hasQuote = (p: Project) => !!(p.study?.quote && p.study.quoteAuthor)
 
@@ -285,13 +288,14 @@ const LOCAL_SERVICES: Service[] = [
   {
     slug: 'referencement-seo-geo', key: 'seo', num: '03', crumb: 'Référencement SEO & GEO', eyebrow: 'Référencement SEO & GEO',
     h1: 'Soyez trouvé sur Google. Soyez cité par les IA.',
-    sub: 'Vos clients cherchent sur Google, mais aussi auprès de ChatGPT, Gemini ou Perplexity. Nous optimisons votre visibilité sur ces deux terrains pour capter une demande qualifiée et durable.',
+    sub: 'Agence de référencement à Paris, nous faisons remonter votre site sur Google, dans votre ville comme à l’échelle nationale, et nous le rendons citable par ChatGPT, Gemini et Perplexity. Objectif : une demande qualifiée et durable.',
     offersTitle: 'Une visibilité qui se construit dans la durée.', offersSub: 'Le SEO construit un actif durable ; le GEO prépare votre marque aux nouveaux usages de recherche.',
     offers: [
       o('01', 'Audit & stratégie', 'Un état des lieux technique, sémantique et concurrentiel pour prioriser les actions à fort impact.', ['Audit technique', 'Mots-clés', 'Concurrence']),
       o('02', 'SEO technique', 'Vitesse, indexation, structure, données structurées : les fondations indispensables à votre visibilité.', ['Indexation', 'Performance', 'Balisage']),
-      o('03', 'Contenus optimisés', 'Des pages et articles qui répondent précisément aux questions de vos clients et aux attentes des moteurs.', ['Rédaction', 'Maillage', 'SEO local']),
-      o('04', 'GEO', 'Rendez votre marque visible et citée dans les réponses des IA génératives.', ['ChatGPT', 'Gemini', 'Perplexity'])
+      o('03', 'Contenus optimisés', 'Des pages et articles qui répondent précisément aux questions de vos clients et aux attentes des moteurs.', ['Rédaction', 'Maillage', 'Mots-clés']),
+      o('04', 'Référencement local à Paris', 'Fiche Google Business Profile, avis clients, pages par ville ou par arrondissement et données structurées : pour apparaître sur Google Maps et sur les recherches « près de chez moi ».', ['Google Maps', 'Avis', 'Paris & Île-de-France']),
+      o('05', 'GEO', 'Rendez votre marque visible et citée dans les réponses des IA génératives.', ['ChatGPT', 'Gemini', 'Perplexity'])
     ],
     benTitle: 'Le trafic qui ne s’arrête pas quand le budget s’arrête.',
     benefits: [
@@ -464,8 +468,8 @@ const LOCAL_SERVICES: Service[] = [
     offers: [
       o('01', 'Audit SEO', 'Un état des lieux de votre site : ce que Google en voit, ce qui le freine et les recherches sur lesquelles vos concurrents apparaissent à votre place.', ['Technique', 'Mots-clés', 'Concurrence']),
       o('02', 'SEO technique & vitesse mobile', 'Des pages légères et rapides sur téléphone, correctement indexées et balisées : la base pour être classé, surtout avec une connexion mobile.', ['Vitesse', 'Indexation', 'Balisage']),
-      o('03', 'Référencement local', 'Fiche Google Business Profile, avis clients et pages par ville pour apparaître sur les recherches locales et sur Google Maps.', ['Google Maps', 'Avis', 'Antananarivo']),
-      o('04', 'Contenus en français, malgache et anglais', 'Des pages et des articles qui répondent aux questions de vos clients, dans la langue de chaque cible : marché local, diaspora ou clientèle étrangère.', ['Rédaction', 'Multilingue', 'Maillage'])
+      o('03', 'Contenus en français, malgache et anglais', 'Des pages et des articles qui répondent aux questions de vos clients, dans la langue de chaque cible : marché local, diaspora ou clientèle étrangère.', ['Rédaction', 'Multilingue', 'Maillage']),
+      o('04', 'Référencement local', 'Fiche Google Business Profile, avis clients et pages par ville pour apparaître sur les recherches locales et sur Google Maps.', ['Google Maps', 'Avis', 'Antananarivo'])
     ],
     benTitle: 'Une équipe sur l’île, une méthode éprouvée à Paris.',
     benefits: [
@@ -509,7 +513,7 @@ const LOCAL_SERVICE_SEO: Record<string, { title: string; h1: string; desc: strin
   'creation-site-web': { title: 'Création de site web à Paris : vitrine & e-commerce', h1: 'Création de site web à Paris', desc: 'Agence de création de site web à Paris : sites vitrines, e-commerce et landing pages rapides, optimisés pour Google et pensés pour convertir. Devis sous 48 h.' },
   'application-metier': { title: 'Développement d’application métier sur mesure', h1: 'Application métier sur mesure', desc: 'Développement d’applications métier sur mesure à Paris : CRM, back-office, portail client et automatisations adaptés à vos processus. Devis gratuit sous 48 h.' },
   'application-mobile': { title: 'Création d’application mobile iOS & Android', h1: 'Création d’application mobile iOS & Android', desc: 'Conception et développement d’applications mobiles iOS et Android, de la maquette UX à la publication sur les stores. Agence basée à Paris, devis sous 48 h.' },
-  'referencement-seo-geo': { title: 'Agence SEO & GEO à Paris : Google et IA', h1: 'Agence SEO & GEO à Paris', desc: 'Référencement naturel SEO et GEO à Paris : audit, SEO technique, contenus et visibilité dans ChatGPT, Gemini et Perplexity pour une demande qualifiée.' },
+  'referencement-seo-geo': { title: 'Agence SEO à Paris : référencement naturel & GEO', h1: 'Agence SEO à Paris : référencement SEO & GEO', desc: 'Agence SEO à Paris : audit, référencement SEO technique et local, contenus et GEO pour être trouvé sur Google et cité par ChatGPT. Audit de votre site offert.' },
   'marketing-digital-ads': { title: 'Agence Google Ads, Meta Ads & TikTok Ads', h1: 'Agence marketing digital & publicité en ligne', desc: 'Campagnes Google Ads, Meta Ads et TikTok Ads pilotées par la donnée : stratégie, création, diffusion et optimisation continue. Agence marketing digital à Paris.' },
   'social-media': { title: 'Agence social media : contenus TikTok & Instagram', h1: 'Agence social media & création de contenus', desc: 'Stratégie social media, création visuelle et vidéos courtes pour TikTok et Instagram : des contenus qui renforcent votre image et créent l’engagement.' },
   'refonte-site-web': { title: 'Refonte de site web à Paris, sans perte de SEO', h1: 'Refonte de site web à Paris', desc: 'Refonte de site web à Paris : nouveau design, migration technique et plan de redirections pour moderniser votre site sans perdre votre référencement Google.' },

@@ -36,13 +36,19 @@ export const SERVICE_FAQS: Record<string, { fr: Faq; en: Faq }> = {
       ['En combien de temps voit-on les résultats du SEO ?', 'Les premières améliorations apparaissent généralement après deux à quatre mois, et les résultats solides entre six et douze mois, selon la concurrence de votre secteur.'],
       ['Garantissez-vous la première position sur Google ?', 'Non, et personne ne peut le faire honnêtement : Google décide seul de son classement. Nous nous engageons sur les actions menées et sur un suivi transparent des positions et des demandes reçues.'],
       ['Quelle différence entre SEO et GEO ?', 'Le SEO vise à classer vos pages dans Google. Le GEO vise à ce que votre entreprise soit citée dans les réponses de ChatGPT, Gemini ou Perplexity. Les deux reposent sur le même socle : des contenus clairs et un site lisible.'],
-      ['Faut-il refaire notre site pour être bien référencé ?', 'Rarement. Un audit indique ce qui se corrige sur le site existant. Une refonte ne se justifie que si la technique empêche ces corrections.']
+      ['Faut-il refaire notre site pour être bien référencé ?', 'Rarement. Un audit indique ce qui se corrige sur le site existant. Une refonte ne se justifie que si la technique empêche ces corrections.'],
+      ['Qu’est-ce que le référencement local ?', 'C’est le travail qui fait apparaître votre entreprise sur Google Maps et sur les recherches liées à un lieu, comme « plombier Paris 15 ». Il repose sur votre fiche Google Business Profile, vos avis clients et des pages dédiées à vos zones d’intervention.'],
+      ['Travaillez-vous uniquement avec des entreprises parisiennes ?', 'Non. Notre agence est à Paris (8ᵉ) et nous accompagnons des entreprises de toute l’Île-de-France et du reste de la France ; les échanges se font dans nos locaux, chez vous ou en visioconférence.'],
+      ['Comment démarrer ?', 'Par un audit gratuit de votre site : nous relevons ce qui freine votre référencement et vous remettons les actions prioritaires, sans engagement.']
     ],
     en: [
       ['How long before SEO shows results?', 'The first improvements generally appear after two to four months, and solid results between six and twelve months, depending on the competition in your sector.'],
       ['Do you guarantee first position on Google?', 'No, and nobody honestly can: Google alone decides its rankings. We commit to the actions carried out and to transparent tracking of rankings and enquiries received.'],
       ['What is the difference between SEO and GEO?', 'SEO aims to rank your pages in Google. GEO aims to have your company cited in answers from ChatGPT, Gemini or Perplexity. Both rest on the same foundation: clear content and a readable site.'],
-      ['Do we need to rebuild our site to rank well?', 'Rarely. An audit shows what can be fixed on the existing site. A redesign is only justified if the technology prevents those fixes.']
+      ['Do we need to rebuild our site to rank well?', 'Rarely. An audit shows what can be fixed on the existing site. A redesign is only justified if the technology prevents those fixes.'],
+      ['What is local SEO?', 'It is the work that makes your business appear on Google Maps and in searches tied to a place, such as “plumber Paris 15”. It relies on your Google Business Profile, your customer reviews and pages dedicated to the areas you serve.'],
+      ['Do you only work with Paris-based companies?', 'No. Our agency is in Paris (8th) and we support companies across Île-de-France and the rest of France; we meet at our office, at yours or by video call.'],
+      ['How do we get started?', 'With a free audit of your website: we identify what is holding back your rankings and give you the priority actions, with no commitment.']
     ]
   },
   'application-mobile': {
