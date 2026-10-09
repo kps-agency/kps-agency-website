@@ -602,6 +602,29 @@ export const LOCAL_PAGES: LocalPage[] = [
     cta: 'Un projet digital à Madagascar ?'
   },
   {
+    // Page hub des articles Québec / Canada. Textes tirés de ces articles (équipe à Paris, travail à distance, site bilingue,
+    // principes de la Loi 25, soumission sous 48 h) : aucune référence ni présence locale n'est avancée. À relire par KPS.
+    slug: 'quebec', crumbParent: 'Agence digitale', crumb: 'Québec', eyebrow: 'Agence web pour le Québec',
+    title: 'Agence web pour les entreprises du Québec', description: 'Agence web pour les entreprises du Québec et du Canada : site bilingue français-anglais, conformité à la Loi 25 et référencement, avec une équipe à Paris.',
+    h1: 'Votre agence web pour le Québec.',
+    sub: 'Site web bilingue, conformité à la Loi 25, référencement en français et en anglais : KPS accompagne à distance, depuis Paris, les entreprises du Québec et du Canada.',
+    svcTitle: 'Nos expertises pour les entreprises du Québec.', whyTitle: 'Pourquoi une agence en France pour un projet au Québec ?',
+    why: [
+      b('Des sites bilingues', 'Une adresse par langue, des balises hreflang et des contenus propres à chaque public : la méthode que nous appliquons à notre propre site.'),
+      b('La Loi 25 prise en compte', 'Consentement avant tout suivi, formulaires sobres, politique de confidentialité claire : des principes proches du RGPD, que nous appliquons déjà.'),
+      b('Un suivi à distance', 'Les projets se suivent en visioconférence, et les créneaux de rendez-vous s’affichent dans votre fuseau horaire.'),
+      b('Une soumission sous 48 h', 'Après un premier appel pour comprendre votre projet, vous recevez une soumission gratuite sous 48 h.')
+    ],
+    refTitle: 'Quelques-unes de nos références', refs: ['powercell-group', 'fibbl', 'cushman-wakefield-veritas'],
+    faq: [
+      ['Avez-vous une équipe au Québec ?', 'Non. Notre équipe est basée à Paris et travaille à distance avec des entreprises en France et à l’international. Les échanges se font en visioconférence, sur des créneaux affichés dans votre fuseau horaire.'],
+      ['Connaissez-vous la Loi 25 ?', 'Oui. Elle rejoint les principes du RGPD européen que nous appliquons déjà sur les sites que nous concevons : consentement avant tout suivi, formulaires sobres et politique de confidentialité claire. Notre guide sur la Loi 25 détaille les points à vérifier.'],
+      ['Pouvez-vous créer un site bilingue français-anglais ?', 'Oui. Nous prévoyons une adresse par langue, des balises hreflang et des contenus propres à chaque langue, sans redirection forcée selon la langue du navigateur. Le site de KPS Agency est construit de cette façon.'],
+      ['Comment obtenir une soumission ?', 'Réservez un appel ou écrivez-nous depuis la page Contact : nous regardons votre projet ensemble, puis vous recevez une soumission gratuite sous 48 h.']
+    ],
+    cta: 'Un projet web au Québec ?'
+  },
+  {
     slug: 'energie', crumbParent: 'Secteurs', crumb: 'Énergie', eyebrow: 'Secteur de l’énergie',
     title: 'Agence digitale pour le secteur de l’énergie', description: 'Agence digitale pour le secteur de l’énergie : sites corporate multilingues, référencement et campagnes pour les acteurs de l’énergie et des renouvelables.',
     h1: 'Le digital au service des acteurs de l’énergie.',

@@ -72,6 +72,7 @@ export function useSite() {
   const footerLocal = computed(() => [
     [en.value ? 'Paris' : 'Paris', link.local('paris')],
     ['Madagascar', link.local('madagascar')],
+    [en.value ? 'Quebec' : 'Québec', link.local('quebec')],
     [en.value ? 'Energy' : 'Énergie', link.local('energie')],
     [en.value ? 'Accounting & advisory' : 'Expertise comptable & conseil', link.local('expertise-comptable')],
     [en.value ? 'Beauty & health' : 'Beauté & santé', link.local('beaute-sante')]

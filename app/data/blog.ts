@@ -1,6 +1,7 @@
 import { Marked, type Tokens } from 'marked'
 import cms from '#cms'
 import { publishedOnly, toMeta, withCmsPosts, type BlogLang, type BlogMeta } from '#shared/blog'
+import { LOCAL_PAGES } from '~/data/content'
 
 // Articles : un fichier Markdown par article dans content/blog/{fr,en}/, plus ceux de Supabase (inclus au build, pages prérendues).
 const files = import.meta.glob('../../content/blog/*/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>
@@ -10,6 +11,18 @@ const published = publishedOnly(all)
 
 export const blogArticles = (lang: BlogLang) => published.filter(a => a.meta.lang === lang).map(a => a.meta)
 export const blogArticle = (lang: BlogLang, slug: string) => published.find(a => a.meta.lang === lang && a.meta.slug === slug)
+
+// Marchés reconnus dans l'adresse ou les mots-clés d'un article (dans les deux langues)
+const HUB_KEYWORDS: [RegExp, string][] = [[/madagascar/, 'madagascar'], [/qu[eé]bec|canad/, 'quebec']]
+
+/** Page ville / secteur (slug FR de LOCAL_PAGES) à laquelle un article est rattaché : celle de son secteur si elle existe,
+ *  sinon celle du marché dont il parle (Madagascar, Québec), sinon la page Paris, marché principal de l'agence.
+ *  Sert au lien « hub » de l'article et à la liste des guides de chaque page ville / secteur. */
+export function articleHub(a: Pick<BlogMeta, 'slug' | 'sector' | 'tags'>) {
+  if (LOCAL_PAGES.some(l => l.slug === a.sector)) return a.sector
+  const text = `${a.slug} ${a.tags.join(' ')}`.toLowerCase()
+  return HUB_KEYWORDS.find(([re]) => re.test(text))?.[1] ?? 'paris'
+}
 
 /** Texte brut du sommaire : entités HTML décodées (apostrophes, guillemets…) */
 const decode = (s: string) => s.replace(/&#39;/g, '’').replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')

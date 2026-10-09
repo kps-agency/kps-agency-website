@@ -40,6 +40,9 @@
           </div>
         </aside>
 
+        <!-- Maillage : la page ville / secteur à laquelle l'article est rattaché -->
+        <p v-if="hub" class="art__hub">{{ t.hub }} <NuxtLink :to="link.local(hub.slug)">{{ hub.eyebrow }}</NuxtLink></p>
+
         <p v-if="post.meta.tags.length" class="art__tags"><span v-for="tag in post.meta.tags" :key="tag">#{{ tag }}</span></p>
       </div>
     </div>
@@ -61,11 +64,11 @@
 
 <script setup lang="ts">
 import { BLOG_SECTORS } from '#shared/blog'
-import { blogArticle, blogArticles, renderArticle } from '~/data/blog'
+import { articleHub, blogArticle, blogArticles, renderArticle } from '~/data/blog'
 import { AUTHORS, authorSlug } from '~/data/content'
 
 const route = useRoute()
-const { en, locale, link, services } = useSite()
+const { en, locale, link, services, localPages } = useSite()
 const lang = computed(() => locale.value as 'fr' | 'en')
 const post = computed(() => blogArticle(lang.value, String(route.params.slug)))
 if (!post.value) throw createError({ statusCode: 404, statusMessage: 'Article introuvable', fatal: true })
@@ -78,6 +81,7 @@ useSetI18nParams()({ [lang.value]: { slug: post.value.meta.slug }, ...(translate
 const rendered = computed(() => renderArticle(post.value!.body))
 const authorRole = computed(() => AUTHORS[post.value!.meta.author]?.[en.value ? 'en' : 'fr'] ?? '')
 const service = computed(() => services.value.find(s => s.slug === post.value!.meta.service))
+const hub = computed(() => localPages.value.find(l => l.slug === articleHub(post.value!.meta)))
 // Articles liés : même secteur d'abord, puis les plus récents
 const related = computed(() => {
   const list = blogArticles(lang.value).filter(a => a.slug !== post.value!.meta.slug)
@@ -85,8 +89,8 @@ const related = computed(() => {
 })
 
 const t = useLocaleText({
-  fr: { home: 'Accueil', updated: 'mis à jour le', minutes: 'min de lecture', by: 'Par', toc: 'Sommaire', ctaKicker: 'Notre expertise', ctaService: 'Découvrir l’offre', ctaCall: 'Réserver un appel', related: 'À lire aussi' },
-  en: { home: 'Home', updated: 'updated', minutes: 'min read', by: 'By', toc: 'Contents', ctaKicker: 'Our expertise', ctaService: 'Discover the service', ctaCall: 'Book a call', related: 'Keep reading' }
+  fr: { home: 'Accueil', updated: 'mis à jour le', minutes: 'min de lecture', by: 'Par', toc: 'Sommaire', ctaKicker: 'Notre expertise', ctaService: 'Découvrir l’offre', ctaCall: 'Réserver un appel', related: 'À lire aussi', hub: 'Pour aller plus loin :' },
+  en: { home: 'Home', updated: 'updated', minutes: 'min read', by: 'By', toc: 'Contents', ctaKicker: 'Our expertise', ctaService: 'Discover the service', ctaCall: 'Book a call', related: 'Keep reading', hub: 'To go further:' }
 })
 const sectorLabel = (s: string) => BLOG_SECTORS[s]?.[en.value ? 'en' : 'fr'] ?? s
 const formatDate = (d: string) => new Intl.DateTimeFormat(en.value ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${d}T12:00:00Z`))
@@ -170,6 +174,8 @@ useHead({
 .art__cta-t { display: block; font-family: var(--font-display); font-size: 24px; letter-spacing: -.4px; }
 .art__cta p { margin-top: 8px; font-size: 16px; line-height: 1.55; color: var(--dark-muted); }
 .art__cta-actions { display: flex; flex-direction: column; gap: 10px; flex: none; }
+.art__hub { font-size: 16px; color: var(--muted); }
+.art__hub a { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .art__tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .art__tags span { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 13px; color: var(--muted-2); }
 

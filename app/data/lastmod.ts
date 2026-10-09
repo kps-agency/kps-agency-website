@@ -5,36 +5,37 @@
 export const LASTMOD: { pages: Record<string, string>; services: Record<string, string>; local: Record<string, string> } = {
   // Pages fixes, par nom de fichier de app/pages
   pages: {
-    index: '2026-10-08',
+    index: '2026-10-10',
     services: '2026-10-07',
-    realisations: '2026-10-06',
-    agence: '2026-10-07',
-    contact: '2026-10-07',
+    realisations: '2026-10-10',
+    agence: '2026-10-10',
+    contact: '2026-10-10',
     'rendez-vous': '2026-10-03',
-    'audit-gratuit': '2026-10-07',
+    'audit-gratuit': '2026-10-10',
     auteur: '2026-10-07'
   },
   // Expertises (slug FR)
   services: {
     'creation-site-web': '2026-10-05',
     'application-metier': '2026-10-07',
-    'referencement-seo-geo': '2026-10-08',
+    'referencement-seo-geo': '2026-10-10',
     'application-mobile': '2026-10-07',
     'marketing-digital-ads': '2026-10-05',
     'social-media': '2026-10-05',
-    'refonte-site-web': '2026-10-05',
-    'maintenance-site-web': '2026-10-05',
-    'creation-saas': '2026-10-07',
-    'agence-geo': '2026-10-08',
-    'agence-seo-madagascar': '2026-10-08'
+    'refonte-site-web': '2026-10-10',
+    'maintenance-site-web': '2026-10-10',
+    'creation-saas': '2026-10-10',
+    'agence-geo': '2026-10-10',
+    'agence-seo-madagascar': '2026-10-10'
   },
   // Pages villes et secteurs (slug FR)
   local: {
-    paris: '2026-10-05',
-    madagascar: '2026-10-06',
-    energie: '2026-10-07',
-    'expertise-comptable': '2026-10-07',
-    'beaute-sante': '2026-10-07'
+    paris: '2026-10-10',
+    madagascar: '2026-10-10',
+    quebec: '2026-10-10',
+    energie: '2026-10-10',
+    'expertise-comptable': '2026-10-10',
+    'beaute-sante': '2026-10-10'
   }
 }
 

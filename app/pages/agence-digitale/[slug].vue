@@ -43,7 +43,7 @@
       </div>
     </section>
 
-    <!-- GUIDES DU SECTEUR : articles du blog dont le champ « sector » est le slug de la page -->
+    <!-- GUIDES : articles du blog rattachés à cette page (articleHub dans app/data/blog.ts) -->
     <section v-if="guides.length" class="container section guides">
       <h2 class="h2 h2--52 guides-h">{{ t.guides }}</h2>
       <div class="grid grid-3 m-swipe">
@@ -67,7 +67,7 @@
 <script setup lang="ts">
 import { serviceIconPath } from '~/data/serviceIcons'
 import type { Project } from '~/data/content'
-import { blogArticles } from '~/data/blog'
+import { articleHub, blogArticles } from '~/data/blog'
 
 const route = useRoute()
 const { en, link, services, projects, localPages, localSlug } = useSite()
@@ -75,16 +75,16 @@ const { en, link, services, projects, localPages, localSlug } = useSite()
 const page = computed(() => localPages.value.find(l => localSlug(l.slug) === String(route.params.slug)))
 if (!page.value) throw createError({ statusCode: 404, statusMessage: 'Page introuvable', fatal: true })
 useSetI18nParams()({ fr: { slug: page.value.slug }, en: { slug: localSlug(page.value.slug, 'en') } })
-const guides = computed(() => blogArticles(en.value ? 'en' : 'fr').filter(a => a.sector === page.value!.slug).slice(0, 3))
+const guides = computed(() => blogArticles(en.value ? 'en' : 'fr').filter(a => articleHub(a) === page.value!.slug).slice(0, 3))
 const refs = computed(() => (page.value?.refs ?? []).map(slug => projects.value.find(p => p.slug === slug)).filter(Boolean) as Project[])
 
 const t = useLocaleText({
   fr: {
-    home: 'Accueil', talk: 'Parler de votre projet', seeWork: 'Voir les réalisations', more: 'En savoir plus', faq: 'Questions fréquentes', guides: 'Nos guides pour votre secteur', read: 'Lire',
+    home: 'Accueil', talk: 'Parler de votre projet', seeWork: 'Voir les réalisations', more: 'En savoir plus', faq: 'Questions fréquentes', guides: 'Nos guides pour aller plus loin', read: 'Lire',
     short: { web: 'Vitrine, blog, landing page, e-commerce.', app: 'Des outils sur mesure pour vos équipes.', seo: 'Visibilité sur Google et les IA génératives.', mobile: 'iOS et Android, de l’UX aux stores.', ads: 'Des campagnes pilotées par la donnée.', social: 'Visuel, vidéo et stratégie éditoriale.', refonte: 'Un site modernisé, sans perte de référencement.', maintenance: 'Mises à jour, sécurité et évolutions.', saas: 'Votre logiciel en ligne, du MVP à la plateforme.' } as Record<string, string>
   },
   en: {
-    home: 'Home', talk: 'Discuss your project', seeWork: 'See our work', more: 'Learn more', faq: 'Frequently asked questions', guides: 'Our guides for your sector', read: 'Read',
+    home: 'Home', talk: 'Discuss your project', seeWork: 'See our work', more: 'Learn more', faq: 'Frequently asked questions', guides: 'Our guides to go further', read: 'Read',
     short: { web: 'Showcase sites, blogs, landing pages, e-commerce.', app: 'Tailor-made tools for your teams.', seo: 'Visibility on Google and generative AI.', mobile: 'iOS and Android, from UX to the stores.', ads: 'Data-driven campaigns.', social: 'Visuals, video and editorial strategy.', refonte: 'A modernised website, rankings preserved.', maintenance: 'Updates, security and improvements.', saas: 'Your online software, from MVP to platform.' } as Record<string, string>
   }
 })

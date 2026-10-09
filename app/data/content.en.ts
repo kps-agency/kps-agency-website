@@ -21,7 +21,7 @@ export const SERVICE_SLUG_EN: Record<string, string> = {
   'agence-geo': 'geo-agency',
   'agence-seo-madagascar': 'seo-agency-madagascar'
 }
-export const LOCAL_SLUG_EN: Record<string, string> = { paris: 'paris', madagascar: 'madagascar', energie: 'energy', 'expertise-comptable': 'accounting-firms', 'beaute-sante': 'beauty-health' }
+export const LOCAL_SLUG_EN: Record<string, string> = { paris: 'paris', madagascar: 'madagascar', quebec: 'quebec', energie: 'energy', 'expertise-comptable': 'accounting-firms', 'beaute-sante': 'beauty-health' }
 
 const COMMON_STEPS = [
   s('1', 'Scoping', 'We analyse your market, competitors and goals to set clear priorities.'),
@@ -344,6 +344,27 @@ export const LOCAL_PAGES_EN: Record<string, Omit<LocalPage, 'slug' | 'refs'>> = 
       ['How does a remote project work?', 'We work by video call, phone or messaging, with a single point of contact and stages approved together.']
     ],
     cta: 'A digital project in Madagascar?'
+  },
+  quebec: {
+    crumbParent: 'Digital agency', crumb: 'Quebec', eyebrow: 'Web agency for Quebec',
+    title: 'Web agency for businesses in Quebec', description: 'Web agency for businesses in Quebec and Canada: bilingual French-English websites, Law 25 compliance and SEO, delivered remotely by a team based in Paris.',
+    h1: 'Your web agency for Quebec.',
+    sub: 'Bilingual websites, Law 25 compliance, SEO in French and English: from Paris, KPS works remotely with businesses in Quebec and across Canada.',
+    svcTitle: 'Our services for businesses in Quebec.', whyTitle: 'Why an agency in France for a project in Quebec?',
+    why: [
+      b('Bilingual websites', 'One address per language, hreflang tags and content written for each audience: the method we apply to our own website.'),
+      b('Law 25 built in', 'Consent before any tracking, lean forms, a clear privacy policy: principles close to the GDPR, which we already apply.'),
+      b('Remote by design', 'Projects are run by video call, and booking slots are shown in your own time zone.'),
+      b('A quote within 48 hours', 'After a first call to understand your project, you receive a free quote within 48 hours.')
+    ],
+    refTitle: 'Some of our work',
+    faq: [
+      ['Do you have a team in Quebec?', 'No. Our team is based in Paris and works remotely with companies in France and internationally. We meet by video call, on slots shown in your own time zone.'],
+      ['Do you know Law 25?', 'Yes. It follows the principles of the European GDPR, which we already apply to the websites we build: consent before any tracking, lean forms and a clear privacy policy. Our Law 25 guide lists the points to check.'],
+      ['Can you build a bilingual French-English website?', 'Yes. We plan one address per language, hreflang tags and content specific to each language, with no forced redirect based on the browser language. The KPS Agency website is built this way.'],
+      ['How do we get a quote?', 'Book a call or write to us from the Contact page: we review your project together, then you receive a free quote within 48 hours.']
+    ],
+    cta: 'A web project in Quebec?'
   },
   energie: {
     crumbParent: 'Industries', crumb: 'Energy', eyebrow: 'Energy sector',
