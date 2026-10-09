@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { CONTACT, organizationSchema } from '~/data/content'
+import { CONTACT } from '~/data/content'
 
 const { en, locale, link } = useSite()
 const t = useLocaleText({
@@ -112,18 +112,9 @@ const t = useLocaleText({
 
 usePageSeo({ title: () => t.value.title, description: () => t.value.desc })
 const site = useRuntimeConfig().public.siteUrl as string
-useHead({
-  script: [{
-    type: 'application/ld+json',
-    innerHTML: () => JSON.stringify({
-      '@context': 'https://schema.org',
-      '@graph': [
-        organizationSchema(site, en.value ? 'en' : 'fr'),
-        { '@type': 'ContactPage', '@id': `${site}${link.contact()}#webpage`, url: `${site}${link.contact()}`, name: t.value.title, inLanguage: en.value ? 'en-GB' : 'fr-FR', about: { '@id': `${site}/#organization` } }
-      ]
-    })
-  }]
-})
+useJsonLd(() => [
+  { '@type': 'ContactPage', '@id': `${site}${link.contact()}#webpage`, url: `${site}${link.contact()}`, name: t.value.title, description: t.value.desc, inLanguage: ldLang(en.value), isPartOf: { '@id': `${site}/#website` }, about: { '@id': `${site}/#organization` } }
+])
 
 const route = useRoute()
 const config = useRuntimeConfig()

@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import { serviceIconPath } from '~/data/serviceIcons'
-import { organizationSchema, type Project } from '~/data/content'
+import type { Project } from '~/data/content'
 import { blogArticles } from '~/data/blog'
 
 const route = useRoute()
@@ -92,25 +92,13 @@ const t = useLocaleText({
 usePageSeo({ title: () => page.value?.title ?? '', description: () => page.value?.description ?? '' })
 
 const site = useRuntimeConfig().public.siteUrl as string
-useHead({
-  script: [{
-    type: 'application/ld+json',
-    innerHTML: () => JSON.stringify({
-      '@context': 'https://schema.org',
-      '@graph': [
-        organizationSchema(site, en.value ? 'en' : 'fr'),
-        {
-          '@type': 'WebPage', '@id': `${site}${route.path}#webpage`, url: `${site}${route.path}`, name: page.value?.title, description: page.value?.description,
-          inLanguage: en.value ? 'en-GB' : 'fr-FR', about: { '@id': `${site}/#organization` }, isPartOf: { '@id': `${site}/#website` }
-        },
-        {
-          '@type': 'FAQPage', '@id': `${site}${route.path}#faq`,
-          mainEntity: (page.value?.faq ?? []).map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
-        }
-      ]
-    })
-  }]
-})
+useJsonLd(() => [
+  {
+    '@type': 'WebPage', '@id': `${site}${route.path}#webpage`, url: `${site}${route.path}`, name: page.value?.title, description: page.value?.description,
+    inLanguage: ldLang(en.value), about: { '@id': `${site}/#organization` }, isPartOf: { '@id': `${site}/#website` }
+  },
+  faqSchema(`${site}${route.path}`, page.value?.faq ?? [], en.value)
+])
 </script>
 
 <style scoped>

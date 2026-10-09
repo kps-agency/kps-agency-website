@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { REVIEWS, organizationSchema } from '~/data/content'
+import { REVIEWS } from '~/data/content'
 
 const { en, link } = useSite()
 const t = useLocaleText({
@@ -138,18 +138,9 @@ const t = useLocaleText({
 
 usePageSeo({ title: () => t.value.title, description: () => t.value.desc })
 const site = useRuntimeConfig().public.siteUrl as string
-useHead({
-  script: [{
-    type: 'application/ld+json',
-    innerHTML: () => JSON.stringify({
-      '@context': 'https://schema.org',
-      '@graph': [
-        organizationSchema(site, en.value ? 'en' : 'fr'),
-        { '@type': 'AboutPage', '@id': `${site}${link.about()}#webpage`, url: `${site}${link.about()}`, name: t.value.title, inLanguage: en.value ? 'en-GB' : 'fr-FR', about: { '@id': `${site}/#organization` }, mainEntity: { '@id': `${site}/#organization` } }
-      ]
-    })
-  }]
-})
+useJsonLd(() => [
+  { '@type': 'AboutPage', '@id': `${site}${link.about()}#webpage`, url: `${site}${link.about()}`, name: t.value.title, description: t.value.desc, inLanguage: ldLang(en.value), isPartOf: { '@id': `${site}/#website` }, about: { '@id': `${site}/#organization` }, mainEntity: { '@id': `${site}/#organization` } }
+])
 </script>
 
 <style scoped>

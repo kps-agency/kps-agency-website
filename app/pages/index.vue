@@ -320,7 +320,7 @@
 </template>
 
 <script setup lang="ts">
-import { CONTACT, REVIEWS, REVIEWS_AVG, GOOGLE_REVIEWS_URL, SERVICE_FAMILIES, organizationSchema } from '~/data/content'
+import { CONTACT, REVIEWS, REVIEWS_AVG, GOOGLE_REVIEWS_URL, SERVICE_FAMILIES } from '~/data/content'
 import { HOME } from '~/data/home'
 import { serviceIconPath } from '~/data/serviceIcons'
 definePageMeta({ layout: false })
@@ -373,21 +373,13 @@ const heroTitle = computed(() => {
 })
 
 usePageSeo({ title: () => t.value.seo.title, description: () => t.value.seo.desc })
-useHead({
-  script: [{
-    type: 'application/ld+json',
-    innerHTML: () => {
-      const url = en.value ? `${site}/en` : `${site}/`
-      return JSON.stringify({
-        '@context': 'https://schema.org',
-        '@graph': [
-          organizationSchema(site, en.value ? 'en' : 'fr'),
-          { '@type': 'WebSite', '@id': `${site}/#website`, url: `${site}/`, name: 'KPS Agency', inLanguage: ['fr-FR', 'en-GB'], publisher: { '@id': `${site}/#organization` } },
-          { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: t.value.seo.title, isPartOf: { '@id': `${site}/#website` }, about: { '@id': `${site}/#organization` }, inLanguage: en.value ? 'en-GB' : 'fr-FR' }
-        ]
-      })
-    }
-  }]
+// Organization (ProfessionalService) et WebSite sont posés par app.vue ; la FAQ balisée est celle affichée plus bas (t.faq.items)
+useJsonLd(() => {
+  const url = en.value ? `${site}/en` : `${site}/`
+  return [
+    { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: t.value.seo.title, description: t.value.seo.desc, isPartOf: { '@id': `${site}/#website` }, about: { '@id': `${site}/#organization` }, inLanguage: ldLang(en.value) },
+    faqSchema(url, t.value.faq.items, en.value)
+  ]
 })
 
 // Réalisations : les 6 dernières par onglet

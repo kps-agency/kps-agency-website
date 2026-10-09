@@ -2,6 +2,7 @@
 // Les valeurs entre crochets [ ... ] sont des emplacements à compléter.
 import cms from '#cms'
 import { splitServiceText, type CmsStudy } from '#shared/cms'
+import { BOOKING } from '#shared/booking'
 
 export const CONTACT = {
   email: 'contact@kps-agency.com',
@@ -30,6 +31,8 @@ export const COMPANY = {
   street: '59 rue de Ponthieu',
   postalCode: '75008',
   city: 'Paris',
+  /** Coordonnées du 59 rue de Ponthieu (OpenStreetMap), pour les données structurées */
+  geo: { latitude: 48.87212, longitude: 2.30492 },
   // Profils officiels reliés à la marque (schema sameAs) : réseaux sociaux de SOCIAL, plus d'autres profils à ajouter ici (fiche Google…)
   sameAs: [...SOCIAL_LINKS.map(([, url]) => url)] as string[]
 }
@@ -85,9 +88,13 @@ export const AUTHORS: Record<string, { fr: string; en: string }> = {
 /** Adresse de la page d'un auteur : /blog/auteur/<prenom-nom> */
 export const authorSlug = (name: string) => name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 
-/** Entité ProfessionalService de référence, réutilisée par toutes les pages (même @id) */
-export const organizationSchema = (site: string, lang: 'fr' | 'en' = 'fr') => ({
-  '@type': ['ProfessionalService', 'Organization'],
+const WEEK_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+/** Entité de référence de l'agence, posée sur toutes les pages par app.vue (même @id partout).
+ *  local : la page présente l'agence comme établissement (accueil, page Paris) → type ProfessionalService, coordonnées, horaires, plan.
+ *  rating : les avis Google sont affichés sur la page → note moyenne et nombre d'avis, calculés sur ces mêmes avis. */
+export const organizationSchema = (site: string, lang: 'fr' | 'en' = 'fr', o: { local?: boolean; rating?: boolean } = {}) => ({
+  '@type': o.local ? ['Organization', 'ProfessionalService'] : 'Organization',
   '@id': `${site}/#organization`,
   name: COMPANY.name,
   legalName: COMPANY.legalName,
@@ -108,6 +115,15 @@ export const organizationSchema = (site: string, lang: 'fr' | 'en' = 'fr') => ({
     : ['Création de site web', 'E-commerce', 'Application métier', 'Application mobile', 'Référencement SEO', 'GEO (Generative Engine Optimization)', 'Google Ads', 'Meta Ads', 'Social media'],
   // Akoraweb, l'agence de KPS à Madagascar (son site déclare KPS Agency comme organisation parente)
   subOrganization: { '@type': 'Organization', name: 'Akoraweb', url: 'https://www.akoraweb.com/' },
+  ...(o.local
+    ? {
+        geo: { '@type': 'GeoCoordinates', ...COMPANY.geo },
+        hasMap: GOOGLE_REVIEWS_URL,
+        // Horaires de l'agence : ceux de la prise de rendez-vous (shared/booking.ts)
+        openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: BOOKING.workingDays.map(d => WEEK_DAYS[d]), opens: `${String(BOOKING.openHour).padStart(2, '0')}:00`, closes: `${String(BOOKING.closeHour).padStart(2, '0')}:00` }]
+      }
+    : {}),
+  ...(o.rating ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: REVIEWS_AVG.toFixed(1), bestRating: '5', worstRating: '1', reviewCount: REVIEWS.length } } : {}),
   ...(COMPANY.sameAs.length ? { sameAs: COMPANY.sameAs } : {})
 })
 

@@ -160,16 +160,14 @@ useHead({
             '@type': 'Service', '@id': `${url}#service`,
             name: seo.value.h1, serviceType: svc.value!.crumb, description: seo.value.desc, url, inLanguage: lang,
             provider: { '@id': `${site}/#organization` },
-            areaServed: [{ '@type': 'City', name: 'Paris' }, { '@type': 'Country', name: 'France' }],
+            // Zone desservie : Madagascar pour la page qui lui est dédiée, Paris et la France pour les autres
+            areaServed: svc.value!.slug === 'agence-seo-madagascar' ? [{ '@type': 'Country', name: 'Madagascar' }] : [{ '@type': 'City', name: 'Paris' }, { '@type': 'Country', name: 'France' }],
             hasOfferCatalog: {
               '@type': 'OfferCatalog', name: svc.value!.offersTitle,
               itemListElement: svc.value!.offers.map(of => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: of.t, description: of.d } }))
             }
           },
-          {
-            '@type': 'FAQPage', '@id': `${url}#faq`, inLanguage: lang,
-            mainEntity: faq.value.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
-          }
+          faqSchema(url, faq.value, en.value)
         ]
       })
     }

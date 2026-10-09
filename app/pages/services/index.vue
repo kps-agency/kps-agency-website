@@ -108,10 +108,7 @@ useHead({
           '@type': 'CollectionPage', '@id': `${site}${link.services()}#webpage`, url: `${site}${link.services()}`, name: t.value.title, inLanguage: en.value ? 'en-GB' : 'fr-FR',
           mainEntity: { '@type': 'ItemList', itemListElement: services.value.map((sv, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site}${link.service(sv.slug)}`, name: serviceSeo.value[sv.slug]?.h1 ?? sv.crumb })) }
         },
-        {
-          '@type': 'FAQPage', '@id': `${site}${link.services()}#faq`, inLanguage: en.value ? 'en-GB' : 'fr-FR',
-          mainEntity: serviceFaq.value.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
-        }
+        faqSchema(`${site}${link.services()}`, serviceFaq.value, en.value)
       ]
     })
   }]
