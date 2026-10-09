@@ -127,7 +127,7 @@ export default defineNuxtConfig({
     // En-têtes de sécurité sur toutes les réponses ; la CSP est en mode rapport (voir la constante CSP en haut du fichier)
     '/**': { headers: { 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'x-frame-options': 'SAMEORIGIN', 'permissions-policy': 'camera=(), microphone=(), geolocation=()', 'content-security-policy-report-only': CSP } },
     ...Object.fromEntries(
-      ['/images/**', '/logo-kps.webp', '/logo-kps-150.webp', '/og-image.jpg', '/favicon.ico', '/icon-32.png', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png']
+      ['/images/**', '/logo-kps.webp', '/logo-kps-150.webp', '/og-image.jpg', '/favicon.ico', '/icon-32.png', '/icon-64.webp', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png']
         .map(path => [path, { headers: { 'cache-control': 'public, max-age=2592000, stale-while-revalidate=86400' } }])
     ),
     // Espace d'administration : rendu dans le navigateur uniquement, jamais indexé

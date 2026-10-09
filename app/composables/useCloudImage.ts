@@ -1,4 +1,5 @@
 const CARD_WIDTHS = [400, 600, 800]
+const WIDE_WIDTHS = [800, 1200, 1600]
 
 /**
  * Images servies par Cloudinary : /images/realisations/x.webp → identifiant kps/realisations/x (envoyé par scripts/cloudinary-upload.mjs).
@@ -24,8 +25,13 @@ export function useCloudImage() {
   /** Variantes AVIF pour <source type="image/avif"> (f_auto ne le sert pas de lui-même) ; vide hors Cloudinary */
   const avif = (path: string) => (hosted(path) ? cld(path, 1600, 'f_avif') : '')
   const avifSet = (path: string) => (hosted(path) ? [...CARD_WIDTHS, 1600].map(w => `${cld(path, w, 'f_avif')} ${w}w`).join(', ') : '')
+  /** srcset d'un visuel pleine largeur (couverture d'article, visuel d'une réalisation) : un téléphone ne charge pas le fichier de 1600 px.
+   *  Vide hors Cloudinary (pas de déclinaisons locales) : l'attribut src suffit alors. */
+  const wideSet = (path: string, format = 'f_auto') => (hosted(path) ? WIDE_WIDTHS.map(w => `${cld(path, w, format)} ${w}w`).join(', ') : '')
+  /** srcset d'une vignette sans déclinaison locale (couverture d'article dans une liste) ; vide hors Cloudinary */
+  const cardSet = (path: string) => (hosted(path) ? [...CARD_WIDTHS, 1600].map(w => `${cld(path, w)} ${w}w`).join(', ') : '')
   /** URL absolue (données structurées, partage) */
   const absolute = (path: string) => { const u = image(path); return u.startsWith('http') ? u : siteUrl + u }
 
-  return { image, thumb, small, thumbSet, avif, avifSet, absolute }
+  return { image, thumb, small, thumbSet, avif, avifSet, wideSet, cardSet, absolute }
 }

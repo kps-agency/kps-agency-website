@@ -14,8 +14,8 @@
 
     <figure v-if="post.meta.cover" class="container art__cover">
       <picture style="display: contents">
-        <source v-if="avif(post.meta.cover)" type="image/avif" :srcset="avif(post.meta.cover)">
-        <img :src="image(post.meta.cover)" :alt="post.meta.coverAlt || post.meta.title" width="1600" height="900" fetchpriority="high">
+        <source v-if="wideSet(post.meta.cover, 'f_avif')" type="image/avif" :srcset="wideSet(post.meta.cover, 'f_avif')" sizes="(max-width: 1180px) 100vw, 1120px">
+        <img :src="image(post.meta.cover)" :srcset="wideSet(post.meta.cover) || undefined" :sizes="wideSet(post.meta.cover) ? '(max-width: 1180px) 100vw, 1120px' : undefined" :alt="post.meta.coverAlt || post.meta.title" width="1600" height="900" fetchpriority="high">
       </picture>
     </figure>
 
@@ -92,7 +92,7 @@ const sectorLabel = (s: string) => BLOG_SECTORS[s]?.[en.value ? 'en' : 'fr'] ?? 
 const formatDate = (d: string) => new Intl.DateTimeFormat(en.value ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${d}T12:00:00Z`))
 
 const site = useRuntimeConfig().public.siteUrl as string
-const { image, avif, absolute } = useCloudImage()
+const { image, wideSet, absolute } = useCloudImage()
 const m = post.value.meta
 usePageSeo({ title: m.seoTitle, description: m.description, image: m.cover && image(m.cover), type: 'article' })
 useSeoMeta({

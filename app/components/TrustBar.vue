@@ -13,7 +13,7 @@
         <ul v-for="copy in copies" :key="copy" class="marquee__list" :aria-hidden="copy === 2 ? 'true' : undefined">
           <li v-for="c in clients" :key="`${copy}-${c.slug}`">
             <NuxtLink v-if="c.logo" :to="link.project(c.slug)" class="client client--logo" :tabindex="copy === 2 ? -1 : undefined">
-              <img :src="small(c.logo)" :alt="c.client" class="client__logo" height="36" loading="lazy" decoding="async">
+              <img :src="small(c.logo)" :alt="c.client" class="client__logo" width="160" height="36" loading="lazy" decoding="async">
             </NuxtLink>
             <NuxtLink v-else :to="link.project(c.slug)" class="client" :tabindex="copy === 2 ? -1 : undefined">
               <span class="client__dot" :style="{ background: DOT[c.cat] }" aria-hidden="true" />
@@ -39,7 +39,7 @@
     <ul v-if="BADGES.length" class="badges" :aria-label="t.badgesLabel">
       <li v-for="b in BADGES" :key="b.label">
         <component :is="b.url ? 'a' : 'span'" :href="b.url" :target="b.url ? '_blank' : undefined" :rel="b.url ? 'noopener' : undefined" class="badge">
-          <img v-if="b.img" :src="b.img" :alt="b.label" height="32" loading="lazy" decoding="async">
+          <img v-if="b.img" :src="b.img" :alt="b.label" width="120" height="32" loading="lazy" decoding="async">
           <template v-else>{{ b.label }}</template>
         </component>
       </li>

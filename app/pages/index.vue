@@ -155,7 +155,7 @@
             <thead>
               <tr>
                 <td />
-                <th scope="col" class="compare__kps"><img src="/icon-192.png" alt="" width="28" height="28" class="compare__k">KPS Agency</th>
+                <th scope="col" class="compare__kps"><img src="/icon-64.webp" alt="" width="28" height="28" class="compare__k" loading="lazy" decoding="async">KPS Agency</th>
                 <th v-for="h in t.compare.cols" :key="h" scope="col">{{ h }}</th>
               </tr>
             </thead>

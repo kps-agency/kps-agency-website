@@ -15,8 +15,8 @@
     <section class="container">
       <figure class="visual" :style="{ background: project.bg }">
         <picture style="display: contents">
-          <source v-if="avif(project.img)" type="image/avif" :srcset="avif(project.img)">
-          <img :src="image(project.img)" :alt="project.alt" width="1600" height="900" fetchpriority="high">
+          <source v-if="wideSet(project.img, 'f_avif')" type="image/avif" :srcset="wideSet(project.img, 'f_avif')" sizes="(max-width: 1440px) 100vw, 1360px">
+          <img :src="image(project.img)" :srcset="wideSet(project.img) || undefined" :sizes="wideSet(project.img) ? '(max-width: 1440px) 100vw, 1360px' : undefined" :alt="project.alt" width="1600" height="900" fetchpriority="high">
         </picture>
       </figure>
     </section>
@@ -116,7 +116,7 @@ const next = computed(() => {
 })
 
 const site = useRuntimeConfig().public.siteUrl as string
-const { image, avif, small, absolute } = useCloudImage()
+const { image, wideSet, small, absolute } = useCloudImage()
 const metaDesc = computed(() => {
   const p = project.value!
   if (c.value.hasDesc && p.desc.length >= 110) return p.desc

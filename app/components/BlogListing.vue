@@ -18,8 +18,8 @@
           <NuxtLink :to="link.article(a.slug)" class="post__link">
             <div class="post__visual">
               <picture v-if="a.cover" style="display: contents">
-                <source v-if="avif(a.cover)" type="image/avif" :srcset="avif(a.cover)">
-                <img :src="image(a.cover)" :alt="a.coverAlt || ''" loading="lazy" decoding="async" width="1600" height="900">
+                <source v-if="avifSet(a.cover)" type="image/avif" :srcset="avifSet(a.cover)" :sizes="coverSizes(i)">
+                <img :src="image(a.cover)" :srcset="cardSet(a.cover) || undefined" :sizes="cardSet(a.cover) ? coverSizes(i) : undefined" :alt="a.coverAlt || ''" :loading="i === 0 ? undefined : 'lazy'" :fetchpriority="i === 0 ? 'high' : undefined" decoding="async" width="1600" height="900">
               </picture>
               <span v-else class="post__placeholder" aria-hidden="true">{{ sectorLabel(a.sector) }}</span>
             </div>
@@ -58,7 +58,11 @@ import { blogArticles } from '~/data/blog'
 
 const props = defineProps<{ page: number }>()
 const { en, locale, link } = useSite()
-const { image, avif } = useCloudImage()
+const { image, avifSet, cardSet } = useCloudImage()
+// Largeur affichée d'une couverture : la carte « à la une » occupe 55 % de la grille, les autres une colonne sur trois
+const coverSizes = (i: number) => (i === 0 && sector.value === 'all' && props.page === 1
+  ? '(max-width: 1180px) 100vw, 700px'
+  : '(max-width: 720px) 100vw, (max-width: 1180px) 50vw, 420px')
 const t = useLocaleText({
   fr: {
     home: 'Accueil', h1seo: 'Le blog de KPS Agency : conseils web, SEO et publicité', h1: 'Conseils digitaux, secteur par secteur.',
