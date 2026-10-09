@@ -13,6 +13,17 @@ interface PageSeo {
 }
 
 const DEFAULT_IMAGE = '/og-image.jpg'
+const MAX_DESCRIPTION = 160
+
+/** Ramène une description à 160 caractères au plus : à la fin d'une phrase si elle laisse au moins 110 caractères, sinon au dernier mot entier suivi de « … » */
+export function clipDescription(text: string, max = MAX_DESCRIPTION) {
+  const s = text.replace(/\s+/g, ' ').trim()
+  if (s.length <= max) return s
+  const head = s.slice(0, max)
+  const sentence = Math.max(head.lastIndexOf('. '), head.lastIndexOf(' ! '), head.lastIndexOf(' ? '), head.lastIndexOf('! '), head.lastIndexOf('? '))
+  if (sentence >= 110) return head.slice(0, sentence + 1).trim()
+  return `${s.slice(0, max - 1).replace(/\s+\S*$/, '').replace(/[\s,;:–—-]+$/, '')}…`
+}
 
 // Balises SEO et réseaux sociaux d'une page. Canonical, og:url, og:site_name et og:locale sont posés globalement dans app.vue.
 export function usePageSeo(o: PageSeo) {
@@ -20,12 +31,13 @@ export function usePageSeo(o: PageSeo) {
   const abs = (u: string) => (u.startsWith('http') ? u : site + u)
   const image = () => abs(toValue(o.image) || DEFAULT_IMAGE)
   const isDefault = () => !toValue(o.image)
+  const description = () => clipDescription(toValue(o.description))
 
   useSeoMeta({
     title: () => toValue(o.title),
-    description: () => toValue(o.description),
+    description,
     ogTitle: () => `${toValue(o.title)} · KPS Agency`,
-    ogDescription: () => toValue(o.description),
+    ogDescription: description,
     ogType: o.type ?? 'website',
     ogImage: image,
     ogImageWidth: () => (isDefault() ? 1200 : undefined),
@@ -33,7 +45,7 @@ export function usePageSeo(o: PageSeo) {
     ogImageAlt: () => toValue(o.title),
     twitterCard: 'summary_large_image',
     twitterTitle: () => `${toValue(o.title)} · KPS Agency`,
-    twitterDescription: () => toValue(o.description),
+    twitterDescription: description,
     twitterImage: image,
     robots: () => (toValue(o.noindex) ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1')
   })

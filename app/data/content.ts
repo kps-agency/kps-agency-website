@@ -535,10 +535,10 @@ const LOCAL_SERVICE_SEO: Record<string, { title: string; h1: string; desc: strin
   'marketing-digital-ads': { title: 'Agence Google Ads, Meta Ads & TikTok Ads', h1: 'Agence marketing digital & publicité en ligne', desc: 'Campagnes Google Ads, Meta Ads et TikTok Ads pilotées par la donnée : stratégie, création, diffusion et optimisation continue. Agence marketing digital à Paris.' },
   'social-media': { title: 'Agence social media : contenus TikTok & Instagram', h1: 'Agence social media & création de contenus', desc: 'Stratégie social media, création visuelle et vidéos courtes pour TikTok et Instagram : des contenus qui renforcent votre image et créent l’engagement.' },
   'refonte-site-web': { title: 'Refonte de site web à Paris, sans perte de SEO', h1: 'Refonte de site web à Paris', desc: 'Refonte de site web à Paris : nouveau design, migration technique et plan de redirections pour moderniser votre site sans perdre votre référencement Google.' },
-  'maintenance-site-web': { title: 'Maintenance de site web : mises à jour & sécurité', h1: 'Maintenance de site web', desc: 'Maintenance de site web : mises à jour, sauvegardes, sécurité, corrections et évolutions à la demande. Un site à jour et disponible, suivi par une agence à Paris.' },
+  'maintenance-site-web': { title: 'Maintenance de site web : mises à jour & sécurité', h1: 'Maintenance de site web', desc: 'Maintenance de site web : mises à jour, sauvegardes, sécurité, corrections et évolutions sur demande. Un site à jour et disponible, suivi depuis Paris.' },
   'agence-geo': { title: 'Agence GEO : être cité par ChatGPT, Gemini, Perplexity', h1: 'Agence GEO à Paris', desc: 'Agence GEO à Paris : audit de visibilité IA, contenus citables et socle technique pour que ChatGPT, Gemini et Perplexity recommandent votre entreprise.' },
-  'agence-seo-madagascar': { title: 'Agence SEO à Madagascar : référencement Google', h1: 'Agence SEO à Madagascar', desc: 'Agence SEO à Madagascar : audit, SEO technique, référencement local à Antananarivo et contenus pour faire remonter votre site sur Google, avec une équipe sur place.' },
-  'creation-saas': { title: 'Création de SaaS : du MVP à la plateforme', h1: 'Création de SaaS sur mesure', desc: 'Création de SaaS sur mesure à Paris : MVP, plateforme multi-clients, abonnements et paiement en ligne. Du cadrage au lancement, avec une équipe dédiée. Devis sous 48 h.' }
+  'agence-seo-madagascar': { title: 'Agence SEO à Madagascar : référencement Google', h1: 'Agence SEO à Madagascar', desc: 'Agence SEO à Madagascar : audit, SEO technique, SEO local à Antananarivo et contenus pour faire remonter votre site sur Google, avec une équipe sur place.' },
+  'creation-saas': { title: 'Création de SaaS : du MVP à la plateforme', h1: 'Création de SaaS sur mesure', desc: 'Création de SaaS à Paris : MVP, plateforme multi-clients, abonnements et paiement en ligne. Du cadrage au lancement, avec une équipe dédiée. Devis sous 48 h.' }
 }
 export const SERVICE_SEO: Record<string, { title: string; h1: string; desc: string }> = Object.fromEntries(
   Object.entries(LOCAL_SERVICE_SEO).map(([slug, seo]) => [slug, { ...seo, ...splitServiceText(cms?.services?.[slug]?.fr).seo }])
@@ -562,7 +562,7 @@ export interface LocalPage {
 export const LOCAL_PAGES: LocalPage[] = [
   {
     slug: 'paris', crumbParent: 'Agence digitale', crumb: 'Paris', eyebrow: 'Agence digitale à Paris',
-    title: 'Agence digitale à Paris', description: 'Création de sites, applications sur mesure, référencement SEO & GEO et marketing digital pour les entreprises parisiennes et franciliennes.',
+    title: 'Agence digitale à Paris', description: 'Agence digitale à Paris : création de sites, applications sur mesure, référencement SEO & GEO et marketing digital pour les entreprises d’Île-de-France.',
     h1: 'Votre agence digitale à Paris.',
     sub: 'Création de sites, applications sur mesure, référencement SEO & GEO et marketing digital : KPS accompagne les entreprises parisiennes et franciliennes dans leur croissance en ligne.',
     svcTitle: 'Toutes nos expertises, au service des entreprises parisiennes.', whyTitle: 'Pourquoi une agence basée à Paris ?',
@@ -582,7 +582,7 @@ export const LOCAL_PAGES: LocalPage[] = [
   },
   {
     slug: 'madagascar', crumbParent: 'Agence digitale', crumb: 'Madagascar', eyebrow: 'Agence web à Madagascar',
-    title: 'Agence web à Madagascar : sites et applications', description: 'Agence web à Madagascar : création de site internet, boutique en ligne avec paiement mobile, applications et référencement, avec notre équipe Akoraweb sur place.',
+    title: 'Agence web à Madagascar : sites et applications', description: 'Agence web à Madagascar : création de site internet, boutique en ligne avec paiement mobile, applications et référencement, avec l’équipe Akoraweb sur place.',
     h1: 'Votre agence web à Madagascar.',
     sub: 'Création de site internet, boutique en ligne, application web et référencement : KPS accompagne les entreprises de Madagascar et d’Afrique avec Akoraweb, son agence basée sur l’île.',
     svcTitle: 'Nos expertises pour les entreprises de Madagascar.', whyTitle: 'Pourquoi une agence présente à Madagascar ?',
@@ -603,7 +603,7 @@ export const LOCAL_PAGES: LocalPage[] = [
   },
   {
     slug: 'energie', crumbParent: 'Secteurs', crumb: 'Énergie', eyebrow: 'Secteur de l’énergie',
-    title: 'Agence digitale pour le secteur de l’énergie', description: 'Agence digitale pour le secteur de l’énergie : sites corporate multilingues, référencement et campagnes pour les acteurs des énergies renouvelables.',
+    title: 'Agence digitale pour le secteur de l’énergie', description: 'Agence digitale pour le secteur de l’énergie : sites corporate multilingues, référencement et campagnes pour les acteurs de l’énergie et des renouvelables.',
     h1: 'Le digital au service des acteurs de l’énergie.',
     sub: 'Sites corporate, référencement et campagnes : nous aidons les entreprises de l’énergie et des énergies renouvelables à valoriser leur expertise auprès de leurs clients, partenaires et investisseurs.',
     svcTitle: 'Nos expertises pour le secteur de l’énergie.', whyTitle: 'Un secteur exigeant, des enjeux spécifiques.',
@@ -623,7 +623,7 @@ export const LOCAL_PAGES: LocalPage[] = [
   },
   {
     slug: 'expertise-comptable', crumbParent: 'Secteurs', crumb: 'Expertise comptable & conseil', eyebrow: 'Cabinets comptables et de conseil',
-    title: 'Agence web pour experts-comptables et conseil', description: 'Agence web pour cabinets d’expertise comptable, d’audit et de conseil : sites vitrines, landing pages et référencement qui amènent le dirigeant jusqu’au rendez-vous.',
+    title: 'Agence web pour experts-comptables et conseil', description: 'Agence web pour cabinets d’expertise comptable, d’audit et de conseil : sites vitrines, landing pages et référencement qui mènent le dirigeant au rendez-vous.',
     h1: 'Le digital au service des cabinets comptables et de conseil.',
     sub: 'Site vitrine, landing page, référencement : nous aidons les cabinets d’expertise comptable, d’audit et de conseil à présenter clairement leurs missions et à transformer leurs visiteurs en rendez-vous.',
     svcTitle: 'Nos expertises pour les cabinets comptables et de conseil.', whyTitle: 'Un métier de confiance, un site qui la mérite.',

@@ -79,7 +79,7 @@ import { REVIEWS } from '~/data/content'
 const { en, link } = useSite()
 const t = useLocaleText({
   fr: {
-    title: 'L’agence KPS : équipe digitale basée à Paris', desc: 'KPS Agency, agence digitale basée à Paris 8e : neuf expertises (web, apps, SEO & GEO, Ads, social media) réunies dans une même équipe pour faire grandir les PME.',
+    title: 'L’agence KPS : équipe digitale basée à Paris', desc: 'KPS Agency, agence digitale à Paris 8e : neuf expertises (web, apps, SEO & GEO, Ads, social media) réunies dans une seule équipe pour faire grandir les PME.',
     eyebrow: 'L’agence', h1seo: 'KPS Agency, agence digitale à Paris et à Madagascar', h1: 'Plus qu’une agence, votre co-pilote digital.',
     lead: 'Nous combinons créativité humaine et intelligence data pour construire des présences digitales qui font grandir les entreprises.',
     intro: 'Basée à Paris, KPS réunit au sein d’une même équipe neuf expertises complémentaires : création, refonte et maintenance de sites, applications métier, SaaS, applications mobiles, référencement SEO & GEO, marketing digital et social media. Une organisation pensée pour que stratégie, design, technologie et acquisition avancent dans la même direction.',
@@ -107,7 +107,7 @@ const t = useLocaleText({
     reviewsEyebrow: 'Avis Google', reviewsH2: 'Ce que nos clients disent de nous.', ctaTitle: 'Envie de travailler avec nous ?', ctaLabel: 'Parler de votre projet'
   },
   en: {
-    title: 'About KPS: a Paris-based digital team', desc: 'KPS Agency, a digital agency in Paris 8th: nine areas of expertise (web, apps, SEO & GEO, ads, social media) in one team, helping SMEs grow online.',
+    title: 'About KPS: a Paris-based digital team', desc: 'KPS Agency, a digital agency in Paris 8th: nine areas of expertise (web, apps, SEO & GEO, ads, social media) in a single team, helping SMEs grow online.',
     eyebrow: 'About us', h1seo: 'KPS Agency, a digital agency in Paris and Madagascar', h1: 'More than an agency, your digital co-pilot.',
     lead: 'We combine human creativity and data intelligence to build digital presences that help companies grow.',
     intro: 'Based in Paris, KPS brings nine complementary areas of expertise together in one team: website design, redesign and maintenance, business software, SaaS, mobile apps, SEO & GEO, digital marketing and social media. An organisation designed so that strategy, design, technology and acquisition move in the same direction.',

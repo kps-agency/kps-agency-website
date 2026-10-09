@@ -65,7 +65,7 @@ import { CONTACT } from '~/data/content'
 const { en, locale, link } = useSite()
 const t = useLocaleText({
   fr: {
-    title: 'Audit gratuit de votre site web et de votre visibilité', desc: 'Demandez un audit gratuit de votre présence en ligne : vitesse, référencement Google, visibilité dans les IA et conversion. Réponse sous 48 h ouvrées, sans engagement.',
+    title: 'Audit gratuit de votre site web et de votre visibilité', desc: 'Audit gratuit de votre présence en ligne : vitesse, référencement Google, visibilité dans les IA et conversion. Réponse sous 48 h ouvrées, sans engagement.',
     home: 'Accueil', crumb: 'Audit gratuit', h1seo: 'Audit gratuit de site web et de visibilité en ligne', h1: 'Où en est votre présence en ligne ?',
     lead: 'Donnez-nous l’adresse de votre site : nous analysons votre présence en ligne et nous vous disons, concrètement, par où commencer.',
     trust: ['Gratuit', 'Sans engagement', 'Réponse sous 48 h ouvrées'],

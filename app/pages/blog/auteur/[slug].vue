@@ -22,11 +22,11 @@
       <h2 class="h2 h2--48 posts__h">{{ t.articles }} <small>{{ articles.length }}</small></h2>
       <ul class="posts__list">
         <li v-for="a in articles" :key="a.slug">
-          <NuxtLink :to="link.article(a.slug)" class="post">
+          <div class="post card-link">
             <span class="post__meta">{{ date(a.updated ?? a.date) }} · {{ a.readingMinutes }} min</span>
-            <h3 class="post__t">{{ a.title }}</h3>
+            <h3 class="post__t"><NuxtLink :to="link.article(a.slug)" class="card-link__a">{{ a.title }}</NuxtLink></h3>
             <p class="post__d">{{ a.description }}</p>
-          </NuxtLink>
+          </div>
         </li>
       </ul>
     </section>
@@ -65,8 +65,8 @@ const site = useRuntimeConfig().public.siteUrl as string
 usePageSeo({
   title: () => `${name}, ${author.value.role}`,
   description: () => (en.value
-    ? `${name}, ${author.value.role}: read the ${articles.value.length} articles published on the KPS Agency blog about websites, SEO, AI visibility and digital marketing.`
-    : `${name}, ${author.value.role} : retrouvez ses ${articles.value.length} articles publiés sur le blog de KPS Agency, sur les sites web, le référencement, la visibilité IA et le marketing digital.`)
+    ? `${name}, ${author.value.role}: read their ${articles.value.length} articles on the KPS Agency blog about websites, SEO, AI visibility and digital marketing.`
+    : `${name}, ${author.value.role} : ses ${articles.value.length} articles publiés sur les sites web, le référencement, la visibilité IA et le marketing digital.`)
 })
 useHead({
   script: [{

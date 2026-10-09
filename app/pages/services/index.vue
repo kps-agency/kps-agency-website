@@ -20,13 +20,13 @@
         <p class="fam__p">{{ g.text }}</p>
       </div>
       <div class="grid grid-3 m-swipe">
-        <NuxtLink v-for="sv in g.items" :key="sv.slug" :to="link.service(sv.slug)" class="item">
+        <div v-for="sv in g.items" :key="sv.slug" class="item card-link">
           <span class="item__num"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="serviceIconPath(sv.key)" /></svg></span>
-          <h3 class="item__t">{{ sv.crumb }}</h3>
+          <h3 class="item__t"><NuxtLink :to="link.service(sv.slug)" class="card-link__a">{{ sv.crumb }}</NuxtLink></h3>
           <p class="item__d">{{ sv.sub }}</p>
           <div class="item__pills"><span v-for="of in sv.offers" :key="of.n">{{ of.t }}</span></div>
           <span class="item__cta">{{ t.more }} →</span>
-        </NuxtLink>
+        </div>
       </div>
     </section>
 

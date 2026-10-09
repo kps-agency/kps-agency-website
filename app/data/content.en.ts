@@ -281,14 +281,14 @@ const LOCAL_SERVICE_SEO_EN: Record<string, { title: string; h1: string; desc: st
   'creation-site-web': { title: 'Website design agency in Paris', h1: 'Website design agency in Paris', desc: 'Website design agency in Paris: fast showcase websites, online stores and landing pages, optimised for Google and built to convert. Free quote within 48 hours.' },
   'application-metier': { title: 'Custom business software development', h1: 'Custom business software', desc: 'Custom business software development: CRM, back office, client portals and automation tailored to your processes. Paris-based team, free quote in 48 hours.' },
   'application-mobile': { title: 'iOS & Android mobile app development', h1: 'iOS & Android mobile app development', desc: 'Design and development of iOS and Android mobile apps, from UX mock-ups to App Store and Google Play release. Paris-based agency, free quote within 48 hours.' },
-  'referencement-seo-geo': { title: 'SEO agency in Paris: organic search & GEO', h1: 'SEO agency in Paris: organic search & GEO', desc: 'SEO agency in Paris: audits, technical and local SEO, content and GEO to be found on Google and cited by ChatGPT. Free audit of your website.' },
+  'referencement-seo-geo': { title: 'SEO agency in Paris: organic search & GEO', h1: 'SEO agency in Paris: organic search & GEO', desc: 'SEO agency in Paris: audits, technical and local SEO, content and GEO to be found on Google and cited by ChatGPT and AI assistants. Free audit of your website.' },
   'marketing-digital-ads': { title: 'Google Ads, Meta Ads & TikTok Ads agency', h1: 'Digital marketing & paid ads agency', desc: 'Data-driven Google Ads, Meta Ads and TikTok Ads campaigns: strategy, creative, delivery and continuous optimisation by a digital marketing agency in Paris.' },
   'social-media': { title: 'Social media agency: TikTok & Instagram content', h1: 'Social media & content agency', desc: 'Social media strategy, visual design and short-form video for TikTok and Instagram: content that strengthens your brand image and drives real engagement.' },
-  'refonte-site-web': { title: 'Website redesign in Paris, without losing SEO', h1: 'Website redesign in Paris', desc: 'Website redesign in Paris: new design, technical migration and a redirect plan to modernise your website without losing your Google rankings. Free quote in 48 hours.' },
+  'refonte-site-web': { title: 'Website redesign in Paris, without losing SEO', h1: 'Website redesign in Paris', desc: 'Website redesign in Paris: new design, migration and a redirect plan to modernise your website without losing your Google rankings. Free quote in 48 hours.' },
   'maintenance-site-web': { title: 'Website maintenance: updates & security', h1: 'Website maintenance', desc: 'Website maintenance: updates, backups, security, fixes and improvements on request. An up-to-date, available website looked after by a Paris-based agency.' },
-  'agence-seo-madagascar': { title: 'SEO agency in Madagascar: rank on Google', h1: 'SEO agency in Madagascar', desc: 'SEO agency in Madagascar: audit, technical SEO, local SEO in Antananarivo and content to move your website up on Google, with a team on site.' },
-  'agence-geo': { title: 'GEO agency: get cited by ChatGPT, Gemini, Perplexity', h1: 'GEO agency in Paris', desc: 'GEO agency in Paris: AI visibility audit, citable content and technical foundations so ChatGPT, Gemini and Perplexity recommend your company.' },
-  'creation-saas': { title: 'SaaS development: from MVP to platform', h1: 'Custom SaaS development', desc: 'Custom SaaS development in Paris: MVP, multi-tenant platform, subscriptions and online payment. From scoping to launch with a dedicated team. Free quote in 48 hours.' }
+  'agence-seo-madagascar': { title: 'SEO agency in Madagascar: rank on Google', h1: 'SEO agency in Madagascar', desc: 'SEO agency in Madagascar: SEO audit, technical SEO, local SEO in Antananarivo and content writing to move your website up on Google, with a team on site.' },
+  'agence-geo': { title: 'GEO agency: get cited by ChatGPT, Gemini, Perplexity', h1: 'GEO agency in Paris', desc: 'GEO agency in Paris: AI visibility audit, citable content and technical foundations so that ChatGPT, Gemini and Perplexity cite and recommend your company.' },
+  'creation-saas': { title: 'SaaS development: from MVP to platform', h1: 'Custom SaaS development', desc: 'SaaS development in Paris: MVP, multi-tenant platform, subscriptions and online payment. From scoping to launch with a dedicated team. Free quote in 48 hours.' }
 }
 export const SERVICE_SEO_EN: Record<string, { title: string; h1: string; desc: string }> = Object.fromEntries(
   Object.entries(LOCAL_SERVICE_SEO_EN).map(([slug, seo]) => [slug, { ...seo, ...splitServiceText(cms?.services?.[slug]?.en).seo }])
@@ -306,7 +306,7 @@ export const SERVICE_FAQ_EN: [string, string][] = [
 export const LOCAL_PAGES_EN: Record<string, Omit<LocalPage, 'slug' | 'refs'>> = {
   paris: {
     crumbParent: 'Digital agency', crumb: 'Paris', eyebrow: 'Digital agency in Paris',
-    title: 'Digital agency in Paris', description: 'Paris digital agency: website design, custom software, SEO & GEO and digital marketing for companies in Paris, the Île-de-France region and beyond.',
+    title: 'Digital agency in Paris', description: 'Paris digital agency: website design, custom software, SEO & GEO and digital marketing for businesses in Paris, across the Île-de-France region and beyond.',
     h1: 'Your digital agency in Paris.',
     sub: 'Website design, custom software, SEO & GEO and digital marketing: KPS helps companies in Paris and the wider Île-de-France region grow online.',
     svcTitle: 'All our services, working for Paris-based businesses.', whyTitle: 'Why a Paris-based agency?',
@@ -326,7 +326,7 @@ export const LOCAL_PAGES_EN: Record<string, Omit<LocalPage, 'slug' | 'refs'>> = 
   },
   madagascar: {
     crumbParent: 'Digital agency', crumb: 'Madagascar', eyebrow: 'Web agency in Madagascar',
-    title: 'Web agency in Madagascar: websites and applications', description: 'Web agency in Madagascar: website design, online stores with mobile money, applications and SEO, with our Akoraweb team on the ground.',
+    title: 'Web agency in Madagascar: websites and applications', description: 'Web agency in Madagascar: website design, online stores with mobile money and cash on delivery, applications and SEO, with our Akoraweb team on the ground.',
     h1: 'Your web agency in Madagascar.',
     sub: 'Website design, online stores, web applications and SEO: KPS supports companies in Madagascar and across Africa with Akoraweb, its agency based on the island.',
     svcTitle: 'Our services for companies in Madagascar.', whyTitle: 'Why an agency with a team in Madagascar?',
@@ -347,7 +347,7 @@ export const LOCAL_PAGES_EN: Record<string, Omit<LocalPage, 'slug' | 'refs'>> = 
   },
   energie: {
     crumbParent: 'Industries', crumb: 'Energy', eyebrow: 'Energy sector',
-    title: 'Digital agency for the energy sector', description: 'Digital agency for the energy sector: multilingual corporate websites, SEO and campaigns for renewable energy companies, investors and partners.',
+    title: 'Digital agency for the energy sector', description: 'Digital agency for the energy sector: multilingual corporate websites, SEO and campaigns for energy and renewable energy companies, investors and partners.',
     h1: 'Digital expertise for energy companies.',
     sub: 'Corporate websites, SEO and campaigns: we help energy and renewable energy companies showcase their expertise to clients, partners and investors.',
     svcTitle: 'Our services for the energy sector.', whyTitle: 'A demanding sector with specific challenges.',
@@ -387,7 +387,7 @@ export const LOCAL_PAGES_EN: Record<string, Omit<LocalPage, 'slug' | 'refs'>> = 
   },
   'beaute-sante': {
     crumbParent: 'Industries', crumb: 'Beauty & health', eyebrow: 'Beauty and health brands',
-    title: 'Digital agency for beauty & health brands', description: 'Digital agency for beauty and health brands: social media content, advertising campaigns and online stores, with measured results.',
+    title: 'Digital agency for beauty & health brands', description: 'Digital agency for beauty and health brands: social media content, advertising campaigns and online stores, with results measured on shared dashboards.',
     h1: 'Digital expertise for beauty and health brands.',
     sub: 'Social media content, advertising campaigns, online stores: we help beauty and health brands look after their image and reach their audience on social networks.',
     svcTitle: 'Our services for beauty and health brands.', whyTitle: 'In these sectors, image makes the difference.',

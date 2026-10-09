@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="link.project(project.slug)" class="pcard" :class="{ 'pcard--bordered': bordered }">
+  <div class="pcard card-link" :class="{ 'pcard--bordered': bordered }">
     <div class="pcard__visual" :style="{ background: project.bg }">
       <picture style="display: contents">
         <source v-if="avifSet(project.img)" type="image/avif" :srcset="avifSet(project.img)" sizes="(max-width: 720px) calc(100vw - 40px), (max-width: 1180px) 50vw, min(414px, calc(33.3vw - 67px))">
@@ -8,20 +8,20 @@
       <span class="pcard__cat">{{ catLabel[project.cat] }}</span>
     </div>
     <div v-if="compact" class="pcard__body pcard__body--compact">
-      <span class="pcard__client">{{ project.client }}</span>
+      <span class="pcard__client"><NuxtLink :to="link.project(project.slug)" class="card-link__a">{{ project.client }}</NuxtLink></span>
       <span class="pcard__label">{{ project.label }}</span>
       <span v-if="!project.metric.startsWith('[')" class="pcard__metric">{{ project.metric }}</span>
     </div>
     <div v-else class="pcard__body">
       <div class="pcard__label">{{ project.label }}</div>
-      <div class="pcard__client">{{ project.client }}</div>
+      <div class="pcard__client"><NuxtLink :to="link.project(project.slug)" class="card-link__a">{{ project.client }}</NuxtLink></div>
       <div v-if="!project.desc.startsWith('[')" class="pcard__desc">{{ project.desc }}</div>
       <div class="pcard__foot">
         <span class="pcard__metric">{{ project.metric.startsWith('[') ? '' : project.metric }}</span>
         <span class="pcard__more">{{ moreLabel ?? (en ? 'Discover' : 'Découvrir') }} →</span>
       </div>
     </div>
-  </NuxtLink>
+  </div>
 </template>
 
 <script setup lang="ts">

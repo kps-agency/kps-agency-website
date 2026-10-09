@@ -66,6 +66,13 @@ h1, h2, h3 { font-family: var(--font-display); margin: 0; }
 p, figure, blockquote { margin: 0; }
 a { color: inherit; text-decoration: none; }
 a:hover { color: var(--accent-light); }
+/* Carte entièrement cliquable dont seul le titre est un lien : le texte du lien reste court (le titre),
+   la description est hors du lien, et la zone du lien est étendue à toute la carte. */
+.card-link { position: relative; }
+.card-link__a, .card-link__a:hover { color: inherit; }
+.card-link__a::after { content: ''; position: absolute; inset: 0; z-index: 1; }
+.card-link__a:focus-visible { outline: none; }
+.card-link:has(.card-link__a:focus-visible) { outline: 3px solid var(--accent); outline-offset: 3px; }
 button { font-family: var(--font-body); cursor: pointer; }
 img { max-width: 100%; display: block; }
 input:not([type='checkbox']):not([type='radio']), textarea, select { background: var(--deep); color: var(--ink); }

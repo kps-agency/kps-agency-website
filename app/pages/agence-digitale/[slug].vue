@@ -15,12 +15,12 @@
       <div class="container">
         <h2 class="h2 h2--52 svc-h">{{ page.svcTitle }}</h2>
         <div class="grid grid-3 m-swipe">
-          <NuxtLink v-for="s in services" :key="s.slug" :to="link.service(s.slug)" class="svc">
+          <div v-for="s in services" :key="s.slug" class="svc card-link">
             <span class="svc__n"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="serviceIconPath(s.key)" /></svg></span>
-            <h3 class="svc__t">{{ s.crumb }}</h3>
+            <h3 class="svc__t"><NuxtLink :to="link.service(s.slug)" class="card-link__a">{{ s.crumb }}</NuxtLink></h3>
             <p class="svc__d">{{ t.short[s.key] }}</p>
             <span class="svc__more">{{ t.more }} →</span>
-          </NuxtLink>
+          </div>
         </div>
         <!-- Page dédiée au référencement sur ce marché -->
         <p v-if="page.slug === 'madagascar'" class="svc-also">{{ en ? 'Looking for search visibility first?' : 'Votre priorité est d’être trouvé sur Google ?' }} <NuxtLink :to="link.service('agence-seo-madagascar')">{{ en ? 'See our SEO agency in Madagascar' : 'Découvrez notre agence SEO à Madagascar' }} →</NuxtLink></p>
@@ -47,11 +47,11 @@
     <section v-if="guides.length" class="container section guides">
       <h2 class="h2 h2--52 guides-h">{{ t.guides }}</h2>
       <div class="grid grid-3 m-swipe">
-        <NuxtLink v-for="a in guides" :key="a.slug" :to="link.article(a.slug)" class="guide">
-          <h3 class="guide__t">{{ a.title }}</h3>
+        <div v-for="a in guides" :key="a.slug" class="guide card-link">
+          <h3 class="guide__t"><NuxtLink :to="link.article(a.slug)" class="card-link__a">{{ a.title }}</NuxtLink></h3>
           <p class="guide__d">{{ a.description }}</p>
           <span class="guide__more">{{ t.read }} · {{ a.readingMinutes }} min →</span>
-        </NuxtLink>
+        </div>
       </div>
     </section>
 

@@ -57,23 +57,23 @@
               <p class="fam__d">{{ f.text }}</p>
               <ul class="fam__list">
                 <li v-for="sv in f.items" :key="sv.slug">
-                  <NuxtLink :to="link.service(sv.slug)" class="fam__link">
+                  <div class="fam__link card-link">
                     <span class="fam__txt">
-                      <span class="fam__name">{{ sv.title }}</span>
+                      <span class="fam__name"><NuxtLink :to="link.service(sv.slug)" class="card-link__a">{{ sv.title }}</NuxtLink></span>
                       <span class="fam__desc">{{ sv.desc }}</span>
                       <span v-if="svcFrom(sv.slug)" class="fam__from">{{ t.services.from }} <strong>{{ svcFrom(sv.slug) }}</strong></span>
                     </span>
                     <IconArrow :size="16" class="fam__a" />
-                  </NuxtLink>
+                  </div>
                 </li>
               </ul>
             </article>
           </div>
-          <NuxtLink v-if="svcUnsure" :to="link.audit()" class="mini mini--soft">
+          <div v-if="svcUnsure" class="mini mini--soft card-link">
             <span class="mini__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path :d="serviceIconPath(undefined)" /></svg></span>
-            <span class="mini__txt"><span class="mini__t">{{ svcUnsure.title }}</span><span class="mini__d">{{ svcUnsure.desc }}</span></span>
+            <span class="mini__txt"><span class="mini__t"><NuxtLink :to="link.audit()" class="card-link__a">{{ svcUnsure.title }}</NuxtLink></span><span class="mini__d">{{ svcUnsure.desc }}</span></span>
             <span class="mini__cta">{{ svcUnsure.cta }} <IconArrow :size="16" /></span>
-          </NuxtLink>
+          </div>
           <!-- Argument de vente : une solution pour chaque budget -->
           <div class="budget">
             <div class="budget__text">
@@ -100,7 +100,7 @@
           </div>
           <Transition name="pf-swap" mode="out-in" appear>
             <div :key="pfTab" class="pf__grid m-swipe">
-              <NuxtLink v-for="(pr, i) in pfShown" :key="pr.slug" :to="link.project(pr.slug)" class="pf__card" :style="{ '--i': i }">
+              <div v-for="(pr, i) in pfShown" :key="pr.slug" class="pf__card card-link" :style="{ '--i': i }">
                 <div class="pf__visual">
                   <picture style="display: contents">
                     <source v-if="avifSet(pr.img)" type="image/avif" :srcset="avifSet(pr.img)" sizes="(max-width: 720px) calc(100vw - 66px), (max-width: 1180px) 50vw, min(374px, calc(33.3vw - 106px))">
@@ -109,12 +109,12 @@
                   <span class="pf__cat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" v-html="PF_ICONS[CAT_TAB[pr.cat]]" /><span>{{ pr.label }}</span></span>
                 </div>
                 <div class="pf__body">
-                  <h3 class="pf__title">{{ pr.client }}</h3>
+                  <h3 class="pf__title"><NuxtLink :to="link.project(pr.slug)" class="card-link__a">{{ pr.client }}</NuxtLink></h3>
                   <p v-if="!pr.desc.startsWith('[')" class="pf__desc">{{ pr.desc }}</p>
                   <p v-else class="pf__desc">{{ t.portfolio.webDesc.replace('{client}', pr.client) }}</p>
                   <div v-if="pr.desc.startsWith('[')" class="pf__more"><span>{{ t.portfolio.more }}</span><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" v-html="ICON_EXTERNAL" /></i></div>
                 </div>
-              </NuxtLink>
+              </div>
             </div>
           </Transition>
           <div class="pf__all">

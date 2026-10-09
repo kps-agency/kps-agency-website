@@ -15,7 +15,7 @@
 
       <div v-if="shown.length" class="posts">
         <article v-for="(a, i) in shown" :key="a.slug" class="post" :class="{ 'post--featured': i === 0 && sector === 'all' && page === 1 }">
-          <NuxtLink :to="link.article(a.slug)" class="post__link">
+          <div class="post__link card-link">
             <div class="post__visual">
               <picture v-if="a.cover" style="display: contents">
                 <source v-if="avifSet(a.cover)" type="image/avif" :srcset="avifSet(a.cover)" :sizes="coverSizes(i)">
@@ -25,11 +25,11 @@
             </div>
             <div class="post__body">
               <div class="post__meta"><span class="post__sector">{{ sectorLabel(a.sector) }}</span><span>{{ formatDate(a.date) }} · {{ a.readingMinutes }} min</span></div>
-              <h2 class="post__title">{{ a.title }}</h2>
+              <h2 class="post__title"><NuxtLink :to="link.article(a.slug)" class="card-link__a">{{ a.title }}</NuxtLink></h2>
               <p class="post__desc">{{ a.description }}</p>
               <span class="post__more">{{ t.read }} →</span>
             </div>
-          </NuxtLink>
+          </div>
         </article>
       </div>
       <p v-else class="empty">{{ t.empty }}</p>
@@ -69,14 +69,14 @@ const t = useLocaleText({
     lead: 'Site web, référencement, publicité, réseaux sociaux : nos conseils concrets pour développer votre activité en ligne, adaptés aux enjeux de votre secteur.',
     filterLabel: 'Filtrer par secteur', page: 'page', pager: 'Pages du blog', prev: 'Articles plus récents', next: 'Articles plus anciens', all: 'Tous les articles', read: 'Lire l’article', empty: 'Les premiers articles arrivent bientôt.',
     ctaTitle: 'Une question sur votre projet ?', ctaText: '30 minutes pour faire le point sur vos priorités digitales, gratuitement et sans engagement.', ctaLabel: 'Réserver un appel',
-    title: 'Blog : conseils digitaux par secteur', desc: 'Conseils concrets en création de site web, SEO & GEO, publicité en ligne et social media, adaptés à votre secteur : énergie, immobilier, santé, B2B…'
+    title: 'Blog : conseils digitaux par secteur', desc: 'Conseils concrets en création de site web, SEO & GEO, publicité en ligne et social media, adaptés à votre secteur : énergie, immobilier, santé, finance, B2B…'
   },
   en: {
     home: 'Home', h1seo: 'The KPS Agency blog: web, SEO and advertising advice', h1: 'Digital advice, industry by industry.',
     lead: 'Websites, SEO, paid ads, social media: practical advice to grow your business online, tailored to the challenges of your industry.',
     filterLabel: 'Filter by industry', page: 'page', pager: 'Blog pages', prev: 'Newer articles', next: 'Older articles', all: 'All articles', read: 'Read the article', empty: 'Our first articles are coming soon.',
     ctaTitle: 'A question about your project?', ctaText: '30 minutes to review your digital priorities, free and with no commitment.', ctaLabel: 'Book a call',
-    title: 'Blog: digital marketing advice by industry', desc: 'Practical advice on website design, SEO & GEO, paid advertising and social media, tailored to your industry: energy, real estate, healthcare, B2B…'
+    title: 'Blog: digital marketing advice by industry', desc: 'Practical advice on website design, SEO & GEO, paid advertising and social media, tailored to your industry: energy, real estate, healthcare, finance, B2B…'
   }
 })
 

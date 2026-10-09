@@ -92,11 +92,11 @@
         <NuxtLink :to="link.blog()" class="btn btn--ghost btn--sm">{{ t.allGuides }}</NuxtLink>
       </div>
       <div class="grid grid-3 m-swipe">
-        <NuxtLink v-for="a in guides" :key="a.slug" :to="link.article(a.slug)" class="guide">
-          <h3 class="guide__t">{{ a.title }}</h3>
+        <div v-for="a in guides" :key="a.slug" class="guide card-link">
+          <h3 class="guide__t"><NuxtLink :to="link.article(a.slug)" class="card-link__a">{{ a.title }}</NuxtLink></h3>
           <p class="guide__d">{{ a.description }}</p>
           <span class="guide__more">{{ t.read }} · {{ a.readingMinutes }} min →</span>
-        </NuxtLink>
+        </div>
       </div>
     </section>
 

@@ -39,14 +39,14 @@ const t = useLocaleText({
     filterLabel: 'Filtrer les réalisations', filters: [{ id: 'all', label: 'Tous' }, { id: 'Web', label: 'Sites Web' }, { id: 'Social', label: 'Social/Médias' }, { id: 'ADS', label: 'ADS' }],
     projects: 'projets', ctaTitle: 'Votre projet sera notre prochaine référence.', ctaLabel: 'Parler de votre projet',
     stats: [{ v: '5M', l: 'paid reach · YASSIR' }, { v: '6.4M', l: 'impressions · groupado PRO' }, { v: '2.2M', l: 'reach · Tunisia Franchise Show' }, { v: '308.8K', l: 'couverture · ZAYN' }],
-    title: 'Réalisations : sites web & campagnes digitales', desc: 'Sites corporate, campagnes Google & Meta Ads et social media : découvrez les projets de KPS Agency pour des marques en France et à l’international.'
+    title: 'Réalisations : sites web & campagnes digitales', desc: 'Sites corporate, campagnes Google & Meta Ads et social media : découvrez les projets réalisés par KPS Agency pour des marques en France et à l’international.'
   },
   en: {
     eyebrow: 'Our work', h1seo: 'Our work: websites and digital campaigns', h1: 'Real projects. Measurable results.', lead: 'Corporate websites, social media campaigns, acquisition set-ups: see how we support brands in France and internationally.',
     filterLabel: 'Filter projects', filters: [{ id: 'all', label: 'All' }, { id: 'Web', label: 'Websites' }, { id: 'Social', label: 'Social media' }, { id: 'ADS', label: 'Paid ads' }],
     projects: 'projects', ctaTitle: 'Your project could be our next reference.', ctaLabel: 'Discuss your project',
     stats: [{ v: '5M', l: 'paid reach · YASSIR' }, { v: '6.4M', l: 'impressions · groupado PRO' }, { v: '2.2M', l: 'reach · Tunisia Franchise Show' }, { v: '308.8K', l: 'reach · ZAYN' }],
-    title: 'Our work: websites & digital campaigns', desc: 'Corporate websites, Google & Meta Ads campaigns and social media: discover the projects KPS Agency has delivered for brands in France and worldwide.'
+    title: 'Our work: websites & digital campaigns', desc: 'Corporate websites, Google & Meta Ads campaigns and social media: discover the projects KPS Agency has delivered for brands in France and around the world.'
   }
 })
 usePageSeo({ title: () => t.value.title, description: () => t.value.desc })

@@ -69,7 +69,7 @@ import { CONTACT } from '~/data/content'
 const { en, locale, link } = useSite()
 const t = useLocaleText({
   fr: {
-    title: 'Contact & devis gratuit sous 48 h', desc: 'Contactez KPS Agency, agence digitale à Paris 8e : décrivez votre projet de site web, d’application, de SEO ou de publicité. Devis gratuit sous 48 h.',
+    title: 'Contact & devis gratuit sous 48 h', desc: 'Contactez KPS Agency, agence digitale à Paris 8e : décrivez votre projet de site web, d’application, de SEO ou de publicité en ligne. Devis gratuit sous 48 h.',
     eyebrow: 'Contact & devis', h1seo: 'Contacter KPS Agency et demander un devis', h1: 'Parlons de votre prochain projet.', lead: 'Décrivez-nous votre besoin en quelques étapes : nous revenons vers vous avec une recommandation claire et un devis personnalisé.',
     email: 'E-mail', phone: 'Téléphone', whatsapp: 'Écrire sur WhatsApp', address: 'Adresse', step: 'Étape', of: 'sur',
     s1: 'De quoi avez-vous besoin ?', s1hint: 'Plusieurs choix possibles.',
@@ -89,7 +89,7 @@ const t = useLocaleText({
     errNeed: 'Sélectionnez au moins un besoin.', errId: 'Merci d’indiquer votre nom et une adresse e-mail valide.', errConsent: 'Merci d’accepter l’utilisation de vos données pour traiter votre demande.', errSend: 'L’envoi a échoué. Vous pouvez nous écrire directement à'
   },
   en: {
-    title: 'Contact us: free quote within 48 hours', desc: 'Contact KPS Agency, a digital agency in Paris: tell us about your website, software, SEO or paid ads project and get a free quote within 48 hours.',
+    title: 'Contact us: free quote within 48 hours', desc: 'Contact KPS Agency, a digital agency in Paris: tell us about your website, software, mobile app, SEO or paid ads project and get a free quote within 48 hours.',
     eyebrow: 'Contact & quote', h1seo: 'Contact KPS Agency and request a quote', h1: 'Let’s talk about your next project.', lead: 'Describe what you need in a few steps: we’ll come back to you with a clear recommendation and a tailored quote.',
     email: 'Email', phone: 'Phone', whatsapp: 'Message us on WhatsApp', address: 'Address', step: 'Step', of: 'of',
     s1: 'What do you need?', s1hint: 'You can select several options.',
