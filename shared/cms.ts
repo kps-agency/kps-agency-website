@@ -13,6 +13,8 @@ export interface CmsProject {
   /** Logo du client et auteur du témoignage (communs aux deux langues) */
   logo: string; quoteAuthor: string; quotePhoto: string
   study: CmsStudy
+  /** Date du dernier enregistrement (AAAA-MM-JJ), publiée dans le sitemap */
+  updatedAt?: string
   en: { label: string; desc: string; metric: string; study: CmsStudy }
 }
 /** Promotion affichée en fenêtre (table promos, composant PromoPopup) ; text = titre de l'offre, details = présentation ; dates AAAA-MM-JJ, '' = sans limite */
@@ -32,6 +34,8 @@ export interface CmsServiceText {
 export interface CmsData {
   posts: CmsPost[]; projects: CmsProject[]; promos: CmsPromo[]; reviews: CmsReview[]
   services: Record<string, { fr: CmsServiceText; en: CmsServiceText }>
+  /** Date du dernier enregistrement des textes d'une expertise (slug → AAAA-MM-JJ), publiée dans le sitemap */
+  servicesUpdated?: Record<string, string>
 }
 
 /** Sépare les textes d'une expertise de ses balises SEO */

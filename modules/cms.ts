@@ -43,7 +43,7 @@ async function loadCms(url: string, key: string): Promise<CmsData> {
     projects: (projects.data ?? []).map((p): CmsProject => ({
       slug: p.slug, cat: p.cat, client: p.client, label: p.label, desc: p.description ?? '', metric: p.metric ?? '',
       bg: p.bg, fg: p.fg, img: p.img, url: p.url ?? undefined,
-      logo: p.logo ?? '', quoteAuthor: p.quote_author ?? '', quotePhoto: p.quote_photo ?? '', study: study(p, ''),
+      logo: p.logo ?? '', quoteAuthor: p.quote_author ?? '', quotePhoto: p.quote_photo ?? '', study: study(p, ''), updatedAt: p.updated_at?.slice(0, 10),
       en: { label: p.label_en ?? '', desc: p.description_en ?? '', metric: p.metric_en ?? '', study: study(p, '_en') }
     })),
     promos: (promos.data ?? []).map(p => ({
@@ -51,7 +51,8 @@ async function loadCms(url: string, key: string): Promise<CmsData> {
       startsOn: p.starts_on ?? '', endsOn: p.ends_on ?? ''
     })),
     reviews: (reviews.data ?? []).map(r => ({ name: r.name, date: r.month, text: r.text, rating: r.rating, truncated: r.truncated, translated: r.translated })),
-    services: Object.fromEntries((services.data ?? []).map(s => [s.slug, { fr: (s.fr ?? {}) as CmsServiceText, en: (s.en ?? {}) as CmsServiceText }]))
+    services: Object.fromEntries((services.data ?? []).map(s => [s.slug, { fr: (s.fr ?? {}) as CmsServiceText, en: (s.en ?? {}) as CmsServiceText }])),
+    servicesUpdated: Object.fromEntries((services.data ?? []).filter(s => s.updated_at).map(s => [s.slug, s.updated_at.slice(0, 10)]))
   }
 }
 

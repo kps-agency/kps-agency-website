@@ -16,4 +16,5 @@ User-agent: Applebot-Extended
 Allow: /
 Disallow: /api/
 
+# Index des sitemaps : sitemap-pages.xml, sitemap-services.xml, sitemap-realisations.xml, sitemap-blog.xml
 Sitemap: https://kps-agency.com/sitemap.xml

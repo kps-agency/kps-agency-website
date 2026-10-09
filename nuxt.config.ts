@@ -141,7 +141,7 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
       // /merci n'est lié depuis aucune page (on y arrive après l'envoi du formulaire) : à prérendre explicitement
-      routes: ['/', '/en', '/merci', '/en/thank-you', '/sitemap.xml', '/llms.txt', '/blog/rss.xml', '/en/blog/rss.xml'],
+      routes: ['/', '/en', '/merci', '/en/thank-you', '/sitemap.xml', '/sitemap-pages.xml', '/sitemap-services.xml', '/sitemap-realisations.xml', '/sitemap-blog.xml', '/llms.txt', '/blog/rss.xml', '/en/blog/rss.xml'],
       // /services → services.html (et non services/index.html) : URL sans slash final, servie par public/.htaccess
       autoSubfolderIndex: false
     }

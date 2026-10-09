@@ -145,6 +145,8 @@ export interface Project {
   logo?: string
   /** Étude de cas structurée, saisie dans l'admin ; absente pour les réalisations de la liste locale */
   study?: ProjectStudy
+  /** Date de dernière modification dans l'admin (AAAA-MM-JJ), publiée dans le sitemap */
+  updated?: string
 }
 
 export interface Kpi { v: string; l: string }
@@ -199,7 +201,7 @@ const LOCAL_PROJECTS: Project[] = [
 
 // Réalisations gérées dans l'admin (table projects de Supabase, lue au build) : elles remplacent la liste ci-dessus dès que la table en contient
 export const PROJECTS: Project[] = cms?.projects?.length
-  ? cms.projects.map(c => ({ ...p(c.slug, c.cat, c.client, c.label, c.desc || D, c.metric || R, c.bg, c.fg, c.url), img: c.img, logo: c.logo || undefined, study: toStudy(c.study, c) }))
+  ? cms.projects.map(c => ({ ...p(c.slug, c.cat, c.client, c.label, c.desc || D, c.metric || R, c.bg, c.fg, c.url), img: c.img, logo: c.logo || undefined, study: toStudy(c.study, c), updated: c.updatedAt }))
   : LOCAL_PROJECTS
 
 export const CAT_LABEL: Record<ProjectCat, string> = { Web: 'Site web', ADS: 'ADS', Social: 'Social/Médias' }
