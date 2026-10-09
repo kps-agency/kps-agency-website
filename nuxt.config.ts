@@ -20,6 +20,9 @@ const CSP = [
 export default defineNuxtConfig({
   compatibilityDate: '2026-09-01',
   devtools: { enabled: false },
+  // Performance du <head> : tout le CSS de la page (styles globaux et composants affichés) est inséré dans le HTML ;
+  // les feuilles de style qui le redemandaient sont retirées des pages rendues côté serveur (server/plugins/inline-css.ts).
+  features: { inlineStyles: true },
   css: ['@fontsource-variable/dm-sans', '~/assets/css/main.css'],
   runtimeConfig: {
     // Réservation d'appels (serveur uniquement) — voir .env.example

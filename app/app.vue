@@ -7,10 +7,14 @@
 
 <script setup lang="ts">
 import { organizationSchema } from '~/data/content'
+// Police principale (sous-ensemble latin, celui des textes FR et EN) : même fichier que celui référencé par @fontsource-variable/dm-sans
+import dmSans from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url'
 
 // lang="fr-FR"/"en", canonical, hreflang (fr, en, x-default), og:url et og:locale sont posés automatiquement
 // par @nuxtjs/i18n (experimental.strictSeo) à partir des URL traduites et de baseUrl.
 useSeoMeta({ ogSiteName: 'KPS Agency' })
+// Préchargement de la police : elle est demandée dès le début du chargement (les @font-face sont déjà en font-display: swap)
+useHead({ link: [{ rel: 'preload', as: 'font', type: 'font/woff2', href: dmSans, crossorigin: 'anonymous' }] })
 
 // Données structurées communes à toutes les pages : l'agence (Organization) et le site (WebSite), dans la langue de la page.
 // Sur l'accueil et la page Paris, l'agence est décrite comme établissement (ProfessionalService : coordonnées, horaires, plan) ;

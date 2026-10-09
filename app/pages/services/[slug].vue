@@ -104,7 +104,7 @@
     <section class="bg-white faq-wrap">
       <div class="container section--96 split">
         <h2 class="h2 h2--48">{{ t.faq }}</h2>
-        <FaqList :items="faq" class="split__body split__body--block" />
+        <LazyFaqList hydrate-on-visible :items="faq" class="split__body split__body--block" />
       </div>
     </section>
 

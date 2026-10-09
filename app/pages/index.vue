@@ -194,8 +194,8 @@
               </span>
             </a>
           </div>
-          <ClientQuotes />
-          <ReviewCarousel :reviews="REVIEWS" />
+          <LazyClientQuotes hydrate-on-visible />
+          <LazyReviewCarousel hydrate-on-visible :reviews="REVIEWS" />
         </div>
       </section>
 
@@ -228,7 +228,7 @@
           <p class="faq-sec__p">{{ t.faq.p }}</p>
           <NuxtLink :to="link.contact()" class="btn btn--ghost btn--sm">{{ t.faq.cta }}</NuxtLink>
         </div>
-        <FaqList :items="t.faq.items" numbered class="faq-sec__list" />
+        <LazyFaqList hydrate-on-visible :items="t.faq.items" numbered class="faq-sec__list" />
       </section>
 
       <!-- PASSER À L'ACTION : demande de devis et réservation d'appel dans un même bloc -->
@@ -279,7 +279,7 @@
             </li>
           </ul>
         </div>
-        <BookingCalendar />
+        <LazyBookingCalendar hydrate-on-visible />
         </div>
       </section>
     </main>
