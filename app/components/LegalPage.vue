@@ -22,11 +22,11 @@
         <article v-for="(a, i) in articles" :id="`article-${i + 1}`" :key="a.t" class="art">
           <div class="art__n">{{ num(i) }}.</div>
           <div class="art__body">
-            <h3 class="art__t">{{ a.t }}</h3>
+            <component :is="articlesTitle ? 'h3' : 'h2'" class="art__t">{{ a.t }}</component>
             <template v-for="(b, j) in a.blocks" :key="j">
               <ul v-if="Array.isArray(b)" class="art__list"><li v-for="li in b" :key="li">{{ li }}</li></ul>
               <p v-else-if="typeof b === 'string'" class="art__p">{{ b }}</p>
-              <h4 v-else-if="'h' in b" class="art__sub">{{ b.h }}</h4>
+              <component :is="articlesTitle ? 'h4' : 'h3'" v-else-if="'h' in b" class="art__sub">{{ b.h }}</component>
               <dl v-else class="art__kv">
                 <div v-for="[k, v, href] in b.kv" :key="k" class="art__kv-row">
                   <dt>{{ k }}</dt>
@@ -75,7 +75,7 @@ const t = useLocaleText({ fr: { home: 'Accueil', toc: 'Sommaire' }, en: { home: 
 .art__n { font-family: var(--font-display); font-size: 20px; font-weight: 900; color: var(--accent); }
 .art__body { display: flex; flex-direction: column; gap: 14px; max-width: 760px; }
 .art__t { font-size: 24px; font-weight: 700; letter-spacing: -.4px; }
-.art__sub { margin: 8px 0 0; font-size: 16px; font-weight: 700; }
+.art__sub { margin: 8px 0 0; font-family: var(--font-body); font-size: 16px; font-weight: 700; }
 .art__p { font-size: 16px; line-height: 1.7; color: var(--muted); }
 .art__list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 16px; line-height: 1.6; color: var(--muted); }
 .art__list li::marker { color: var(--accent); }

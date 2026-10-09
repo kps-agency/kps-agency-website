@@ -7,7 +7,7 @@
           <button type="button" class="bk__nav" :disabled="monthIndex === 0" :aria-label="t.prevMonth" @click="monthIndex--">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
           </button>
-          <h3 class="bk__month-t" aria-live="polite">{{ monthLabel }}</h3>
+          <component :is="as" class="bk__month-t" aria-live="polite">{{ monthLabel }}</component>
           <button type="button" class="bk__nav" :disabled="monthIndex >= months.length - 1" :aria-label="t.nextMonth" @click="monthIndex++">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 18l6-6-6-6" /></svg>
           </button>
@@ -43,7 +43,7 @@
           <button type="button" class="bk__retry" @click="load">{{ t.retry }}</button>
         </div>
         <template v-else-if="selectedDay">
-          <h3 class="bk__slots-t">{{ longDate(selectedDay.date) }}</h3>
+          <component :is="as" class="bk__slots-t">{{ longDate(selectedDay.date) }}</component>
           <p class="bk__muted">{{ t.duration }} · {{ tzNote }}</p>
           <div class="bk__slot-list">
             <button
@@ -103,7 +103,7 @@
     <!-- Étape 3 : confirmation -->
     <div v-else class="bk__done" role="status">
       <span class="bk__done-i"><IconCheck :size="30" /></span>
-      <h3 class="bk__done-h">{{ t.doneH }}</h3>
+      <component :is="as" class="bk__done-h">{{ t.doneH }}</component>
       <p class="bk__done-when">{{ longDate(selectedDay!.date) }} · {{ time(selectedSlot!.start) }} – {{ time(selectedSlot!.end) }}<template v-if="showParis"> ({{ t.paris }} {{ time(selectedSlot!.start, BOOKING.timeZone) }})</template></p>
       <p class="bk__muted">{{ form.mode === 'phone' ? t.donePhone : result?.meetLink ? t.doneMeet : t.doneVisio }}<template v-if="result?.emailed"> {{ t.doneMail }}</template></p>
       <a v-if="result?.meetLink" :href="result.meetLink" target="_blank" rel="noopener" class="btn btn--primary btn--sm">{{ t.joinMeet }}</a>
@@ -118,6 +118,9 @@
 <script setup lang="ts">
 import { BOOKING, parisDate, type DaySlots, type Slot } from '#shared/booking'
 import { CONTACT } from '~/data/content'
+
+// Niveau des titres du calendrier : h3 dans une section qui a déjà son h2 (accueil), h2 quand il suit directement le h1 (/rendez-vous)
+withDefaults(defineProps<{ as?: 'h2' | 'h3' }>(), { as: 'h3' })
 
 const { en, locale, link } = useSite()
 const config = useRuntimeConfig()

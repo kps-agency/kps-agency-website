@@ -10,7 +10,7 @@
     <!-- Défilé continu des clients (liste doublée pour une boucle sans à-coup ; la copie est masquée aux lecteurs d'écran) -->
     <div class="marquee" :class="{ 'is-static': reducedMotion }">
       <div class="marquee__track">
-        <ul v-for="copy in (reducedMotion ? 1 : 2)" :key="copy" class="marquee__list" :aria-hidden="copy === 2 ? 'true' : undefined">
+        <ul v-for="copy in copies" :key="copy" class="marquee__list" :aria-hidden="copy === 2 ? 'true' : undefined">
           <li v-for="c in clients" :key="`${copy}-${c.slug}`">
             <NuxtLink v-if="c.logo" :to="link.project(c.slug)" class="client client--logo" :tabindex="copy === 2 ? -1 : undefined">
               <img :src="small(c.logo)" :alt="c.client" class="client__logo" height="36" loading="lazy" decoding="async">
@@ -81,7 +81,12 @@ const stats = computed(() => [
 ])
 
 const reducedMotion = ref(false)
-onMounted(() => { reducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches })
+// La copie qui boucle le défilé n'est ajoutée que dans le navigateur : le HTML servi ne lie chaque réalisation qu'une fois
+const copies = ref(1)
+onMounted(() => {
+  reducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  copies.value = reducedMotion.value ? 1 : 2
+})
 </script>
 
 <style scoped>

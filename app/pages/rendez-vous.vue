@@ -14,7 +14,7 @@
         </ul>
         <p class="book__alt">{{ t.alt }} <NuxtLink :to="link.contact()">{{ t.altLink }}</NuxtLink></p>
       </div>
-      <BookingCalendar class="book__cal" />
+      <BookingCalendar as="h2" class="book__cal" />
     </section>
   </div>
 </template>
