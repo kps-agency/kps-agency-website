@@ -10,7 +10,7 @@ import { organizationSchema } from '~/data/content'
 // Police principale (sous-ensemble latin, celui des textes FR et EN) : même fichier que celui référencé par @fontsource-variable/dm-sans
 import dmSans from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url'
 
-// lang="fr-FR"/"en", canonical, hreflang (fr, en, x-default), og:url et og:locale sont posés automatiquement
+// lang="fr"/"en", canonical, hreflang (fr, en, x-default), og:url et og:locale sont posés automatiquement
 // par @nuxtjs/i18n (experimental.strictSeo) à partir des URL traduites et de baseUrl.
 useSeoMeta({ ogSiteName: 'KPS Agency' })
 // Préchargement de la police : elle est demandée dès le début du chargement (les @font-face sont déjà en font-display: swap)

@@ -74,10 +74,13 @@ export default defineNuxtConfig({
   },
   modules: ['@nuxtjs/i18n'],
   i18n: {
-    // Français à la racine (/), anglais sous /en, URL traduites (customRoutes)
+    // Français à la racine (/), anglais sous /en, URL traduites (customRoutes).
+    // Codes de langue sans région : une seule convention pour <html lang>, les balises hreflang du <head> et le sitemap (fr, en, x-default → FR).
+    // Le site s'adresse à tous les francophones (France, Québec, Madagascar) et à tous les anglophones : un code « en-GB » aurait renvoyé
+    // les anglophones hors Royaume-Uni vers la version française. og:locale reste fr_FR / en_GB (app/plugins/og-locale.ts).
     locales: [
-      { code: 'fr', language: 'fr-FR', name: 'Français' },
-      { code: 'en', language: 'en-GB', name: 'English' }
+      { code: 'fr', language: 'fr', name: 'Français' },
+      { code: 'en', language: 'en', name: 'English' }
     ],
     defaultLocale: 'fr',
     strategy: 'prefix_except_default',
