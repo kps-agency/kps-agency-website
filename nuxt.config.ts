@@ -53,6 +53,9 @@ export default defineNuxtConfig({
     vercelTeamId: '',
     gaPropertyId: '', // identifiant numérique de la propriété GA4 (pas l'identifiant de mesure G-…)
     gscSiteUrl: '', // propriété Search Console : « sc-domain:kps-agency.com » ou « https://kps-agency.com/ »
+    // IndexNow (Bing, Yandex…) : clé publiée sur le site et secret protégeant l'envoi des URL (NUXT_INDEXNOW_KEY, NUXT_INDEXNOW_SECRET)
+    indexnowKey: '',
+    indexnowSecret: '',
     public: {
       // Admin (/admin) : connexion Supabase Auth depuis le navigateur ; la clé publishable est publique, les droits sont portés par la RLS
       supabaseUrl: process.env.SUPABASE_URL || '',
