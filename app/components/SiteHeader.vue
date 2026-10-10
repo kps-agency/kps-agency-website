@@ -109,7 +109,6 @@ const navItems = computed<NavItem[]>(() => {
         { label: en.value ? 'All our work' : 'Toutes nos réalisations', desc: en.value ? 'Every project, all categories' : 'Tous les projets, toutes catégories', icon: 'grid', to: link.work() }
       ]
     },
-    { label: en.value ? 'Method' : 'Méthode', to: link.method() },
     {
       // Chaque entrée mène à une page secteur existante (LOCAL_PAGES)
       label: en.value ? 'Industries' : 'Secteurs', to: link.local('energie'), match: ['agence-digitale-slug'],
@@ -196,9 +195,10 @@ const blogSwitch = computed(() => {
   .nav__call, .nav__quote { font-size: 14px; padding: 10px 15px; }
   .nav :deep(.logo__img) { height: 50px; }
 }
-/* Petits écrans d'ordinateur : les six menus et les deux boutons ne tiennent pas ensemble, seul « Demander un devis » reste dans la barre */
-@media (min-width: 1181px) and (max-width: 1420px) {
-  .nav__ctas .nav__call { display: none; }
+/* Petits écrans d'ordinateur : menus et boutons resserrés pour que les cinq menus et les deux boutons tiennent sur la ligne */
+@media (min-width: 1181px) and (max-width: 1260px) {
+  .nav__links { gap: 14px; }
+  .nav__call, .nav__quote { padding: 10px 12px; }
 }
 /* Tablette : les liens passent dans le menu, les deux boutons restent dans la barre */
 @media (max-width: 1180px) {

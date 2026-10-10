@@ -4,7 +4,7 @@ type WorkItem = { client: string; sector: string; title: string; metric: string 
 
 const fr = {
   seo: { title: 'Agence digitale à Paris : site web, SEO & Ads', desc: 'Agence digitale à Paris pour PME et TPE : création de site web, application sur mesure, référencement Google & IA et publicité en ligne. Devis sous 48 h.' },
-  topbar: ['Devis gratuit sous 48 h', 'Sans engagement', 'Une équipe basée à Paris'],
+  topbar: ['Devis gratuit sous 48 h', 'Sans engagement', 'Agence basée à Paris'],
   proof: { google: 'sur Google', projects: 'réalisations', expertise: 'expertises' },
   action: { eyebrow: 'Passons à l’action', h2: 'Votre projet *commence ici.*', p: 'Demandez votre devis gratuit ou réservez un appel de 30 minutes : réponse sous 48 h, sans engagement.', tabs: ['Demander un devis', 'Réserver un appel'], tabsLabel: 'Choisir comment nous contacter' },
   sticky: { quote: 'Devis gratuit', call: 'Réserver un appel' },
@@ -129,7 +129,7 @@ const fr = {
 
 const en: typeof fr = {
   seo: { title: 'Digital agency in Paris: websites, SEO & ads', desc: 'Paris digital agency for SMEs and start-ups: website design, custom software, Google & AI search optimisation and paid ads. Free quote within 48 hours.' },
-  topbar: ['Free quote within 48 hours', 'No commitment', 'A Paris-based team'],
+  topbar: ['Free quote within 48 hours', 'No commitment', 'A Paris-based agency'],
   proof: { google: 'on Google', projects: 'projects', expertise: 'services' },
   action: { eyebrow: 'Let’s get started', h2: 'Your project *starts here.*', p: 'Request your free quote or book a 30-minute call: reply within 48 hours, no commitment.', tabs: ['Get a quote', 'Book a call'], tabsLabel: 'Choose how to contact us' },
   sticky: { quote: 'Free quote', call: 'Book a call' },
